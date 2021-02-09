@@ -2,7 +2,19 @@
 #  Form Field Definitions
 # ===================================
 
-fields:
-    id:
-        label: ID
-        disabled: true
+tabs:
+    fields:
+        name:
+            label: name
+            tab: Detail
+            span: left
+        slug:
+            label: Slug
+            tab: Detail
+            span: right
+            preset: name
+        posts:
+            label: Posts
+            tab: Posts
+            type: relation
+            select: title

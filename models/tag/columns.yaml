@@ -6,3 +6,10 @@ columns:
     id:
         label: ID
         searchable: true
+    name:
+        label: Name
+        searchable: true
+    slug:
+        label: Slug
+        searchable: true
+

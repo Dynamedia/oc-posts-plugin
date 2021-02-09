@@ -13,7 +13,7 @@ tabs:
             span: right
             label: Slug
             preset: title
-        introduction:
+        excerpt:
             tab: Introduction
             label: Post Introduction
             type: markdown
@@ -24,35 +24,35 @@ tabs:
             label: Post Type
             type: dropdown
 
-        main_images:
+        images:
             tab: Images
             type: nestedform
             usePanelStyles: false
             form:
                 tabs:
                     fields:
-                        list_image:
+                        list:
                             tab: List Image
                             type: mediafinder
                             mode: image
                             imageHeight: 260
                             imageWidth: 260
-                        list_image_alt:
+                        list_alt:
                             tab: List Image
                             label: Image Alt Text
-                        list_image_class:
+                        list_class:
                             tab: List Image
                             label: Image CSS Class
-                        banner_image:
+                        banner:
                             tab: Banner Image
                             type: mediafinder
                             mode: image
                             imageHeight: 200
                             imageWidth: 900
-                        banner_image_alt:
+                        banner_alt:
                             tab: Banner Image
                             label: Image Alt Text
-                        banner_image_class:
+                        banner_class:
                             tab: Banner Image
                             label: Image CSS Class
 

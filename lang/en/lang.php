@@ -13,10 +13,10 @@ return [
     ],
     'post' => [
         'tab' => [
-            'introduction' => 'Introduction',
+            'excerpt' => 'Introduction',
             'images' => 'Images',
-            'list_image' => 'List Image',
-            'banner_image' => 'Banner Image',
+            'list' => 'List Image',
+            'banner' => 'Banner Image',
             'body' => 'Body',
             'categories' => 'Categories',
             'settings' => 'Settings',

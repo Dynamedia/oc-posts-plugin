@@ -15,9 +15,10 @@ class CreatePostsTable extends Migration
             $table->integer('primary_category_id')->unsigned()->nullable()->index();
             $table->string('slug')->index();
             $table->string('title');
-            $table->json('main_images')->nullable()->default(null);
-            $table->text('introduction')->nullable()->default(null);
+            $table->json('images')->nullable()->default(null);
+            $table->text('excerpt')->nullable()->default(null);
             $table->json('body');
+            $table->json('seo');
             $table->boolean('show_contents')->default(true);
             $table->string('cms_layout')->default('default.htm');
             $table->boolean('is_published')->index()->default(false);

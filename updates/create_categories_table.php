@@ -13,8 +13,10 @@ class CreateCategoriesTable extends Migration
             $table->increments('id');
             $table->string('name')->nullable();
             $table->string('slug')->nullable()->index();
-            $table->string('code')->nullable();
-            $table->text('description')->nullable();
+            $table->json('images')->nullable()->default(null);
+            $table->text('excerpt')->nullable()->default(null);
+            $table->json('body');
+            $table->json('seo');
             $table->string('cms_layout')->default('default.htm');
             $table->integer('parent_id')->unsigned()->index()->nullable();
             $table->integer('nest_left')->nullable();

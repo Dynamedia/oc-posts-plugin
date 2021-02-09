@@ -49,7 +49,7 @@ class Post extends Model
      */
     protected $jsonable = [
         'body',
-        'main_images'
+        'images'
     ];
 
     /**
@@ -85,6 +85,11 @@ class Post extends Model
         'categories' => [
             'Dynamedia\Posts\Models\Category',
             'table' => 'dynamedia_posts_posts_categories',
+            'order' => 'name'
+        ],
+        'tags' => [
+            'Dynamedia\Posts\Models\Tag',
+            'table' => 'dynamedia_posts_posts_tags',
             'order' => 'name'
         ]
     ];

@@ -162,11 +162,38 @@ class Plugin extends PluginBase
 
         return [
             'posts' => [
-                'label'       => 'posts',
+                'label'       => 'Posts',
                 'url'         => Backend::url('dynamedia/posts/posts'),
                 'icon'        => 'icon-pencil-square-o',
                 'permissions' => ['dynamedia.posts.*'],
                 'order'       => 500,
+
+                'sideMenu' => [
+                    'new_post' => [
+                        'label'       => 'New Post',
+                        'icon'        => 'icon-plus',
+                        'url'         => Backend::url('dynamedia/posts/posts/create'),
+                        'permissions' => ['dynamedia.posts.*']
+                    ],
+                    'posts' => [
+                        'label'       => 'Posts',
+                        'icon'        => 'icon-copy',
+                        'url'         => Backend::url('dynamedia/posts/posts'),
+                        'permissions' => ['dynamedia.posts.*']
+                    ],
+                    'categories' => [
+                        'label'       => 'Categories',
+                        'icon'        => 'icon-list-ul',
+                        'url'         => Backend::url('dynamedia/posts/categories'),
+                        'permissions' => ['dynamedia.posts.*']
+                    ],
+                    'tags' => [
+                        'label'       => 'Tags',
+                        'icon'        => 'icon-list-ul',
+                        'url'         => Backend::url('dynamedia/posts/tags'),
+                        'permissions' => ['dynamedia.posts.*']
+                    ]
+                ]
             ],
         ];
     }

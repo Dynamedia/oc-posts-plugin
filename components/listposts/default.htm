@@ -4,12 +4,12 @@
     <div class="post">
         <div class="image">
             <a href="{{ post.url }}">
-                {% if post.main_images.list_image.default %}
+                {% if post.images.list.default %}
                 {% partial __SELF__ ~ "::image"
-                image = post.main_images.list_image.default
-                srcset = post.main_images.list_image.srcset
-                alt = post.main_images.list_image.alt
-                class = post.main_images.list_image.class
+                image = post.images.list.default
+                srcset = post.images.list.responsive
+                alt = post.images.list.alt
+                class = post.images.list.class
                 %}
             </a>
             {% endif %}

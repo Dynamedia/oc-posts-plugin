@@ -4,31 +4,31 @@
 tabs:
     fields:
         title:
-            tab: dynamedia.posts::lang.post.tab.introduction
+            tab: Detail
             span: left
             label: Post Tile
             comment: This is the H1 tag
         slug:
-            tab: dynamedia.posts::lang.post.tab.introduction
+            tab: Detail
             span: right
             label: Slug
             preset: title
-        introduction:
-            tab: dynamedia.posts::lang.post.tab.introduction
+        excerpt:
+            tab: Detail
             label: Post Introduction
             type: markdown
             size: huge
             comment: This is used for post lists and SEO description
 
-        main_images:
+        images:
             tab: dynamedia.posts::lang.post.tab.images
             type: nestedform
             usePanelStyles: false
             form:
                 tabs:
                     fields:
-                        list_image:
-                            tab: dynamedia.posts::lang.post.tab.list_image
+                        list:
+                            tab: dynamedia.posts::lang.post.tab.list
                             type: nestedform
                             usePanelStyles: false
                             form:
@@ -47,8 +47,8 @@ tabs:
                                         class:
                                             tab: Default
                                             label: Image CSS Class
-                                        srcset:
-                                            tab: Src Set
+                                        responsive:
+                                            tab: Responsive
                                             type: repeater
                                             form:
                                                 fields:
@@ -69,8 +69,8 @@ tabs:
                                                         label: Screen Width
                                                         type: number
 
-                        banner_image:
-                            tab: dynamedia.posts::lang.post.tab.banner_image
+                        banner:
+                            tab: dynamedia.posts::lang.post.tab.banner
                             type: nestedform
                             usePanelStyles: false
                             form:
@@ -89,8 +89,8 @@ tabs:
                                         class:
                                             tab: Default
                                             label: Image CSS Class
-                                        srcset:
-                                            tab: Src Set
+                                        responsive:
+                                            tab: Responsive
                                             type: repeater
                                             form:
                                                 fields:
@@ -110,7 +110,27 @@ tabs:
                                                         span: right
                                                         label: Screen Width
                                                         type: number
-
+                        social:
+                            tab: Social Images
+                            type: nestedform
+                            usePanelStyles: false
+                            form:
+                                secondaryTabs:
+                                    fields:
+                                        facebook:
+                                            tab: Facebook
+                                            type: mediafinder
+                                            mode: image
+                                            imageHeight: 260
+                                            imageWidth: 260
+                                            comment: Social sharing image for Facebook
+                                        twitter:
+                                            tab: Twitter
+                                            type: mediafinder
+                                            mode: image
+                                            imageHeight: 260
+                                            imageWidth: 260
+                                            comment: Social sharing image for Twitter
 
 
         body:
@@ -169,8 +189,8 @@ tabs:
                                                         class:
                                                             tab: Default
                                                             label: Image CSS Class
-                                                        srcset:
-                                                            tab: Src Set
+                                                        responsive:
+                                                            tab: Responsive
                                                             type: repeater
                                                             form:
                                                                 fields:
@@ -208,6 +228,51 @@ tabs:
                             language: html
                             size: huge
 
+                image:
+                    name: Image
+                    description: Add an image to this post
+                    fields:
+                        section:
+                            type: nestedform
+                            usePanelStyles: false
+                            form:
+                                tabs:
+                                    fields:
+                                        default:
+                                            tab: Default
+                                            span: left
+                                            type: mediafinder
+                                            mode: image
+                                            imageHeight: 260
+                                            imageWidth: 260
+                                        alt:
+                                            tab: Default
+                                            label: Image Alt Text
+                                        class:
+                                            tab: Default
+                                            label: Image CSS Class
+                                        responsive:
+                                            tab: Responsive
+                                            type: repeater
+                                            form:
+                                                fields:
+                                                    image:
+                                                        type: mediafinder
+                                                        mode: image
+                                                        imageHeight: 260
+                                                        imageWidth: 260
+                                                    media_query:
+                                                        span: left
+                                                        label: Media Query
+                                                        type: dropdown
+                                                        options:
+                                                            max-width: Max Width
+                                                            min-width: Min Width
+                                                    screen_width:
+                                                        span: right
+                                                        label: Screen Width
+                                                        type: number
+
                 pagebreak:
                     name: Pagebreak
                     description: Add a simple page break
@@ -227,7 +292,12 @@ tabs:
             tab: dynamedia.posts::lang.post.tab.categories
             label: List Categories
             type: relation
-            emptyOption: None
+
+        tags:
+            tab: Tags
+            label: Tags
+            type: taglist
+            mode: relation
 
         cms_layout:
             tab: dynamedia.posts::lang.post.tab.settings

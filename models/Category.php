@@ -5,6 +5,7 @@ use Model;
 use Cms\Classes\Controller;
 use Cms\Classes\Layout;
 use Cms\Classes\Theme;
+use Config;
 
 /**
  * category Model
@@ -94,6 +95,11 @@ class Category extends Model
         }
         $options[''] = 'None';
         return $options;
+    }
+
+    public function getImageStyleOptions()
+    {
+        return Config::get('dynamedia.posts::postSectionImageDropdown');
     }
 
     public function afterDelete()

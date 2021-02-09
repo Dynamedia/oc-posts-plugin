@@ -36,7 +36,7 @@
         background-color: lightgoldenrodyellow;
         overflow: hidden;
     }
-    .dynamedia.posts p.introduction {
+    .dynamedia.posts p.excerpt {
         margin-top: 10px;
     }
     .dynamedia.posts .contents p.title {
@@ -64,12 +64,12 @@
 
 </style>
 <article class="dynamedia posts">
-    {% if post.main_images.banner_image.default %}
+    {% if post.images.banner.default %}
         {% partial __SELF__ ~ "::image"
-        image = post.main_images.banner_image.default
-        srcset = post.main_images.banner_image.srcset
-        alt = post.main_images.banner_image_alt
-        class = "post-image banner " ~ entry.banner_image.class
+        image = post.images.banner.default
+        srcset = post.images.banner.srcset
+        alt = post.images.banner_alt
+        class = "post-image banner " ~ entry.banner.class
         %}
     {% endif %}
     
@@ -105,7 +105,7 @@
     {% endif %}
 
     {% if post.getRequestedPage == 1 %}
-    <p class="introduction">{{ post.introduction | md }}</p>
+    <p class="excerpt">{{ post.excerpt | md }}</p>
     {% endif %}
 
 

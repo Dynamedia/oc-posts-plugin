@@ -1,6 +1,7 @@
 <?php namespace Dynamedia\Posts\Models;
 
 use Model;
+use Str;
 
 /**
  * tag Model
@@ -65,10 +66,28 @@ class Tag extends Model
     public $hasOneThrough = [];
     public $hasManyThrough = [];
     public $belongsTo = [];
-    public $belongsToMany = [];
+    public $belongsToMany = [
+        'posts' => ['Dynamedia\Posts\Models\Post',
+            'table' => 'dynamedia_posts_posts_tags',
+            'order' => 'title',
+        ],
+    ];
     public $morphTo = [];
     public $morphOne = [];
     public $morphMany = [];
     public $attachOne = [];
     public $attachMany = [];
+
+    // For tag widget
+    public function beforeSave()
+    {
+        if (!$this->slug && $this->name) {
+            $this->slug = Str::slug($this->name);
+        }
+    }
+
+    public function afterDelete()
+    {
+        $this->posts()->detach();
+    }
 }

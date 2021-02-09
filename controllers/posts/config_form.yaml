@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Post
+
+# Model Form Field configuration
+form: $/dynamedia/posts/models/post/fields.yaml
+
+# Model Class name
+modelClass: Dynamedia\Posts\Models\Post
+
+# Default redirect location
+defaultRedirect: dynamedia/posts/posts
+
+# Create page
+create:
+    title: Create Post
+    redirect: dynamedia/posts/posts/update/:id
+    redirectClose: dynamedia/posts/posts
+
+# Update page
+update:
+    title: Edit Post
+    redirect: dynamedia/posts/posts
+    redirectClose: dynamedia/posts/posts
+
+# Preview page
+preview:
+    title: Preview Post

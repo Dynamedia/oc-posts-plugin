@@ -1,0 +1,189 @@
+<?php namespace Dynamedia\Posts;
+
+use Backend;
+use Lang;
+use System\Classes\PluginBase;
+use App;
+use Event;
+use Str;
+use Dynamedia\Posts\Models\Post;
+use Dynamedia\Posts\Models\Category;
+
+/**
+ * posts Plugin Information File
+ */
+class Plugin extends PluginBase
+{
+    /**
+     * Returns information about this plugin.
+     *
+     * @return array
+     */
+    public function pluginDetails()
+    {
+        return [
+            'name'        => 'dynamedia.posts::lang.plugin.name',
+            'description' => 'dynamedia.posts::lang.plugin.description',
+            'author'      => 'Dynamedia',
+            'icon'        => 'icon-pencil-square-o'
+        ];
+    }
+
+    /**
+     * Register method, called when the plugin is first registered.
+     *
+     * @return void
+     */
+    public function register()
+    {
+
+    }
+
+    /**
+     * Boot method, called right before the request route.
+     *
+     * @return array
+     */
+    public function boot()
+    {
+        Event::listen('cms.page.beforeDisplay', function ($controller, $url, $page) {
+            $slug = $controller->param('slug');
+            $listPosts = null;
+            $showPost = null;
+
+            // Check if we have a component which wants to show
+            if ($slug && !empty($page->settings['components'])) {
+                $listPosts = collect($page->settings['components'])
+                    ->filter(function ($v, $k) {
+                        if ((Str::startsWith($k, "listPosts")
+                            && !empty($v['categoryFilter'])
+                            && $v['categoryFilter'] == "__fromURL__")) return true;
+                    });
+
+                $showPost = collect($page->settings['components'])
+                    ->filter(function ($v, $k) {
+                        if (Str::startsWith($k, "showPost")) return true;
+                    });
+            }
+
+            if ($listPosts) {
+                $category = Category::where('slug', $slug)->first();
+
+                if ($category && $category->cms_layout != "__inherit__") {
+                    $page->layout = $category->cms_layout;
+                }
+
+                App::instance('dynamedia.category', $category);
+            }
+
+            if ($showPost) {
+                $post = Post::where('slug', $slug)
+                    ->with('primary_category')
+                    ->first();
+
+                if ($post && $post->cms_layout != "__inherit__") {
+                    $page->layout = $post->cms_layout;
+                } elseif ($post && !empty($post->primary_category) && $post->primary_category->cms_layout != "__inherit__") {
+                    $page->layout = $post->primary_category->cms_layout;
+                }
+
+                App::instance('dynamedia.post', $post);
+            }
+    });
+        /*
+         * Register menu items for the RainLab.Pages plugin
+         */
+        Event::listen('pages.menuitem.listTypes', function() {
+            return [
+                'posts-category'       => 'Posts Category',
+                'all-posts-categories' => 'All Posts Categories',
+                'posts-post'           => 'Posts Post',
+                'all-posts-posts'      => 'All Posts Posts',
+                'category-posts-posts' => 'Category Posts Posts',
+            ];
+        });
+
+        Event::listen('pages.menuitem.getTypeInfo', function($type) {
+            if ($type == 'posts-category' || $type == 'all-posts-categories') {
+                return Category::getMenuTypeInfo($type);
+            }
+            elseif ($type == 'posts-post' || $type == 'all-posts-posts' || $type == 'category-posts-posts') {
+                return Post::getMenuTypeInfo($type);
+            }
+        });
+
+        Event::listen('pages.menuitem.resolveItem', function($type, $item, $url, $theme) {
+            if ($type == 'posts-category' || $type == 'all-posts-categories') {
+                return Category::resolveMenuItem($item, $url, $theme);
+            }
+            elseif ($type == 'posts-post' || $type == 'all-posts-posts' || $type == 'category-posts-posts') {
+                return Post::resolveMenuItem($item, $url, $theme);
+            }
+        });
+    }
+
+    /**
+     * Registers any front-end components implemented in this plugin.
+     *
+     * @return array
+     */
+    public function registerComponents()
+    {
+        return [
+            'Dynamedia\Posts\Components\ShowPost' => 'showPost',
+            'Dynamedia\Posts\Components\ListPosts' => 'listPosts',
+        ];
+    }
+
+    /**
+     * Registers any back-end permissions used by this plugin.
+     *
+     * @return array
+     */
+    public function registerPermissions()
+    {
+        return []; // Remove this line to activate
+
+        return [
+            'dynamedia.posts.some_permission' => [
+                'tab' => 'posts',
+                'label' => 'Some permission'
+            ],
+        ];
+    }
+
+    /**
+     * Registers back-end navigation items for this plugin.
+     *
+     * @return array
+     */
+    public function registerNavigation()
+    {
+
+        return [
+            'posts' => [
+                'label'       => 'posts',
+                'url'         => Backend::url('dynamedia/posts/posts'),
+                'icon'        => 'icon-pencil-square-o',
+                'permissions' => ['dynamedia.posts.*'],
+                'order'       => 500,
+            ],
+        ];
+    }
+
+    public function registerSettings()
+    {
+        return [
+            'settings' => [
+                'label'       => 'Dynamedia Posts Settings',
+                'description' => 'Manage settings for the posts.',
+                'category'    => 'Posts',
+                'icon'        => 'icon-cog',
+                'class'       => 'Dynamedia\Posts\Models\Settings',
+                'order'       => 500,
+                'keywords'    => 'dynamedia posts',
+                'permissions' => ['*']
+            ]
+        ];
+    }
+}

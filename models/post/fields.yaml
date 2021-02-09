@@ -1,0 +1,258 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+tabs:
+    fields:
+        title:
+            tab: dynamedia.posts::lang.post.tab.introduction
+            span: left
+            label: Post Tile
+            comment: This is the H1 tag
+        slug:
+            tab: dynamedia.posts::lang.post.tab.introduction
+            span: right
+            label: Slug
+            preset: title
+        introduction:
+            tab: dynamedia.posts::lang.post.tab.introduction
+            label: Post Introduction
+            type: markdown
+            size: huge
+            comment: This is used for post lists and SEO description
+
+        main_images:
+            tab: dynamedia.posts::lang.post.tab.images
+            type: nestedform
+            usePanelStyles: false
+            form:
+                tabs:
+                    fields:
+                        list_image:
+                            tab: dynamedia.posts::lang.post.tab.list_image
+                            type: nestedform
+                            usePanelStyles: false
+                            form:
+                                secondaryTabs:
+                                    fields:
+                                        default:
+                                            tab: Default
+                                            type: mediafinder
+                                            mode: image
+                                            imageHeight: 260
+                                            imageWidth: 260
+
+                                        alt:
+                                            tab: Default
+                                            label: Image Alt Text
+                                        class:
+                                            tab: Default
+                                            label: Image CSS Class
+                                        srcset:
+                                            tab: Src Set
+                                            type: repeater
+                                            form:
+                                                fields:
+                                                    image:
+                                                        type: mediafinder
+                                                        mode: image
+                                                        imageHeight: 260
+                                                        imageWidth: 260
+                                                    media_query:
+                                                        span: left
+                                                        label: Media Query
+                                                        type: dropdown
+                                                        options:
+                                                            max-width: Max Width
+                                                            min-width: Min Width
+                                                    screen_width:
+                                                        span: right
+                                                        label: Screen Width
+                                                        type: number
+
+                        banner_image:
+                            tab: dynamedia.posts::lang.post.tab.banner_image
+                            type: nestedform
+                            usePanelStyles: false
+                            form:
+                                secondaryTabs:
+                                    fields:
+                                        default:
+                                            tab: Default
+                                            type: mediafinder
+                                            mode: image
+                                            imageHeight: 260
+                                            imageWidth: 260
+
+                                        alt:
+                                            tab: Default
+                                            label: Image Alt Text
+                                        class:
+                                            tab: Default
+                                            label: Image CSS Class
+                                        srcset:
+                                            tab: Src Set
+                                            type: repeater
+                                            form:
+                                                fields:
+                                                    image:
+                                                        type: mediafinder
+                                                        mode: image
+                                                        imageHeight: 260
+                                                        imageWidth: 260
+                                                    media_query:
+                                                        span: left
+                                                        label: Media Query
+                                                        type: dropdown
+                                                        options:
+                                                            max-width: Max Width
+                                                            min-width: Min Width
+                                                    screen_width:
+                                                        span: right
+                                                        label: Screen Width
+                                                        type: number
+
+
+
+        body:
+            tab: dynamedia.posts::lang.post.tab.body
+            label: Post Body
+            type: repeater
+            style: accordion
+            groups:
+                section:
+                    name: Post Section
+                    description: Add a section to this post
+                    fields:
+                        section:
+                            type: nestedform
+                            usePanelStyles: false
+                            form:
+                                tabs:
+                                    fields:
+                                        heading:
+                                            tab: Main
+                                            span: left
+                                            label: Section Heading
+                                            comment: H2
+                                        id:
+                                            tab: Main
+                                            span: right
+                                            label: Section ID
+                                            preset: heading
+                                        content:
+                                            tab: Main
+                                            label: Section Content
+                                            type: markdown
+                                            size: huge
+                                        image:
+                                            tab: Image
+                                            type: nestedform
+                                            usePanelStyles: false
+                                            form:
+                                                secondaryTabs:
+                                                    fields:
+                                                        default:
+                                                            tab: Default
+                                                            span: left
+                                                            type: mediafinder
+                                                            mode: image
+                                                            imageHeight: 260
+                                                            imageWidth: 260
+                                                        image_style:
+                                                            tab: Default
+                                                            span: right
+                                                            label: Image Style
+                                                            type: dropdown
+                                                        alt:
+                                                            tab: Default
+                                                            label: Image Alt Text
+                                                        class:
+                                                            tab: Default
+                                                            label: Image CSS Class
+                                                        srcset:
+                                                            tab: Src Set
+                                                            type: repeater
+                                                            form:
+                                                                fields:
+                                                                    image:
+                                                                        type: mediafinder
+                                                                        mode: image
+                                                                        imageHeight: 260
+                                                                        imageWidth: 260
+                                                                    media_query:
+                                                                        span: left
+                                                                        label: Media Query
+                                                                        type: dropdown
+                                                                        options:
+                                                                            max-width: Max Width
+                                                                            min-width: Min Width
+                                                                    screen_width:
+                                                                        span: right
+                                                                        label: Screen Width
+                                                                        type: number
+                                        in_contents:
+                                            tab: Settings
+                                            type: switch
+                                            label: Include in contents?
+                                            default: true
+
+
+
+                html:
+                    name: Raw HTML
+                    description: Add a block of html
+                    fields:
+                        content:
+                            label: Raw HTML
+                            type: codeeditor
+                            language: html
+                            size: huge
+
+                pagebreak:
+                    name: Pagebreak
+                    description: Add a simple page break
+                    fields:
+                        title:
+                            label: Page break
+                            placeholder: Page Break
+                            disabled: true
+
+        primary_category:
+            tab: dynamedia.posts::lang.post.tab.categories
+            label: Primary Category
+            type: relation
+            comment: The most relevant category
+
+        categories:
+            tab: dynamedia.posts::lang.post.tab.categories
+            label: List Categories
+            type: relation
+            emptyOption: None
+
+        cms_layout:
+            tab: dynamedia.posts::lang.post.tab.settings
+            label: CMS Layout
+            type: dropdown
+
+        is_published:
+            tab: dynamedia.posts::lang.post.tab.settings
+            span: left
+            label: Published?
+            type: switch
+            default: off
+        show_contents:
+            tab: dynamedia.posts::lang.post.tab.settings
+            span: right
+            label: Show Contents?
+            type: switch
+            default: off
+        published_at:
+            tab: dynamedia.posts::lang.post.tab.settings
+            label: Publishing Time
+            type: datepicker
+            comment: Default to now if published
+        published_until:
+            tab: dynamedia.posts::lang.post.tab.settings
+            label: Published Until
+            type: datepicker
+            comment: Optional Post expiry time

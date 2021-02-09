@@ -1,0 +1,62 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+tabs:
+    stretch: true
+    fields:
+        zeroLevelPostPage:
+            tab: Post Page Settings
+            label: Without Parent Post Page
+            type: dropdown
+            comment: For displaying posts without a category eg. /posts/post-title. Required as a default for posts without a category
+        oneLevelPostPage:
+            tab: Post Page Settings
+            label: One Parent Post Page
+            type: dropdown
+            comment: For displaying posts with one category eg. /posts/media/post-title
+        twoLevelPostPage:
+            tab: Post Page Settings
+            label: Two Parent Post Page
+            type: dropdown
+            comment: For displaying posts with two categories eg. /posts/media/movies/post-title
+        threeLevelPostPage:
+            tab: Post Page Settings
+            label: Three Parent Post Page
+            type: dropdown
+            comment: For displaying posts with three categories eg. /posts/media/movies/action/post-title
+        fourLevelPostPage:
+            tab: Post Page Settings
+            label: Four Parent Post Page
+            type: dropdown
+            comment: For displaying posts with four categories eg. /posts/media/movies/action/sports/post-title
+        fiveLevelPostPage:
+            tab: Post Page Settings
+            label: Five+ Parent Post Page
+            type: dropdown
+            comment: For displaying posts with four categories eg. /posts/media/movies/action/sports/boxing/post-title
+
+        zeroLevelCategoryPage:
+            tab: Category Page Settings
+            label: Without Parent Category Page
+            type: dropdown
+            comment: For displaying category without a parent category eg. /posts/movies. Required.
+        oneLevelCategoryPage:
+            tab: Category Page Settings
+            label: One Parent Category Page
+            type: dropdown
+        twoLevelCategoryPage:
+            tab: Category Page Settings
+            label: Two Parent Category Page
+            type: dropdown
+        threeLevelCategoryPage:
+            tab: Category Page Settings
+            label: Three Parent Category Page
+            type: dropdown
+        fourLevelCategoryPage:
+            tab: Category Page Settings
+            label: Four Parent Category Page
+            type: dropdown
+        fiveLevelCategoryPage:
+            tab: Category Page Settings
+            label: Five+ Parent Category Page
+            type: dropdown

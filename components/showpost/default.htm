@@ -1,0 +1,184 @@
+{% set post = __SELF__.post %}
+{% set paginator = __SELF__.getPaginator %}
+{% set contents = __SELF__.getContentsList %}
+
+<style>
+    article {
+
+    }
+    .dynamedia.posts .post-info {
+        margin-bottom: 25px;
+    }
+    .dynamedia.posts .pagination-wrapper {
+        clear: both;
+        text-align: center;
+    }
+    .dynamedia.posts .pagination-wrapper ul li {
+        background-color: #333;
+        color: #fff;
+        border-radius: 5px;
+        display: inline;
+        margin: 0 10px;
+        display: inline-block;
+        padding: 15px;
+    }
+    .dynamedia.posts .pagination-wrapper ul li a {
+        color: #fff;
+    }
+    
+    .dynamedia.posts .contents {
+        box-sizing: border-box;
+        width: fit-content;
+        min-width: 150px;
+        max-width: 60%;
+        float: right;
+        padding: 10px 20px 10px 10px;
+        background-color: lightgoldenrodyellow;
+        overflow: hidden;
+    }
+    .dynamedia.posts p.introduction {
+        margin-top: 10px;
+    }
+    .dynamedia.posts .contents p.title {
+        text-align: center;
+        margin-top: 0;
+    }
+    .dynamedia.posts  .section-image.above img, .dynamedia.posts  .section-image.below img, .dynamedia.posts .post-image.banner img  {
+        width: 100%;
+        max-height: 300px;
+    }
+    .dynamedia.posts .section-image.left img {
+        float:left;
+        width: 400px;
+        max-width: 40%;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+    .dynamedia.posts .section-image.right img{
+        float:right;
+        width: 400px;
+        max-width: 40%;
+        margin-left: 10px;
+        margin-bottom: 10px
+    }
+
+</style>
+<article class="dynamedia posts">
+    {% if post.main_images.banner_image.default %}
+        {% partial __SELF__ ~ "::image"
+        image = post.main_images.banner_image.default
+        srcset = post.main_images.banner_image.srcset
+        alt = post.main_images.banner_image_alt
+        class = "post-image banner " ~ entry.banner_image.class
+        %}
+    {% endif %}
+    
+    <h1>{{ post.title }}</h1>
+    
+    <div class="post-info">
+        <small>By {{ post.user.first_name }} {{ post.user.last_name }},
+        {% if post.is_published %}
+            on {{ post.published_at | date('d-m-Y') }}
+        {% endif %}
+        {% if post.is_published and post.updated_at > post.published_at %}
+        <br>Last updated {{ post.updated_at | date('d-m-Y') }}
+        {% endif %}
+        
+        {### INFO FOR MULTI-PAGE POSTS ###}
+        {% if post.getPageCount > 1 %}
+        <p>Page {{post.getRequestedPage}} of {{post.getPageCount}}</p>
+        {% endif %}
+        </small>
+    </div>
+    
+
+    
+    {% if contents|length > 0 %}
+    <div class="contents">
+        <p class="title">Contents</p>
+        <ol>
+            {% for section in contents %}
+            <li><a href="{{ section.url }}">{{ section.title }}</a></li>
+            {% endfor %}
+        </ol>
+    </div>
+    {% endif %}
+
+    {% if post.getRequestedPage == 1 %}
+    <p class="introduction">{{ post.introduction | md }}</p>
+    {% endif %}
+
+
+    {% for entry in post.getPage %}
+        {% if entry._group == 'section' %}
+            {% if entry.section.heading %}
+            <h2 id="{{entry.id}}">{{ entry.section.heading }}</h2>
+            {% endif %}
+
+            {# The plugin provides several defaults for image positioning #}
+
+            {# --- IMAGE ABOVE --- #}
+
+            {% if entry.section.image.default and entry.section.image.image_style == 'full-above' %}
+                {% partial __SELF__ ~ "::image"
+                  image = entry.section.image.default
+                  srcset = entry.section.image.srcset
+                  alt = entry.section.image.alt
+                  class = "section-image above " ~ entry.section.image.class
+                %}
+            {% endif %}
+
+            {# --- IMAGE INLINE LEFT --- #}
+            {% if entry.section.image.default and entry.section.image.image_style == 'inline-left' %}
+                {% partial __SELF__ ~ "::image"
+                  image = entry.section.image.default
+                  srcset = entry.section.image.srcset
+                  alt = entry.section.image.alt
+                  class = "section-image left " ~ entry.section.image.class
+                %}
+            {% endif %}
+
+            {# --- IMAGE INLINE RIGHT --- #}
+            {% if entry.section.image.default and entry.section.image.image_style == 'inline-right' %}
+                {% partial __SELF__ ~ "::image"
+                  image = entry.section.image.default
+                  srcset = entry.section.image.srcset
+                  alt = entry.section.image.alt
+                  class = "section-image right " ~ entry.section.image.class
+                %}
+            {% endif %}
+
+            {{ entry.section.content | md }}
+
+            {# --- IMAGE BELOW --- #}
+            {% if entry.section.image.default and entry.section.image.image_style == 'full-below' %}
+                {% partial __SELF__ ~ "::image"
+                  image = entry.section.image.default
+                  srcset = entry.section.image.srcset
+                  alt = entry.section.image.alt
+                  class = "section-image below " ~ entry.section.image.class
+                %}
+            {% endif %}
+
+        {% elseif entry._group == 'html' %}
+            {{ entry.body | raw }}
+        {% endif %}
+
+    {% endfor %}
+    
+    {### PAGINATION SUPPORT FOR MULTI-PAGE POSTS ###}
+    {### This is a very simple framework agnostic paginator. You might want 'paginator.render | raw'  ###}
+    {% if post.getPageCount > 1 %}
+    <div class="pagination-wrapper">
+        <ul class="links">
+            {% if paginator.previousPageUrl %}
+            <li class="previous"><a href="{{ paginator.previousPageUrl }}">Prev</a></li>
+            {% endif %}
+            {% if paginator.nextPageUrl %}
+            <li class="next"><a href="{{ paginator.nextPageUrl }}">Next</a></li>
+            {% endif %}
+        </ul>
+
+    </div>
+    {% endif %}
+</article>

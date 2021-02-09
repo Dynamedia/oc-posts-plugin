@@ -1,0 +1,16 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    name:
+        label: name
+        span: left
+    slug:
+        label: Slug
+        span: right
+        preset: name
+    cms_layout:
+        tab: Settings
+        label: CMS Layout
+        type: dropdown

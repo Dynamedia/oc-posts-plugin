@@ -1,0 +1,23 @@
+{% set posts = __SELF__.posts %}
+<div class="post-list">
+    {% for post in posts %}
+    <div class="post">
+        <div class="image">
+            <a href="{{ post.url }}">
+                {% if post.main_images.list_image.default %}
+                {% partial __SELF__ ~ "::image"
+                image = post.main_images.list_image.default
+                srcset = post.main_images.list_image.srcset
+                alt = post.main_images.list_image.alt
+                class = post.main_images.list_image.class
+                %}
+            </a>
+            {% endif %}
+        </div>
+        <div class="detail">
+            <a href="{{ post.url }}"><h4>{{ post.title }}</h4></a>
+            Posted {{ post.published_at |date("d-m-Y")}} in <a href="{{ post.primary_category.url }}">{{ post.primary_category.name }}</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>

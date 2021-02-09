@@ -1,0 +1,18 @@
+# ===================================
+#  List Column Definitions
+# ===================================
+
+columns:
+    id:
+        label: ID
+        searchable: true
+    title:
+        label: Title
+        searchable: true
+    user:
+        label: By
+        relation: user
+        select: first_name
+    published_at:
+        label: Published
+

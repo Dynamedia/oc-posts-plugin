@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Tag
+
+# Model Form Field configuration
+form: $/dynamedia/posts/models/tag/fields.yaml
+
+# Model Class name
+modelClass: Dynamedia\Posts\Models\Tag
+
+# Default redirect location
+defaultRedirect: dynamedia/posts/tags
+
+# Create page
+create:
+    title: Create Tag
+    redirect: dynamedia/posts/tags/update/:id
+    redirectClose: dynamedia/posts/tags
+
+# Update page
+update:
+    title: Edit Tag
+    redirect: dynamedia/posts/tags
+    redirectClose: dynamedia/posts/tags
+
+# Preview page
+preview:
+    title: Preview Tag

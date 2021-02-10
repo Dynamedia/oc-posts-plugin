@@ -1,0 +1,48 @@
+{% if section.heading %}
+    <h2 id="{{entry.id}}">{{ section.heading }}</h2>
+{% endif %}
+
+{# The plugin provides several defaults for image positioning #}
+
+{# --- IMAGE ABOVE --- #}
+
+{% if section.image.default and section.image.image_style == 'full-above' %}
+    {% partial __SELF__ ~ "::helpers/image"
+        image = section.image.default
+        srcset = section.image.srcset
+        alt = section.image.alt
+        class = "section-image above " ~ section.image.class
+    %}
+{% endif %}
+
+{# --- IMAGE INLINE LEFT --- #}
+{% if section.image.default and section.image.image_style == 'inline-left' %}
+    {% partial __SELF__ ~ "::helpers/image"
+        image = section.image.default
+        srcset = section.image.srcset
+        alt = section.image.alt
+        class = "section-image left " ~ section.image.class
+    %}
+{% endif %}
+
+{# --- IMAGE INLINE RIGHT --- #}
+{% if section.image.default and section.image.image_style == 'inline-right' %}
+    {% partial __SELF__ ~ "::helpers/image"
+        image = section.image.default
+        srcset = section.image.srcset
+        alt = section.image.alt
+        class = "section-image right " ~ section.image.class
+    %}
+{% endif %}
+
+{{ section.content | md }}
+
+{# --- IMAGE BELOW --- #}
+{% if section.image.default and section.image.image_style == 'full-below' %}
+    {% partial __SELF__ ~ "::helpers/image"
+        image = section.image.default
+        srcset = section.image.srcset
+        alt = section.image.alt
+        class = "section-image below " ~ section.image.class
+    %}
+{% endif %}

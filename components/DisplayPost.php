@@ -10,13 +10,13 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Input;
 
 
-class ShowPost extends ComponentBase
+class DisplayPost extends ComponentBase
 {
     public function componentDetails()
     {
         return [
-            'name'        => 'ShowPost',
-            'description' => 'Display a posts post'
+            'name'        => 'Display Post',
+            'description' => 'Display a post'
         ];
     }
 
@@ -37,7 +37,7 @@ class ShowPost extends ComponentBase
         $this->setPost();
         // 404 if post not found
         if (!$this->post) {
-           if (!$this->deferToListComponent()) return $this->controller->run('404');
+           if (!$this->deferToCategoryComponent()) return $this->controller->run('404');
             $this->defer = true;
             return;
         }
@@ -48,16 +48,16 @@ class ShowPost extends ComponentBase
     }
 
     /**
-     * Check if there is a listPosts component after this one
+     * Check if there is a displayCategory component after this one
      * and that it will process from the URL paramater
      * 
      * @return bool
      **/
-    private function deferToListComponent() {
+    private function deferToCategoryComponent() {
         $components = collect($this->page->components)
             ->filter(function($c) {
                if ($c->alias == $this->alias) return true;
-               if ($c->name == 'listPosts' &&
+               if ($c->name == 'displayCategory' &&
                    $c->property('categoryFilter') == '__fromURL__') return true;
             });
             // true if this component is first or other component was successful

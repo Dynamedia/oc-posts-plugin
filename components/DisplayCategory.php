@@ -9,13 +9,13 @@ use Str;
 use App;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class ListPosts extends ComponentBase
+class DisplayCategory extends ComponentBase
 {
     public function componentDetails()
     {
         return [
-            'name'        => 'listPosts Component',
-            'description' => 'No description provided yet...'
+            'name'        => 'Display Category',
+            'description' => 'Display a category with posts'
         ];
     }
 
@@ -60,13 +60,16 @@ class ListPosts extends ComponentBase
                 'validationPattern' => '^[0-9]+$',
                 'validationMessage' => 'rainlab.posts::lang.settings.posts_per_page_validation',
                 'default'           => '',
+                'showExternalParam' => false,
             ],
             'postsPerPage' => [
                 'title'             => 'Posts per page',
+                'description'       => 'Limit the number of posts per page',
                 'type'              => 'string',
                 'validationPattern' => '^[0-9]+$',
                 'validationMessage' => 'rainlab.posts::lang.settings.posts_per_page_validation',
                 'default'           => '10',
+                'showExternalParam' => false,
             ],
             'noPostsMessage' => [
                 'title'             => 'rainlab.posts::lang.settings.posts_no_posts',
@@ -80,6 +83,7 @@ class ListPosts extends ComponentBase
                 'description' => 'rainlab.posts::lang.settings.posts_order_description',
                 'type'        => 'dropdown',
                 'default'     => 'published_at desc',
+                'showExternalParam' => false,
             ],
         ];
     }
@@ -92,7 +96,7 @@ class ListPosts extends ComponentBase
         // ONLY if we're getting the category from the URL
         if ($this->property('categoryFilter') == "__fromURL__") {
             if (!$this->category) {
-                if (!$this->deferToShowComponent()) return $this->controller->run('404');
+                if (!$this->deferToPostComponent()) return $this->controller->run('404');
                 $this->defer = true;
                 return;
             }
@@ -109,7 +113,6 @@ class ListPosts extends ComponentBase
             $this->categoryIds = explode(',', $this->property('categoryIds'));
         }
 
-
         $this->getPosts();
     }
 
@@ -120,17 +123,17 @@ class ListPosts extends ComponentBase
     }
 
     /**
-     * Check if there is a showPost component after this one
+     * Check if there is a displayPost component after this one
      * and that it will process from the URL paramater
      * 
      * @return bool
      **/
-    private function deferToShowComponent() {
+    private function deferToPostComponent() {
         $components = collect($this->page->components)
             ->filter(function($c) {
                if ($c->alias == $this->alias
                    && $c->property('categoryFilter') == '__fromURL__') return true;
-               if ($c->name == 'showPost') return true;
+               if ($c->name == 'displayPost') return true;
             });
             // true if this component is first or other component was successful
             if ($components->count() == 2 
@@ -144,17 +147,18 @@ class ListPosts extends ComponentBase
     public function getCategoryFilterOptions()
     {
         // Default empty option
-        $fromUrl = ['__fromURL__' => 'From URL Param'];
-        $all = ['' => 'All'];
-        $fromList = ['__fromList__' => 'From List'];
-
+        $baseOptions = [
+            '__fromURL__' => 'From URL Param',
+            '' => 'All',
+            '__fromList__' => 'From List'
+            ];
 
         $categories =  Category::orderBy('name', 'asc')
             ->get()
             ->pluck('name','slug')
             ->toArray();
 
-        return array_merge($fromUrl, $all, $fromList, $categories);
+        return array_merge($baseOptions, $categories);
     }
 
 

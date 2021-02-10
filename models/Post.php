@@ -49,7 +49,8 @@ class Post extends Model
      */
     protected $jsonable = [
         'body',
-        'images'
+        'images',
+        'seo'
     ];
 
     /**
@@ -101,14 +102,6 @@ class Post extends Model
 
 
 
-    public function getTypeOptions()
-    {
-        return [
-            'simple' => 'Simple',
-            'multi' => 'Multi-part'
-        ];
-    }
-
     public function getImageStyleOptions()
     {
         return Config::get('dynamedia.posts::postSectionImageDropdown');
@@ -122,7 +115,7 @@ class Post extends Model
 
         $layout = Layout::listInTheme(Theme::getActiveTheme(), true);
         foreach ($layout as $item) {
-            $options[$item->fileName] = $item->fileName;
+            $options[$item->fileName] = $item->description;
         }
         $options[''] = 'None';
         return $options;

@@ -1,5 +1,6 @@
 <picture class="{{class}}">
-    {% for entry in srcset %}
+    {% for entry in responsive %}
+    {{dump(entry)}}
         {% if entry.image and entry.screen_width %}
             <source srcset="{{entry.image|media}}" media="({{entry.media_query}}: {{entry.screen_width}}px)">
         {% endif %}

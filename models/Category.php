@@ -43,7 +43,11 @@ class Category extends Model
     /**
      * @var array Attributes to be cast to JSON
      */
-    protected $jsonable = [];
+    protected $jsonable = [
+        'body',
+        'images',
+        'seo'
+    ];
 
     /**
      * @var array Attributes to be appended to the API representation of the model (ex. toArray())
@@ -91,7 +95,7 @@ class Category extends Model
 
         $layout = Layout::listInTheme(Theme::getActiveTheme(), true);
         foreach ($layout as $item) {
-            $options[$item->fileName] = $item->fileName;
+            $options[$item->fileName] = $item->description;
         }
         $options[''] = 'None';
         return $options;

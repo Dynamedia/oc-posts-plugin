@@ -1,0 +1,8 @@
+{% if post.images.banner.default %}
+    {% partial __SELF__ ~ "::helpers/image"
+        image = post.images.banner.default
+        srcset = post.images.banner.srcset
+        alt = post.images.banner_alt
+        class = "post-image banner " ~ post.images.banner.class
+    %}
+{% endif %}

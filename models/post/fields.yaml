@@ -216,8 +216,6 @@ tabs:
                                             label: Include in contents?
                                             default: true
 
-
-
                 html:
                     name: Raw HTML
                     description: Add a block of html
@@ -232,7 +230,7 @@ tabs:
                     name: Image
                     description: Add an image to this post
                     fields:
-                        section:
+                        image:
                             type: nestedform
                             usePanelStyles: false
                             form:
@@ -298,6 +296,16 @@ tabs:
             label: Tags
             type: taglist
             mode: relation
+
+        seo:
+            label: SEO
+            tab: SEO
+            type: nestedform
+            usePanelStyles: false
+            form:
+                fields:
+                    title:
+                        label: Title
 
         cms_layout:
             tab: dynamedia.posts::lang.post.tab.settings

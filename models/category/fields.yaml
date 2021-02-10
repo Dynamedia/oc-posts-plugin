@@ -5,7 +5,7 @@
 tabs:
     fields:
         name:
-            label: name
+            label: Name
             tab: Detail
             span: left
         slug:
@@ -267,6 +267,15 @@ tabs:
                                                         label: Screen Width
                                                         type: number
 
+        seo:
+            label: SEO
+            tab: SEO
+            type: nestedform
+            usePanelStyles: false
+            form:
+                fields:
+                    title:
+                        label: Title
 
         posts:
             label: Posts

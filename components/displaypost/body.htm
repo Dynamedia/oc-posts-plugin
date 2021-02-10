@@ -1,0 +1,22 @@
+{% if post.getRequestedPage == 1 %}
+    <p class="excerpt">{{ post.excerpt | md }}</p>
+{% endif %}
+
+{% for entry in post.getPage %}
+
+    {% if entry._group == 'section' %}
+        {% partial __SELF__ ~ "::section" section = entry.section %}
+
+    {% elseif entry._group == 'html' %}
+        {{ entry.body | raw }}
+
+    {% elseif entry._group == 'image' %}
+        {% partial __SELF__ ~ "::image"
+            image = entry.image.default
+            responsive = entry.image.responsive
+            alt = entry.image.alt
+            class = "post-image " ~ entry.image.class
+        %}
+    {% endif %}
+
+{% endfor %}

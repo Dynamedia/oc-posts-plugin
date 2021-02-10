@@ -1,0 +1,17 @@
+<h1>{{ post.title }}</h1>
+
+<div class="post-info">
+    <small>By {{ post.user.first_name }} {{ post.user.last_name }},
+        {% if post.is_published %}
+        on {{ post.published_at | date('d-m-Y') }}
+        {% endif %}
+        {% if post.is_published and post.updated_at > post.published_at %}
+        <br>Last updated {{ post.updated_at | date('d-m-Y') }}
+        {% endif %}
+
+        {### INFO FOR MULTI-PAGE POSTS ###}
+        {% if post.getPageCount > 1 %}
+        <p>Page {{post.getRequestedPage}} of {{post.getPageCount}}</p>
+        {% endif %}
+    </small>
+</div>

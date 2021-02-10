@@ -22,10 +22,10 @@ class Settings extends Model
 
     public function getZeroLevelPostPageOptions()
     {
-        // showPost pages with no category slugs
+        // displayPost pages with no category slugs
         $pages =  Page::sortBy('baseFileName')
             ->filter(function ($page) {
-                if (!$page->hasComponent('showPost')) return false;
+                if (!$page->hasComponent('displayPost')) return false;
                 if (!Str::contains($page->url, 'slug')) return false;
                 if (Str::contains($page->url, ':level-')
                     || Str::contains($page->url, ':parent-')) return false;
@@ -41,7 +41,7 @@ class Settings extends Model
     {
         $pages =  Page::sortBy('baseFileName')
             ->filter(function ($page) {
-                if (!$page->hasComponent('showPost')) return false;
+                if (!$page->hasComponent('displayPost')) return false;
                 if (!Str::contains($page->url, 'slug')) return false;
                 if (!Str::contains($page->url, ':level-')
                     && !Str::contains($page->url, ':parent-')) return false;
@@ -82,7 +82,7 @@ class Settings extends Model
     {
         $pages =  Page::sortBy('baseFileName')
             ->filter(function ($page) {
-                if (!$page->hasComponent('listPosts')) return false;
+                if (!$page->hasComponent('displayCategory')) return false;
                 if (!Str::contains($page->url, ':slug')) return false;
                 if (Str::contains($page->url, ':level-')
                     || Str::contains($page->url, ':parent-')) return false;
@@ -97,7 +97,7 @@ class Settings extends Model
     {
         $pages = Page::sortBy('baseFileName')
             ->filter(function ($page) {
-                if (!$page->hasComponent('listPosts')) return false;
+                if (!$page->hasComponent('displayCategory')) return false;
                 if (!Str::contains($page->url, ':slug')) return false;
                 if (!Str::contains($page->url, ':level-') 
                     && !Str::contains($page->url, 'parent-')) return false;

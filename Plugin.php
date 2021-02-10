@@ -48,25 +48,25 @@ class Plugin extends PluginBase
     {
         Event::listen('cms.page.beforeDisplay', function ($controller, $url, $page) {
             $slug = $controller->param('slug');
-            $listPosts = null;
-            $showPost = null;
+            $displayCategory = null;
+            $displayPost = null;
 
             // Check if we have a component which wants to show
             if ($slug && !empty($page->settings['components'])) {
-                $listPosts = collect($page->settings['components'])
+                $displayCategory = collect($page->settings['components'])
                     ->filter(function ($v, $k) {
-                        if ((Str::startsWith($k, "listPosts")
+                        if ((Str::startsWith($k, "displayCategory")
                             && !empty($v['categoryFilter'])
                             && $v['categoryFilter'] == "__fromURL__")) return true;
                     });
 
-                $showPost = collect($page->settings['components'])
+                $displayPost = collect($page->settings['components'])
                     ->filter(function ($v, $k) {
-                        if (Str::startsWith($k, "showPost")) return true;
+                        if (Str::startsWith($k, "displayPost")) return true;
                     });
             }
 
-            if ($listPosts) {
+            if ($displayCategory) {
                 $category = Category::where('slug', $slug)->first();
 
                 if ($category && $category->cms_layout != "__inherit__") {
@@ -76,7 +76,7 @@ class Plugin extends PluginBase
                 App::instance('dynamedia.category', $category);
             }
 
-            if ($showPost) {
+            if ($displayPost) {
                 $post = Post::where('slug', $slug)
                     ->with('primary_category')
                     ->first();
@@ -130,8 +130,8 @@ class Plugin extends PluginBase
     public function registerComponents()
     {
         return [
-            'Dynamedia\Posts\Components\ShowPost' => 'showPost',
-            'Dynamedia\Posts\Components\ListPosts' => 'listPosts',
+            'Dynamedia\Posts\Components\DisplayPost' => 'displayPost',
+            'Dynamedia\Posts\Components\DisplayCategory' => 'displayCategory',
         ];
     }
 

@@ -1,0 +1,15 @@
+{% set post = __SELF__.post %}
+
+{% partial __SELF__ ~ "::style" %}
+
+<article class="dynamedia posts">
+    {% partial __SELF__ ~ "::banner" post = post %}
+
+    {% partial __SELF__ ~ "::headline" post = post %}
+    
+    {% partial __SELF__ ~ "::contents" %}
+
+    {% partial __SELF__ ~ "::body" post = post %}
+
+    {% partial __SELF__ ~ "::pagination" post = post %}
+</article>

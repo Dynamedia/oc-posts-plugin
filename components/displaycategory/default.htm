@@ -5,7 +5,7 @@
         <div class="image">
             <a href="{{ post.url }}">
                 {% if post.images.list.default %}
-                {% partial __SELF__ ~ "::image"
+                {% partial __SELF__ ~ "::helpers/image"
                 image = post.images.list.default
                 srcset = post.images.list.responsive
                 alt = post.images.list.alt

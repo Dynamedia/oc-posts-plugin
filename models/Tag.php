@@ -1,7 +1,12 @@
 <?php namespace Dynamedia\Posts\Models;
 
+use Dynamedia\Posts\Models\Settings;
 use Model;
 use Str;
+use Dynamedia\Posts\Models\Post;
+use Input;
+use Config;
+use Cms\Classes\Controller;
 
 /**
  * tag Model
@@ -38,12 +43,16 @@ class Tag extends Model
     /**
      * @var array Attributes to be cast to JSON
      */
-    protected $jsonable = [];
+    protected $jsonable = [
+        'body',
+        'images',
+        'seo'
+    ];
 
     /**
      * @var array Attributes to be appended to the API representation of the model (ex. toArray())
      */
-    protected $appends = [];
+    protected $appends = ['url'];
 
     /**
      * @var array Attributes to be removed from the API representation of the model (ex. toArray())
@@ -89,5 +98,65 @@ class Tag extends Model
     public function afterDelete()
     {
         $this->posts()->detach();
+    }
+
+    public function getImageStyleOptions()
+    {
+        return Config::get('dynamedia.posts::postSectionImageDropdown');
+    }
+
+    /**
+     * Sets the "url" attribute with a URL to this object.
+     *
+     * @param Controller $controller
+     * @param array $params Override request URL parameters
+     *
+     * @return string
+     */
+    public function getUrlAttribute()
+    {
+        $pageName = Settings::get('tagPage');
+
+        $params = ['slug' => $this->slug];
+
+        return strtolower(Controller::getController()->pageUrl($pageName, $params));
+    }
+
+    /**
+     * Get a paginated collection of posts from this category and optionally
+     * the subcategories of this category
+     *
+     * @param array $options
+     * @return LengthAwarePaginator
+     */
+    public function getPosts($options)
+    {
+        /*
+        * Default options
+        */
+
+        $is_published = true;
+        $sort = 'published_at';
+        $limit = false;
+        $page = (int) Input::get('page') ? (int) Input::get('page') : 1;
+        $perPage = 10;
+
+        extract($options);
+
+        $query = $this->posts();
+
+        if ($is_published) {
+            $query->applyIsPublished();
+        } else {
+            $query->applyIsNotPublished();
+        }
+
+        $query->orderBy($sort, 'DESC');
+
+        if ($limit) $query->limit($limit);
+
+        $query->with('primary_category', 'tags');
+
+        return $query->paginate($perPage, $page);
     }
 }

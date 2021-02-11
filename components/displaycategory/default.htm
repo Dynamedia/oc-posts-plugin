@@ -1,23 +1,18 @@
+{% set category = __SELF__.category %}
 {% set posts = __SELF__.posts %}
-<div class="post-list">
-    {% for post in posts %}
-    <div class="post">
-        <div class="image">
-            <a href="{{ post.url }}">
-                {% if post.images.list.default %}
-                {% partial __SELF__ ~ "::helpers/image"
-                image = post.images.list.default
-                srcset = post.images.list.responsive
-                alt = post.images.list.alt
-                class = post.images.list.class
-                %}
-            </a>
-            {% endif %}
-        </div>
-        <div class="detail">
-            <a href="{{ post.url }}"><h4>{{ post.title }}</h4></a>
-            Posted {{ post.published_at |date("d-m-Y")}} in <a href="{{ post.primary_category.url }}">{{ post.primary_category.name }}</a>
-        </div>
-    </div>
-    {% endfor %}
+
+{% partial __SELF__ ~ "::style" %}
+
+<article class="dynamedia posts category">
+    {% partial __SELF__ ~ "::banner" category = category %}
+
+    <h1>{{ category.name }}</h1>
+
+    {% partial __SELF__ ~ "::body" category = category %}
+
+</article>
+
+<div class="dynamedia posts list">
+    <h2>Posts from {{ category.name }}</h2>
+    {% partial __SELF__ ~ "::postslist" posts = posts %}
 </div>

@@ -6,6 +6,8 @@ use Cms\Classes\Controller;
 use Cms\Classes\Layout;
 use Cms\Classes\Theme;
 use Config;
+use Input;
+use Str;
 
 /**
  * category Model
@@ -106,6 +108,13 @@ class Category extends Model
         return Config::get('dynamedia.posts::postSectionImageDropdown');
     }
 
+    public function beforeSave()
+    {
+        if (!$this->slug && $this->name) {
+            $this->slug = Str::slug($this->name);
+        }
+    }
+
     public function afterDelete()
     {
         $this->posts()->detach();
@@ -143,6 +152,53 @@ class Category extends Model
         return array_reverse($path);
     }
 
+    /**
+     * Get a paginated collection of posts from this category and optionally
+     * the subcategories of this category
+     *
+     * @param array $options
+     * @return LengthAwarePaginator
+     */
+    public function getPosts($options)
+    {
+        /*
+        * Default options
+        */
+
+        $is_published = true;
+        $sort = 'published_at';
+        $categoryIds = [];
+        $subcategories = false;
+        $limit = false;
+        $page = (int) Input::get('page') ? (int) Input::get('page') : 1;
+        $perPage = 10;
+
+        extract($options);
+
+        if ($subcategories) {
+            $categoryIds = [$this->getAllChildrenAndSelf()->lists('id')];
+        } else {
+            $categoryIds = [$this->id];
+        }
+
+        $query = Post::whereHas('categories', function ($q) use ($categoryIds) {
+            $q->whereIn('id', $categoryIds);
+        });
+
+        if ($is_published) {
+            $query->applyIsPublished();
+        } else {
+            $query->applyIsNotPublished();
+        }
+
+        $query->orderBy($sort, 'DESC');
+
+        if ($limit) $query->limit($limit);
+
+        $query->with('primary_category', 'tags');
+
+        return $query->paginate($perPage, $page);
+    }
 
     /**
      * Sets the "url" attribute with a URL to this object.

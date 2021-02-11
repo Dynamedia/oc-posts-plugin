@@ -57,8 +57,7 @@ class DisplayPost extends ComponentBase
         $components = collect($this->page->components)
             ->filter(function($c) {
                if ($c->alias == $this->alias) return true;
-               if ($c->name == 'displayCategory' &&
-                   $c->property('categoryFilter') == '__fromURL__') return true;
+               if ($c->name == 'displayCategory') return true;
             });
             // true if this component is first or other component was successful
             if ($components->count() == 2 
@@ -89,12 +88,9 @@ class DisplayPost extends ComponentBase
     // todo implement category check
     private function setPost()
     {
-        //$this->post = Post::where('slug', $this->getSlug())
-        //    ->first();
         if (App::bound('dynamedia.post')) {
             $this->post = App::make('dynamedia.post');
         }
-        //dd($this->post->body);
     }
 
     public function getContentsList()

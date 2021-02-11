@@ -17,8 +17,8 @@ class CreatePostsTable extends Migration
             $table->string('title');
             $table->json('images')->nullable()->default(null);
             $table->text('excerpt')->nullable()->default(null);
-            $table->json('body');
-            $table->json('seo');
+            $table->json('body')->nullable()->default(null);
+            $table->json('seo')->nullable()->default(null);
             $table->boolean('show_contents')->default(true);
             $table->string('cms_layout')->default('default.htm');
             $table->boolean('is_published')->index()->default(false);

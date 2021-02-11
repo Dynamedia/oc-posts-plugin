@@ -1,0 +1,18 @@
+{% set tag = __SELF__.tag %}
+{% set posts = __SELF__.posts %}
+
+{% partial __SELF__ ~ "::style" %}
+
+<article class="dynamedia posts tag">
+    {% partial __SELF__ ~ "::banner" tag = tag %}
+
+    <h1>{{ tag.name }}</h1>
+
+    {% partial __SELF__ ~ "::body" tag = tag %}
+
+</article>
+
+<div class="dynamedia posts list">
+    <h2>Posts tagged {{ tag.name }}</h2>
+    {% partial __SELF__ ~ "::postslist" posts = posts %}
+</div>

@@ -1,0 +1,14 @@
+{### PAGINATION SUPPORT FOR POST LIST NAVIGATION ###}
+{### This is a very simple framework agnostic paginator. You might want 'posts.render | raw'  ###}
+{% if posts.lastPage > 1 %}
+<div class="pagination-wrapper">
+    <ul class="links">
+        {% if posts.previousPageUrl %}
+        <li class="previous"><a href="{{ posts.previousPageUrl }}">Prev</a></li>
+        {% endif %}
+        {% if posts.nextPageUrl %}
+        <li class="next"><a href="{{ posts.nextPageUrl }}">Next</a></li>
+        {% endif %}
+    </ul>
+</div>
+{% endif %}

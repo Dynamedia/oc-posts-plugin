@@ -1,0 +1,16 @@
+{% for entry in category.body %}
+    <div class="body-block">
+    {% if entry._group == 'section' %}
+            {% partial __SELF__ ~ "::section" section = entry.section %}
+    {% elseif entry._group == 'html' %}
+            {{ entry.content | raw }}
+    {% elseif entry._group == 'image' %}
+        {% partial __SELF__ ~ "::helpers/image"
+            image = entry.image.default
+            responsive = entry.image.responsive
+            alt = entry.image.alt
+            class = "category-image " ~ entry.image.class
+        %}
+    {% endif %}
+    </div>
+{% endfor %}

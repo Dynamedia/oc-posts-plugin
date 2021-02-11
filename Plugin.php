@@ -51,13 +51,12 @@ class Plugin extends PluginBase
             $displayCategory = null;
             $displayPost = null;
 
-            // Check if we have a component which wants to show
+            // Check if we have a component capable of changing the layout
             if ($slug && !empty($page->settings['components'])) {
+
                 $displayCategory = collect($page->settings['components'])
                     ->filter(function ($v, $k) {
-                        if ((Str::startsWith($k, "displayCategory")
-                            && !empty($v['categoryFilter'])
-                            && $v['categoryFilter'] == "__fromURL__")) return true;
+                        if (Str::startsWith($k, "displayCategory")) return true;
                     });
 
                 $displayPost = collect($page->settings['components'])
@@ -78,7 +77,7 @@ class Plugin extends PluginBase
 
             if ($displayPost) {
                 $post = Post::where('slug', $slug)
-                    ->with('primary_category')
+                    ->with('primary_category', 'tags')
                     ->first();
 
                 if ($post && $post->cms_layout != "__inherit__") {
@@ -132,6 +131,7 @@ class Plugin extends PluginBase
         return [
             'Dynamedia\Posts\Components\DisplayPost' => 'displayPost',
             'Dynamedia\Posts\Components\DisplayCategory' => 'displayCategory',
+            'Dynamedia\Posts\Components\DisplayTag' => 'displayTag',
         ];
     }
 
@@ -192,7 +192,13 @@ class Plugin extends PluginBase
                         'icon'        => 'icon-list-ul',
                         'url'         => Backend::url('dynamedia/posts/tags'),
                         'permissions' => ['dynamedia.posts.*']
-                    ]
+                    ],
+                    'settings' => [
+                        'label'       => 'Settings',
+                        'icon'        => 'icon-cog',
+                        'url'         => Backend::url('system/settings/update/dynamedia/posts/settings'),
+                        'permissions' => ['dynamedia.posts.*']
+                    ],
                 ]
             ],
         ];

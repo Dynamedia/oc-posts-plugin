@@ -20,6 +20,16 @@ class Settings extends Model
     public $settingsFields = 'fields.yaml';
 
 
+    public function getTagPageOptions()
+    {
+        return Page::sortBy('baseFileName')
+            ->filter(function ($page) {
+                if (!$page->hasComponent('displayTag')) return false;
+                if (!Str::contains($page->url, 'slug')) return false;
+                return true;
+            })
+            ->lists('baseFileName', 'baseFileName');
+    }
     public function getZeroLevelPostPageOptions()
     {
         // displayPost pages with no category slugs

@@ -60,3 +60,8 @@ tabs:
             tab: Category Page Settings
             label: Five+ Parent Category Page
             type: dropdown
+
+        tagPage:
+            tab: Tag Page Settings
+            label: Tag Page
+            type: dropdown

@@ -14,4 +14,14 @@
         <p>Page {{post.getRequestedPage}} of {{post.getPageCount}}</p>
         {% endif %}
     </small>
+    <br>
+    <small>Posted in <a href="{{post.primary_category.url}}">{{post.primary_category.name}}</a></small>
+    {% if post.tags|length >0 %}
+    <br>
+    <small>Tagged:
+        {% for tag in post.tags %}
+        <a href="{{tag.url}}">{{tag.name}}</a>{% if not loop.last %}, {% endif %}
+        {% endfor %}
+    </small>
+    {% endif %}
 </div>

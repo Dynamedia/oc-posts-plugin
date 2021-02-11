@@ -11,12 +11,12 @@ class CreateCategoriesTable extends Migration
         Schema::create('dynamedia_posts_categories', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('name')->nullable();
-            $table->string('slug')->nullable()->index();
+            $table->string('name');
+            $table->string('slug')->index();
             $table->json('images')->nullable()->default(null);
             $table->text('excerpt')->nullable()->default(null);
-            $table->json('body');
-            $table->json('seo');
+            $table->json('body')->nullable()->default(null);
+            $table->json('seo')->nullable()->default(null);
             $table->string('cms_layout')->default('default.htm');
             $table->integer('parent_id')->unsigned()->index()->nullable();
             $table->integer('nest_left')->nullable();

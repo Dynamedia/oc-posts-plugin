@@ -7,6 +7,7 @@ use Config;
 use October\Rain\Argon\Argon;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Input;
+use Str;
 use BackendAuth;
 use Cms\Classes\Controller;
 use Cms\Classes\Theme;
@@ -123,12 +124,17 @@ class Post extends Model
 
     public function beforeSave()
     {
+        if (!$this->slug && $this->title) {
+            $this->slug = Str::slug($this->title);
+        }
+
         if (empty($this->user)) {
             $user = BackendAuth::getUser();
             if (!is_null($user)) {
                 $this->user = $user->id;
             }
         }
+
         if ($this->is_published && $this->published_at == null) {
             $this->published_at = Argon::now();
         }
@@ -148,6 +154,7 @@ class Post extends Model
     public function afterDelete()
     {
         $this->categories()->detach();
+        $this->tags()->detach();
     }
 
     /**
@@ -244,13 +251,13 @@ class Post extends Model
 
     public function getRequestedPage()
     {
-        return Input::get('page') ? Input::get('page') : 1;
+        return (int) Input::get('page') ? (int) Input::get('page') : 1;
     }
 
     // Query scopes //
 
 
-    public function scopeIsPublished($query)
+    public function scopeApplyIsPublished($query)
     {
         return $query
             ->whereNotNull('is_published')
@@ -259,7 +266,7 @@ class Post extends Model
             ->where('published_at', '<', Argon::now());
     }
 
-    public function scopeIsNotPublished($query)
+    public function scopeApplyIsNotPublished($query)
     {
         return $query
             ->whereNull('is_published')
@@ -267,58 +274,6 @@ class Post extends Model
             ->orWhere('published_at', '>', Argon::now());
     }
 
-
-
-    public function scopeListFrontend($query, $options)
-    {
-        /*
-        * Default options
-        */
-        $is_published = true;
-        $sort = 'published_at';
-        $categoryIds = [];
-        $subcategories = false;
-        $limit = false;
-
-        extract($options);
-
-        if ($is_published) {
-            $query->isPublished();
-        } else {
-            $query->isNotPublished();
-        }
-
-        
-
-        // Expand our ID list to include sub categories
-        // todo We will need caching here its going to be an expensive operation
-        if ($categoryIds && $subcategories) {
-            $selectedCategories = Category::whereIn('id', $categoryIds)->get();
-
-            foreach ($selectedCategories as $cat) {
-                $categoryIds = array_merge($categoryIds, $cat->getAllChildren()->lists('id'));
-            }
-        }
-
-        if ($categoryIds) {
-            $query->whereHas('categories', function ($q) use ($categoryIds) {
-                $q->whereIn('id', $categoryIds);
-            });
-        }
-
-        $query->orderBy($sort, 'DESC');
-
-        if ($limit) {
-            $query->limit($limit);
-        }
-
-        // Only get the primary category. This is where url's should point or multi-category = duplicate content issues
-        $query->with(['primary_category' => function($q) {
-                //
-        }]);
-
-        return $query;
-    }
 
     /**
      * Sets the "url" attribute with a URL to this object.

@@ -13,6 +13,10 @@ class CreateTagsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('slug')->index();
+            $table->json('images')->nullable()->default(null);
+            $table->text('excerpt')->nullable()->default(null);
+            $table->json('body')->nullable()->default(null);
+            $table->json('seo')->nullable()->default(null);
             $table->timestamps();
         });
 

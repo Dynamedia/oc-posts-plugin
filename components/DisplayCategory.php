@@ -19,7 +19,6 @@ class DisplayCategory extends ComponentBase
         ];
     }
 
-    // When dealing with a single category
     public $category = null;
 
     public $categoryIds = [];
@@ -32,21 +31,6 @@ class DisplayCategory extends ComponentBase
     public function defineProperties()
     {
         return [
-
-            'categoryFilter' => [
-                'title'       => 'Filter by category',
-                'description' => 'List posts from category',
-                'type'        => 'dropdown',
-                'showExternalParam' => false,
-            ],
-            'categoryIds' => [
-                'title'       => 'Category ID\'s',
-                'description' => 'List posts from these category ID\'s',
-                'type'        => 'string',
-                'validationPattern' => '^\d+(,\d+)*$',
-                'validationMessage' => 'rainlab.posts::lang.settings.posts_per_page_validation',
-                'showExternalParam' => false,
-            ],
             'includeSubcategories' => [
                 'title'       => 'Include Subcategories',
                 'description' => 'List posts from subcategories of selected category',
@@ -57,8 +41,8 @@ class DisplayCategory extends ComponentBase
                 'title'             => 'Total posts',
                 'description'       => 'Limit the number of posts to fetch',
                 'type'              => 'string',
-                'validationPattern' => '^[0-9]+$',
-                'validationMessage' => 'rainlab.posts::lang.settings.posts_per_page_validation',
+                'validationPattern' => '^[1-9]\d*$',
+                'validationMessage' => 'Please enter a positive whole number or leave blank',
                 'default'           => '',
                 'showExternalParam' => false,
             ],
@@ -66,8 +50,8 @@ class DisplayCategory extends ComponentBase
                 'title'             => 'Posts per page',
                 'description'       => 'Limit the number of posts per page',
                 'type'              => 'string',
-                'validationPattern' => '^[0-9]+$',
-                'validationMessage' => 'rainlab.posts::lang.settings.posts_per_page_validation',
+                'validationPattern' => '^[1-9]\d*$',
+                'validationMessage' => 'Please enter a positive whole number',
                 'default'           => '10',
                 'showExternalParam' => false,
             ],
@@ -94,7 +78,6 @@ class DisplayCategory extends ComponentBase
 
         // Check that we are at the right url. If not, redirect and get back here.
         // ONLY if we're getting the category from the URL
-        if ($this->property('categoryFilter') == "__fromURL__") {
             if (!$this->category) {
                 if (!$this->deferToPostComponent()) return $this->controller->run('404');
                 $this->defer = true;
@@ -103,8 +86,6 @@ class DisplayCategory extends ComponentBase
             if ($this->currentPageUrl() != $this->category->url) {
                 return redirect($this->category->url, 301);
             }
-        }
-
         // We now should have the category if specified - get a list of ID's
 
         if ($this->category) $this->categoryIds[] = $this->category->id;
@@ -113,7 +94,7 @@ class DisplayCategory extends ComponentBase
             $this->categoryIds = explode(',', $this->property('categoryIds'));
         }
 
-        $this->getPosts();
+        $this->setPosts();
     }
 
     public function onRender()
@@ -131,8 +112,7 @@ class DisplayCategory extends ComponentBase
     private function deferToPostComponent() {
         $components = collect($this->page->components)
             ->filter(function($c) {
-               if ($c->alias == $this->alias
-                   && $c->property('categoryFilter') == '__fromURL__') return true;
+               if ($c->alias == $this->alias) return true;
                if ($c->name == 'displayPost') return true;
             });
             // true if this component is first or other component was successful
@@ -144,51 +124,41 @@ class DisplayCategory extends ComponentBase
             return false;
     }
 
-    public function getCategoryFilterOptions()
-    {
-        // Default empty option
-        $baseOptions = [
-            '__fromURL__' => 'From URL Param',
-            '' => 'All',
-            '__fromList__' => 'From List'
-            ];
-
-        $categories =  Category::orderBy('name', 'asc')
-            ->get()
-            ->pluck('name','slug')
-            ->toArray();
-
-        return array_merge($baseOptions, $categories);
-    }
+//    public function getCategoryFilterOptions()
+//    {
+//        // Default empty option
+//        $baseOptions = [
+//            '__fromURL__' => 'From URL Param',
+//            '' => 'All',
+//            '__fromList__' => 'From List'
+//            ];
+//
+//        $categories =  Category::orderBy('name', 'asc')
+//            ->get()
+//            ->pluck('name','slug')
+//            ->toArray();
+//
+//        return array_merge($baseOptions, $categories);
+//    }
 
 
     private function setCategory()
     {
         if (App::bound('dynamedia.category')) {
             $this->category = App::make('dynamedia.category');
-        } else {
-            $this->category = Category::where('slug', $this->param('category'))->first();
         }
     }
 
 
-    public function getPosts()
+    public function setPosts()
     {
         $options = [
-            'categoryIds' => $this->categoryIds,
             'subcategories' => (bool) $this->property('includeSubcategories'),
             'limit' => (int) $this->property('postsLimit'),
+            'perPage' => (int) $this->property('postsPerPage'),
         ];
 
-        $posts = new Post();
-
-        $this->posts = $posts->listFrontEnd($options)
-            ->get();
-
-        $this->posts->each(function ($post) {
-          //  $post->setUrl($this->controller, []);
-        });
-
+        $this->posts = $this->category->getPosts($options);
     }
 
 }

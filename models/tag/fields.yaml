@@ -5,7 +5,7 @@
 tabs:
     fields:
         name:
-            label: name
+            label: Name
             tab: Detail
             span: left
         slug:
@@ -13,6 +13,270 @@ tabs:
             tab: Detail
             span: right
             preset: name
+        excerpt:
+            tab: Detail
+            label: Tag Excerpt
+            type: markdown
+            size: huge
+            comment: This is used for post lists and SEO description
+
+        images:
+            tab: dynamedia.posts::lang.post.tab.images
+            type: nestedform
+            usePanelStyles: false
+            form:
+                tabs:
+                    fields:
+                        list:
+                            tab: dynamedia.posts::lang.post.tab.list
+                            type: nestedform
+                            usePanelStyles: false
+                            form:
+                                secondaryTabs:
+                                    fields:
+                                        default:
+                                            tab: Default
+                                            type: mediafinder
+                                            mode: image
+                                            imageHeight: 260
+                                            imageWidth: 260
+
+                                        alt:
+                                            tab: Default
+                                            label: Image Alt Text
+                                        class:
+                                            tab: Default
+                                            label: Image CSS Class
+                                        responsive:
+                                            tab: Responsive
+                                            type: repeater
+                                            form:
+                                                fields:
+                                                    image:
+                                                        type: mediafinder
+                                                        mode: image
+                                                        imageHeight: 260
+                                                        imageWidth: 260
+                                                    media_query:
+                                                        span: left
+                                                        label: Media Query
+                                                        type: dropdown
+                                                        options:
+                                                            max-width: Max Width
+                                                            min-width: Min Width
+                                                    screen_width:
+                                                        span: right
+                                                        label: Screen Width
+                                                        type: number
+
+                        banner:
+                            tab: dynamedia.posts::lang.post.tab.banner
+                            type: nestedform
+                            usePanelStyles: false
+                            form:
+                                secondaryTabs:
+                                    fields:
+                                        default:
+                                            tab: Default
+                                            type: mediafinder
+                                            mode: image
+                                            imageHeight: 260
+                                            imageWidth: 260
+
+                                        alt:
+                                            tab: Default
+                                            label: Image Alt Text
+                                        class:
+                                            tab: Default
+                                            label: Image CSS Class
+                                        responsive:
+                                            tab: Responsive
+                                            type: repeater
+                                            form:
+                                                fields:
+                                                    image:
+                                                        type: mediafinder
+                                                        mode: image
+                                                        imageHeight: 260
+                                                        imageWidth: 260
+                                                    media_query:
+                                                        span: left
+                                                        label: Media Query
+                                                        type: dropdown
+                                                        options:
+                                                            max-width: Max Width
+                                                            min-width: Min Width
+                                                    screen_width:
+                                                        span: right
+                                                        label: Screen Width
+                                                        type: number
+                        social:
+                            tab: Social Images
+                            type: nestedform
+                            usePanelStyles: false
+                            form:
+                                secondaryTabs:
+                                    fields:
+                                        facebook:
+                                            tab: Facebook
+                                            type: mediafinder
+                                            mode: image
+                                            imageHeight: 260
+                                            imageWidth: 260
+                                            comment: Social sharing image for Facebook
+                                        twitter:
+                                            tab: Twitter
+                                            type: mediafinder
+                                            mode: image
+                                            imageHeight: 260
+                                            imageWidth: 260
+                                            comment: Social sharing image for Twitter
+
+        body:
+            tab: dynamedia.posts::lang.post.tab.body
+            label: Post Body
+            type: repeater
+            style: accordion
+            groups:
+                section:
+                    name: Tag Section
+                    description: Add a section to this tag
+                    fields:
+                        section:
+                            type: nestedform
+                            usePanelStyles: false
+                            form:
+                                tabs:
+                                    fields:
+                                        heading:
+                                            tab: Main
+                                            span: left
+                                            label: Section Heading
+                                            comment: H2
+                                        sId:
+                                            tab: Main
+                                            span: right
+                                            label: Section ID
+                                            preset: heading
+                                        content:
+                                            tab: Main
+                                            label: Section Content
+                                            type: markdown
+                                            size: huge
+                                        image:
+                                            tab: Image
+                                            type: nestedform
+                                            usePanelStyles: false
+                                            form:
+                                                secondaryTabs:
+                                                    fields:
+                                                        default:
+                                                            tab: Default
+                                                            span: left
+                                                            type: mediafinder
+                                                            mode: image
+                                                            imageHeight: 260
+                                                            imageWidth: 260
+                                                        image_style:
+                                                            tab: Default
+                                                            span: right
+                                                            label: Image Style
+                                                            type: dropdown
+                                                        alt:
+                                                            tab: Default
+                                                            label: Image Alt Text
+                                                        class:
+                                                            tab: Default
+                                                            label: Image CSS Class
+                                                        responsive:
+                                                            tab: Responsive
+                                                            type: repeater
+                                                            form:
+                                                                fields:
+                                                                    image:
+                                                                        type: mediafinder
+                                                                        mode: image
+                                                                        imageHeight: 260
+                                                                        imageWidth: 260
+                                                                    media_query:
+                                                                        span: left
+                                                                        label: Media Query
+                                                                        type: dropdown
+                                                                        options:
+                                                                            max-width: Max Width
+                                                                            min-width: Min Width
+                                                                    screen_width:
+                                                                        span: right
+                                                                        label: Screen Width
+                                                                        type: number
+
+
+
+                html:
+                    name: Raw HTML
+                    description: Add a block of html
+                    fields:
+                        content:
+                            label: Raw HTML
+                            type: codeeditor
+                            language: html
+                            size: huge
+
+                image:
+                    name: Image
+                    description: Add an image to this tag
+                    fields:
+                        section:
+                            type: nestedform
+                            usePanelStyles: false
+                            form:
+                                tabs:
+                                    fields:
+                                        default:
+                                            tab: Default
+                                            span: left
+                                            type: mediafinder
+                                            mode: image
+                                            imageHeight: 260
+                                            imageWidth: 260
+                                        alt:
+                                            tab: Default
+                                            label: Image Alt Text
+                                        class:
+                                            tab: Default
+                                            label: Image CSS Class
+                                        responsive:
+                                            tab: Responsive
+                                            type: repeater
+                                            form:
+                                                fields:
+                                                    image:
+                                                        type: mediafinder
+                                                        mode: image
+                                                        imageHeight: 260
+                                                        imageWidth: 260
+                                                    media_query:
+                                                        span: left
+                                                        label: Media Query
+                                                        type: dropdown
+                                                        options:
+                                                            max-width: Max Width
+                                                            min-width: Min Width
+                                                    screen_width:
+                                                        span: right
+                                                        label: Screen Width
+                                                        type: number
+
+        seo:
+            label: SEO
+            tab: SEO
+            type: nestedform
+            usePanelStyles: false
+            form:
+                fields:
+                    title:
+                        label: Title
+
         posts:
             label: Posts
             tab: Posts

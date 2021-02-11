@@ -6,7 +6,7 @@ tabs:
         title:
             tab: Detail
             span: left
-            label: Post Tile
+            label: Post Title
             comment: This is the H1 tag
         slug:
             tab: Detail
@@ -154,7 +154,7 @@ tabs:
                                             span: left
                                             label: Section Heading
                                             comment: H2
-                                        id:
+                                        sId:
                                             tab: Main
                                             span: right
                                             label: Section ID

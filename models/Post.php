@@ -209,9 +209,9 @@ class Post extends Model
 
                     // Page 1 does not require the page param so just use the fragment
                     if ($item['page'] == 1) {
-                        $url = "{$currentPageUrl}#{$item['section']['id']}";
+                        $url = "{$currentPageUrl}#{$item['section']['sId']}";
                     } else {
-                        $url = "{$currentPageUrl}?page={$item['page']}#{$item['id']}";
+                        $url = "{$currentPageUrl}?page={$item['page']}#{$item['section']['sId']}";
                     }
 
                     $contentsList[] = [

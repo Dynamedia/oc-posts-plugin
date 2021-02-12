@@ -46,6 +46,11 @@ class Plugin extends PluginBase
      */
     public function boot()
     {
+
+        \Cms\Models\ThemeData::extend(function ($model) {
+            $model->addJsonable('images');
+        });
+
         Event::listen('cms.page.beforeDisplay', function ($controller, $url, $page) {
             $slug = $controller->param('slug');
             $displayCategory = null;
@@ -132,6 +137,7 @@ class Plugin extends PluginBase
             'Dynamedia\Posts\Components\DisplayPost' => 'displayPost',
             'Dynamedia\Posts\Components\DisplayCategory' => 'displayCategory',
             'Dynamedia\Posts\Components\DisplayTag' => 'displayTag',
+            'Dynamedia\Posts\Components\ListPosts' => 'listPosts',
         ];
     }
 

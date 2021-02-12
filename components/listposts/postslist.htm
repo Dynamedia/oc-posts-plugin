@@ -1,0 +1,22 @@
+{% for post in posts %}
+<div class="post">
+    <div class="image">
+        <a href="{{ post.url }}">
+            {% if post.images.list.default %}
+                {% partial __SELF__ ~ "::helpers/image"
+                    image = post.images.list.default
+                    srcset = post.images.list.responsive
+                    alt = post.images.list.alt
+                    class = post.images.list.class
+                %}
+        </a>
+        {% endif %}
+    </div>
+    <div class="detail">
+        <a href="{{ post.url }}"><h4>{{ post.title }}</h4></a>
+        Posted {{ post.published_at |date("d-m-Y")}} in <a href="{{ post.primary_category.url }}">{{ post.primary_category.name }}</a>
+    </div>
+</div>
+{% endfor %}
+
+{% partial __SELF__ ~ "::pagination" posts = posts %}

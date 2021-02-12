@@ -1,0 +1,11 @@
+<picture class="{{class}}">
+    {% for entry in responsive %}
+        {% if entry.image and entry.screen_width %}
+            <source srcset="{{entry.image|media}}" media="({{entry.media_query}}: {{entry.screen_width}}px)">
+        {% endif %}
+    {% endfor %}
+    {% if image %}
+    <img src="{{image | media}}" alt="{{alt}}"/>
+    {% endif %}
+
+</picture>

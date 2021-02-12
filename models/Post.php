@@ -2,6 +2,8 @@
 
 use Dynamedia\Posts\Models\Settings;
 use Model;
+use Dynamedia\Posts\Models\Category;
+use Dynamedia\Posts\Models\Tag;
 use Lang;
 use Config;
 use October\Rain\Argon\Argon;
@@ -256,6 +258,70 @@ class Post extends Model
 
     // Query scopes //
 
+    public function scopeGetPostsList($query, $options)
+    {
+        $is_published = true;
+        $sort = 'published_at';
+        $categoryId = null;
+        $subcategories = false;
+        $tagId = null;
+        $postIds = null;
+        $limit = false;
+        $page = (int) Input::get('page') ? (int) Input::get('page') : 1;
+        $perPage = 10;
+
+        extract($options);
+
+        if ($limit && $limit == $perPage) $page = 1;
+
+        $category = null;
+        $categoryIds = [];
+        $tag = null;
+
+        if ($categoryId) $category = Category::where('id', $categoryId)->first();
+        if ($tagId) $tag = Tag::where('id', $categoryId)->first();
+
+        // Apply category filter
+        if ($category) {
+            if ($subcategories) {
+                $categoryIds = [$category->getAllChildrenAndSelf()->lists('id')];
+            } else {
+                $categoryIds = [$category->id];
+            }
+            $query->whereHas('categories', function ($q) use ($categoryIds) {
+                $q->whereIn('id', $categoryIds);
+            });
+        }
+
+        // Apply tag filter
+
+        if ($tag) {
+            $query->whereHas('tags', function ($q) use ($tag) {
+                $q->whereIn('id', [$tag->id]);
+            });
+        }
+
+        if ($is_published) {
+            $query->applyIsPublished();
+        } else {
+            $query->applyIsNotPublished();
+        }
+
+        // Specific post filter
+
+        if ($postIds) {
+            $query->whereIn('id', explode(',',$postIds))
+                ->orderByRaw("FIELD(id, $postIds)");
+        } else {
+            $query->orderBy($sort, 'DESC');
+        }
+
+        if ($limit) $query->limit($limit);
+
+        $query->with('primary_category', 'tags');
+
+        return $query->paginate($perPage, $page);
+    }
 
     public function scopeApplyIsPublished($query)
     {

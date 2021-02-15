@@ -1,0 +1,16 @@
+secondaryTabs:
+    fields:
+        facebook:
+            tab: Facebook
+            type: mediafinder
+            mode: image
+            imageHeight: 260
+            imageWidth: 260
+            comment: Social sharing image for Facebook
+        twitter:
+            tab: Twitter
+            type: mediafinder
+            mode: image
+            imageHeight: 260
+            imageWidth: 260
+            comment: Social sharing image for Twitter

@@ -1,0 +1,8 @@
+tabs:
+    fields:
+        content:
+            label: HTML Block
+            tab: Main
+            type: codeeditor
+            language: html
+            size: huge

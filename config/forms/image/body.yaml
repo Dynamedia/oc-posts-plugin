@@ -1,0 +1,36 @@
+tabs:
+    fields:
+        default:
+            tab: Default
+            type: mediafinder
+            mode: image
+            imageHeight: 260
+            imageWidth: 260
+
+        alt:
+            tab: Default
+            label: Image Alt Text
+        class:
+            tab: Default
+            label: Image CSS Class
+        responsive:
+            tab: Responsive
+            type: repeater
+            form:
+                fields:
+                    image:
+                        type: mediafinder
+                        mode: image
+                        imageHeight: 260
+                        imageWidth: 260
+                    media_query:
+                        span: left
+                        label: Media Query
+                        type: dropdown
+                        options:
+                            max-width: Max Width
+                            min-width: Min Width
+                    screen_width:
+                        span: right
+                        label: Screen Width
+                        type: number

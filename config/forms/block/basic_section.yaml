@@ -1,0 +1,25 @@
+tabs:
+    fields:
+        heading:
+            tab: Main
+            span: left
+            label: Section Heading
+            comment: H2
+
+        sId:
+            tab: Main
+            span: right
+            label: Section ID
+            preset: heading
+    
+        content:
+            tab: Main
+            label: Section Content
+            type: richeditor
+            size: huge
+    
+        image:
+            tab: Image
+            type: nestedform
+            usePanelStyles: false
+            form: $/dynamedia/posts/config/forms/image/body_section.yaml

@@ -1,0 +1,26 @@
+section:
+    name: Section Block
+    description: Add a section of content
+    fields:
+        block:
+            type: nestedform
+            usePanelStyles: false
+            form: $/dynamedia/posts/config/forms/block/basic_section.yaml
+
+html:
+    name: HTML Block
+    description: Add a block of html
+    fields:
+        block:
+            type: nestedform
+            usePanelStyles: false
+            form: $/dynamedia/posts/config/forms/block/html.yaml
+
+image:
+    name: Image Block
+    description: Add an image block
+    fields:
+        block:
+            type: nestedform
+            usePanelStyles: false
+            form: $/dynamedia/posts/config/forms/image/body.yaml

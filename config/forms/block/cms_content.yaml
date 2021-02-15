@@ -1,0 +1,7 @@
+tabs:
+  fields:
+    cms_content:
+      label: CMS Content
+      tab: Main
+      type: dropdown
+      options: \Dynamedia\Posts\Classes\Helpers\Form::getCmsContentOptions

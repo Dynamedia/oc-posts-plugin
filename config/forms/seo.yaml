@@ -1,0 +1,21 @@
+tabs:
+  fields:
+    title:
+      tab: Search
+      label: Page Title
+    description:
+      tab: Search
+      label: Meta Description
+      type: textarea
+    opengraph_title:
+      tab: Facebook OG
+      label: Title
+    opengraph_description:
+      tab: Facebook OG
+      label: Description
+    twitter_title:
+      tab: Twitter Card
+      label: Title
+    twitter_description:
+      tab: Twitter Card
+      label: Description

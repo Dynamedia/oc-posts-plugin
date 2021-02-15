@@ -14,6 +14,8 @@ use BackendAuth;
 use Cms\Classes\Controller;
 use Cms\Classes\Theme;
 use Cms\Classes\Layout;
+use Cms\Classes\Partial;
+use Cms\Classes\Content;
 
 /**
  * post Model
@@ -104,25 +106,6 @@ class Post extends Model
     public $attachMany = [];
 
 
-
-    public function getImageStyleOptions()
-    {
-        return Config::get('dynamedia.posts::postSectionImageDropdown');
-    }
-
-    public function getCmsLayoutOptions()
-    {
-        $options = [
-            '__inherit__' => 'Inherit from category / page'
-        ];
-
-        $layout = Layout::listInTheme(Theme::getActiveTheme(), true);
-        foreach ($layout as $item) {
-            $options[$item->fileName] = $item->description;
-        }
-        $options[''] = 'None';
-        return $options;
-    }
 
     public function beforeSave()
     {
@@ -264,6 +247,7 @@ class Post extends Model
         $sort = 'published_at';
         $categoryId = null;
         $subcategories = false;
+        $searchQuery = null;
         $tagId = null;
         $postIds = null;
         $limit = false;
@@ -316,6 +300,14 @@ class Post extends Model
             $query->orderBy($sort, 'DESC');
         }
 
+        // This is an EXTREMELY basic search - There is no index on any of the searched columns
+        // todo Implement a fast cross-db solution. Consider full text and generated (by php) column from title, excerpt and searchable body sections
+        if ($searchQuery) {
+            $query->where("title", "LIKE", "%{$searchQuery}%")
+                ->orWhere("excerpt", "LIKE", "%{$searchQuery}%")
+                ->orWhere("body", "LIKE", "%{$searchQuery}%");
+        }
+
         if ($limit) $query->limit($limit);
 
         $query->with('primary_category', 'tags');
@@ -354,13 +346,6 @@ class Post extends Model
         $pageName = $this->getPostPage();
 
         $params = ['slug' => $this->slug];
-
-        // The main category
-        if (empty($params['category'])) {
-            $params['category'] = $this->primary_category ? $this->primary_category->slug : null;
-        }
-
-        // Sub category routing
 
         // Provides a 'slug' for every depth of category
         $levels = array_reverse($this->primary_category->getPathToRoot());
@@ -550,7 +535,7 @@ class Post extends Model
                 'items' => []
             ];
 
-            $posts = self::isPublished()
+            $posts = self::applyIsPublished()
                 ->orderBy('updated_at', 'ASC')
                 ->get();
 

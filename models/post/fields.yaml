@@ -35,7 +35,6 @@ tabs:
             style: accordion
             groups: $/dynamedia/posts/config/forms/body/post.yaml
 
-
         primary_category:
             tab: dynamedia.posts::lang.post.tab.categories
             label: Primary Category
@@ -54,19 +53,16 @@ tabs:
             mode: relation
 
         seo:
-            label: SEO
             tab: SEO
             type: nestedform
             usePanelStyles: false
-            form:
-                fields:
-                    title:
-                        label: Title
+            form: $/dynamedia/posts/config/forms/seo.yaml
 
         cms_layout:
             tab: dynamedia.posts::lang.post.tab.settings
             label: CMS Layout
             type: dropdown
+            options: \Dynamedia\Posts\Classes\Helpers\Form::getCmsLayoutOptions
 
         is_published:
             tab: dynamedia.posts::lang.post.tab.settings

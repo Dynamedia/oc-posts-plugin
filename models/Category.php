@@ -89,25 +89,6 @@ class Category extends Model
     public $attachOne = [];
     public $attachMany = [];
 
-    public function getCmsLayoutOptions()
-    {
-        $options = [
-            '__inherit__' => 'Inherit from page'
-        ];
-
-        $layout = Layout::listInTheme(Theme::getActiveTheme(), true);
-        foreach ($layout as $item) {
-            $options[$item->fileName] = $item->description;
-        }
-        $options[''] = 'None';
-        return $options;
-    }
-
-    public function getImageStyleOptions()
-    {
-        return Config::get('dynamedia.posts::postSectionImageDropdown');
-    }
-
     public function beforeSave()
     {
         if (!$this->slug && $this->name) {

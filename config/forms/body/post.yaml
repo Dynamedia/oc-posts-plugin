@@ -25,6 +25,24 @@ image:
             usePanelStyles: false
             form: $/dynamedia/posts/config/forms/image/body.yaml
 
+cms_content:
+    name: CMS Content
+    description: Add CMS content block
+    fields:
+        block:
+            type: nestedform
+            usePanelStyles: false
+            form: $/dynamedia/posts/config/forms/block/cms_content.yaml
+
+cms_partial:
+    name: CMS Partial
+    description: Add a CMS partial
+    fields:
+        block:
+            type: nestedform
+            usePanelStyles: false
+            form: $/dynamedia/posts/config/forms/block/cms_partial.yaml
+
 pagebreak:
     name: Page Break
     description: Add a simple page break

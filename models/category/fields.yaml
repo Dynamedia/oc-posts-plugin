@@ -39,10 +39,7 @@ tabs:
             tab: SEO
             type: nestedform
             usePanelStyles: false
-            form:
-                fields:
-                    title:
-                        label: Title
+            form: $/dynamedia/posts/config/forms/seo.yaml
 
         posts:
             label: Posts
@@ -54,3 +51,4 @@ tabs:
             tab: Settings
             label: CMS Layout
             type: dropdown
+            options: \Dynamedia\Posts\Classes\Helpers\Form::getCmsLayoutOptions

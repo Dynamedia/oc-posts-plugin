@@ -39,10 +39,7 @@ tabs:
             tab: SEO
             type: nestedform
             usePanelStyles: false
-            form:
-                fields:
-                    title:
-                        label: Title
+            form: $/dynamedia/posts/config/forms/seo.yaml
 
         posts:
             label: Posts

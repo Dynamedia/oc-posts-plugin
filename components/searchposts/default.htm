@@ -1,0 +1,7 @@
+{% set posts = __SELF__.posts %}
+
+{% partial __SELF__ ~ "::style" %}
+
+<div class="dynamedia posts list">
+    {% partial __SELF__ ~ "::postslist" posts = posts %}
+</div>

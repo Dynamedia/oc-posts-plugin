@@ -12,6 +12,7 @@ secondaryTabs:
             span: right
             label: Image Style
             type: dropdown
+            options: \Dynamedia\Posts\Classes\Helpers\Form::getImageStyleOptions
         alt:
             tab: Default
             label: Image Alt Text

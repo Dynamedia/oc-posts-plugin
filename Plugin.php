@@ -138,6 +138,7 @@ class Plugin extends PluginBase
             'Dynamedia\Posts\Components\DisplayCategory' => 'displayCategory',
             'Dynamedia\Posts\Components\DisplayTag' => 'displayTag',
             'Dynamedia\Posts\Components\ListPosts' => 'listPosts',
+            'Dynamedia\Posts\Components\SearchPosts' => 'searchPosts',
         ];
     }
 

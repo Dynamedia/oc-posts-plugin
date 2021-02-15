@@ -1,0 +1,7 @@
+tabs:
+    fields:
+        cms_partial:
+            label: CMS Partial
+            tab: Main
+            type: dropdown
+            options: \Dynamedia\Posts\Classes\Helpers\Form::getCmsPartialOptions

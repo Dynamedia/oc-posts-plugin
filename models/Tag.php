@@ -100,11 +100,6 @@ class Tag extends Model
         $this->posts()->detach();
     }
 
-    public function getImageStyleOptions()
-    {
-        return Config::get('dynamedia.posts::postSectionImageDropdown');
-    }
-
     /**
      * Sets the "url" attribute with a URL to this object.
      *

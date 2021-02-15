@@ -1,20 +1,19 @@
 <?php namespace Dynamedia\Posts\Components;
 
 use Cms\Classes\ComponentBase;
-use Dynamedia\Posts\Models\Tag;
-use Lang;
+use Dynamedia\Posts\Models\Post;
+use Input;
 
-class DisplayTag extends ComponentBase
+class SearchPosts extends ComponentBase
 {
-    public $tag = null;
-
     public $posts;
+    public $searchQuery;
 
     public function componentDetails()
     {
         return [
-            'name'        => 'Display Tag',
-            'description' => 'Display a tag with posts'
+            'name'        => 'Search Posts',
+            'description' => 'Display search results'
         ];
     }
 
@@ -58,25 +57,27 @@ class DisplayTag extends ComponentBase
 
     public function onRun()
     {
-        $this->setTag();
+        $this->setSearchQuery();
 
-        if (!$this->tag) return $this->controller->run('404');
+        if (!$this->searchQuery) return redirect('/');
 
         $this->setPosts();
     }
 
-    private function setTag()
-    {
-        $this->tag = Tag::where('slug', $this->param('slug'))->first();
-    }
-
-    public function setPosts()
+    private function setPosts()
     {
         $options = [
+            'searchQuery' => $this->searchQuery,
             'limit' => (int) $this->property('postsLimit'),
             'perPage' => (int) $this->property('postsPerPage'),
         ];
 
-        $this->posts = $this->tag->getPosts($options);
+        $query = new Post();
+        $this->posts = $query->getPostsList($options);
+    }
+
+    private function setSearchQuery()
+    {
+        $this->searchQuery = Input::get('q');
     }
 }

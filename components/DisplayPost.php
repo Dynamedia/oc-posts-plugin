@@ -1,8 +1,6 @@
 <?php namespace Dynamedia\Posts\Components;
 
 use Cms\Classes\ComponentBase;
-use Cms\Classes\Page;
-use Dynamedia\Posts\Models\Post;
 use Lang;
 use Str;
 use App;
@@ -35,6 +33,7 @@ class DisplayPost extends ComponentBase
     public function onRun()
     {
         $this->setPost();
+
         // 404 if post not found
         if (!$this->post) {
            if (!$this->deferToCategoryComponent()) return $this->controller->run('404');

@@ -1,6 +1,7 @@
 <?php namespace Dynamedia\Posts\Components;
 
 use Cms\Classes\ComponentBase;
+use Dynamedia\Posts\Classes\Helpers\Form;
 use Dynamedia\Posts\Models\Category;
 use Dynamedia\Posts\Models\Post;
 use Dynamedia\Posts\Models\Tag;
@@ -114,9 +115,15 @@ class ListPosts extends ComponentBase
             'postIds' => $this->property('postIds'),
             'limit' => (int) $this->property('postsLimit'),
             'perPage' => (int) $this->property('postsPerPage'),
+            'sort'   => $this->property('sortOrder')
         ];
 
         $query = new Post();
         $this->posts = $query->getPostsList($options);
+    }
+
+    public function getSortOrderOptions()
+    {
+        return Form::getComponentSortOptions();
     }
 }

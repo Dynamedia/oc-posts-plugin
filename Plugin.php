@@ -73,8 +73,8 @@ class Plugin extends PluginBase
             if ($displayCategory) {
                 $category = Category::where('slug', $slug)->first();
 
-                if ($category && $category->cms_layout != "__inherit__") {
-                    $page->layout = $category->cms_layout;
+                if ($category && $category->getLayout() !== false) {
+                    $page->layout = $category->getLayout();
                 }
 
                 App::instance('dynamedia.category', $category);
@@ -85,10 +85,8 @@ class Plugin extends PluginBase
                     ->with('primary_category', 'tags')
                     ->first();
 
-                if ($post && $post->cms_layout != "__inherit__") {
-                    $page->layout = $post->cms_layout;
-                } elseif ($post && !empty($post->primary_category) && $post->primary_category->cms_layout != "__inherit__") {
-                    $page->layout = $post->primary_category->cms_layout;
+                if ($post && $post->getLayout() !== false) {
+                    $page->layout = $post->getLayout();
                 }
 
                 App::instance('dynamedia.post', $post);

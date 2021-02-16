@@ -29,7 +29,7 @@ class Form
     public static function getCmsLayoutOptions()
     {
         $options = [
-            '__inherit__' => 'Inherit from category / page'
+            '__inherit__' => 'Inherit'
         ];
 
         $layout = Layout::listInTheme(Theme::getActiveTheme(), true);
@@ -43,5 +43,15 @@ class Form
     public static function getImageStyleOptions()
     {
         return Config::get('dynamedia.posts::postSectionImageDropdown');
+    }
+
+    public static function getComponentSortOptions()
+    {
+        return [
+            'published_at desc' => 'Newest First',
+            'published_at asc'  => 'Oldest First',
+            'updated_at desc'   => 'Recently Updated',
+            '__random__'            => 'Random'
+        ];
     }
 }

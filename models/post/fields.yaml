@@ -17,10 +17,9 @@ tabs:
 
         excerpt:
             tab: Detail
-            label: Post Introduction
+            label: Post Excerpt
             type: richeditor
             size: huge
-            comment: This is used for post lists and SEO description
 
         images:
             tab: dynamedia.posts::lang.post.tab.images

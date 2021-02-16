@@ -33,7 +33,14 @@ class Tag extends Model
     /**
      * @var array Validation rules for attributes
      */
-    public $rules = [];
+    public $rules = [
+        'name' => 'required',
+        'slug' => 'required|unique:dynamedia_posts_tags',
+    ];
+
+    public $customMessages = [
+        'required' => 'The :attribute field is required.',
+    ];
 
     /**
      * @var array Attributes to be cast to native types
@@ -90,9 +97,7 @@ class Tag extends Model
     // For tag widget
     public function beforeSave()
     {
-        if (!$this->slug && $this->name) {
-            $this->slug = Str::slug($this->name);
-        }
+        $this->slug = Str::slug($this->slug);
     }
 
     public function afterDelete()

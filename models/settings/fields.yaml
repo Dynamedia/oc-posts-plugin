@@ -65,3 +65,15 @@ tabs:
             tab: Tag Page Settings
             label: Tag Page
             type: dropdown
+
+        defaultPostLayout:
+            tab: CMS Layouts
+            label: Default Post Layout
+            type: dropdown
+            options: \Dynamedia\Posts\Classes\Helpers\Form::getCmsLayoutOptions
+
+        defaultCategoryLayout:
+            tab: CMS Layouts
+            label: Default Category Layout
+            type: dropdown
+            options: \Dynamedia\Posts\Classes\Helpers\Form::getCmsLayoutOptions

@@ -35,7 +35,14 @@ class Category extends Model
     /**
      * @var array Validation rules for attributes
      */
-    public $rules = [];
+    public $rules = [
+        'name' => 'required',
+        'slug' => 'required|unique:dynamedia_posts_categories|unique:dynamedia_posts_posts',
+    ];
+
+    public $customMessages = [
+        'required' => 'The :attribute field is required.',
+    ];
 
     /**
      * @var array Attributes to be cast to native types
@@ -91,9 +98,7 @@ class Category extends Model
 
     public function beforeSave()
     {
-        if (!$this->slug && $this->name) {
-            $this->slug = Str::slug($this->name);
-        }
+        $this->slug = Str::slug($this->slug);
     }
 
     public function afterDelete()
@@ -206,6 +211,20 @@ class Category extends Model
             }
         }
         return strtolower(Controller::getController()->pageUrl($pageName, $params));
+    }
+
+    public function getLayout()
+    {
+        if ($this->cms_layout == "__inherit__" && Settings::get('defaultCategoryLayout') == '__inherit__') {
+            // No modifier
+            return false;
+        }
+        elseif ($this->cms_layout == '__inherit__') {
+            return Settings::get('defaultCategoryLayout');
+        }
+        else {
+            return $this->cms_layout;
+        }
     }
 
 

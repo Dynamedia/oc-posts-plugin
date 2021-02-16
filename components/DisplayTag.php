@@ -1,6 +1,7 @@
 <?php namespace Dynamedia\Posts\Components;
 
 use Cms\Classes\ComponentBase;
+use Dynamedia\Posts\Classes\Helpers\Form;
 use Dynamedia\Posts\Models\Tag;
 use Lang;
 
@@ -75,8 +76,14 @@ class DisplayTag extends ComponentBase
         $options = [
             'limit' => (int) $this->property('postsLimit'),
             'perPage' => (int) $this->property('postsPerPage'),
+            'sort'   => $this->property('sortOrder')
         ];
 
         $this->posts = $this->tag->getPosts($options);
+    }
+
+    public function getSortOrderOptions()
+    {
+        return Form::getComponentSortOptions();
     }
 }

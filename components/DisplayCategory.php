@@ -1,6 +1,7 @@
 <?php namespace Dynamedia\Posts\Components;
 
 use Cms\Classes\ComponentBase;
+use Dynamedia\Posts\Classes\Helpers\Form;
 use Dynamedia\Posts\Models\Category;
 use Cms\Classes\Page;
 use Dynamedia\Posts\Models\Post;
@@ -124,23 +125,10 @@ class DisplayCategory extends ComponentBase
             return false;
     }
 
-//    public function getCategoryFilterOptions()
-//    {
-//        // Default empty option
-//        $baseOptions = [
-//            '__fromURL__' => 'From URL Param',
-//            '' => 'All',
-//            '__fromList__' => 'From List'
-//            ];
-//
-//        $categories =  Category::orderBy('name', 'asc')
-//            ->get()
-//            ->pluck('name','slug')
-//            ->toArray();
-//
-//        return array_merge($baseOptions, $categories);
-//    }
-
+    public function getSortOrderOptions()
+    {
+        return Form::getComponentSortOptions();
+    }
 
     private function setCategory()
     {
@@ -156,6 +144,7 @@ class DisplayCategory extends ComponentBase
             'subcategories' => (bool) $this->property('includeSubcategories'),
             'limit' => (int) $this->property('postsLimit'),
             'perPage' => (int) $this->property('postsPerPage'),
+            'sort'   => $this->property('sortOrder')
         ];
 
         $this->posts = $this->category->getPosts($options);

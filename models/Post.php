@@ -2,8 +2,6 @@
 
 use Dynamedia\Posts\Models\Settings;
 use Model;
-use Dynamedia\Posts\Models\Category;
-use Dynamedia\Posts\Models\Tag;
 use Lang;
 use Config;
 use October\Rain\Argon\Argon;
@@ -12,10 +10,6 @@ use Input;
 use Str;
 use BackendAuth;
 use Cms\Classes\Controller;
-use Cms\Classes\Theme;
-use Cms\Classes\Layout;
-use Cms\Classes\Partial;
-use Cms\Classes\Content;
 
 /**
  * post Model
@@ -42,7 +36,14 @@ class Post extends Model
     /**
      * @var array Validation rules for attributes
      */
-    public $rules = [];
+    public $rules = [
+        'title' => 'required',
+        'slug' => 'required|unique:dynamedia_posts_posts|unique:dynamedia_posts_categories',
+    ];
+
+    public $customMessages = [
+        'required' => 'The :attribute field is required.',
+    ];
 
     /**
      * @var array Attributes to be cast to native types
@@ -109,9 +110,7 @@ class Post extends Model
 
     public function beforeSave()
     {
-        if (!$this->slug && $this->title) {
-            $this->slug = Str::slug($this->title);
-        }
+        $this->slug = Str::slug($this->slug);
 
         if (empty($this->user)) {
             $user = BackendAuth::getUser();
@@ -132,7 +131,11 @@ class Post extends Model
     public function afterSave()
     {
         if ($this->primary_category) {
-            $this->categories()->syncWithoutDetaching([$this->primary_category->id]);
+            $this->categories()->sync([$this->primary_category->id], false);
+        } else {
+            if ($this->categories->count() > 0) {
+                $this->primary_category = $this->categories->first();
+            }
         }
     }
 
@@ -244,7 +247,7 @@ class Post extends Model
     public function scopeGetPostsList($query, $options)
     {
         $is_published = true;
-        $sort = 'published_at';
+        $sort = 'published_at desc';
         $categoryId = null;
         $subcategories = false;
         $searchQuery = null;
@@ -296,8 +299,14 @@ class Post extends Model
         if ($postIds) {
             $query->whereIn('id', explode(',',$postIds))
                 ->orderByRaw("FIELD(id, $postIds)");
+        } elseif ($sort == '__random__') {
+            $query->inRandomOrder();
         } else {
-            $query->orderBy($sort, 'DESC');
+            @list($sortField, $sortDirection) = explode(' ', $sort);
+            if (is_null($sortDirection)) {
+                $sortDirection = "desc";
+            }
+            $query->orderBy($sortField, $sortDirection);
         }
 
         // This is an EXTREMELY basic search - There is no index on any of the searched columns
@@ -332,6 +341,24 @@ class Post extends Model
             ->orWhere('published_at', '>', Argon::now());
     }
 
+    public function getLayout()
+    {
+        if ($this->cms_layout == "__inherit__" && Settings::get('defaultPostLayout') == '__inherit__') {
+            // Inherit from category first.
+            if ($this->primary_category) {
+                return $this->primary_category->getLayout();
+            } else {
+                return false;
+            }
+        }
+        if ($this->cms_layout == '__inherit__') {
+            return Settings::get('defaultPostLayout');
+        }
+        else {
+            return $this->cms_layout;
+        }
+    }
+
 
     /**
      * Sets the "url" attribute with a URL to this object.
@@ -347,16 +374,17 @@ class Post extends Model
 
         $params = ['slug' => $this->slug];
 
-        // Provides a 'slug' for every depth of category
-        $levels = array_reverse($this->primary_category->getPathToRoot());
-
-        // category-x numbers up from the root category
-        // parentcat-x numbers up from the primary category
-        for ($depth = 0; $depth <= $this->primary_category->nest_depth; $depth++) {
-            $reverse = $this->primary_category->nest_depth - $depth;
-            $params["level-{$depth}"] = $levels[$depth]['slug'];
-            if ($depth >= 0) {
-                $params["parent-{$depth}"] = $levels[$reverse]['slug'];
+        if ($this->primary_category) {
+            // Provides a 'slug' for every depth of category
+            $levels = array_reverse($this->primary_category->getPathToRoot());
+            // category-x numbers up from the root category
+            // parentcat-x numbers up from the primary category
+            for ($depth = 0; $depth <= $this->primary_category->nest_depth; $depth++) {
+                $reverse = $this->primary_category->nest_depth - $depth;
+                $params["level-{$depth}"] = $levels[$depth]['slug'];
+                if ($depth >= 0) {
+                    $params["parent-{$depth}"] = $levels[$reverse]['slug'];
+                }
             }
         }
         return strtolower(Controller::getController()->pageUrl($pageName, $params));

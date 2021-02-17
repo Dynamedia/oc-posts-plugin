@@ -5,11 +5,11 @@ You can purchase a license if you want to use it in a commercial project.
 
 
 #### For personal or non-profit usage:
-The Dynamedia Posts plugin is licensed under [the CC-BY-NC-4.0](http://creativecommons.org/licenses/by-nc/4.0/)  license.
+The Dynamedia Posts plugin is licensed under the [CC-BY-NC-ND-4.0](http://creativecommons.org/licenses/by-nc-nd/4.0/)  license.
 
 
 #### After purchasing a license key:
-The Dynamedia Posts plugin is licensed under the [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/) license.
+The Dynamedia Posts plugin is licensed under the [CC-BY-ND-4.0](https://creativecommons.org/licenses/by/nd/4.0/) license.
 
 # Rationale
 

@@ -259,8 +259,6 @@ class Post extends Model
 
         extract($options);
 
-        if ($limit && $limit == $perPage) $page = 1;
-
         $category = null;
         $categoryIds = [];
         $tag = null;
@@ -317,9 +315,11 @@ class Post extends Model
                 ->orWhere("body", "LIKE", "%{$searchQuery}%");
         }
 
-        if ($limit) $query->limit($limit);
-
         $query->with('primary_category', 'tags');
+        
+        if ($limit) {
+           return $query->limit($limit)->get();
+        }
 
         return $query->paginate($perPage, $page);
     }

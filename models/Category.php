@@ -187,9 +187,11 @@ class Category extends Model
             $query->orderBy($sortField, $sortDirection);
         }
 
-        if ($limit) $query->limit($limit);
-
         $query->with('primary_category', 'tags');
+        
+        if ($limit) {
+           return $query->limit($limit)->get();
+        }
 
         return $query->paginate($perPage, $page);
     }

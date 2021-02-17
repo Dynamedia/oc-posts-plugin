@@ -152,7 +152,7 @@ class Category extends Model
         */
 
         $is_published = true;
-        $sort = 'published_at';
+        $sort = 'published_at desc';
         $categoryIds = [];
         $subcategories = false;
         $limit = false;
@@ -177,7 +177,15 @@ class Category extends Model
             $query->applyIsNotPublished();
         }
 
-        $query->orderBy($sort, 'DESC');
+        if ($sort == '__random__') {
+            $query->inRandomOrder();
+        } else {
+            @list($sortField, $sortDirection) = explode(' ', $sort);
+            if (is_null($sortDirection)) {
+                $sortDirection = "desc";
+            }
+            $query->orderBy($sortField, $sortDirection);
+        }
 
         if ($limit) $query->limit($limit);
 

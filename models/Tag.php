@@ -136,7 +136,7 @@ class Tag extends Model
         */
 
         $is_published = true;
-        $sort = 'published_at';
+        $sort = 'published_at desc';
         $limit = false;
         $page = (int) Input::get('page') ? (int) Input::get('page') : 1;
         $perPage = 10;
@@ -151,7 +151,15 @@ class Tag extends Model
             $query->applyIsNotPublished();
         }
 
-        $query->orderBy($sort, 'DESC');
+        if ($sort == '__random__') {
+            $query->inRandomOrder();
+        } else {
+            @list($sortField, $sortDirection) = explode(' ', $sort);
+            if (is_null($sortDirection)) {
+                $sortDirection = "desc";
+            }
+            $query->orderBy($sortField, $sortDirection);
+        }
 
         if ($limit) $query->limit($limit);
 

@@ -160,25 +160,25 @@ class Plugin extends PluginBase
                 'tab' => 'Posts',
                 'label' => 'Edit Own Posts'
             ],
-            'dynamedia.posts.edit_other_posts' => [
+            'dynamedia.posts.edit_all_posts' => [
                 'tab' => 'Posts',
-                'label' => 'Edit Other Posts'
+                'label' => 'Edit All Posts'
             ],
             'dynamedia.posts.publish_own_posts' => [
                 'tab' => 'Posts',
                 'label' => 'Publish Own Posts'
             ],
-            'dynamedia.posts.publish_other_posts' => [
+            'dynamedia.posts.publish_all_posts' => [
                 'tab' => 'Posts',
-                'label' => 'Publish Other Posts'
+                'label' => 'Publish All Posts'
             ],
             'dynamedia.posts.delete_own_posts' => [
                 'tab' => 'Posts',
                 'label' => 'Delete Own Posts'
             ],
-            'dynamedia.posts.delete_other_posts' => [
+            'dynamedia.posts.delete_all_posts' => [
                 'tab' => 'Posts',
-                'label' => 'Delete Other Posts'
+                'label' => 'Delete All Posts'
             ],
             'dynamedia.posts.view_categories' => [
                 'tab' => 'Posts',

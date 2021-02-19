@@ -11,6 +11,9 @@ modelClass: Dynamedia\Posts\Models\Post
 # List Title
 title: Manage Posts
 
+# Custom view path
+customViewPath: $/dynamedia/posts/controllers/posts/list
+
 # Link URL for each record
 recordUrl: dynamedia/posts/posts/update/:id
 

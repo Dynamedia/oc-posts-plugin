@@ -112,8 +112,15 @@ class Post extends Model
     public function beforeSave()
     {
         $user = BackendAuth::getUser();
-        
-        if (!$user->hasAccess('dynamedia.posts.edit_other_posts')
+
+        if (empty($this->user)) {
+
+            if (!is_null($user)) {
+                $this->user = $user->id;
+            }
+        }
+
+        if (!$user->hasAccess('dynamedia.posts.edit_all_posts')
             && !($user->hasAccess('dynamedia.posts.edit_own_posts')
                 && $user->id == $this->user_id)) {
             throw new ValidationException([
@@ -123,12 +130,6 @@ class Post extends Model
         
         $this->slug = Str::slug($this->slug);
 
-        if (empty($this->user)) {
-            
-            if (!is_null($user)) {
-                $this->user = $user->id;
-            }
-        }
 
         if ($this->is_published && $this->published_at == null) {
             $this->published_at = Argon::now();
@@ -136,6 +137,54 @@ class Post extends Model
 
         if (!$this->is_published) {
             $this->published_at = null;
+        }
+    }
+
+    /**
+     * Check if user has required permissions to delete
+     * @param $user
+     * @return bool
+     */
+    public function canDelete($user)
+    {
+        if (!$user->hasAccess('dynamedia.posts.delete_all_posts')
+            && !($user->hasAccess('dynamedia.posts.delete_own_posts')
+                && $user->id == $this->user_id)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Check if user has required permissions to edit
+     * @param $user
+     * @return bool
+     */
+    public function canEdit($user)
+    {
+        if (!$user->hasAccess('dynamedia.posts.edit_all_posts')
+            && !($user->hasAccess('dynamedia.posts.edit_own_posts')
+                && $user->id == $this->user_id)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Check if user has required permissions to publish
+     * @param $user
+     * @return bool
+     */
+    public function canPublish($user)
+    {
+        if (!$user->hasAccess('dynamedia.posts.publish_all_posts')
+            && !($user->hasAccess('dynamedia.posts.publish_own_posts')
+                && $user->id == $this->user_id)) {
+            return false;
+        } else {
+            return true;
         }
     }
 
@@ -153,7 +202,7 @@ class Post extends Model
     public function beforeDelete()
     {
         $user = BackendAuth::getUser();
-        if (!$user->hasAccess('dynamedia.posts.delete_other_posts')
+        if (!$user->hasAccess('dynamedia.posts.delete_all_posts')
             && !($user->hasAccess('dynamedia.posts.delete_own_posts')
                 && $user->id == $this->user_id)) {
             throw new ValidationException([

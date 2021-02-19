@@ -16,6 +16,10 @@ class Tags extends Controller
         'Backend.Behaviors.ListController'
     ];
 
+    public $requiredPermissions = [
+        'dynamedia.posts.access_plugin'
+    ];
+
     /**
      * @var string Configuration file for the `FormController` behavior.
      */

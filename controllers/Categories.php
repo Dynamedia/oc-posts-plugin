@@ -17,6 +17,10 @@ class Categories extends Controller
         'Backend.Behaviors.ReorderController'
     ];
 
+    public $requiredPermissions = [
+        'dynamedia.posts.access_plugin'
+    ];
+
     /**
      * @var string Configuration file for the `FormController` behavior.
      */

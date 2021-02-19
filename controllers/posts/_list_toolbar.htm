@@ -7,9 +7,9 @@
         </a>
     <?php endif ?>
 
-        <?php if ($this->user->hasAccess([
+        <?php if ($this->user->hasAnyAccess([
             'dynamedia.posts.delete_own_posts',
-            'dynamedia.posts.delete_other_posts'
+            'dynamedia.posts.delete_all_posts'
             ])): ?>
             <button
                 class="btn btn-danger oc-icon-trash-o"

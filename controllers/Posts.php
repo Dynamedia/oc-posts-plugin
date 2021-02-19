@@ -15,6 +15,8 @@ class Posts extends Controller
         'Backend.Behaviors.FormController',
         'Backend.Behaviors.ListController'
     ];
+    
+    public $requiredPermissions = ['dynamedia.posts.access_plugin'];
 
     /**
      * @var string Configuration file for the `FormController` behavior.
@@ -32,4 +34,6 @@ class Posts extends Controller
 
         BackendMenu::setContext('Dynamedia.Posts', 'posts', 'posts');
     }
+    
+    
 }

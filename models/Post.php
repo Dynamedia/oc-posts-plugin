@@ -10,6 +10,7 @@ use Input;
 use Str;
 use BackendAuth;
 use Cms\Classes\Controller;
+use ValidationException;
 
 /**
  * post Model
@@ -110,10 +111,20 @@ class Post extends Model
 
     public function beforeSave()
     {
+        $user = BackendAuth::getUser();
+        
+        if (!$user->hasAccess('dynamedia.posts.edit_other_posts')
+            && !($user->hasAccess('dynamedia.posts.edit_own_posts')
+                && $user->id == $this->user_id)) {
+            throw new ValidationException([
+                'error' => "Insufficient permissions to edit {$this->slug}"
+            ]);
+        }
+        
         $this->slug = Str::slug($this->slug);
 
         if (empty($this->user)) {
-            $user = BackendAuth::getUser();
+            
             if (!is_null($user)) {
                 $this->user = $user->id;
             }
@@ -139,6 +150,17 @@ class Post extends Model
         }
     }
 
+    public function beforeDelete()
+    {
+        $user = BackendAuth::getUser();
+        if (!$user->hasAccess('dynamedia.posts.delete_other_posts')
+            && !($user->hasAccess('dynamedia.posts.delete_own_posts')
+                && $user->id == $this->user_id)) {
+            throw new ValidationException([
+                'error' => "Insufficient permissions to delete {$this->slug}"
+            ]);
+        }
+    }
     public function afterDelete()
     {
         $this->categories()->detach();

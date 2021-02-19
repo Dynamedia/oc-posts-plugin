@@ -147,12 +147,42 @@ class Plugin extends PluginBase
      */
     public function registerPermissions()
     {
-        return []; // Remove this line to activate
-
         return [
-            'dynamedia.posts.some_permission' => [
-                'tab' => 'posts',
-                'label' => 'Some permission'
+            'dynamedia.posts.access_plugin' => [
+                'tab' => 'Posts',
+                'label' => 'Access Posts Plugin'
+            ],
+            'dynamedia.posts.create_posts' => [
+                'tab' => 'Posts',
+                'label' => 'Create Posts'
+            ],
+            'dynamedia.posts.edit_own_posts' => [
+                'tab' => 'Posts',
+                'label' => 'Edit Own Posts'
+            ],
+            'dynamedia.posts.edit_other_posts' => [
+                'tab' => 'Posts',
+                'label' => 'Edit Other Posts'
+            ],
+            'dynamedia.posts.publish_own_posts' => [
+                'tab' => 'Posts',
+                'label' => 'Publish Own Posts'
+            ],
+            'dynamedia.posts.publish_other_posts' => [
+                'tab' => 'Posts',
+                'label' => 'Publish Other Posts'
+            ],
+            'dynamedia.posts.delete_own_posts' => [
+                'tab' => 'Posts',
+                'label' => 'Delete Own Posts'
+            ],
+            'dynamedia.posts.delete_other_posts' => [
+                'tab' => 'Posts',
+                'label' => 'Delete Other Posts'
+            ],
+            'dynamedia.posts.view_categories' => [
+                'tab' => 'Posts',
+                'label' => 'View Categories'
             ],
         ];
     }
@@ -170,39 +200,38 @@ class Plugin extends PluginBase
                 'label'       => 'Posts',
                 'url'         => Backend::url('dynamedia/posts/posts'),
                 'icon'        => 'icon-pencil-square-o',
-                'permissions' => ['dynamedia.posts.*'],
+                'permissions' => ['dynamedia.posts.access_plugin'],
                 'order'       => 500,
-
                 'sideMenu' => [
                     'new_post' => [
                         'label'       => 'New Post',
                         'icon'        => 'icon-plus',
                         'url'         => Backend::url('dynamedia/posts/posts/create'),
-                        'permissions' => ['dynamedia.posts.*']
+                        'permissions' => ['dynamedia.posts.create_posts']
                     ],
                     'posts' => [
                         'label'       => 'Posts',
                         'icon'        => 'icon-copy',
                         'url'         => Backend::url('dynamedia/posts/posts'),
-                        'permissions' => ['dynamedia.posts.*']
+                        'permissions' => ['dynamedia.posts.access_plugin']
                     ],
                     'categories' => [
                         'label'       => 'Categories',
-                        'icon'        => 'icon-list-ul',
+                        'icon'        => 'icon-list-ol',
                         'url'         => Backend::url('dynamedia/posts/categories'),
-                        'permissions' => ['dynamedia.posts.*']
+                        'permissions' => ['dynamedia.posts.view_categories']
                     ],
                     'tags' => [
                         'label'       => 'Tags',
                         'icon'        => 'icon-list-ul',
                         'url'         => Backend::url('dynamedia/posts/tags'),
-                        'permissions' => ['dynamedia.posts.*']
+                        'permissions' => ['dynamedia.posts.view_tags']
                     ],
                     'settings' => [
                         'label'       => 'Settings',
                         'icon'        => 'icon-cog',
                         'url'         => Backend::url('system/settings/update/dynamedia/posts/settings'),
-                        'permissions' => ['dynamedia.posts.*']
+                        'permissions' => ['dynamedia.posts.view_settings']
                     ],
                 ]
             ],
@@ -220,7 +249,7 @@ class Plugin extends PluginBase
                 'class'       => 'Dynamedia\Posts\Models\Settings',
                 'order'       => 500,
                 'keywords'    => 'dynamedia posts',
-                'permissions' => ['*']
+                'permissions' => ['dynamedia.posts.view_settings']
             ]
         ];
     }

@@ -156,29 +156,49 @@ class Plugin extends PluginBase
                 'tab' => 'Posts',
                 'label' => 'Create Posts'
             ],
-            'dynamedia.posts.edit_own_posts' => [
+            'dynamedia.posts.edit_own_published_posts' => [
                 'tab' => 'Posts',
-                'label' => 'Edit Own Posts'
+                'label' => 'Edit Own Published Posts'
             ],
-            'dynamedia.posts.edit_all_posts' => [
+            'dynamedia.posts.edit_all_published_posts' => [
                 'tab' => 'Posts',
                 'label' => 'Edit All Posts'
+            ],
+            'dynamedia.posts.edit_all_unpublished_posts' => [
+                'tab' => 'Posts',
+                'label' => 'Edit All Unpublished Posts'
             ],
             'dynamedia.posts.publish_own_posts' => [
                 'tab' => 'Posts',
                 'label' => 'Publish Own Posts'
             ],
+            'dynamedia.posts.unpublish_own_posts' => [
+                'tab' => 'Posts',
+                'label' => 'Unpublish Own Posts'
+            ],
             'dynamedia.posts.publish_all_posts' => [
                 'tab' => 'Posts',
                 'label' => 'Publish All Posts'
             ],
-            'dynamedia.posts.delete_own_posts' => [
+            'dynamedia.posts.unpublish_all_posts' => [
                 'tab' => 'Posts',
-                'label' => 'Delete Own Posts'
+                'label' => 'Unpublish All Posts'
             ],
-            'dynamedia.posts.delete_all_posts' => [
+            'dynamedia.posts.delete_own_unpublished_posts' => [
                 'tab' => 'Posts',
-                'label' => 'Delete All Posts'
+                'label' => 'Delete Own Unpublished Posts'
+            ],
+            'dynamedia.posts.delete_own_published_posts' => [
+                'tab' => 'Posts',
+                'label' => 'Delete Own Published Posts'
+            ],
+            'dynamedia.posts.delete_all_unpublished_posts' => [
+                'tab' => 'Posts',
+                'label' => 'Delete All Unpublished Posts'
+            ],
+            'dynamedia.posts.delete_all_published_posts' => [
+                'tab' => 'Posts',
+                'label' => 'Delete All Published Posts'
             ],
             'dynamedia.posts.view_categories' => [
                 'tab' => 'Posts',

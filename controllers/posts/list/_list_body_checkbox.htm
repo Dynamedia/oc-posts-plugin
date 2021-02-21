@@ -3,7 +3,7 @@
         <input
                 type="checkbox"
 
-                <?php if (!$record->canDelete(BackendAuth::getUser())): ?>
+                <?php if (!$record->userCanDelete(BackendAuth::getUser())): ?>
                 disabled
                 <?php endif ?>
 

@@ -108,6 +108,99 @@ class Post extends Model
     public $attachMany = [];
 
 
+    /**
+     * Check if user has required permissions to delete
+     * @param $user
+     * @return bool
+     */
+    public function userCanDelete($user)
+    {
+        if ($this->is_published) {
+            if (!$user->hasAccess('dynamedia.posts.delete_all_published_posts')
+                && !($user->hasAccess('dynamedia.posts.delete_own_published_posts')
+                    && $user->id == $this->user_id)) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            if (!$user->hasAccess('dynamedia.posts.delete_all_unpublished_posts')
+                && !($user->hasAccess('dynamedia.posts.delete_own_unpublished_posts')
+                    && $user->id == $this->user_id)) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
+
+    /**
+     * Check if user has required permissions to edit
+     * @param $user
+     * @return bool
+     */
+    public function userCanEdit($user)
+    {
+        if ($this->is_published) {
+            if (!$user->hasAccess('dynamedia.posts.edit_all_published_posts')
+                && !($user->hasAccess('dynamedia.posts.edit_own_published_posts')
+                    && $user->id == $this->user_id)) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            if (!$user->hasAccess('dynamedia.posts.edit_all_unpublished_posts')
+                && !$user->id == $this->user_id) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
+
+    /**
+     * Check if user has required permissions to publish
+     * @param $user
+     * @return bool
+     */
+    public function userCanPublish($user)
+    {
+        if (!$user->hasAccess('dynamedia.posts.publish_all_posts')
+            && !($user->hasAccess('dynamedia.posts.publish_own_posts')
+                && $user->id == $this->user_id)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Check if user has required permissions to unpublish
+     * @param $user
+     * @return bool
+     */
+    public function userCanUnpublish($user)
+    {
+        if (!$user->hasAccess('dynamedia.posts.unpublish_all_posts')
+            && !($user->hasAccess('dynamedia.posts.unpublish_own_posts')
+                && $user->id == $this->user_id)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public function filterFields($fields, $context = null)
+    {
+        $user = BackendAuth::getUser();
+
+        if ($this->is_published) {
+            if ($this->userCanUnpublish($user)) {
+                //$fields->is_published->hidden = true;
+            }
+        }
+    }
 
     public function beforeSave()
     {
@@ -120,12 +213,12 @@ class Post extends Model
             }
         }
 
-        if (!$this->canEdit($user)) {
+        if (!$this->userCanEdit($user)) {
             throw new ValidationException([
                 'error' => "Insufficient permissions to edit {$this->slug}"
             ]);
         }
-        
+
         $this->slug = Str::slug($this->slug);
 
 
@@ -135,54 +228,6 @@ class Post extends Model
 
         if (!$this->is_published) {
             $this->published_at = null;
-        }
-    }
-
-    /**
-     * Check if user has required permissions to delete
-     * @param $user
-     * @return bool
-     */
-    public function canDelete($user)
-    {
-        if (!$user->hasAccess('dynamedia.posts.delete_all_posts')
-            && !($user->hasAccess('dynamedia.posts.delete_own_posts')
-                && $user->id == $this->user_id)) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    /**
-     * Check if user has required permissions to edit
-     * @param $user
-     * @return bool
-     */
-    public function canEdit($user)
-    {
-        if (!$user->hasAccess('dynamedia.posts.edit_all_posts')
-            && !($user->hasAccess('dynamedia.posts.edit_own_posts')
-                && $user->id == $this->user_id)) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    /**
-     * Check if user has required permissions to publish
-     * @param $user
-     * @return bool
-     */
-    public function canPublish($user)
-    {
-        if (!$user->hasAccess('dynamedia.posts.publish_all_posts')
-            && !($user->hasAccess('dynamedia.posts.publish_own_posts')
-                && $user->id == $this->user_id)) {
-            return false;
-        } else {
-            return true;
         }
     }
 
@@ -200,7 +245,7 @@ class Post extends Model
     public function beforeDelete()
     {
         $user = BackendAuth::getUser();
-        if (!$this->canDelete($user)) {
+        if (!$this->userCanDelete($user)) {
             throw new ValidationException([
                 'error' => "Insufficient permissions to delete {$this->slug}"
             ]);

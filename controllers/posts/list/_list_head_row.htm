@@ -1,14 +1,14 @@
 <tr>
     <?php if ($showCheckboxes): ?>
     <th class="list-checkbox">
-        <div class="checkbox custom-checkbox nolabel">
-            <input type="checkbox"
-                <?php if (!BackendAuth::getUser()->hasAccess('dynamedia.posts.delete_all_posts')): ?>
-                    disabled
-                <?php endif ?>
-                   id="<?= $this->getId('checkboxAll') ?>" />
-            <label for="<?= $this->getId('checkboxAll') ?>"></label>
-        </div>
+        <?php if (BackendAuth::getUser()->isSuperuser()): ?>
+            <!--    No select all for non-superusers    -->
+            <div class="checkbox custom-checkbox nolabel">
+                <input type="checkbox"
+                       id="<?= $this->getId('checkboxAll') ?>" />
+                <label for="<?= $this->getId('checkboxAll') ?>"></label>
+            </div>
+        <?php endif ?>
     </th>
     <?php endif ?>
 

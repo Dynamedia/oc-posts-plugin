@@ -120,9 +120,7 @@ class Post extends Model
             }
         }
 
-        if (!$user->hasAccess('dynamedia.posts.edit_all_posts')
-            && !($user->hasAccess('dynamedia.posts.edit_own_posts')
-                && $user->id == $this->user_id)) {
+        if (!$this->canEdit($user)) {
             throw new ValidationException([
                 'error' => "Insufficient permissions to edit {$this->slug}"
             ]);
@@ -202,9 +200,7 @@ class Post extends Model
     public function beforeDelete()
     {
         $user = BackendAuth::getUser();
-        if (!$user->hasAccess('dynamedia.posts.delete_all_posts')
-            && !($user->hasAccess('dynamedia.posts.delete_own_posts')
-                && $user->id == $this->user_id)) {
+        if (!$this->canDelete($user)) {
             throw new ValidationException([
                 'error' => "Insufficient permissions to delete {$this->slug}"
             ]);

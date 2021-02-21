@@ -184,6 +184,26 @@ class Plugin extends PluginBase
                 'tab' => 'Posts',
                 'label' => 'View Categories'
             ],
+            'dynamedia.posts.manage_categories' => [
+                'tab' => 'Posts',
+                'label' => 'Manage Categories'
+            ],
+            'dynamedia.posts.view_tags' => [
+                'tab' => 'Posts',
+                'label' => 'View Tags'
+            ],
+            'dynamedia.posts.manage_tags' => [
+                'tab' => 'Posts',
+                'label' => 'Manage Tags'
+            ],
+             'dynamedia.posts.view_settings' => [
+                'tab' => 'Posts',
+                'label' => 'View Settings'
+            ],
+            'dynamedia.posts.manage_settings' => [
+                'tab' => 'Posts',
+                'label' => 'Manage Settings'
+            ],
         ];
     }
 

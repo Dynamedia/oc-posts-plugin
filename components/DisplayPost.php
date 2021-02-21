@@ -1,6 +1,7 @@
 <?php namespace Dynamedia\Posts\Components;
 
 use Cms\Classes\ComponentBase;
+use BackendAuth;
 use Lang;
 use Str;
 use App;
@@ -43,6 +44,17 @@ class DisplayPost extends ComponentBase
         // Check that we are at the right url. If not, redirect and get back here.
         if ($this->currentPageUrl() != $this->post->url) {
             return redirect($this->post->url, 301);
+        }
+        // Check publishing status and permissions
+        if (!$this->post->is_published) {
+            if (! BackendAuth::getUser() || ! $this->post->canEdit(BackendAuth::getUser())) {
+                try {
+                return $this->controller
+                    ->setStatusCode(403)->run('403');
+                } catch (\Exception $e) {
+                    return response("Not authorised", 403);
+                }
+            }
         }
     }
 

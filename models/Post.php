@@ -10,6 +10,7 @@ use Input;
 use Str;
 use BackendAuth;
 use Cms\Classes\Controller;
+use Cms\Classes\Theme;
 use ValidationException;
 
 /**
@@ -191,6 +192,48 @@ class Post extends Model
         }
     }
 
+    /**
+     * Check if user has required permissions to tag posts
+     * @param $user
+     * @return bool
+     */
+    public function userCanTag($user)
+    {
+        if (!$user->hasAccess('dynamedia.posts.tag_posts')) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Check if user has required permissions to categorise posts
+     * @param $user
+     * @return bool
+     */
+    public function userCanCategorise($user)
+    {
+        if (!$user->hasAccess('dynamedia.posts.categorise_posts')) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Check if user has required permissions to categorise posts
+     * @param $user
+     * @return bool
+     */
+    public function userCanSetLayout($user)
+    {
+        if (!$user->hasAccess('dynamedia.posts.set_layout')) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     public function filterFields($fields, $context = null)
     {
         $user = BackendAuth::getUser();
@@ -199,6 +242,8 @@ class Post extends Model
             if (!$this->userCanUnpublish($user)) {
                 if (isset($fields->is_published)) {
                    $fields->is_published->readOnly = true;
+                    $fields->is_published->comment = "You do not have permission to unpublish this post";
+
                 }
                 if (isset($fields->published_at)) {
                    $fields->published_at->readOnly = true;
@@ -211,6 +256,7 @@ class Post extends Model
             if (!$this->userCanPublish($user)) {
                 if (isset($fields->is_published)) {
                    $fields->is_published->readOnly = true;
+                   $fields->is_published->comment = "You do not have permission to publish this post";
                 }
                 if (isset($fields->published_at)) {
                    $fields->published_at->readOnly = true;
@@ -218,6 +264,30 @@ class Post extends Model
                 if (isset($fields->published_until)) {
                    $fields->published_until->readOnly = true;
                 }
+            }
+        }
+
+        if (!$this->userCanCategorise($user)) {
+            if (isset($fields->primary_category)) {
+                $fields->primary_category->comment = "You do not have permission to categorise posts";
+                $fields->primary_category->readOnly = true;
+            }
+            if (isset($fields->categories)) {
+                $fields->categories->readOnly = true;
+            }
+        }
+
+        if (!$this->userCanTag($user)) {
+            if (isset($fields->tags)) {
+                $fields->tags->comment = "You do not have permission to tag posts";
+                $fields->tags->readOnly = true;
+            }
+        }
+
+        if (!$this->userCanSetLayout($user)) {
+            if (isset($fields->cms_layout)) {
+                $fields->cms_layout->comment = "You do not have permission to change the layout";
+                $fields->cms_layout->readOnly = true;
             }
         }
     }
@@ -233,11 +303,26 @@ class Post extends Model
             }
         }
 
+        // Permissions logic
         if (!$this->userCanEdit($user)) {
             throw new ValidationException([
                 'error' => "Insufficient permissions to edit {$this->slug}"
             ]);
         }
+
+        if ($this->isDirty('is_published')) {
+            if ($this->is_published && !$this->userCanPublish($user)) {
+                throw new ValidationException([
+                    'error' => "Insufficient permissions to publish {$this->slug}"
+                ]);
+            }
+            if (!$this->is_published && !$this->userCanUnpublish($user)) {
+                throw new ValidationException([
+                    'error' => "Insufficient permissions to unpublish {$this->slug}"
+                ]);
+            }
+        }
+        // End permissions logic
 
         $this->slug = Str::slug($this->slug);
 
@@ -264,8 +349,7 @@ class Post extends Model
 
     public function beforeDelete()
     {
-        $user = BackendAuth::getUser();
-        if (!$this->userCanDelete($user)) {
+        if (!$this->userCanDelete(BackendAuth::getUser())) {
             throw new ValidationException([
                 'error' => "Insufficient permissions to delete {$this->slug}"
             ]);
@@ -519,7 +603,16 @@ class Post extends Model
                 }
             }
         }
-        return strtolower(Controller::getController()->pageUrl($pageName, $params));
+        return strtolower($this->getController()->pageUrl($pageName, $params));
+    }
+
+    private function getController()
+    {
+        $controller = Controller::getController();
+        if (!$controller) {
+            $controller = new Controller(Theme::getActiveTheme());
+        }
+        return $controller;
     }
 
     /**

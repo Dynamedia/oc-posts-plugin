@@ -12,4 +12,6 @@ columns:
     slug:
         label: Slug
         searchable: true
+    is_approved:
+        label: Approved
 

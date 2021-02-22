@@ -3,6 +3,8 @@
 use Model;
 use Cms\Classes\Page;
 use Str;
+use ValidationException;
+use BackendAuth;
 
 /**
  * Settings Model
@@ -19,6 +21,56 @@ class Settings extends Model
     // Reference to field configuration
     public $settingsFields = 'fields.yaml';
 
+    public function beforeSave()
+    {
+        if (!$this->userCanManage(BackendAuth::getUser())) {
+            throw new ValidationException([
+                'error' => "Insufficient permissions to edit settings"
+            ]);
+        }
+    }
+
+    public function filterFields($fields, $context = null)
+    {
+        if (!$this->userCanManage(BackendAuth::getUser())) {
+            foreach ($fields as $field) {
+                $field->readOnly = true;
+            }
+        }
+        if (!$this->userCanView(BackendAuth::getUser())) {
+            foreach ($fields as $field) {
+                $field->hidden = true;
+            }
+        }
+    }
+
+    /**
+     * Check if user has required permissions to manage settings
+     * @param $user
+     * @return bool
+     */
+    private function userCanManage($user)
+    {
+        if (!$user->hasAccess('dynamedia.posts.manage_settings')) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Check if user has required permissions to view settings
+     * @param $user
+     * @return bool
+     */
+    private function userCanView($user)
+    {
+        if (!$user->hasAccess('dynamedia.posts.view_settings')) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     public function getTagPageOptions()
     {

@@ -3,3 +3,6 @@
   - create_categories_table.php
   - create_tags_table.php
   - create_posts_table.php
+0.9.01:
+  - Add approval for tags
+  - update_tags_table_v0.9.01.php

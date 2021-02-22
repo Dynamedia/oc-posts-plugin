@@ -51,6 +51,8 @@ class Plugin extends PluginBase
             $model->addJsonable('images');
         });
 
+
+
         Event::listen('cms.page.beforeDisplay', function ($controller, $url, $page) {
             $slug = $controller->param('slug');
             $displayCategory = null;
@@ -150,79 +152,114 @@ class Plugin extends PluginBase
         return [
             'dynamedia.posts.access_plugin' => [
                 'tab' => 'Posts',
-                'label' => 'Access Posts Plugin'
+                'label' => 'Access Posts Plugin',
+                'order' => 1000
             ],
             'dynamedia.posts.create_posts' => [
                 'tab' => 'Posts',
-                'label' => 'Create Posts'
+                'label' => 'Create Posts',
+                'order' => 1001
             ],
-            'dynamedia.posts.edit_own_published_posts' => [
+            'dynamedia.posts.categorise_posts' => [
                 'tab' => 'Posts',
-                'label' => 'Edit Own Published Posts'
+                'label' => 'Categorise Posts'
+                ,
+                'order' => 1002
             ],
-            'dynamedia.posts.edit_all_published_posts' => [
+            'dynamedia.posts.tag_posts' => [
                 'tab' => 'Posts',
-                'label' => 'Edit All Posts'
+                'label' => 'Tag Posts',
+                'order' => 1003
             ],
-            'dynamedia.posts.edit_all_unpublished_posts' => [
+            'dynamedia.posts.set_layout' => [
                 'tab' => 'Posts',
-                'label' => 'Edit All Unpublished Posts'
+                'label' => 'Set Post Layout',
+                'order' => 1004
             ],
             'dynamedia.posts.publish_own_posts' => [
                 'tab' => 'Posts',
-                'label' => 'Publish Own Posts'
+                'label' => 'Publish Own Posts',
+                'order' => 1005
             ],
             'dynamedia.posts.unpublish_own_posts' => [
                 'tab' => 'Posts',
-                'label' => 'Unpublish Own Posts'
+                'label' => 'Unpublish Own Posts',
+                'order' => 1006
             ],
-            'dynamedia.posts.publish_all_posts' => [
+            'dynamedia.posts.edit_own_published_posts' => [
                 'tab' => 'Posts',
-                'label' => 'Publish All Posts'
-            ],
-            'dynamedia.posts.unpublish_all_posts' => [
-                'tab' => 'Posts',
-                'label' => 'Unpublish All Posts'
+                'label' => 'Edit Own Published Posts',
+                'order' => 1007
             ],
             'dynamedia.posts.delete_own_unpublished_posts' => [
                 'tab' => 'Posts',
-                'label' => 'Delete Own Unpublished Posts'
+                'label' => 'Delete Own Unpublished Posts',
+                'order' => 1008
             ],
             'dynamedia.posts.delete_own_published_posts' => [
                 'tab' => 'Posts',
-                'label' => 'Delete Own Published Posts'
+                'label' => 'Delete Own Published Posts',
+                'order' => 1009
+            ],
+            'dynamedia.posts.publish_all_posts' => [
+                'tab' => 'Posts',
+                'label' => 'Publish All Posts',
+                'order' => 1010
+            ],
+            'dynamedia.posts.unpublish_all_posts' => [
+                'tab' => 'Posts',
+                'label' => 'Unpublish All Posts',
+                'order' => 1011
+            ],
+            'dynamedia.posts.edit_all_unpublished_posts' => [
+                'tab' => 'Posts',
+                'label' => 'Edit All Unpublished Posts',
+                'order' => 1012
+            ],
+            'dynamedia.posts.edit_all_published_posts' => [
+                'tab' => 'Posts',
+                'label' => 'Edit All Published Posts',
+                'order' => 1013
             ],
             'dynamedia.posts.delete_all_unpublished_posts' => [
                 'tab' => 'Posts',
-                'label' => 'Delete All Unpublished Posts'
+                'label' => 'Delete All Unpublished Posts',
+                'order' => 1014
             ],
             'dynamedia.posts.delete_all_published_posts' => [
                 'tab' => 'Posts',
-                'label' => 'Delete All Published Posts'
+                'label' => 'Delete All Published Posts',
+                'order' => 1015
             ],
             'dynamedia.posts.view_categories' => [
                 'tab' => 'Posts',
-                'label' => 'View Categories'
+                'label' => 'View Categories',
+                'order' => 1016
             ],
             'dynamedia.posts.manage_categories' => [
                 'tab' => 'Posts',
-                'label' => 'Manage Categories'
+                'label' => 'Manage Categories',
+                'order' => 1017
             ],
             'dynamedia.posts.view_tags' => [
                 'tab' => 'Posts',
-                'label' => 'View Tags'
+                'label' => 'View Tags',
+                'order' => 1018
             ],
             'dynamedia.posts.manage_tags' => [
                 'tab' => 'Posts',
-                'label' => 'Manage Tags'
+                'label' => 'Manage Tags',
+                'order' => 1019
             ],
              'dynamedia.posts.view_settings' => [
                 'tab' => 'Posts',
-                'label' => 'View Settings'
+                'label' => 'View Settings',
+                 'order' => 1020
             ],
             'dynamedia.posts.manage_settings' => [
                 'tab' => 'Posts',
-                'label' => 'Manage Settings'
+                'label' => 'Manage Settings',
+                'order' => 1021
             ],
         ];
     }

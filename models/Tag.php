@@ -7,6 +7,8 @@ use Dynamedia\Posts\Models\Post;
 use Input;
 use Config;
 use Cms\Classes\Controller;
+use BackendAuth;
+use ValidationException;
 
 /**
  * tag Model
@@ -35,7 +37,7 @@ class Tag extends Model
      */
     public $rules = [
         'name' => 'required',
-        'slug' => 'required|unique:dynamedia_posts_tags',
+        'slug' => 'unique:dynamedia_posts_tags',
     ];
 
     public $customMessages = [
@@ -97,12 +99,41 @@ class Tag extends Model
     // For tag widget
     public function beforeSave()
     {
+        $user = BackendAuth::getUser();
+
+        // Allow creation (from posts tag interface)
+        if (!$this->userCanManage($user) && !$this->exists) {
+            $this->is_approved = false;
+        } elseif (!$this->userCanManage($user)) {
+            throw new ValidationException([
+                'error' => "Insufficient permissions to edit {$this->name}"
+            ]);
+        }
+
+        if (!$this->slug) {
+            $this->slug = Str::slug($this->name);
+        }
+
         $this->slug = Str::slug($this->slug);
     }
 
     public function afterDelete()
     {
         $this->posts()->detach();
+    }
+
+    /**
+     * Check if user has required permissions to manage tags
+     * @param $user
+     * @return bool
+     */
+    public function userCanManage($user)
+    {
+        if (!$user->hasAccess('dynamedia.posts.manage_tags')) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /**

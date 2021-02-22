@@ -46,3 +46,9 @@ tabs:
             tab: Posts
             type: relation
             select: title
+
+        is_approved:
+            label: Approved?
+            tab: Settings
+            type: switch
+            default: false

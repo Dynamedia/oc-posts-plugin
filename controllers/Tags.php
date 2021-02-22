@@ -2,6 +2,8 @@
 
 use BackendMenu;
 use Backend\Classes\Controller;
+use Input;
+use Dynamedia\Posts\Models\Tag;
 
 /**
  * Tags Back-end Controller
@@ -17,7 +19,8 @@ class Tags extends Controller
     ];
 
     public $requiredPermissions = [
-        'dynamedia.posts.access_plugin'
+        'dynamedia.posts.view_categories',
+        'dynamedia.posts.manage_categories'
     ];
 
     /**
@@ -35,5 +38,18 @@ class Tags extends Controller
         parent::__construct();
 
         BackendMenu::setContext('Dynamedia.Posts', 'posts', 'tags');
+    }
+
+
+    public function onApprove()
+    {
+        if (Input::get('checked')) {
+            $tags = Tag::whereIn('id', Input::get('checked'))->get();
+            foreach ($tags as $tag) {
+                $tag->is_approved = true;
+                $tag->save();
+            }
+            return $this->listRefresh();
+        }
     }
 }

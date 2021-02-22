@@ -1,50 +1,63 @@
 <?php Block::put('breadcrumb') ?>
     <ul>
         <li><a href="<?= Backend::url('dynamedia/posts/tags') ?>">Tags</a></li>
-        <li><?= e($this->pageTitle) ?></li>
+        <li>Editing '<?= $this->widget->form->model->name ?>'</li>
     </ul>
 <?php Block::endPut() ?>
 
 <?php if (!$this->fatalError): ?>
 
     <?= Form::open(['class' => 'layout']) ?>
-
-        <div class="layout-row">
-            <?= $this->formRender() ?>
-        </div>
-
-        <div class="form-buttons">
-            <div class="loading-indicator-container">
-                <button
-                    type="submit"
-                    data-request="onSave"
-                    data-request-data="redirect:0"
-                    data-hotkey="ctrl+s, cmd+s"
-                    data-load-indicator="Saving tag..."
-                    class="btn btn-primary">
-                    <u>S</u>ave
-                </button>
-                <button
-                    type="button"
-                    data-request="onSave"
-                    data-request-data="close:1"
-                    data-hotkey="ctrl+enter, cmd+enter"
-                    data-load-indicator="Saving tag..."
-                    class="btn btn-default">
-                    Save and Close
-                </button>
-                <button
-                    type="button"
-                    class="oc-icon-trash-o btn-icon danger pull-right"
-                    data-request="onDelete"
-                    data-load-indicator="Deleting tag..."
-                    data-request-confirm="Delete this tag?">
-                </button>
-                <span class="btn-text">
-                    or <a href="<?= Backend::url('dynamedia/posts/tags') ?>">Cancel</a>
-                </span>
+        <?php if ($this->widget->form->model->userCanManage($this->user)): ?>
+            <div class="layout-row">
+                <?= $this->formRender() ?>
             </div>
-        </div>
+
+            <div class="form-buttons">
+                <div class="loading-indicator-container">
+                    <button
+                        type="submit"
+                        data-request="onSave"
+                        data-request-data="redirect:0"
+                        data-hotkey="ctrl+s, cmd+s"
+                        data-load-indicator="Saving tag..."
+                        class="btn btn-primary">
+                        <u>S</u>ave
+                    </button>
+                    <button
+                        type="button"
+                        data-request="onSave"
+                        data-request-data="close:1"
+                        data-hotkey="ctrl+enter, cmd+enter"
+                        data-load-indicator="Saving tag..."
+                        class="btn btn-default">
+                        Save and Close
+                    </button>
+                    <button
+                        type="button"
+                        class="oc-icon-trash-o btn-icon danger pull-right"
+                        data-request="onDelete"
+                        data-load-indicator="Deleting tag..."
+                        data-request-confirm="Delete this tag?">
+                    </button>
+                    <span class="btn-text">
+                        or <a href="<?= Backend::url('dynamedia/posts/tags') ?>">Cancel</a>
+                    </span>
+                </div>
+            </div>
+        <?php else: ?>
+            <div class="layout-row">
+                <?= $this->formRenderPreview() ?>
+            </div>
+
+            <div class="form-buttons">
+                <div class="loading-indicator-container">
+                    <span class="btn-text">
+                        <a href="<?= Backend::url('dynamedia/posts/tags') ?>">Cancel</a>
+                    </span>
+                </div>
+            </div>
+        <?php endif ?>
 
     <?= Form::close() ?>
 

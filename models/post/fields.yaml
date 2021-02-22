@@ -38,6 +38,7 @@ tabs:
             tab: dynamedia.posts::lang.post.tab.categories
             label: Primary Category
             type: relation
+            emptyOption: None
             comment: The most relevant category
 
         categories:

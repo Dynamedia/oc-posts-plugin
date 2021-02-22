@@ -47,7 +47,7 @@ class DisplayPost extends ComponentBase
         }
         // Check publishing status and permissions
         if (!$this->post->is_published) {
-            if (! BackendAuth::getUser() || ! $this->post->canEdit(BackendAuth::getUser())) {
+            if (! BackendAuth::getUser() || ! $this->post->userCanEdit(BackendAuth::getUser())) {
                 try {
                 return $this->controller
                     ->setStatusCode(403)->run('403');

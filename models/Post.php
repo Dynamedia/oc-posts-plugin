@@ -140,8 +140,8 @@ class Post extends Model
      * @return bool
      */
     public function userCanEdit($user)
-    {
-        if ($this->is_published) {
+    {   // isDirty prevents failure if setting the attribute
+        if ($this->is_published && !$this->isDirty('is_published')) {
             if (!$user->hasAccess('dynamedia.posts.edit_all_published_posts')
                 && !($user->hasAccess('dynamedia.posts.edit_own_published_posts')
                     && $user->id == $this->user_id)) {
@@ -151,7 +151,7 @@ class Post extends Model
             }
         } else {
             if (!$user->hasAccess('dynamedia.posts.edit_all_unpublished_posts')
-                && !$user->id == $this->user_id) {
+                && $user->id != $this->user_id) {
                 return false;
             } else {
                 return true;
@@ -196,8 +196,28 @@ class Post extends Model
         $user = BackendAuth::getUser();
 
         if ($this->is_published) {
-            if ($this->userCanUnpublish($user)) {
-                //$fields->is_published->hidden = true;
+            if (!$this->userCanUnpublish($user)) {
+                if (isset($fields->is_published)) {
+                   $fields->is_published->readOnly = true;
+                }
+                if (isset($fields->published_at)) {
+                   $fields->published_at->readOnly = true;
+                }
+                if (isset($fields->published_until)) {
+                   $fields->published_until->readOnly = true;
+                }
+            }
+        } else {
+            if (!$this->userCanPublish($user)) {
+                if (isset($fields->is_published)) {
+                   $fields->is_published->readOnly = true;
+                }
+                if (isset($fields->published_at)) {
+                   $fields->published_at->readOnly = true;
+                }
+                if (isset($fields->published_until)) {
+                   $fields->published_until->readOnly = true;
+                }
             }
         }
     }

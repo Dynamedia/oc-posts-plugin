@@ -8,6 +8,9 @@ list: $/dynamedia/posts/models/category/columns.yaml
 # Model Class name
 modelClass: Dynamedia\Posts\Models\Category
 
+# Custom view path
+customViewPath: $/dynamedia/posts/controllers/categories/list
+
 # List Title
 title: Manage Categories
 

@@ -8,7 +8,9 @@
 <?php if (!$this->fatalError): ?>
 
     <div class="form-preview">
-        <?= $this->formRenderPreview() ?>
+        <?php if ($this->widget->form->model->userCanView($this->user)): ?>
+            <?= $this->formRenderPreview() ?>
+        <?php endif ?>
     </div>
 
 <?php else: ?>

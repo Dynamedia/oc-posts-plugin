@@ -6,6 +6,7 @@ use System\Classes\PluginBase;
 use App;
 use Event;
 use Str;
+use Cms\Models\ThemeData;
 use Dynamedia\Posts\Models\Post;
 use Dynamedia\Posts\Models\Category;
 
@@ -47,7 +48,7 @@ class Plugin extends PluginBase
     public function boot()
     {
 
-        \Cms\Models\ThemeData::extend(function ($model) {
+        ThemeData::extend(function ($model) {
             $model->addJsonable('images');
         });
 

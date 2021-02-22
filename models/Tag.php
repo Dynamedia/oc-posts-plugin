@@ -96,6 +96,16 @@ class Tag extends Model
     public $attachOne = [];
     public $attachMany = [];
 
+    public function filterFields($fields, $context = null)
+    {
+        // Hide fields if user is here but not permitted to view
+        if (!$this->userCanView(BackendAuth::getUser())) {
+            foreach ($fields as $field) {
+                $field->hidden = true;
+            }
+        }
+    }
+
     // For tag widget
     public function beforeSave()
     {
@@ -120,6 +130,20 @@ class Tag extends Model
     public function afterDelete()
     {
         $this->posts()->detach();
+    }
+
+    /**
+     * Check if user has required permissions to view tags
+     * @param $user
+     * @return bool
+     */
+    public function userCanView($user)
+    {
+        if (!$user->hasAccess('dynamedia.posts.view_tags')) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /**

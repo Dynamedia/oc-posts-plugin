@@ -18,7 +18,8 @@ class Categories extends Controller
     ];
 
     public $requiredPermissions = [
-        'dynamedia.posts.access_plugin'
+        'dynamedia.posts.view_categories',
+        'dynamedia.posts.manage_categories'
     ];
 
     /**

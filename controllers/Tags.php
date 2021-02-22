@@ -19,8 +19,8 @@ class Tags extends Controller
     ];
 
     public $requiredPermissions = [
-        'dynamedia.posts.view_categories',
-        'dynamedia.posts.manage_categories'
+        'dynamedia.posts.view_tags',
+        'dynamedia.posts.manage_tags'
     ];
 
     /**

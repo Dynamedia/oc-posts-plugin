@@ -96,6 +96,34 @@ class Category extends Model
     public $attachOne = [];
     public $attachMany = [];
 
+    /**
+     * Check if user has required permissions to view tags
+     * @param $user
+     * @return bool
+     */
+    public function userCanView($user)
+    {
+        if (!$user->hasAccess('dynamedia.posts.view_categories')) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Check if user has required permissions to manage tags
+     * @param $user
+     * @return bool
+     */
+    public function userCanManage($user)
+    {
+        if (!$user->hasAccess('dynamedia.posts.manage_categories')) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     public function beforeSave()
     {
         $this->slug = Str::slug($this->slug);

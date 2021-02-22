@@ -8,6 +8,9 @@ list: $/dynamedia/posts/models/tag/columns.yaml
 # Model Class name
 modelClass: Dynamedia\Posts\Models\Tag
 
+# Custom view path
+customViewPath: $/dynamedia/posts/controllers/tags/list
+
 # List Title
 title: Manage Tags
 

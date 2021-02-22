@@ -47,7 +47,9 @@
             </div>
         <?php else: ?>
             <div class="layout-row">
-                <?= $this->formRenderPreview() ?>
+                <?php if ($this->widget->form->model->userCanView($this->user)): ?>
+                    <?= $this->formRenderPreview() ?>
+                <?php endif ?>
             </div>
 
             <div class="form-buttons">

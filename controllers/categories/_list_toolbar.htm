@@ -1,24 +1,26 @@
 <div data-control="toolbar">
-    <a
-        href="<?= Backend::url('dynamedia/posts/categories/create') ?>"
-        class="btn btn-primary oc-icon-plus">
-        New Category
-    </a>
+    <?php if ($this->user->hasAccess('dynamedia.posts.manage_categories')): ?>
+        <a
+            href="<?= Backend::url('dynamedia/posts/categories/create') ?>"
+            class="btn btn-primary oc-icon-plus">
+            New Category
+        </a>
 
-    <button
-        class="btn btn-danger oc-icon-trash-o"
-        disabled="disabled"
-        onclick="$(this).data('request-data', { checked: $('.control-list').listWidget('getChecked') })"
-        data-request="onDelete"
-        data-request-confirm="Are you sure you want to delete the selected Categories?"
-        data-trigger-action="enable"
-        data-trigger=".control-list input[type=checkbox]"
-        data-trigger-condition="checked"
-        data-request-success="$(this).prop('disabled', 'disabled')"
-        data-stripe-load-indicator>
-        Delete selected
-    </button>
-    <a href="<?= Backend::url('dynamedia/posts/categories/reorder') ?>" class="btn btn-default oc-icon-sitemap">
-        Re-Order
-    </a>
+        <button
+            class="btn btn-danger oc-icon-trash-o"
+            disabled="disabled"
+            onclick="$(this).data('request-data', { checked: $('.control-list').listWidget('getChecked') })"
+            data-request="onDelete"
+            data-request-confirm="Are you sure you want to delete the selected Categories?"
+            data-trigger-action="enable"
+            data-trigger=".control-list input[type=checkbox]"
+            data-trigger-condition="checked"
+            data-request-success="$(this).prop('disabled', 'disabled')"
+            data-stripe-load-indicator>
+            Delete selected
+        </button>
+        <a href="<?= Backend::url('dynamedia/posts/categories/reorder') ?>" class="btn btn-default oc-icon-sitemap">
+            Re-Order
+        </a>
+    <?php endif ?>
 </div>

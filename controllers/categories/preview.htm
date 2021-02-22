@@ -1,14 +1,16 @@
 <?php Block::put('breadcrumb') ?>
     <ul>
         <li><a href="<?= Backend::url('dynamedia/posts/categories') ?>">Categories</a></li>
-        <li><?= e($this->pageTitle) ?></li>
+        <li>Previewing '<?= $this->widget->form->model->name ?>'</li>
     </ul>
 <?php Block::endPut() ?>
 
 <?php if (!$this->fatalError): ?>
 
     <div class="form-preview">
-        <?= $this->formRenderPreview() ?>
+        <?php if ($this->widget->form->model->userCanView($this->user)): ?>
+            <?= $this->formRenderPreview() ?>
+        <?php endif ?>
     </div>
 
 <?php else: ?>

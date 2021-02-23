@@ -91,6 +91,7 @@ class Plugin extends PluginBase
                 if ($post && $post->getLayout() !== false) {
                     $page->layout = $post->getLayout();
                 }
+                
 
                 App::instance('dynamedia.post', $post);
             }

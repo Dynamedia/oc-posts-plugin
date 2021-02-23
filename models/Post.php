@@ -207,13 +207,13 @@ class Post extends Model
     }
 
     /**
-     * Check if user has required permissions to categorise posts
+     * Check if user has required permissions to categorize posts
      * @param $user
      * @return bool
      */
-    public function userCanCategorise($user)
+    public function userCanCategorize($user)
     {
-        if (!$user->hasAccess('dynamedia.posts.categorise_posts')) {
+        if (!$user->hasAccess('dynamedia.posts.categorize_posts')) {
             return false;
         } else {
             return true;
@@ -221,7 +221,7 @@ class Post extends Model
     }
 
     /**
-     * Check if user has required permissions to categorise posts
+     * Check if user has required permissions to categorize posts
      * @param $user
      * @return bool
      */
@@ -267,9 +267,9 @@ class Post extends Model
             }
         }
 
-        if (!$this->userCanCategorise($user)) {
+        if (!$this->userCanCategorize($user)) {
             if (isset($fields->primary_category)) {
-                $fields->primary_category->comment = "You do not have permission to categorise posts";
+                $fields->primary_category->comment = "You do not have permission to categorize posts";
                 $fields->primary_category->readOnly = true;
             }
             if (isset($fields->categories)) {
@@ -587,22 +587,28 @@ class Post extends Model
     public function getUrlAttribute()
     {
         $pageName = $this->getPostPage();
-
-        $params = ['slug' => $this->slug];
+        $categoryPath = null;
 
         if ($this->primary_category) {
-            // Provides a 'slug' for every depth of category
-            $levels = array_reverse($this->primary_category->getPathToRoot());
-            // category-x numbers up from the root category
-            // parentcat-x numbers up from the primary category
-            for ($depth = 0; $depth <= $this->primary_category->nest_depth; $depth++) {
-                $reverse = $this->primary_category->nest_depth - $depth;
-                $params["level-{$depth}"] = $levels[$depth]['slug'];
-                if ($depth >= 0) {
-                    $params["parent-{$depth}"] = $levels[$reverse]['slug'];
-                }
-            }
+            $categoryPath = implode('/', array_map(function ($entry) {
+                return $entry['slug'];
+            }, $this->primary_category->getPathFromRoot()));
         }
+
+        if ($categoryPath) {
+            $fullPath = "{$categoryPath}/{$this->slug}";
+        } else {
+            $fullPath = $this->slug;
+        }
+
+        $params = [
+            'postsCategoryPath' => $categoryPath,
+            'postsFullPath' => $fullPath,
+            'postsPostSlug'  => $this->slug,
+            'postsCategorySlug' => !empty($this->primary_category) ? $this->primary_category->slug : null
+        ];
+
+
         return strtolower($this->getController()->pageUrl($pageName, $params));
     }
 
@@ -617,77 +623,36 @@ class Post extends Model
 
     /**
      * Helper methods to determine the correct CMS page to
-     * pass to the router. 5 Levels is more than enough and url truncation should
-     * happen beyond this level of nesting
+     * pass to the router.
      *
      * @return array
      */
     private function getPostPage()
     {
-        if (!$this->primary_category) {
-            return $this->getZeroLevelPostPage();
+        $defaultPostsPage = Settings::get('postPage');
+        $noCategoryPostsPage = Settings::get('postPageWithoutCategory');
+        $categoryPage = Settings::get('categoryPage');
+
+        // Exit here as no issues to navigate
+        if ($this->primary_category) {
+            return $defaultPostsPage;
         }
-        if ($this->primary_category->nest_depth == 0) {
-            return $this->getOneLevelPostPage();
+
+        // Same page for both components
+        if ($defaultPostsPage == $categoryPage) {
+            return $defaultPostsPage;
         }
-        if ($this->primary_category->nest_depth == 1) {
-            return $this->getTwoLevelPostPage();
+
+        // Post has no category and needs to be handled with a separate page
+        if ($noCategoryPostsPage) {
+            return $noCategoryPostsPage;
         }
-        if ($this->primary_category->nest_depth == 2) {
-            return $this->getThreeLevelPostPage();
-        }
-        if ($this->primary_category->nest_depth == 3) {
-            return $this->getFourLevelPostPage();
-        }
-        if ($this->primary_category->nest_depth >= 4) {
-            return $this->getFiveLevelPostPage();
-        }
+
+        // Just return the default page and accept it may have /default/ in the url
+        return $defaultPostsPage;
+
     }
 
-    private function getZeroLevelPostPage()
-    {
-        return Settings::get('zeroLevelPostPage');
-    }
-
-    private function getOneLevelPostPage()
-    {
-        if (Settings::get('oneLevelPostPage')) {
-            return Settings::get('oneLevelPostPage');
-    }
-        return $this->getZeroLevelPostPage();
-    }
-
-    private function getTwoLevelPostPage()
-    {
-        if (Settings::get('twoLevelPostPage')) {
-            return Settings::get('twoLevelPostPage');
-        }
-        return $this->getOneLevelPostPage();
-    }
-
-    private function getThreeLevelPostPage()
-    {
-        if (Settings::get('threeLevelPostPage')) {
-            return Settings::get('threeLevelPostPage');
-        }
-        return $this->getTwoLevelPostPage();
-    }
-
-    private function getFourLevelPostPage()
-    {
-        if (Settings::get('fourLevelPostPage')) {
-            return Settings::get('fourLevelPostPage');
-        }
-        return $this->getThreeLevelPostPage();
-    }
-
-    private function getFiveLevelPostPage()
-    {
-        if (Settings::get('fiveLevelPostPage')) {
-            return Settings::get('fiveLevelPostPage');
-        }
-        return $this->getFourLevelPostPage();
-    }
 
 
     /**

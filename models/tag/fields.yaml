@@ -47,6 +47,12 @@ tabs:
             type: relation
             select: title
 
+        cms_layout:
+            tab: Settings
+            label: CMS Layout
+            type: dropdown
+            options: \Dynamedia\Posts\Classes\Helpers\Form::getCmsLayoutOptions
+
         is_approved:
             label: Approved?
             tab: Settings

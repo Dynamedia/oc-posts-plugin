@@ -77,122 +77,39 @@ class Settings extends Model
         return Page::sortBy('baseFileName')
             ->filter(function ($page) {
                 if (!$page->hasComponent('displayTag')) return false;
-                if (!Str::contains($page->url, 'slug')) return false;
+                if (!Str::contains($page->url, 'postsTagSlug')) return false;
                 return true;
             })
             ->lists('baseFileName', 'baseFileName');
     }
-    public function getZeroLevelPostPageOptions()
-    {
-        // displayPost pages with no category slugs
-        $pages =  Page::sortBy('baseFileName')
-            ->filter(function ($page) {
-                if (!$page->hasComponent('displayPost')) return false;
-                if (!Str::contains($page->url, 'slug')) return false;
-                if (Str::contains($page->url, ':level-')
-                    || Str::contains($page->url, ':parent-')) return false;
-                return true;
-            })
-            ->lists('baseFileName', 'baseFileName');
-
-        return array_merge(['' => 'None'], $pages);
-    }
-
-    
-    public function getMultiLevelPostPageOptions()
+    public function getPostPageOptions()
     {
         $pages =  Page::sortBy('baseFileName')
             ->filter(function ($page) {
                 if (!$page->hasComponent('displayPost')) return false;
-                if (!Str::contains($page->url, 'slug')) return false;
-                if (!Str::contains($page->url, ':level-')
-                    && !Str::contains($page->url, ':parent-')) return false;
                 return true;
             })
             ->lists('baseFileName', 'baseFileName');
 
         return array_merge(['' => 'None'], $pages);
     }
-    
-    public function getOneLevelPostPageOptions()
+
+    public function getPostPageWithoutCategoryOptions()
     {
-        return $this->getMultiLevelPostPageOptions();
+        return $this->getPostPageOptions();
     }
 
 
-    public function getTwoLevelPostPageOptions()
-    {
-        return $this->getMultiLevelPostPageOptions();
-    }
-
-    public function getThreeLevelPostPageOptions()
-    {
-        return $this->getMultiLevelPostPageOptions();
-    }
-
-    public function getFourLevelPostPageOptions()
-    {
-        return $this->getMultiLevelPostPageOptions();
-    }
-
-    public function getFiveLevelPostPageOptions()
-    {
-        return $this->getMultiLevelPostPageOptions();
-    }
-
-    public function getZeroLevelCategoryPageOptions()
+    public function getCategoryPageOptions()
     {
         $pages =  Page::sortBy('baseFileName')
             ->filter(function ($page) {
                 if (!$page->hasComponent('displayCategory')) return false;
-                if (!Str::contains($page->url, ':slug')) return false;
-                if (Str::contains($page->url, ':level-')
-                    || Str::contains($page->url, ':parent-')) return false;
                 return true;
             })
             ->lists('baseFileName', 'baseFileName');
 
         return array_merge(['' => 'None'], $pages);
-    }
-
-    public function getMultiLevelCategoryPageOptions()
-    {
-        $pages = Page::sortBy('baseFileName')
-            ->filter(function ($page) {
-                if (!$page->hasComponent('displayCategory')) return false;
-                if (!Str::contains($page->url, ':slug')) return false;
-                if (!Str::contains($page->url, ':level-') 
-                    && !Str::contains($page->url, 'parent-')) return false;
-                return true;
-            })
-            ->lists('baseFileName', 'baseFileName');
-
-        return array_merge(['' => 'None'], $pages);
-    }
-
-    public function getOneLevelCategoryPageOptions()
-    {
-        return $this->getMultiLevelCategoryPageOptions();
-    }
-    
-    public function getTwoLevelCategoryPageOptions()
-    {
-        return $this->getMultiLevelCategoryPageOptions();
-    }
-
-    public function getThreeLevelCategoryPageOptions()
-    {
-        return $this->getMultiLevelCategoryPageOptions();
-    }
-
-    public function getFourLevelCategoryPageOptions()
-    {
-        return $this->getMultiLevelCategoryPageOptions();
-    }
-
-    public function getFiveLevelCategoryPageOptions()
-    {
-        return $this->getMultiLevelCategoryPageOptions();
     }
 
 }

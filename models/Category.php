@@ -142,7 +142,7 @@ class Category extends Model
         });
     }
 
-    public function getPathToRoot()
+    public function getPathFromRoot()
     {
         $path = [];
 
@@ -163,7 +163,13 @@ class Category extends Model
 
         $path[] = $self;
 
-        return array_reverse($path);
+        return $path;
+    }
+
+    public function getPathToRoot()
+    {
+        $path = array_reverse($this->getPathFromRoot());
+        return $path;
     }
 
     /**
@@ -233,21 +239,18 @@ class Category extends Model
     {
         $pageName = $this->getCategoryPage();
 
-        $params = ['slug' => $this->slug];
+        $levels = $this->getPathFromRoot();
 
-        // Sub category routing
+        $path = implode('/', array_map(function ($entry) {
+            return $entry['slug'];
+        }, $levels));
 
-        // Provides a 'slug' for every depth of category
-        $levels = array_reverse($this->getPathToRoot());
-        // category-x numbers up from the root category
-        // parentcat-x numbers up from the primary category
-        for ($depth = 0; $depth <= $this->nest_depth; $depth++) {
-            $reverse = $this->nest_depth - $depth -1;
-            $params["level-{$depth}"] = $levels[$depth]['slug'];
-            if ($reverse >= 0) {
-                $params["parent-{$depth}"] = $levels[$reverse]['slug'];
-            }
-        }
+        $params = [
+            'postsCategoryPath' => $path,
+            'postsFullPath' => $path,
+            'postsCategorySlug' => $this->slug
+        ];
+
         return strtolower(Controller::getController()->pageUrl($pageName, $params));
     }
 
@@ -274,71 +277,9 @@ class Category extends Model
      */
     private function getCategoryPage()
     {
-        if ($this->nest_depth == 0) {
-            return $this->getZeroLevelCategoryPage();
-        }
-        if ($this->nest_depth == 1) {
-            return $this->getOneLevelCategoryPage();
-        }
-        if ($this->nest_depth == 2) {
-            return $this->getTwoLevelCategoryPage();
-        }
-        if ($this->nest_depth == 3) {
-            return $this->getThreeLevelCategoryPage();
-        }
-        if ($this->nest_depth == 4) {
-            return $this->getFourLevelCategoryPage();
-        }
-        if ($this->nest_depth >= 5) {
-            return $this->getFiveLevelCategoryPage();
-        }
-
+        return Settings::get('categoryPage');
     }
 
-    private function getZeroLevelCategoryPage()
-    {
-            return Settings::get('zeroLevelCategoryPage');
-    }
-    
-    private function getOneLevelCategoryPage()
-    {
-        if (Settings::get('oneLevelCategoryPage')) {
-            return Settings::get('oneLevelCategoryPage');
-        }
-        return $this->getZeroLevelCategoryPage();
-    }
-
-    private function getTwoLevelCategoryPage()
-    {
-        if (Settings::get('twoLevelCategoryPage')) {
-            return Settings::get('twoLevelCategoryPage');
-        }
-        return $this->getOneLevelCategoryPage();
-    }
-
-    private function getThreeLevelCategoryPage()
-    {
-        if (Settings::get('threeLevelCategoryPage')) {
-            return Settings::get('threeLevelCategoryPage');
-        }
-        return $this->getTwoLevelCategoryPage();
-    }
-
-    private function getFourLevelCategoryPage()
-    {
-        if (Settings::get('fourLevelCategoryPage')) {
-            return Settings::get('fourLevelCategoryPage');
-        }
-        return $this->getThreeLevelCategoryPage();
-    }
-
-    private function getFiveLevelCategoryPage()
-    {
-        if (Settings::get('fiveLevelCategoryPage')) {
-            return Settings::get('fiveLevelCategoryPage');
-        }
-        return $this->getFourLevelCategoryPage();
-    }
 
     /**
      * Handler for the pages.menuitem.getTypeInfo event.

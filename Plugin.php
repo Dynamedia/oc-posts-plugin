@@ -1,6 +1,7 @@
 <?php namespace Dynamedia\Posts;
 
 use Backend;
+use Dynamedia\Posts\Models\Tag;
 use Lang;
 use System\Classes\PluginBase;
 use App;
@@ -53,25 +54,14 @@ class Plugin extends PluginBase
         });
 
 
-
         Event::listen('cms.page.beforeDisplay', function ($controller, $url, $page) {
-            $slug = $controller->param('slug');
-            $displayCategory = null;
-            $displayPost = null;
 
-            // Check if we have a component capable of changing the layout
-            if ($slug && !empty($page->settings['components'])) {
+            $displayCategory = $this->getComponents($page, "displayCategory");
+            $displayPost = $this->getComponents($page, "displayPost");
+            $displayTag = $this->getComponents($page, "displayTag");
+            $slug = $this->extractSlug($controller);
 
-                $displayCategory = collect($page->settings['components'])
-                    ->filter(function ($v, $k) {
-                        if (Str::startsWith($k, "displayCategory")) return true;
-                    });
-
-                $displayPost = collect($page->settings['components'])
-                    ->filter(function ($v, $k) {
-                        if (Str::startsWith($k, "displayPost")) return true;
-                    });
-            }
+            if (!$slug) return;
 
             if ($displayCategory) {
                 $category = Category::where('slug', $slug)->first();
@@ -80,7 +70,7 @@ class Plugin extends PluginBase
                     $page->layout = $category->getLayout();
                 }
 
-                App::instance('dynamedia.category', $category);
+                App::instance('dynamedia.posts.category', $category);
             }
 
             if ($displayPost) {
@@ -91,9 +81,19 @@ class Plugin extends PluginBase
                 if ($post && $post->getLayout() !== false) {
                     $page->layout = $post->getLayout();
                 }
-                
 
-                App::instance('dynamedia.post', $post);
+                App::instance('dynamedia.posts.post', $post);
+            }
+
+            if ($displayTag) {
+                $tag = Tag::where('slug', $slug)
+                    ->first();
+
+                if ($tag && $tag->getLayout() !== false) {
+                    $page->layout = $tag->getLayout();
+                }
+
+                App::instance('dynamedia.posts.tag', $tag);
             }
     });
         /*
@@ -162,9 +162,9 @@ class Plugin extends PluginBase
                 'label' => 'Create Posts',
                 'order' => 1001
             ],
-            'dynamedia.posts.categorise_posts' => [
+            'dynamedia.posts.categorize_posts' => [
                 'tab' => 'Posts',
-                'label' => 'Categorise Posts'
+                'label' => 'Categorize Posts'
                 ,
                 'order' => 1002
             ],
@@ -331,5 +331,40 @@ class Plugin extends PluginBase
                 'permissions' => ['dynamedia.posts.view_settings']
             ]
         ];
+    }
+
+    /**
+     * Check for a relevant url parameter
+     * @param $controller
+     * @return string|null
+     */
+    private function extractSlug($controller)
+    {
+        $slug = null;
+
+        if ($controller->param('postsPostSlug')) {
+            $slug = $controller->param('postsPostSlug');
+        } elseif ($controller->param('postsCategorySlug')) {
+            $slug = $controller->param('postsCategorySlug');
+        } elseif ($controller->param('postsFullPath')) {
+            $slug = basename($controller->param('postsFullPath'));
+        } elseif ($controller->param('postsCategoryPath')) {
+            $slug = basename($controller->param('postsCategoryPath'));
+        } elseif ($controller->param('postsTagSlug')) {
+            $slug = $controller->param('postsTagSlug');
+        }
+
+        return $slug;
+    }
+
+    private function getComponents($page, $type)
+    {
+        if (!empty($page->settings['components'])) {
+
+            return collect($page->settings['components'])
+                ->filter(function ($v, $k) use ($type) {
+                    if (Str::startsWith($k, $type)) return true;
+            });
+        }
     }
 }

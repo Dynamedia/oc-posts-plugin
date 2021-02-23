@@ -6,3 +6,6 @@
 0.9.01:
   - Add approval for tags
   - update_tags_table_v0.9.01.php
+0.9.02:
+  - Add layout support for tags
+  - update_tags_table_v0.9.02.php

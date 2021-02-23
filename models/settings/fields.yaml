@@ -4,65 +4,23 @@
 tabs:
     stretch: true
     fields:
-        zeroLevelPostPage:
-            tab: Post Page Settings
-            label: Without Parent Post Page
+        postPage:
+            tab: Page Settings
+            label: Post Display Page (With Categories)
             type: dropdown
-            comment: For displaying posts without a category eg. /posts/post-title. Required as a default for posts without a category
-        oneLevelPostPage:
-            tab: Post Page Settings
-            label: One Parent Post Page
+        postPageWithoutCategory:
+            tab: Page Settings
+            label: Post Display Page (No Category)
             type: dropdown
-            comment: For displaying posts with one category eg. /posts/media/post-title
-        twoLevelPostPage:
-            tab: Post Page Settings
-            label: Two Parent Post Page
-            type: dropdown
-            comment: For displaying posts with two categories eg. /posts/media/movies/post-title
-        threeLevelPostPage:
-            tab: Post Page Settings
-            label: Three Parent Post Page
-            type: dropdown
-            comment: For displaying posts with three categories eg. /posts/media/movies/action/post-title
-        fourLevelPostPage:
-            tab: Post Page Settings
-            label: Four Parent Post Page
-            type: dropdown
-            comment: For displaying posts with four categories eg. /posts/media/movies/action/sports/post-title
-        fiveLevelPostPage:
-            tab: Post Page Settings
-            label: Five+ Parent Post Page
-            type: dropdown
-            comment: For displaying posts with four categories eg. /posts/media/movies/action/sports/boxing/post-title
+            comment: Only used where using separate pages for posts and categories and post has no primary category
 
-        zeroLevelCategoryPage:
-            tab: Category Page Settings
-            label: Without Parent Category Page
-            type: dropdown
-            comment: For displaying category without a parent category eg. /posts/movies. Required.
-        oneLevelCategoryPage:
-            tab: Category Page Settings
-            label: One Parent Category Page
-            type: dropdown
-        twoLevelCategoryPage:
-            tab: Category Page Settings
-            label: Two Parent Category Page
-            type: dropdown
-        threeLevelCategoryPage:
-            tab: Category Page Settings
-            label: Three Parent Category Page
-            type: dropdown
-        fourLevelCategoryPage:
-            tab: Category Page Settings
-            label: Four Parent Category Page
-            type: dropdown
-        fiveLevelCategoryPage:
-            tab: Category Page Settings
-            label: Five+ Parent Category Page
+        categoryPage:
+            tab: Page Settings
+            label: Category Display Page
             type: dropdown
 
         tagPage:
-            tab: Tag Page Settings
+            tab: Page Settings
             label: Tag Page
             type: dropdown
 
@@ -75,5 +33,11 @@ tabs:
         defaultCategoryLayout:
             tab: CMS Layouts
             label: Default Category Layout
+            type: dropdown
+            options: \Dynamedia\Posts\Classes\Helpers\Form::getCmsLayoutOptions
+
+        defaultTagLayout:
+            tab: CMS Layouts
+            label: Default Tag Layout
             type: dropdown
             options: \Dynamedia\Posts\Classes\Helpers\Form::getCmsLayoutOptions

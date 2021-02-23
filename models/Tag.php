@@ -172,9 +172,23 @@ class Tag extends Model
     {
         $pageName = Settings::get('tagPage');
 
-        $params = ['slug' => $this->slug];
+        $params = ['postsTagSlug' => $this->slug];
 
         return strtolower(Controller::getController()->pageUrl($pageName, $params));
+    }
+
+    public function getLayout()
+    {
+        if ($this->cms_layout == "__inherit__" && Settings::get('defaultTagLayout') == '__inherit__') {
+            // No modifier
+            return false;
+        }
+        elseif ($this->cms_layout == '__inherit__') {
+            return Settings::get('defaultTagLayout');
+        }
+        else {
+            return $this->cms_layout;
+        }
     }
 
     /**

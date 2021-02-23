@@ -99,8 +99,8 @@ class DisplayPost extends ComponentBase
     // todo implement category check
     private function setPost()
     {
-        if (App::bound('dynamedia.post')) {
-            $this->post = App::make('dynamedia.post');
+        if (App::bound('dynamedia.posts.post')) {
+            $this->post = App::make('dynamedia.posts.post');
         }
     }
 

@@ -4,6 +4,7 @@ use Cms\Classes\ComponentBase;
 use Dynamedia\Posts\Classes\Helpers\Form;
 use Dynamedia\Posts\Models\Tag;
 use Lang;
+use App;
 
 class DisplayTag extends ComponentBase
 {
@@ -68,7 +69,9 @@ class DisplayTag extends ComponentBase
 
     private function setTag()
     {
-        $this->tag = Tag::where('slug', $this->param('slug'))->first();
+        if (App::bound('dynamedia.posts.tag')) {
+            $this->tag = App::make('dynamedia.posts.tag');
+        }
     }
 
     public function setPosts()

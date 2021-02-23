@@ -20,7 +20,7 @@ class CreatePostsTable extends Migration
             $table->json('body')->nullable()->default(null);
             $table->json('seo')->nullable()->default(null);
             $table->boolean('show_contents')->default(true);
-            $table->string('cms_layout')->default('default.htm');
+            $table->string('cms_layout')->default('__inherit__');
             $table->boolean('is_published')->index()->default(false);
             $table->dateTime('published_at')->nullable()->index()->default(null);
             $table->dateTime('published_until')->index()->nullable()->default(null);

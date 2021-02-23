@@ -132,8 +132,8 @@ class DisplayCategory extends ComponentBase
 
     private function setCategory()
     {
-        if (App::bound('dynamedia.category')) {
-            $this->category = App::make('dynamedia.category');
+        if (App::bound('dynamedia.posts.category')) {
+            $this->category = App::make('dynamedia.posts.category');
         }
     }
 

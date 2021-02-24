@@ -313,6 +313,8 @@ class Tag extends Model
             }
             $tag = self::find($item->reference);
 
+            if (!$tag) return;
+
             $result = [];
             $result['url'] = $tag->url;
             $result['isActive'] = $tag->url == $url;

@@ -1,7 +1,7 @@
 <?php namespace Dynamedia\Posts\Models;
 
 use Model;
-
+use BackendAuth;
 use Cms\Classes\Controller;
 use Cms\Classes\Layout;
 use Cms\Classes\Theme;
@@ -127,6 +127,14 @@ class Category extends Model
     public function beforeSave()
     {
         $this->slug = Str::slug($this->slug);
+
+        $user = BackendAuth::getUser();
+
+        if (!$this->userCanManage($user)) {
+            throw new ValidationException([
+                'error' => "Insufficient permissions to edit {$this->name}"
+            ]);
+        }
     }
 
     public function afterDelete()
@@ -237,13 +245,9 @@ class Category extends Model
      */
     public function getUrlAttribute()
     {
-        $pageName = $this->getCategoryPage();
-
-        $levels = $this->getPathFromRoot();
-
-        $path = implode('/', array_map(function ($entry) {
+         $path = implode('/', array_map(function ($entry) {
             return $entry['slug'];
-        }, $levels));
+        }, $this->getPathFromRoot()));
 
         $params = [
             'postsCategoryPath' => $path,
@@ -251,7 +255,7 @@ class Category extends Model
             'postsCategorySlug' => $this->slug
         ];
 
-        return strtolower(Controller::getController()->pageUrl($pageName, $params));
+        return strtolower(Controller::getController()->pageUrl($this->getCategoryPage(), $params));
     }
 
     public function getLayout()
@@ -310,7 +314,7 @@ class Category extends Model
             ];
         }
 
-        if ($type == 'all-posts-categories') {
+        if ($type == 'posts-all-categories') {
             $result = [
                 'dynamicItems' => true
             ];
@@ -321,7 +325,6 @@ class Category extends Model
 
     protected static function listSubCategoryOptions()
     {
-        // From Rainlab.Posts plugin
         $category = self::getNested();
 
         $iterator = function($categories) use (&$iterator) {
@@ -407,7 +410,7 @@ class Category extends Model
                 $result['items'] = $iterator($categories);
             }
         }
-        elseif ($item->type == 'all-posts-categories') {
+        elseif ($item->type == 'posts-all-categories') {
             $result = [
                 'items' => []
             ];

@@ -30,6 +30,15 @@ class Settings extends Model
         }
     }
 
+    public function resetDefault()
+    {
+        if (!$this->userCanManage(BackendAuth::getUser())) {
+            throw new ValidationException([
+                'error' => "Insufficient permissions to edit settings"
+            ]);
+        }
+    }
+
     public function filterFields($fields, $context = null)
     {
         if (!$this->userCanManage(BackendAuth::getUser())) {

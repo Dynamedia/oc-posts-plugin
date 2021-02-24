@@ -1,15 +1,16 @@
 <?php namespace Dynamedia\Posts;
 
 use Backend;
-use Dynamedia\Posts\Models\Tag;
-use Lang;
 use System\Classes\PluginBase;
+use Lang;
 use App;
 use Event;
 use Str;
 use Cms\Models\ThemeData;
 use Dynamedia\Posts\Models\Post;
 use Dynamedia\Posts\Models\Category;
+use Dynamedia\Posts\Models\Tag;
+
 
 /**
  * posts Plugin Information File
@@ -52,7 +53,6 @@ class Plugin extends PluginBase
         ThemeData::extend(function ($model) {
             $model->addJsonable('images');
         });
-
 
         Event::listen('cms.page.beforeDisplay', function ($controller, $url, $page) {
 
@@ -101,28 +101,36 @@ class Plugin extends PluginBase
          */
         Event::listen('pages.menuitem.listTypes', function() {
             return [
-                'posts-category'       => 'Posts Category',
-                'all-posts-categories' => 'All Posts Categories',
-                'posts-post'           => 'Posts Post',
-                'all-posts-posts'      => 'All Posts Posts',
-                'category-posts-posts' => 'Category Posts Posts',
+                'posts-category'       => 'Posts: A Category',
+                'posts-all-categories' => 'Posts: All Categories',
+                'posts-tag'            => 'Posts: A Tag',
+                'posts-all-tags'       => 'Posts: All Tags',
+                'posts-post'           => 'Posts: A Post',
+                'posts-all-posts'      => 'Posts: All Posts',
+                'posts-category-posts' => 'Posts: All Posts From Category',
+                'posts-tag-posts'      => 'Posts: All Posts With Tag',
             ];
         });
 
         Event::listen('pages.menuitem.getTypeInfo', function($type) {
-            if ($type == 'posts-category' || $type == 'all-posts-categories') {
+            if ($type == 'posts-category' || $type == 'posts-all-categories') {
                 return Category::getMenuTypeInfo($type);
+            } elseif ($type == 'posts-tag' || $type == 'posts-all-tags') {
+                return Tag::getMenuTypeInfo($type);
             }
-            elseif ($type == 'posts-post' || $type == 'all-posts-posts' || $type == 'category-posts-posts') {
+            elseif ($type == 'posts-post' || $type == 'posts-all-posts' || $type == 'posts-category-posts' || $type == 'posts-tag-posts') {
                 return Post::getMenuTypeInfo($type);
             }
         });
 
         Event::listen('pages.menuitem.resolveItem', function($type, $item, $url, $theme) {
-            if ($type == 'posts-category' || $type == 'all-posts-categories') {
+            if ($type == 'posts-category' || $type == 'posts-all-categories') {
                 return Category::resolveMenuItem($item, $url, $theme);
             }
-            elseif ($type == 'posts-post' || $type == 'all-posts-posts' || $type == 'category-posts-posts') {
+            if ($type == 'posts-tag' || $type == 'posts-all-tags') {
+                return Tag::resolveMenuItem($item, $url, $theme);
+            }
+            elseif ($type == 'posts-post' || $type == 'posts-all-posts' || $type == 'posts-category-posts' || $type == 'posts-tag-posts') {
                 return Post::resolveMenuItem($item, $url, $theme);
             }
         });
@@ -273,7 +281,6 @@ class Plugin extends PluginBase
      */
     public function registerNavigation()
     {
-
         return [
             'posts' => [
                 'label'       => 'Posts',

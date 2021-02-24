@@ -1,7 +1,7 @@
 <?php Block::put('breadcrumb') ?>
     <ul>
         <li><a href="<?= Backend::url('dynamedia/posts/posts') ?>">Posts</a></li>
-        <li>Previewing '<?= $this->widget->form->model->title ?>' <a target="_blank" style="color:blue;" href="<?= $this->widget->form->model->url ?>">(Live View)</a></li>
+        <li>Previewing '<?= $this->formGetModel()->title ?>' <a target="_blank" style="color:blue;" href="<?= $this->formGetModel()->url ?>">(Live View)</a></li>
 
 </ul>
 <?php Block::endPut() ?>

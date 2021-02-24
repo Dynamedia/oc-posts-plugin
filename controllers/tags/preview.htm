@@ -1,7 +1,7 @@
 <?php Block::put('breadcrumb') ?>
     <ul>
         <li><a href="<?= Backend::url('dynamedia/posts/tags') ?>">Tags</a></li>
-        <li>Previewing '<?= $this->widget->form->model->name ?>'</li>
+        <li>Previewing '<?= $this->formGetModel()->name ?>'</li>
     </ul>
 <?php Block::endPut() ?>
 

@@ -692,18 +692,33 @@ class Post extends Model
             ];
         }
 
-        if ($type == 'all-posts-posts') {
+        if ($type == 'posts-all-posts') {
             $result = [
                 'dynamicItems' => true
             ];
         }
 
-        if ($type == 'category-posts-posts') {
+        if ($type == 'posts-category-posts') {
             $references = [];
 
             $categories = Category::orderBy('name')->get();
             foreach ($categories as $category) {
                 $references[$category->id] = $category->name;
+            }
+
+            $result = [
+                'references'   => $references,
+                'dynamicItems' => true,
+                'nesting' => true
+            ];
+        }
+
+        if ($type == 'posts-tag-posts') {
+            $references = [];
+
+            $tags = Tag::orderBy('name')->get();
+            foreach ($tags as $tag) {
+                $references[$tag->id] = $tag->name;
             }
 
             $result = [
@@ -748,7 +763,7 @@ class Post extends Model
             $result['isActive'] = $post->url == $url;
             $result['mtime'] = $post->updated_at;
         }
-        elseif ($item->type == 'all-posts-posts') {
+        elseif ($item->type == 'posts-all-posts') {
             $result = [
                 'items' => []
             ];
@@ -769,7 +784,8 @@ class Post extends Model
                 $result['items'][] = $postItem;
             }
         }
-        elseif ($item->type == 'category-posts-posts') {
+
+        elseif ($item->type == 'posts-category-posts') {
             if (!$item->reference) {
                 return;
             }
@@ -783,12 +799,52 @@ class Post extends Model
                 'items' => []
             ];
 
-            $query = self::isPublished()
+            $query = self::applyIsPublished()
                 ->orderBy('title');
 
-            $categories = $category->getAllChildrenAndSelf()->lists('id');
+            if ($item->nesting) {
+                $categories = $category->getAllChildrenAndSelf()->lists('id');
+            } else {
+                $categories = [$category->id];
+            }
+
             $query->whereHas('categories', function($q) use ($categories) {
-                $q->withoutGlobalScope(NestedTreeScope::class)->whereIn('id', $categories);
+                $q->whereIn('id', $categories);
+            });
+
+            $posts = $query->get();
+
+            foreach ($posts as $post) {
+                $postItem = [
+                    'title' => $post->title,
+                    'url'   => $post->url,
+                    'mtime' => $post->updated_at
+                ];
+
+                $postItem['isActive'] = $postItem['url'] == $url;
+
+                $result['items'][] = $postItem;
+            }
+        } elseif ($item->type == 'posts-tag-posts') {
+
+            if (!$item->reference) {
+                return;
+            }
+
+            $tag = Tag::find($item->reference);
+            if (!$tag) {
+                return;
+            }
+
+            $result = [
+                'items' => []
+            ];
+
+            $query = self::applyIsPublished()
+                ->orderBy('title');
+
+            $query->whereHas('tags', function($q) use ($tag) {
+                $q->whereIn('id', [$tag->id]);
             });
 
             $posts = $query->get();

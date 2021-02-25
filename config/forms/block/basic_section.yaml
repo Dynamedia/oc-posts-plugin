@@ -1,25 +1,25 @@
 tabs:
     fields:
         heading:
-            tab: Main
+            tab: dynamedia.posts::lang.common.tabs.main
             span: left
-            label: Section Heading
+            label: dynamedia.posts::lang.common.labels.block_heading
             comment: H2
 
         sId:
-            tab: Main
+            tab: dynamedia.posts::lang.common.tabs.main
             span: right
-            label: Section ID
+            label: dynamedia.posts::lang.common.labels.block_id
             preset: heading
     
         content:
-            tab: Main
-            label: Section Content
+            tab: dynamedia.posts::lang.common.tabs.main
+            label: dynamedia.posts::lang.common.labels.block_content
             type: richeditor
             size: huge
     
         image:
-            tab: Image
+            tab: dynamedia.posts::lang.common.tabs.image
             type: nestedform
             usePanelStyles: false
             form: $/dynamedia/posts/config/forms/image/body_section.yaml

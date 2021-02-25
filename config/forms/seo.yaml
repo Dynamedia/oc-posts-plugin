@@ -13,9 +13,11 @@ tabs:
     opengraph_description:
       tab: Facebook OG
       label: Description
+      type: textarea
     twitter_title:
       tab: Twitter Card
       label: Title
     twitter_description:
       tab: Twitter Card
       label: Description
+      type: textarea

@@ -416,17 +416,17 @@ class Post extends Model
         $contentsList = [];
         foreach ($this->getPages() as $page) {
             foreach ($page as $item) {
-                if (!empty($item['section']['in_contents'])) {
+                if (!empty($item['block']['in_contents'])) {
 
                     // Page 1 does not require the page param so just use the fragment
                     if ($item['page'] == 1) {
-                        $url = "{$currentPageUrl}#{$item['section']['sId']}";
+                        $url = "{$currentPageUrl}#{$item['block']['sId']}";
                     } else {
-                        $url = "{$currentPageUrl}?page={$item['page']}#{$item['section']['sId']}";
+                        $url = "{$currentPageUrl}?page={$item['page']}#{$item['block']['sId']}";
                     }
 
                     $contentsList[] = [
-                        'title' => $item['section']['heading'],
+                        'title' => $item['block']['heading'],
                         'page' => $item['page'],
                         'url' => $url,
                     ];

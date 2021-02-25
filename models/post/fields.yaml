@@ -4,88 +4,87 @@
 tabs:
     fields:
         title:
-            tab: Detail
+            tab: dynamedia.posts::lang.common.tabs.detail
             span: left
-            label: Post Title
-            comment: This is the H1 tag
+            label: dynamedia.posts::lang.common.labels.title
 
         slug:
-            tab: Detail
+            tab: dynamedia.posts::lang.common.tabs.detail
             span: right
-            label: Slug
+            label: dynamedia.posts::lang.common.labels.slug
             preset: title
 
         excerpt:
-            tab: Detail
-            label: Post Excerpt
+            tab: dynamedia.posts::lang.common.tabs.detail
+            label: dynamedia.posts::lang.common.labels.excerpt
             type: richeditor
             size: huge
 
         images:
-            tab: dynamedia.posts::lang.post.tab.images
+            tab: dynamedia.posts::lang.common.tabs.images
             type: nestedform
             usePanelStyles: false
             form: $/dynamedia/posts/config/forms/image/main_image.yaml
 
         body:
-            tab: dynamedia.posts::lang.post.tab.body
+            tab: dynamedia.posts::lang.common.tabs.body
             label: Post Body
             type: repeater
             style: accordion
             groups: $/dynamedia/posts/config/forms/body/post.yaml
 
         primary_category:
-            tab: dynamedia.posts::lang.post.tab.categories
-            label: Primary Category
+            tab: dynamedia.posts::lang.posts.tabs.categories
+            label: dynamedia.posts::lang.posts.labels.primary_category
             type: relation
             emptyOption: None
-            comment: The most relevant category
+            comment: dynamedia.posts::lang.posts.comments.primary_category
 
         categories:
-            tab: dynamedia.posts::lang.post.tab.categories
-            label: List Categories
+            tab: dynamedia.posts::lang.posts.tabs.categories
+            label: dynamedia.posts::lang.posts.labels.category_list
             type: relation
 
         tags:
-            tab: Tags
-            label: Tags
+            tab: dynamedia.posts::lang.posts.tabs.tags
+            label: dynamedia.posts::lang.posts.labels.tags
             type: taglist
             mode: relation
 
         seo:
-            tab: SEO
+            tab: dynamedia.posts::lang.common.tabs.seo
             type: nestedform
             usePanelStyles: false
             form: $/dynamedia/posts/config/forms/seo.yaml
 
         cms_layout:
-            tab: dynamedia.posts::lang.post.tab.settings
-            label: CMS Layout
+            tab: dynamedia.posts::lang.common.tabs.settings
+            label: dynamedia.posts::lang.common.labels.cms_layout
             type: dropdown
             options: \Dynamedia\Posts\Classes\Helpers\Form::getCmsLayoutOptions
 
         is_published:
-            tab: dynamedia.posts::lang.post.tab.settings
+            tab: dynamedia.posts::lang.common.tabs.settings
             span: left
-            label: Published?
+            label: dynamedia.posts::lang.posts.labels.is_published
             type: switch
             default: off
             
         show_contents:
-            tab: dynamedia.posts::lang.post.tab.settings
+            tab: dynamedia.posts::lang.common.tabs.settings
             span: right
-            label: Show Contents?
+            label: dynamedia.posts::lang.posts.labels.show_contents
             type: switch
             default: off
 
         published_at:
-            tab: dynamedia.posts::lang.post.tab.settings
-            label: Publishing Time
+            tab: dynamedia.posts::lang.common.tabs.settings
+            label: dynamedia.posts::lang.posts.labels.published_at
             type: datepicker
-            comment: Default to now if published
+            comment: dynamedia.posts::lang.posts.comments.published_at
 
         published_until:
-            tab: dynamedia.posts::lang.post.tab.settings
-            label: Published Until
+            tab: dynamedia.posts::lang.common.tabs.settings
+            label: dynamedia.posts::lang.posts.labels.published_until
             type: datepicker
-            comment: Optional Post expiry time
+            comment: dynamedia.posts::lang.posts.comments.published_until

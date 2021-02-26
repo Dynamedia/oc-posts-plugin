@@ -8,6 +8,9 @@ use Cms\Classes\Theme;
 use Config;
 use Input;
 use Str;
+use Dynamedia\Posts\Traits\SeoTrait;
+use Dynamedia\Posts\Traits\ImagesTrait;
+use Dynamedia\Posts\Traits\ControllerTrait;
 
 /**
  * category Model
@@ -16,6 +19,9 @@ class Category extends Model
 {
     use \October\Rain\Database\Traits\Validation;
     use \October\Rain\Database\Traits\NestedTree;
+    use SeoTrait;
+    use ImagesTrait;
+    use ControllerTrait;
 
     /**
      * @var string The database table used by the model.
@@ -255,7 +261,7 @@ class Category extends Model
             'postsCategorySlug' => $this->slug
         ];
 
-        return strtolower(Controller::getController()->pageUrl($this->getCategoryPage(), $params));
+        return strtolower($this->getController()->pageUrl($this->getCategoryPage(), $params));
     }
 
     public function getLayout()

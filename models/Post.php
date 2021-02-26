@@ -12,6 +12,9 @@ use BackendAuth;
 use Cms\Classes\Controller;
 use Cms\Classes\Theme;
 use ValidationException;
+use Dynamedia\Posts\Traits\SeoTrait;
+use Dynamedia\Posts\Traits\ImagesTrait;
+use Dynamedia\Posts\Traits\ControllerTrait;
 
 /**
  * post Model
@@ -19,6 +22,9 @@ use ValidationException;
 class Post extends Model
 {
     use \October\Rain\Database\Traits\Validation;
+    use SeoTrait;
+    use ImagesTrait;
+    use ControllerTrait;
 
     /**
      * @var string The database table used by the model.
@@ -612,14 +618,7 @@ class Post extends Model
         return strtolower($this->getController()->pageUrl($pageName, $params));
     }
 
-    private function getController()
-    {
-        $controller = Controller::getController();
-        if (!$controller) {
-            $controller = new Controller(Theme::getActiveTheme());
-        }
-        return $controller;
-    }
+
 
     /**
      * Helper methods to determine the correct CMS page to

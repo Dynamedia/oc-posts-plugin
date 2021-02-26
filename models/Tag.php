@@ -6,9 +6,11 @@ use Model;
 use Str;
 use Input;
 use Config;
-use Cms\Classes\Controller;
 use BackendAuth;
 use ValidationException;
+use Dynamedia\Posts\Traits\SeoTrait;
+use Dynamedia\Posts\Traits\ImagesTrait;
+use Dynamedia\Posts\Traits\ControllerTrait;
 
 /**
  * tag Model
@@ -16,6 +18,9 @@ use ValidationException;
 class Tag extends Model
 {
     use \October\Rain\Database\Traits\Validation;
+    use SeoTrait;
+    use ImagesTrait;
+    use ControllerTrait;
 
     /**
      * @var string The database table used by the model.
@@ -174,7 +179,7 @@ class Tag extends Model
 
         $params = ['postsTagSlug' => $this->slug];
 
-        return strtolower(Controller::getController()->pageUrl($pageName, $params));
+        return strtolower($this->getController()->pageUrl($pageName, $params));
     }
 
     public function getLayout()

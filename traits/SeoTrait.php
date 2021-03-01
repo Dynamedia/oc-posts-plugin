@@ -9,7 +9,7 @@ Trait SeoTrait {
      */
     public function getSeoSearchTitle()
     {
-        if ($this->seo['title']) {
+        if (!empty($this->seo['title'])) {
             return $this->seo['title'];
         } elseif ($this->getObjectTitle()) {
             return $this->getObjectTitle();
@@ -25,7 +25,7 @@ Trait SeoTrait {
      */
     public function getSeoSearchDescription()
     {
-        if ($this->seo['description']) {
+        if (!empty($this->seo['description'])) {
             return $this->seo['description'];
         } elseif ($this->excerpt) {
             return strip_tags($this->excerpt);
@@ -41,13 +41,13 @@ Trait SeoTrait {
      */
     public function getSeoOpengraphTitle($fallback = false) {
         if ($fallback) {
-            if ($this->seo['opengraph_title']) {
+            if (!empty($this->seo['opengraph_title'])) {
                 return $this->seo['opengraph_title'];
             }
             return null;
         }
 
-        if ($this->seo['opengraph_title']) {
+        if (!empty($this->seo['opengraph_title'])) {
             return $this->seo['opengraph_title'];
         } elseif ($this->getSeoTwitterTitle($fallback = true)) {
             return $this->getSeoTwitterTitle($fallback = true);
@@ -63,13 +63,13 @@ Trait SeoTrait {
      */
     public function getSeoTwitterTitle($fallback = false) {
         if ($fallback) {
-            if ($this->seo['twitter_description']) {
+            if (!empty($this->seo['twitter_description'])) {
                 return $this->seo['twitter_description'];
             }
             return null;
         }
 
-        if ($this->seo['twitter_title']) {
+        if (!empty($this->seo['twitter_title'])) {
             return $this->seo['twitter_title'];
         } elseif ($this->getSeoOpengraphTitle($fallback = true)) {
             return $this->getSeoOpengraphTitle($fallback = true);
@@ -85,13 +85,13 @@ Trait SeoTrait {
      */
     public function getSeoOpengraphDescription($fallback = false) {
         if ($fallback) {
-            if ($this->seo['opengraph_description']) {
+            if (!empty($this->seo['opengraph_description'])) {
                 return $this->seo['opengraph_description'];
             }
             return null;
         }
 
-        if ($this->seo['opengraph_description']) {
+        if (!empty($this->seo['opengraph_description'])) {
             return $this->seo['opengraph_description'];
         } elseif ($this->getSeoTwitterDescription($fallback = true)) {
             return $this->getSeoTwitterDescription($fallback = true);
@@ -107,13 +107,13 @@ Trait SeoTrait {
      */
     public function getSeoTwitterDescription($fallback = false) {
         if ($fallback) {
-            if ($this->seo['twitter_description']) {
+            if (!empty($this->seo['twitter_description'])) {
                 return $this->seo['twitter_description'];
             }
             return null;
         }
 
-        if ($this->seo['twitter_description']) {
+        if (!empty($this->seo['twitter_description'])) {
             return $this->seo['twitter_description'];
         } elseif ($this->getSeoOpengraphDescription($fallback = true)) {
             return $this->getSeoOpengraphDescription($fallback = true);

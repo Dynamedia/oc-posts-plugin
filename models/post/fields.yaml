@@ -61,6 +61,7 @@ tabs:
             tab: dynamedia.posts::lang.common.tabs.settings
             label: dynamedia.posts::lang.common.labels.cms_layout
             type: dropdown
+            default: '__inherit__'
             options: \Dynamedia\Posts\Classes\Helpers\Form::getCmsLayoutOptions
 
         is_published:

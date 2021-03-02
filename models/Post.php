@@ -15,16 +15,15 @@ use ValidationException;
 use Dynamedia\Posts\Traits\SeoTrait;
 use Dynamedia\Posts\Traits\ImagesTrait;
 use Dynamedia\Posts\Traits\ControllerTrait;
+use \October\Rain\Database\Traits\Validation;
 
 /**
  * post Model
  */
 class Post extends Model
 {
-    use \October\Rain\Database\Traits\Validation;
-    use SeoTrait;
-    use ImagesTrait;
-    use ControllerTrait;
+
+    use SeoTrait, ImagesTrait, ControllerTrait, Validation;
 
     /**
      * @var string The database table used by the model.
@@ -466,86 +465,6 @@ class Post extends Model
 
     // Query scopes //
 
-    public function scopeGetPostsList($query, $options)
-    {
-        $is_published = true;
-        $sort = 'published_at desc';
-        $categoryId = null;
-        $subcategories = false;
-        $searchQuery = null;
-        $tagId = null;
-        $postIds = null;
-        $limit = false;
-        $page = (int) Input::get('page') ? (int) Input::get('page') : 1;
-        $perPage = 10;
-
-        extract($options);
-
-        $category = null;
-        $categoryIds = [];
-        $tag = null;
-
-        if ($categoryId) $category = Category::where('id', $categoryId)->first();
-        if ($tagId) $tag = Tag::where('id', $categoryId)->first();
-
-        // Apply category filter
-        if ($category) {
-            if ($subcategories) {
-                $categoryIds = [$category->getAllChildrenAndSelf()->lists('id')];
-            } else {
-                $categoryIds = [$category->id];
-            }
-            $query->whereHas('categories', function ($q) use ($categoryIds) {
-                $q->whereIn('id', $categoryIds);
-            });
-        }
-
-        // Apply tag filter
-
-        if ($tag) {
-            $query->whereHas('tags', function ($q) use ($tag) {
-                $q->whereIn('id', [$tag->id]);
-            });
-        }
-
-        if ($is_published) {
-            $query->applyIsPublished();
-        } else {
-            $query->applyIsNotPublished();
-        }
-
-        // Specific post filter
-
-        if ($postIds) {
-            $query->whereIn('id', explode(',',$postIds))
-                ->orderByRaw("FIELD(id, $postIds)");
-        } elseif ($sort == '__random__') {
-            $query->inRandomOrder();
-        } else {
-            @list($sortField, $sortDirection) = explode(' ', $sort);
-            if (is_null($sortDirection)) {
-                $sortDirection = "desc";
-            }
-            $query->orderBy($sortField, $sortDirection);
-        }
-
-        // This is an EXTREMELY basic search - There is no index on any of the searched columns
-        // todo Implement a fast cross-db solution. Consider full text and generated (by php) column from title, excerpt and searchable body sections
-        if ($searchQuery) {
-            $query->where("title", "LIKE", "%{$searchQuery}%")
-                ->orWhere("excerpt", "LIKE", "%{$searchQuery}%")
-                ->orWhere("body", "LIKE", "%{$searchQuery}%");
-        }
-
-        $query->with('primary_category', 'tags');
-        
-        if ($limit) {
-           return $query->limit($limit)->get();
-        }
-
-        return $query->paginate($perPage, $page);
-    }
-
     public function scopeApplyIsPublished($query)
     {
         return $query
@@ -561,6 +480,108 @@ class Post extends Model
             ->whereNull('is_published')
             ->orWhere('is_published', false)
             ->orWhere('published_at', '>', Argon::now());
+    }
+
+    public function scopeApplyWhereHasTag($query, int $tagId)
+    {
+        return $query->whereHas('tags', function($q) use ($tagId) {
+            $q->where('id', $tagId)
+                ->applyIsApproved();
+        });
+    }
+
+    public function scopeApplyWhereHasCategories($query, array $categoryIds)
+    {
+        return $query->whereHas('categories', function($q) use ($categoryIds) {
+            $q->whereIn('id', $categoryIds);
+        });
+    }
+
+    /**
+     * This is an EXTREMELY basic search - There is no index on any of the searched columns
+     * todo Implement a fast cross-db solution. Consider full text and generated (by php) column from title, excerpt and searchable body sections
+     * @param $query
+     * @param string $searchString
+     */
+    public function scopeApplySearch($query, string $searchString)
+    {
+        $query->where("title", "LIKE", "%{$searchString}%")
+            ->orWhere("excerpt", "LIKE", "%{$searchString}%")
+            ->orWhere("body", "LIKE", "%{$searchString}%");
+    }
+
+    public function scopeApplyOrdering($query, string $sort)
+    {
+        @list($sortField, $sortDirection) = explode(' ', $sort);
+        if (is_null($sortDirection)) {
+            $sortDirection = "desc";
+        }
+        return $query->orderBy($sortField, $sortDirection);
+    }
+
+    public function scopeApplyWithPrimaryCategoryAndTags($query)
+    {
+        return $query->with([
+                'primary_category',
+                'tags' => function($q) {
+                    $q->applyIsApproved();
+                }
+            ]
+        );
+    }
+
+    public static function getPostsList($options)
+    {
+        $page               = (int) Input::get('page') ? (int) Input::get('page') : 1;
+
+        // Set some defaults to be overridden by extract
+        $optionsTagId        = null;
+        $optionsCategoryIds  = [];
+        $optionsPostIds      = [];
+        $optionsPerPage      = 10;
+        $optionsLimit        = false;
+        $optionsSearchQuery  = null;
+        $optionsSort         = 'published_at desc';
+
+        extract($options);
+
+        $query = static::applyIsPublished();
+
+        if ($optionsTagId) {
+            $query->applyWhereHasTag($optionsTagId);
+        }
+
+        if ($optionsCategoryIds) {
+            $query->applyWhereHasCategories($optionsCategoryIds);
+        }
+
+        if ($optionsSearchQuery) {
+            $query->applySearch($optionsSearchQuery);
+        }
+
+        // Where Post ID's are specified the sorting is done here to keep them in order
+        if ($optionsPostIds) {
+            $stringIds = implode(",", $optionsPostIds);
+            $query->whereIn('id', $optionsPostIds)
+                ->orderByRaw("FIELD(id, $stringIds)");
+            $optionsSort = false;
+        }
+
+        if ($optionsSort) {
+            if ($optionsSort == '__random__') {
+                $query->inRandomOrder();
+            } else {
+                $query->applyOrdering($optionsSort);
+            }
+        }
+
+        $query->applyWithPrimaryCategoryAndTags();
+
+        if ($optionsLimit) {
+            return $query->limit($optionsLimit)->get();
+        }
+
+        return $query->paginate($optionsPerPage, $page);
     }
 
     public function getLayout()
@@ -651,8 +672,6 @@ class Post extends Model
         return $defaultPostsPage;
 
     }
-
-
 
     /**
      * Handler for the pages.menuitem.getTypeInfo event.

@@ -9,3 +9,7 @@
 0.9.02:
   - Add layout support for tags
   - update_tags_table_v0.9.02.php
+0.9.03:
+  - Add default post list options column (json)
+  - update_categories_table_v0.9.03.php
+  - update_tags_table_v0.9.03.php

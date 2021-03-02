@@ -1,5 +1,6 @@
 <?php namespace Dynamedia\Posts\Models;
 
+use Dynamedia\Posts\Models\Settings;
 use Model;
 use BackendAuth;
 use Cms\Classes\Controller;
@@ -11,17 +12,16 @@ use Str;
 use Dynamedia\Posts\Traits\SeoTrait;
 use Dynamedia\Posts\Traits\ImagesTrait;
 use Dynamedia\Posts\Traits\ControllerTrait;
+use \October\Rain\Database\Traits\Validation;
+use \October\Rain\Database\Traits\NestedTree;
 
 /**
  * category Model
  */
 class Category extends Model
 {
-    use \October\Rain\Database\Traits\Validation;
-    use \October\Rain\Database\Traits\NestedTree;
-    use SeoTrait;
-    use ImagesTrait;
-    use ControllerTrait;
+
+    use SeoTrait, ImagesTrait, ControllerTrait, NestedTree, Validation;
 
     /**
      * @var string The database table used by the model.
@@ -61,7 +61,8 @@ class Category extends Model
     protected $jsonable = [
         'body',
         'images',
-        'seo'
+        'seo',
+        'post_list_options',
     ];
 
     /**
@@ -148,13 +149,68 @@ class Category extends Model
         $this->posts()->detach();
     }
 
+    // Query Scopes
 
-    public function scopeHasPost($query, $post)
+    public function scopeApplyHasPost($query, $post)
     {
         return $query->whereHas('posts', function ($p) use ($post) {
 
         });
     }
+
+    // End Query Scopes
+
+    /**
+     * Get the ordering string for associated posts
+     *
+     * @return string
+     */
+    public function getPostsListSortOrder()
+    {
+        if (!empty($this->post_list_options['sort_order']) && $this->post_list_options['sort_order'] != '__inherit__' ) {
+            $sort = $this->post_list_options['sort_order'];
+        } else {
+            $sort = Settings::get('categoryPostsListSortOrder');
+        }
+
+        if (!$sort) {
+            $sort = 'published_at desc';
+        }
+
+        return $sort;
+    }
+
+    public function getPostsListIncludeSubcategories()
+    {
+        if (!empty($this->post_list_options['include_subcategories']) && $this->post_list_options['include_subcategories'] != '__inherit__' ) {
+            $value = $this->post_list_options['include_subcategories'];
+        } else {
+            $value = Settings::get('categoryPostsListIncludeSubcategories');
+        }
+
+        return $value;
+    }
+
+    public function getPostListIds()
+    {
+        if ($this->getPostsListIncludeSubcategories()) {
+            return [$this->getAllChildrenAndSelf()->lists('id')];
+        } else {
+            return [$this->id];
+        }
+    }
+
+    public function getPostsListPerPage()
+    {
+        if (!empty($this->post_list_options['per_page']) && $this->post_list_options['per_page'] != '__inherit__' ) {
+            $value = $this->post_list_options['per_page'];
+        } else {
+            $value = Settings::get('categoryPostsListPerPage');
+        }
+
+        return $value;
+    }
+
 
     public function getPathFromRoot()
     {
@@ -193,55 +249,14 @@ class Category extends Model
      * @param array $options
      * @return LengthAwarePaginator
      */
-    public function getPosts($options)
+    public function getPosts()
     {
-        /*
-        * Default options
-        */
+        $postListOptions = [
+            'optionsCategoryIds'    => $this->getPostListIds(),
+            'optionsSort'           => $this->getPostsListSortOrder()
+        ];
 
-        $is_published = true;
-        $sort = 'published_at desc';
-        $categoryIds = [];
-        $subcategories = false;
-        $limit = false;
-        $page = (int) Input::get('page') ? (int) Input::get('page') : 1;
-        $perPage = 10;
-
-        extract($options);
-
-        if ($subcategories) {
-            $categoryIds = [$this->getAllChildrenAndSelf()->lists('id')];
-        } else {
-            $categoryIds = [$this->id];
-        }
-
-        $query = Post::whereHas('categories', function ($q) use ($categoryIds) {
-            $q->whereIn('id', $categoryIds);
-        });
-
-        if ($is_published) {
-            $query->applyIsPublished();
-        } else {
-            $query->applyIsNotPublished();
-        }
-
-        if ($sort == '__random__') {
-            $query->inRandomOrder();
-        } else {
-            @list($sortField, $sortDirection) = explode(' ', $sort);
-            if (is_null($sortDirection)) {
-                $sortDirection = "desc";
-            }
-            $query->orderBy($sortField, $sortDirection);
-        }
-
-        $query->with('primary_category', 'tags');
-        
-        if ($limit) {
-           return $query->limit($limit)->get();
-        }
-
-        return $query->paginate($perPage, $page);
+        return Post::getPostsList($postListOptions);
     }
 
     /**

@@ -57,3 +57,9 @@ tabs:
             tab: dynamedia.posts::lang.common.tabs.settings
             type: switch
             default: false
+
+        post_list_options:
+            tab: dynamedia.posts::lang.common.tabs.settings
+            type: nestedform
+            usePanelStyles: false
+            form: $/dynamedia/posts/config/forms/tag_post_list_options.yaml

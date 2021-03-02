@@ -5,24 +5,62 @@ tabs:
     stretch: true
     fields:
         postPage:
-            tab: Page Settings
+            tab: Posts
             label: Post Display Page (With Categories)
             type: dropdown
+            comment: It is recommended to use the same page for post and category
+
         postPageWithoutCategory:
-            tab: Page Settings
+            tab: Posts
             label: Post Display Page (No Category)
             type: dropdown
-            comment: Only used where using separate pages for posts and categories and post has no primary category
+            comment: Only used where using separate pages for post and category and post has no primary category
 
         categoryPage:
-            tab: Page Settings
+            tab: Categories
             label: Category Display Page
             type: dropdown
+            comment: It is recommended to use the same page for post and category
+
+        categoryPostsListSortOrder:
+            tab: Categories
+            label: Default Posts Sort Order
+            type: dropdown
+            default: 'published_at desc'
+            options: \Dynamedia\Posts\Classes\Helpers\Form::getDefaultPostListSortOptions
+
+        categoryPostsListIncludeSubcategories:
+            tab: Categories
+            label: List Posts from Sub-Categories
+            type: dropdown
+            default: false
+            options: \Dynamedia\Posts\Classes\Helpers\Form::getDefaultPostListIncludeSubCategoriesOptions
+
+        categoryPostsListPerPage:
+            tab: Categories
+            label: Posts Per Page
+            type: dropdown
+            options: \Dynamedia\Posts\Classes\Helpers\Form::getDefaultPostListPerPageOptions
+            default: 10
 
         tagPage:
-            tab: Page Settings
+            tab: Tags
             label: Tag Page
             type: dropdown
+
+        tagPostsListSortOrder:
+            tab: Tags
+            label: Default Posts Sort Order
+            type: dropdown
+            default: 'published_at desc'
+            options: \Dynamedia\Posts\Classes\Helpers\Form::getDefaultPostListSortOptions
+
+        tagsPostsListPerPage:
+            tab: Tags
+            label: Posts Per Page
+            type: dropdown
+            options: \Dynamedia\Posts\Classes\Helpers\Form::getDefaultPostListPerPageOptions
+            default: 10
 
         defaultPostLayout:
             tab: CMS Layouts

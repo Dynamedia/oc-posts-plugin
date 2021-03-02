@@ -51,3 +51,9 @@ tabs:
             type: dropdown
             default: '__inherit__'
             options: \Dynamedia\Posts\Classes\Helpers\Form::getCmsLayoutOptions
+
+        post_list_options:
+            tab: dynamedia.posts::lang.common.tabs.settings
+            type: nestedform
+            usePanelStyles: false
+            form: $/dynamedia/posts/config/forms/category_post_list_options.yaml

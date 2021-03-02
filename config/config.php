@@ -6,5 +6,7 @@ return [
         'inline-right' => 'Inline Right',
         'full-above' => 'Above',
         'full-below' => 'Below',
-    ]
+    ],
+    'postsListMinPerPage' => 1,
+    'postsListMaxPerPage' => 20,
 ];

@@ -45,13 +45,51 @@ class Form
         return Config::get('dynamedia.posts::postSectionImageDropdown');
     }
 
-    public static function getComponentSortOptions()
+    public static function getDefaultPostListSortOptions()
     {
         return [
             'published_at desc' => 'Newest First',
             'published_at asc'  => 'Oldest First',
             'updated_at desc'   => 'Recently Updated',
-            '__random__'            => 'Random'
+            '__random__'        => 'Random'
         ];
+    }
+
+    public static function getPostListSortOptions()
+    {
+        $inherit = ['__inherit__' => 'Inherit'];
+        return array_merge($inherit, static::getDefaultPostListSortOptions());
+    }
+
+    public static function getDefaultPostListIncludeSubCategoriesOptions()
+    {
+        return [
+            false => 'No',
+            true => 'Yes'
+        ];
+    }
+
+    public static function getPostListIncludeSubCategoriesOptions()
+    {
+        $inherit = ['__inherit__' => 'Inherit'];
+        return array_merge($inherit, static::getDefaultPostListIncludeSubCategoriesOptions());
+    }
+
+    public static function getDefaultPostListPerPageOptions()
+    {
+        $perPage = [];
+        $min = Config::get('dynamedia.posts::postsListMinPerPage');
+        $max = Config::get('dynamedia.posts::postsListMaxPerPage');
+
+        for ($i = $min; $i <= $max; $i++) {
+            $perPage[$i] = $i;
+        }
+        return $perPage;
+    }
+
+    public static function getPostListPerPageOptions()
+    {
+        $inherit = ['__inherit__' => 'Inherit'];
+        return array_merge($inherit, static::getDefaultPostListPerPageOptions());
     }
 }

@@ -11,16 +11,17 @@ use ValidationException;
 use Dynamedia\Posts\Traits\SeoTrait;
 use Dynamedia\Posts\Traits\ImagesTrait;
 use Dynamedia\Posts\Traits\ControllerTrait;
+use \October\Rain\Database\Traits\Validation;
+use Cache;
+
 
 /**
  * tag Model
  */
 class Tag extends Model
 {
-    use \October\Rain\Database\Traits\Validation;
-    use SeoTrait;
-    use ImagesTrait;
-    use ControllerTrait;
+
+    use SeoTrait, ImagesTrait, ControllerTrait, Validation;
 
     /**
      * @var string The database table used by the model.
@@ -60,7 +61,8 @@ class Tag extends Model
     protected $jsonable = [
         'body',
         'images',
-        'seo'
+        'seo',
+        'post_list_options',
     ];
 
     /**
@@ -166,6 +168,37 @@ class Tag extends Model
     }
 
     /**
+     * Get the ordering string for associated posts
+     *
+     * @return string
+     */
+    public function getPostsListSortOrder()
+    {
+        if (!empty($this->post_list_options['sort_order']) && $this->post_list_options['sort_order'] != '__inherit__' ) {
+            $sort = $this->post_list_options['sort_order'];
+        } else {
+            $sort = Settings::get('tagPostsListSortOrder');
+        }
+
+        if (!$sort) {
+            $sort = 'published_at desc';
+        }
+
+        return $sort;
+    }
+
+    public function getPostsListPerPage()
+    {
+        if (!empty($this->post_list_options['per_page']) && $this->post_list_options['per_page'] != '__inherit__' ) {
+            $value = $this->post_list_options['per_page'];
+        } else {
+            $value = Settings::get('tagPostsListPerPage');
+        }
+
+        return $value;
+    }
+
+    /**
      * Sets the "url" attribute with a URL to this object.
      *
      * @param Controller $controller
@@ -197,51 +230,31 @@ class Tag extends Model
     }
 
     /**
+     * Only approved tags
+     *
+     * @param $query
+     * @return mixed
+     */
+    public function scopeApplyIsApproved($query)
+    {
+        return $query->where('is_approved', true);
+    }
+
+    /**
      * Get a paginated collection of posts from this category and optionally
      * the subcategories of this category
      *
      * @param array $options
      * @return LengthAwarePaginator
      */
-    public function getPosts($options)
+    public function getPosts()
     {
-        /*
-        * Default options
-        */
+        $postListOptions = [
+            'optionsTagId'  => $this->id,
+            'optionsSort'   => $this->getPostsListSortOrder()
+        ];
 
-        $is_published = true;
-        $sort = 'published_at desc';
-        $limit = false;
-        $page = (int) Input::get('page') ? (int) Input::get('page') : 1;
-        $perPage = 10;
-
-        extract($options);
-
-        $query = $this->posts();
-
-        if ($is_published) {
-            $query->applyIsPublished();
-        } else {
-            $query->applyIsNotPublished();
-        }
-
-        if ($sort == '__random__') {
-            $query->inRandomOrder();
-        } else {
-            @list($sortField, $sortDirection) = explode(' ', $sort);
-            if (is_null($sortDirection)) {
-                $sortDirection = "desc";
-            }
-            $query->orderBy($sortField, $sortDirection);
-        }
-
-        $query->with('primary_category', 'tags');
-        
-        if ($limit) {
-           return $query->limit($limit)->get();
-        }
-
-        return $query->paginate($perPage, $page);
+        return Post::getPostsList($postListOptions);
     }
 
     /**

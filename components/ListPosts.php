@@ -108,18 +108,25 @@ class ListPosts extends ComponentBase
 
     private function setPosts()
     {
-        $options = [
-            'categoryId' => $this->property('categoryFilter'),
-            'tagId' => $this->property('tagFilter'),
-            'subcategories' => (bool) $this->property('includeSubcategories'),
-            'postIds' => $this->property('postIds'),
-            'limit' => (int) $this->property('postsLimit'),
-            'perPage' => (int) $this->property('postsPerPage'),
-            'sort'   => $this->property('sortOrder')
+        $postListOptions = [
+            'optionsLimit'       => (int) $this->property('postsLimit'),
+            'optionsPerPage'     => (int) $this->property('postsPerPage'),
+            'optionsSort'        => $this->property('sortOrder')
         ];
 
-        $query = new Post();
-        $this->posts = $query->getPostsList($options);
+        if ($this->property('categoryFilter')) {
+            $postListOptions['optionsCategoryIds'] = explode(",", $this->property('categoryFilter'));
+        }
+
+        if ($this->property('tagFilter')) {
+            $postListOptions['optionsTagId'] = $this->property('categoryFilter');
+        }
+
+        if ($this->property('postIds')) {
+            $postListOptions['optionsPostIds'] = explode(",", $this->property('postIds'));
+        }
+
+        $this->posts = Post::getPostsList($postListOptions);
     }
 
     public function getSortOrderOptions()

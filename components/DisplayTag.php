@@ -2,6 +2,7 @@
 
 use Cms\Classes\ComponentBase;
 use Dynamedia\Posts\Classes\Helpers\Form;
+use Dynamedia\Posts\Models\Post;
 use Dynamedia\Posts\Models\Tag;
 use Lang;
 use App;
@@ -23,38 +24,7 @@ class DisplayTag extends ComponentBase
     public function defineProperties()
     {
         return [
-            'postsLimit' => [
-                'title'             => 'Total posts',
-                'description'       => 'Limit the number of posts to fetch',
-                'type'              => 'string',
-                'validationPattern' => '^[1-9]\d*$',
-                'validationMessage' => 'Please enter a positive whole number or leave blank',
-                'default'           => '',
-                'showExternalParam' => false,
-            ],
-            'postsPerPage' => [
-                'title'             => 'Posts per page',
-                'description'       => 'Limit the number of posts per page',
-                'type'              => 'string',
-                'validationPattern' => '^[1-9]\d*$',
-                'validationMessage' => 'Please enter a positive whole number',
-                'default'           => '10',
-                'showExternalParam' => false,
-            ],
-            'noPostsMessage' => [
-                'title'             => 'No Posts Message',
-                'description'       => 'Message to display when no posts are found',
-                'type'              => 'string',
-                'default'           => "No posts found",
-                'showExternalParam' => false,
-            ],
-            'sortOrder' => [
-                'title'       => 'Sort Order',
-                'description' => 'Sort the fetched posts',
-                'type'        => 'dropdown',
-                'default'     => 'published_at desc',
-                'showExternalParam' => false,
-            ],
+            // All component settings moved to backend settings area
         ];
     }
 
@@ -76,13 +46,7 @@ class DisplayTag extends ComponentBase
 
     public function setPosts()
     {
-        $options = [
-            'limit' => (int) $this->property('postsLimit'),
-            'perPage' => (int) $this->property('postsPerPage'),
-            'sort'   => $this->property('sortOrder')
-        ];
-
-        $this->posts = $this->tag->getPosts($options);
+       $this->posts = $this->tag->getPosts();
     }
 
     public function getSortOrderOptions()

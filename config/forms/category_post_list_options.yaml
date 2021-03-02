@@ -1,0 +1,18 @@
+fields:
+  sort_order:
+    label: Posts Sort Order
+    type: dropdown
+    default: '__inherit__'
+    options: \Dynamedia\Posts\Classes\Helpers\Form::getPostListSortOptions
+
+  include_subcategories:
+    label: List Posts from Sub-Categories
+    type: dropdown
+    default: '__inherit__'
+    options: \Dynamedia\Posts\Classes\Helpers\Form::getPostListIncludeSubCategoriesOptions
+
+  per_page:
+    label: Posts Per Page
+    type: dropdown
+    default: '__inherit__'
+    options: \Dynamedia\Posts\Classes\Helpers\Form::getPostListPerPageOptions

@@ -6,6 +6,7 @@ use Lang;
 use Str;
 use App;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Input;
 
 
@@ -21,7 +22,6 @@ class DisplayPost extends ComponentBase
 
     public $category;
     public $post;
-    public $content;
     public $defer;
 
     public function defineProperties()
@@ -85,18 +85,11 @@ class DisplayPost extends ComponentBase
         if ($this->defer) return " ";
     }
 
-    private function getSlug()
+    public function getRequestedPage()
     {
-        if ($this->param('slug')) return $this->param('slug');
-        return $this->param('postslug');
-    }
-    
-    private function getRequestedPage()
-    {
-        return Input::get('page') ? Input::get('page') : 1;
+        return (int) Input::get('page') > 0 ? (int) Input::get('page') : 1;
     }
 
-    // todo implement category check
     private function setPost()
     {
         if (App::bound('dynamedia.posts.post')) {
@@ -104,18 +97,19 @@ class DisplayPost extends ComponentBase
         }
     }
 
-    public function getContentsList()
+    public function getCurrentPage()
     {
-        if ($this->post) {
-            return $this->post->getContentsList($this->currentPageUrl());
-        }
-        return [];
+        return $this->post->pages[$this->getRequestedPage() - 1];
     }
 
     public function getPaginator()
     {
-        if ($this->post) {
-            return $this->post->getPaginator($this->currentPageUrl());
-        }
+        $paginator = new LengthAwarePaginator(
+            $this->getCurrentPage(),
+            count($this->post->pages),
+            1,
+            $this->getRequestedPage()
+        );
+        return $paginator->withPath($this->currentPageUrl());
     }
 }

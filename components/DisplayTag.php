@@ -6,11 +6,11 @@ use Dynamedia\Posts\Models\Post;
 use Dynamedia\Posts\Models\Tag;
 use Lang;
 use App;
+use Input;
 
 class DisplayTag extends ComponentBase
 {
-    public $tag = null;
-
+    public $tag;
     public $posts;
 
     public function componentDetails()
@@ -31,6 +31,8 @@ class DisplayTag extends ComponentBase
     public function onRun()
     {
         $this->setTag();
+        //$this->tag = json_decode($this->tag->toJson());
+
 
         if (!$this->tag) return $this->controller->run('404');
 
@@ -46,11 +48,20 @@ class DisplayTag extends ComponentBase
 
     public function setPosts()
     {
-       $this->posts = $this->tag->getPosts();
+        $postListOptions = [
+            'optionsTagId'      => $this->tag->id,
+            'optionsSort'       => $this->tag->post_list_sort,
+            'optionsPage'       => $this->getRequestedPage(),
+            'optionsPerPage'    => $this->tag->post_list_per_page
+        ];
+
+        $this->posts = Post::getPostsList($postListOptions);
+
     }
 
-    public function getSortOrderOptions()
+    public function getRequestedPage()
     {
-        return Form::getComponentSortOptions();
+        return (int) Input::get('page') > 0 ? (int) Input::get('page') : 1;
     }
+
 }

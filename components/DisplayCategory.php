@@ -1,13 +1,12 @@
 <?php namespace Dynamedia\Posts\Components;
 
 use Cms\Classes\ComponentBase;
-use Dynamedia\Posts\Classes\Helpers\Form;
-use Dynamedia\Posts\Models\Category;
 use Cms\Classes\Page;
 use Dynamedia\Posts\Models\Post;
 use Lang;
 use Str;
 use App;
+use Input;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class DisplayCategory extends ComponentBase
@@ -21,11 +20,7 @@ class DisplayCategory extends ComponentBase
     }
 
     public $category = null;
-
-    public $categoryIds = [];
-
     public $posts;
-
     public $defer;
 
 
@@ -39,6 +34,8 @@ class DisplayCategory extends ComponentBase
     public function onRun()
     {
         $this->setCategory();
+        //$this->category = json_decode($this->category->toJson());
+
 
         // Check that we are at the right url. If not, redirect and get back here.
         // ONLY if we're getting the category from the URL
@@ -50,13 +47,6 @@ class DisplayCategory extends ComponentBase
             if ($this->currentPageUrl() != $this->category->url) {
                 return redirect($this->category->url, 301);
             }
-        // We now should have the category if specified - get a list of ID's
-
-        if ($this->category) $this->categoryIds[] = $this->category->id;
-
-        if ($this->property('categoryFilter') == "__fromList__" && $this->property('categoryIds')) {
-            $this->categoryIds = explode(',', $this->property('categoryIds'));
-        }
 
         $this->setPosts();
     }
@@ -96,10 +86,21 @@ class DisplayCategory extends ComponentBase
         }
     }
 
-
     public function setPosts()
     {
-        $this->posts = $this->category->getPosts();
+        $postListOptions = [
+            'optionsCategoryIds' => $this->category->post_list_ids,
+            'optionsSort'        => $this->category->post_list_sort,
+            'optionsPage'        => $this->getRequestedPage(),
+            'optionsPerPage'     => $this->category->post_list_per_page
+        ];
+
+        $this->posts = Post::getPostsList($postListOptions);
+    }
+
+    public function getRequestedPage()
+    {
+        return (int) Input::get('page') > 0 ? (int) Input::get('page') : 1;
     }
 
 }

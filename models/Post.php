@@ -69,12 +69,28 @@ class Post extends Model
     /**
      * @var array Attributes to be appended to the API representation of the model (ex. toArray())
      */
-    protected $appends = ['url'];
+    protected $appends = [
+        'url',
+        'contents_list',
+        'pages',
+        'seo_search_title',
+        'seo_search_description',
+        'seo_opengraph_title',
+        'seo_opengraph_description',
+        'seo_opengraph_image',
+        'seo_twitter_title',
+        'seo_twitter_description',
+        'seo_twitter_image',
+        'computed_cms_layout',
+    ];
 
     /**
      * @var array Attributes to be removed from the API representation of the model (ex. toArray())
      */
-    protected $hidden = [];
+    protected $hidden = [
+        'cms_layout',
+        'seo',
+    ];
 
     /**
      * @var array Attributes to be cast to Argon (Carbon) instances
@@ -113,6 +129,344 @@ class Post extends Model
     public $attachOne = [];
     public $attachMany = [];
 
+    // ------------------------- //
+    // ---- Events Handling ---- //
+    // ------------------------- //
+
+    public function beforeSave()
+    {
+        $user = BackendAuth::getUser();
+
+        if (empty($this->user)) {
+
+            if (!is_null($user)) {
+                $this->user = $user->id;
+            }
+        }
+
+        // Permissions logic
+        if (!$this->userCanEdit($user)) {
+            throw new ValidationException([
+                'error' => "Insufficient permissions to edit {$this->slug}"
+            ]);
+        }
+
+        if ($this->isDirty('is_published')) {
+            if ($this->is_published && !$this->userCanPublish($user)) {
+                throw new ValidationException([
+                    'error' => "Insufficient permissions to publish {$this->slug}"
+                ]);
+            }
+            if (!$this->is_published && !$this->userCanUnpublish($user)) {
+                throw new ValidationException([
+                    'error' => "Insufficient permissions to unpublish {$this->slug}"
+                ]);
+            }
+        }
+        // End permissions logic
+
+        $this->slug = Str::slug($this->slug);
+
+
+        if ($this->is_published && $this->published_at == null) {
+            $this->published_at = Argon::now();
+        }
+
+        if (!$this->is_published) {
+            $this->published_at = null;
+        }
+    }
+
+    public function afterSave()
+    {
+        if ($this->primary_category) {
+            $this->categories()->sync([$this->primary_category->id], false);
+        } else {
+            if ($this->categories->count() > 0) {
+                $this->primary_category = $this->categories->first();
+            }
+        }
+    }
+
+    public function beforeDelete()
+    {
+        if (!$this->userCanDelete(BackendAuth::getUser())) {
+            throw new ValidationException([
+                'error' => "Insufficient permissions to delete {$this->slug}"
+            ]);
+        }
+    }
+
+    public function afterDelete()
+    {
+        $this->categories()->detach();
+        $this->tags()->detach();
+    }
+
+
+
+    // ---------------------- //
+    // ---- Query scopes ---- //
+    // ---------------------- //
+
+
+    public function scopeApplyIsPublished($query)
+    {
+        return $query
+            ->whereNotNull('is_published')
+            ->where('is_published', true)
+            ->whereNotNull('published_at')
+            ->where('published_at', '<', Argon::now());
+    }
+
+    public function scopeApplyIsNotPublished($query)
+    {
+        return $query
+            ->whereNull('is_published')
+            ->orWhere('is_published', false)
+            ->orWhere('published_at', '>', Argon::now());
+    }
+
+    public function scopeApplyWhereHasTag($query, int $tagId)
+    {
+        return $query->whereHas('tags', function($q) use ($tagId) {
+            $q->where('id', $tagId)
+                ->applyIsApproved();
+        });
+    }
+
+    public function scopeApplyWhereHasCategories($query, array $categoryIds)
+    {
+        return $query->whereHas('categories', function($q) use ($categoryIds) {
+            $q->whereIn('id', $categoryIds);
+        });
+    }
+
+    /**
+     * This is an EXTREMELY basic search - There is no index on any of the searched columns
+     * todo Implement a fast cross-db solution. Consider full text and generated (by php) column from title, excerpt and searchable body sections
+     * @param $query
+     * @param string $searchString
+     */
+    public function scopeApplySearch($query, string $searchString)
+    {
+        $query->where("title", "LIKE", "%{$searchString}%")
+            ->orWhere("excerpt", "LIKE", "%{$searchString}%")
+            ->orWhere("body", "LIKE", "%{$searchString}%");
+    }
+
+    public function scopeApplyOrdering($query, string $sort)
+    {
+        @list($sortField, $sortDirection) = explode(' ', $sort);
+        if (is_null($sortDirection)) {
+            $sortDirection = "desc";
+        }
+        return $query->orderBy($sortField, $sortDirection);
+    }
+
+    public function scopeApplyWithTags($query)
+    {
+        return $query->with([
+            'tags'
+        ]);
+    }
+
+    public function scopeApplyWithPrimaryCategory($query)
+    {
+        return $query->with([
+            'primary_category'
+        ]);
+    }
+
+    public function scopeApplyWithUser($query)
+    {
+        return $query->with([
+            'user' => function($q) {
+                $q->select('id', 'first_name', 'last_name');
+            }
+        ]);
+    }
+
+    public static function getPostsList($options)
+    {
+        // Set some defaults to be overridden by extract
+        $optionsTagId        = null;
+        $optionsCategoryIds  = [];
+        $optionsPostIds      = [];
+        $optionsPage         = 1;
+        $optionsPerPage      = 10;
+        $optionsLimit        = false;
+        $optionsSearchQuery  = null;
+        $optionsSort         = 'published_at desc';
+
+        extract($options);
+
+        $query = static::applyIsPublished();
+
+        if ($optionsTagId) {
+            $query->applyWhereHasTag($optionsTagId);
+        }
+
+        if ($optionsCategoryIds) {
+            $query->applyWhereHasCategories($optionsCategoryIds);
+        }
+
+        if ($optionsSearchQuery) {
+            $query->applySearch($optionsSearchQuery);
+        }
+
+        // Where Post ID's are specified the sorting is done here to keep them in order
+        if ($optionsPostIds) {
+            $stringIds = implode(",", $optionsPostIds);
+            $query->whereIn('id', $optionsPostIds)
+                ->orderByRaw("FIELD(id, $stringIds)");
+            $optionsSort = false;
+        }
+
+        if ($optionsSort) {
+            if ($optionsSort == '__random__') {
+                $query->inRandomOrder();
+            } else {
+                $query->applyOrdering($optionsSort);
+            }
+        }
+
+        $query->applyWithPrimaryCategory()
+            ->applyWithTags()
+            ->applyWithUser();
+
+        if ($optionsLimit) {
+            return $query->limit($optionsLimit)->get();
+        }
+
+        return $query->paginate($optionsPerPage, $optionsPage);
+    }
+
+
+    // ----------------------------- //
+    // ---- Helpers and Getters ---- //
+    // ----------------------------- //
+
+
+    public function getCmsLayout()
+    {
+        if ($this->cms_layout == "__inherit__" && Settings::get('defaultPostLayout') == '__inherit__') {
+            // Inherit from category first.
+            if ($this->primary_category) {
+                return $this->primary_category->getCmsLayout();
+            } else {
+                return false;
+            }
+        }
+        if ($this->cms_layout == '__inherit__') {
+            return Settings::get('defaultPostLayout');
+        }
+        else {
+            return $this->cms_layout;
+        }
+    }
+
+
+    /**
+     * Helper methods to determine the correct CMS page to
+     * pass to the router.
+     *
+     * @return array
+     */
+    private function getPostPage()
+    {
+        $defaultPostsPage = Settings::get('postPage');
+        $noCategoryPostsPage = Settings::get('postPageWithoutCategory');
+        $categoryPage = Settings::get('categoryPage');
+
+        // Exit here as no issues to navigate
+        if ($this->primary_category) {
+            return $defaultPostsPage;
+        }
+
+        // Same page for both components
+        if ($defaultPostsPage == $categoryPage) {
+            return $defaultPostsPage;
+        }
+
+        // Post has no category and needs to be handled with a separate page
+        if ($noCategoryPostsPage) {
+            return $noCategoryPostsPage;
+        }
+
+        // Just return the default page and accept it may have /default/ in the url
+        return $defaultPostsPage;
+    }
+
+    /**
+     * Process the json column 'content' and return an array
+     * of pages containing our items
+     * @return array
+     */
+    public function getPages()
+    {
+        $bodyPages = [];
+        $page = [];
+        $curPage = 1;
+
+        foreach ($this->body as $item) {
+            // Commit the items to a page when we find a page break
+            if ($item['_group'] == 'pagebreak') {
+                $bodyPages[] = $page;
+                $page = [];
+                $curPage++;
+                continue;
+            }
+            // If our item is not a page break we add it to the page
+            $item['page'] = $curPage;
+            $page[] = $item;
+        }
+        // Add the last page
+        $bodyPages[] = $page;
+
+        return $bodyPages;
+    }
+
+
+    /**
+     * Get the list of contents
+     *
+     * @return array
+     */
+    public function getContentsList()
+    {
+        if (!$this->show_contents) return [];
+
+        $contentsList = [];
+        foreach ($this->getPages() as $page) {
+            foreach ($page as $item) {
+                if (!empty($item['block']['in_contents'])) {
+
+                    // Page 1 does not require the page param so just use the fragment
+                    if ($item['page'] == 1) {
+                        $url = "{$this->url}#{$item['block']['sId']}";
+                    } else {
+                        $url = "{$this->url}?page={$item['page']}#{$item['block']['sId']}";
+                    }
+
+                    $contentsList[] = [
+                        'title' => $item['block']['heading'],
+                        'page' => $item['page'],
+                        'url' => $url,
+                        'contents_list'
+                    ];
+                }
+            }
+        }
+
+        return $contentsList;
+    }
+
+
+
+    // ------------------------------ //
+    // ---- Permissions Checking ---- //
+    // ------------------------------ //
 
     /**
      * Check if user has required permissions to delete
@@ -239,6 +593,11 @@ class Post extends Model
         }
     }
 
+
+    // --------------------- //
+    // ---- Form Widget ---- //
+    // --------------------- //
+
     public function filterFields($fields, $context = null)
     {
         $user = BackendAuth::getUser();
@@ -246,28 +605,28 @@ class Post extends Model
         if ($this->is_published) {
             if (!$this->userCanUnpublish($user)) {
                 if (isset($fields->is_published)) {
-                   $fields->is_published->readOnly = true;
+                    $fields->is_published->readOnly = true;
                     $fields->is_published->comment = "You do not have permission to unpublish this post";
 
                 }
                 if (isset($fields->published_at)) {
-                   $fields->published_at->readOnly = true;
+                    $fields->published_at->readOnly = true;
                 }
                 if (isset($fields->published_until)) {
-                   $fields->published_until->readOnly = true;
+                    $fields->published_until->readOnly = true;
                 }
             }
         } else {
             if (!$this->userCanPublish($user)) {
                 if (isset($fields->is_published)) {
-                   $fields->is_published->readOnly = true;
-                   $fields->is_published->comment = "You do not have permission to publish this post";
+                    $fields->is_published->readOnly = true;
+                    $fields->is_published->comment = "You do not have permission to publish this post";
                 }
                 if (isset($fields->published_at)) {
-                   $fields->published_at->readOnly = true;
+                    $fields->published_at->readOnly = true;
                 }
                 if (isset($fields->published_until)) {
-                   $fields->published_until->readOnly = true;
+                    $fields->published_until->readOnly = true;
                 }
             }
         }
@@ -297,310 +656,11 @@ class Post extends Model
         }
     }
 
-    public function beforeSave()
-    {
-        $user = BackendAuth::getUser();
-
-        if (empty($this->user)) {
-
-            if (!is_null($user)) {
-                $this->user = $user->id;
-            }
-        }
-
-        // Permissions logic
-        if (!$this->userCanEdit($user)) {
-            throw new ValidationException([
-                'error' => "Insufficient permissions to edit {$this->slug}"
-            ]);
-        }
-
-        if ($this->isDirty('is_published')) {
-            if ($this->is_published && !$this->userCanPublish($user)) {
-                throw new ValidationException([
-                    'error' => "Insufficient permissions to publish {$this->slug}"
-                ]);
-            }
-            if (!$this->is_published && !$this->userCanUnpublish($user)) {
-                throw new ValidationException([
-                    'error' => "Insufficient permissions to unpublish {$this->slug}"
-                ]);
-            }
-        }
-        // End permissions logic
-
-        $this->slug = Str::slug($this->slug);
 
 
-        if ($this->is_published && $this->published_at == null) {
-            $this->published_at = Argon::now();
-        }
-
-        if (!$this->is_published) {
-            $this->published_at = null;
-        }
-    }
-
-    public function afterSave()
-    {
-        if ($this->primary_category) {
-            $this->categories()->sync([$this->primary_category->id], false);
-        } else {
-            if ($this->categories->count() > 0) {
-                $this->primary_category = $this->categories->first();
-            }
-        }
-    }
-
-    public function beforeDelete()
-    {
-        if (!$this->userCanDelete(BackendAuth::getUser())) {
-            throw new ValidationException([
-                'error' => "Insufficient permissions to delete {$this->slug}"
-            ]);
-        }
-    }
-    public function afterDelete()
-    {
-        $this->categories()->detach();
-        $this->tags()->detach();
-    }
-
-    /**
-     * Process the json column 'content' and return an array
-     * of pages containing our items
-     * @return array
-     */
-    public function getPages()
-    {
-        $bodyPages = [];
-        $page = [];
-        $curPage = 1;
-
-        foreach ($this->body as $item) {
-            // Commit the items to a page when we find a page break
-            if ($item['_group'] == 'pagebreak') {
-                $bodyPages[] = $page;
-                $page = [];
-                $curPage++;
-                continue;
-            }
-            // If our item is not a page break we add it to the page
-            $item['page'] = $curPage;
-            $page[] = $item;
-        }
-        // Add the last page
-        $bodyPages[] = $page;
-
-        return $bodyPages;
-    }
-
-    public function getPageCount()
-    {
-        return count($this->getPages());
-    }
-
-    public function getPage()
-    {
-        try {
-            return $this->getPages()[$this->getRequestedPage() - 1];
-        } catch (\Exception $e) {
-            return false;
-        }
-    }
-
-    /**
-     * Get the list of contents
-     * @param $currentPageUrl
-     * @return array
-     */
-    public function getContentsList($currentPageUrl)
-    {
-        if (!$this->show_contents) return [];
-
-        $contentsList = [];
-        foreach ($this->getPages() as $page) {
-            foreach ($page as $item) {
-                if (!empty($item['block']['in_contents'])) {
-
-                    // Page 1 does not require the page param so just use the fragment
-                    if ($item['page'] == 1) {
-                        $url = "{$currentPageUrl}#{$item['block']['sId']}";
-                    } else {
-                        $url = "{$currentPageUrl}?page={$item['page']}#{$item['block']['sId']}";
-                    }
-
-                    $contentsList[] = [
-                        'title' => $item['block']['heading'],
-                        'page' => $item['page'],
-                        'url' => $url,
-                    ];
-                }
-            }
-        }
-
-        return $contentsList;
-    }
-
-    /**
-     * Pagination for post pages
-     * @param $currentPageUrl
-     * @return LengthAwarePaginator
-     */
-    public function getPaginator($currentPageUrl)
-    {
-        $paginator = new LengthAwarePaginator(
-            $this->getPage(),
-            $this->getPageCount(),
-            1,
-            $this->getRequestedPage()
-        );
-        return $paginator->withPath($currentPageUrl);
-    }
-
-    public function getRequestedPage()
-    {
-        return (int) Input::get('page') ? (int) Input::get('page') : 1;
-    }
-
-    // Query scopes //
-
-    public function scopeApplyIsPublished($query)
-    {
-        return $query
-            ->whereNotNull('is_published')
-            ->where('is_published', true)
-            ->whereNotNull('published_at')
-            ->where('published_at', '<', Argon::now());
-    }
-
-    public function scopeApplyIsNotPublished($query)
-    {
-        return $query
-            ->whereNull('is_published')
-            ->orWhere('is_published', false)
-            ->orWhere('published_at', '>', Argon::now());
-    }
-
-    public function scopeApplyWhereHasTag($query, int $tagId)
-    {
-        return $query->whereHas('tags', function($q) use ($tagId) {
-            $q->where('id', $tagId)
-                ->applyIsApproved();
-        });
-    }
-
-    public function scopeApplyWhereHasCategories($query, array $categoryIds)
-    {
-        return $query->whereHas('categories', function($q) use ($categoryIds) {
-            $q->whereIn('id', $categoryIds);
-        });
-    }
-
-    /**
-     * This is an EXTREMELY basic search - There is no index on any of the searched columns
-     * todo Implement a fast cross-db solution. Consider full text and generated (by php) column from title, excerpt and searchable body sections
-     * @param $query
-     * @param string $searchString
-     */
-    public function scopeApplySearch($query, string $searchString)
-    {
-        $query->where("title", "LIKE", "%{$searchString}%")
-            ->orWhere("excerpt", "LIKE", "%{$searchString}%")
-            ->orWhere("body", "LIKE", "%{$searchString}%");
-    }
-
-    public function scopeApplyOrdering($query, string $sort)
-    {
-        @list($sortField, $sortDirection) = explode(' ', $sort);
-        if (is_null($sortDirection)) {
-            $sortDirection = "desc";
-        }
-        return $query->orderBy($sortField, $sortDirection);
-    }
-
-    public function scopeApplyWithPrimaryCategoryAndTags($query)
-    {
-        return $query->with([
-                'primary_category',
-                'tags' => function($q) {
-                    $q->applyIsApproved();
-                }
-            ]
-        );
-    }
-
-    public static function getPostsList($options)
-    {
-        $page               = (int) Input::get('page') ? (int) Input::get('page') : 1;
-
-        // Set some defaults to be overridden by extract
-        $optionsTagId        = null;
-        $optionsCategoryIds  = [];
-        $optionsPostIds      = [];
-        $optionsPerPage      = 10;
-        $optionsLimit        = false;
-        $optionsSearchQuery  = null;
-        $optionsSort         = 'published_at desc';
-
-        extract($options);
-
-        $query = static::applyIsPublished();
-
-        if ($optionsTagId) {
-            $query->applyWhereHasTag($optionsTagId);
-        }
-
-        if ($optionsCategoryIds) {
-            $query->applyWhereHasCategories($optionsCategoryIds);
-        }
-
-        if ($optionsSearchQuery) {
-            $query->applySearch($optionsSearchQuery);
-        }
-
-        // Where Post ID's are specified the sorting is done here to keep them in order
-        if ($optionsPostIds) {
-            $stringIds = implode(",", $optionsPostIds);
-            $query->whereIn('id', $optionsPostIds)
-                ->orderByRaw("FIELD(id, $stringIds)");
-            $optionsSort = false;
-        }
-
-        if ($optionsSort) {
-            if ($optionsSort == '__random__') {
-                $query->inRandomOrder();
-            } else {
-                $query->applyOrdering($optionsSort);
-            }
-        }
-
-        $query->applyWithPrimaryCategoryAndTags();
-
-        if ($optionsLimit) {
-            return $query->limit($optionsLimit)->get();
-        }
-
-        return $query->paginate($optionsPerPage, $page);
-    }
-
-    public function getLayout()
-    {
-        if ($this->cms_layout == "__inherit__" && Settings::get('defaultPostLayout') == '__inherit__') {
-            // Inherit from category first.
-            if ($this->primary_category) {
-                return $this->primary_category->getLayout();
-            } else {
-                return false;
-            }
-        }
-        if ($this->cms_layout == '__inherit__') {
-            return Settings::get('defaultPostLayout');
-        }
-        else {
-            return $this->cms_layout;
-        }
-    }
+    // ------------------------------------------- //
+    // ---- Attributes for API Representation ---- //
+    // ------------------------------------------- //
 
 
     /**
@@ -635,43 +695,29 @@ class Post extends Model
             'postsCategorySlug' => !empty($this->primary_category) ? $this->primary_category->slug : null
         ];
 
-
         return strtolower($this->getController()->pageUrl($pageName, $params));
     }
 
-
-
-    /**
-     * Helper methods to determine the correct CMS page to
-     * pass to the router.
-     *
-     * @return array
-     */
-    private function getPostPage()
+    public function getComputedCmsLayoutAttribute()
     {
-        $defaultPostsPage = Settings::get('postPage');
-        $noCategoryPostsPage = Settings::get('postPageWithoutCategory');
-        $categoryPage = Settings::get('categoryPage');
-
-        // Exit here as no issues to navigate
-        if ($this->primary_category) {
-            return $defaultPostsPage;
-        }
-
-        // Same page for both components
-        if ($defaultPostsPage == $categoryPage) {
-            return $defaultPostsPage;
-        }
-
-        // Post has no category and needs to be handled with a separate page
-        if ($noCategoryPostsPage) {
-            return $noCategoryPostsPage;
-        }
-
-        // Just return the default page and accept it may have /default/ in the url
-        return $defaultPostsPage;
-
+        return $this->getCmsLayout();
     }
+
+    public function getContentsListAttribute()
+    {
+        return $this->getContentsList();
+    }
+
+    public function getPagesAttribute()
+    {
+        return $this->getPages();
+    }
+
+
+
+    // ---------------------------- //
+    // ---- Rainlab Pages Menu ---- //
+    // ---------------------------- //
 
     /**
      * Handler for the pages.menuitem.getTypeInfo event.

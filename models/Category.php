@@ -68,12 +68,37 @@ class Category extends Model
     /**
      * @var array Attributes to be appended to the API representation of the model (ex. toArray())
      */
-    protected $appends = ['url'];
+    protected $appends = [
+        'url',
+        'seo_search_title',
+        'seo_search_description',
+        'seo_opengraph_title',
+        'seo_opengraph_description',
+        'seo_opengraph_image',
+        'seo_twitter_title',
+        'seo_twitter_description',
+        'seo_twitter_image',
+        'post_list_ids',
+        'post_list_sort',
+        'post_list_per_page',
+        'computed_cms_layout',
+        'path_from_root',
+        'path_to_root',
+        'subcategory_ids',
+    ];
 
     /**
      * @var array Attributes to be removed from the API representation of the model (ex. toArray())
      */
-    protected $hidden = [];
+    protected $hidden = [
+        'post_list_options',
+        'parent_id',
+        'nest_left',
+        'nest_right',
+        'nest_depth',
+        'cms_layout',
+        'seo',
+    ];
 
     /**
      * @var array Attributes to be cast to Argon (Carbon) instances
@@ -103,33 +128,9 @@ class Category extends Model
     public $attachOne = [];
     public $attachMany = [];
 
-    /**
-     * Check if user has required permissions to view tags
-     * @param $user
-     * @return bool
-     */
-    public function userCanView($user)
-    {
-        if (!$user->hasAccess('dynamedia.posts.view_categories')) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    /**
-     * Check if user has required permissions to manage tags
-     * @param $user
-     * @return bool
-     */
-    public function userCanManage($user)
-    {
-        if (!$user->hasAccess('dynamedia.posts.manage_categories')) {
-            return false;
-        } else {
-            return true;
-        }
-    }
+    // ------------------------- //
+    // ---- Events Handling ---- //
+    // ------------------------- //
 
     public function beforeSave()
     {
@@ -149,8 +150,13 @@ class Category extends Model
         $this->posts()->detach();
     }
 
-    // Query Scopes
 
+
+    // ---------------------- //
+    // ---- Query Scopes ---- //
+    // ---------------------- //
+
+    // todo delete?
     public function scopeApplyHasPost($query, $post)
     {
         return $query->whereHas('posts', function ($p) use ($post) {
@@ -158,7 +164,11 @@ class Category extends Model
         });
     }
 
-    // End Query Scopes
+
+
+    // -------------------- //
+    // ---- Posts List ---- //
+    // -------------------- //
 
     /**
      * Get the ordering string for associated posts
@@ -180,7 +190,7 @@ class Category extends Model
         return $sort;
     }
 
-    public function getPostsListIncludeSubcategories()
+    private function getPostsListIncludeSubcategories()
     {
         if (!empty($this->post_list_options['include_subcategories']) && $this->post_list_options['include_subcategories'] != '__inherit__' ) {
             $value = $this->post_list_options['include_subcategories'];
@@ -191,16 +201,16 @@ class Category extends Model
         return $value;
     }
 
-    public function getPostListIds()
+    private function getPostListIds()
     {
         if ($this->getPostsListIncludeSubcategories()) {
-            return [$this->getAllChildrenAndSelf()->lists('id')];
+            return $this->getAllChildrenAndSelf()->lists('id');
         } else {
             return [$this->id];
         }
     }
 
-    public function getPostsListPerPage()
+    private function getPostsListPerPage()
     {
         if (!empty($this->post_list_options['per_page']) && $this->post_list_options['per_page'] != '__inherit__' ) {
             $value = $this->post_list_options['per_page'];
@@ -211,6 +221,25 @@ class Category extends Model
         return $value;
     }
 
+
+
+    // --------------------- ------- //
+    // ---- Helpers and Getters ---- //
+    // ---------------------- ------ //
+
+    public function getCmsLayout()
+    {
+        if ($this->cms_layout == "__inherit__" && Settings::get('defaultCategoryLayout') == '__inherit__') {
+            // No modifier
+            return false;
+        }
+        elseif ($this->cms_layout == '__inherit__') {
+            return Settings::get('defaultCategoryLayout');
+        }
+        else {
+            return $this->cms_layout;
+        }
+    }
 
     public function getPathFromRoot()
     {
@@ -242,22 +271,45 @@ class Category extends Model
         return $path;
     }
 
-    /**
-     * Get a paginated collection of posts from this category and optionally
-     * the subcategories of this category
-     *
-     * @param array $options
-     * @return LengthAwarePaginator
-     */
-    public function getPosts()
-    {
-        $postListOptions = [
-            'optionsCategoryIds'    => $this->getPostListIds(),
-            'optionsSort'           => $this->getPostsListSortOrder()
-        ];
 
-        return Post::getPostsList($postListOptions);
+
+    // ------------------------------ //
+    // ---- Permissions Checking ---- //
+    // ------------------------------ //
+
+    /**
+     * Check if user has required permissions to view tags
+     * @param $user
+     * @return bool
+     */
+    public function userCanView($user)
+    {
+        if (!$user->hasAccess('dynamedia.posts.view_categories')) {
+            return false;
+        } else {
+            return true;
+        }
     }
+
+    /**
+     * Check if user has required permissions to manage tags
+     * @param $user
+     * @return bool
+     */
+    public function userCanManage($user)
+    {
+        if (!$user->hasAccess('dynamedia.posts.manage_categories')) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+
+    // ------------------------------------------- //
+    // ---- Attributes for API Representation ---- //
+    // ------------------------------------------- //
 
     /**
      * Sets the "url" attribute with a URL to this object.
@@ -276,35 +328,50 @@ class Category extends Model
             'postsCategorySlug' => $this->slug
         ];
 
-        return strtolower($this->getController()->pageUrl($this->getCategoryPage(), $params));
+        return strtolower($this->getController()
+            ->pageUrl(Settings::get('categoryPage'), $params));
     }
 
-    public function getLayout()
+    public function getPostListIdsAttribute()
     {
-        if ($this->cms_layout == "__inherit__" && Settings::get('defaultCategoryLayout') == '__inherit__') {
-            // No modifier
-            return false;
-        }
-        elseif ($this->cms_layout == '__inherit__') {
-            return Settings::get('defaultCategoryLayout');
-        }
-        else {
-            return $this->cms_layout;
-        }
+        return $this->getPostListIds();
     }
 
-
-    /**
-     * Helper methods to determine the correct CMS page to
-     * pass to the router
-     *
-     * @return array
-     */
-    private function getCategoryPage()
+    public function getPostListSortAttribute()
     {
-        return Settings::get('categoryPage');
+        return $this->getPostsListSortOrder();
     }
 
+    public function getPostListPerPageAttribute()
+    {
+        return $this->getPostsListPerPage();
+    }
+
+    public function getComputedCmsLayoutAttribute()
+    {
+        return $this->getCmsLayout();
+    }
+
+    public function getPathFromRootAttribute()
+    {
+        return $this->getPathFromRoot();
+    }
+
+    public function getPathToRootAttribute()
+    {
+        return $this->getPathToRoot();
+    }
+
+    public function getSubcategoryIdsAttribute()
+    {
+        return $this->getAllChildren()->lists('id');
+    }
+
+
+
+    // ---------------------------- //
+    // ---- Rainlab Pages Menu ---- //
+    // ---------------------------- //
 
     /**
      * Handler for the pages.menuitem.getTypeInfo event.

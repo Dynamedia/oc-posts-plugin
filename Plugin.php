@@ -66,8 +66,8 @@ class Plugin extends PluginBase
             if ($displayCategory) {
                 $category = Category::where('slug', $slug)->first();
 
-                if ($category && $category->getLayout() !== false) {
-                    $page->layout = $category->getLayout();
+                if ($category && $category->computed_cms_layout !== false) {
+                    $page->layout = $category->computed_cms_layout;
                 }
 
                 App::instance('dynamedia.posts.category', $category);
@@ -75,11 +75,13 @@ class Plugin extends PluginBase
 
             if ($displayPost) {
                 $post = Post::where('slug', $slug)
-                    ->with('primary_category', 'tags')
+                    ->applyWithPrimaryCategory()
+                    ->applyWithTags()
+                    ->applyWithUser()
                     ->first();
 
-                if ($post && $post->getLayout() !== false) {
-                    $page->layout = $post->getLayout();
+                if ($post && $post->computed_cms_layout !== false) {
+                    $page->layout = $post->computed_cms_layout;
                 }
 
                 App::instance('dynamedia.posts.post', $post);
@@ -89,8 +91,8 @@ class Plugin extends PluginBase
                 $tag = Tag::where('slug', $slug)
                     ->first();
 
-                if ($tag && $tag->getLayout() !== false) {
-                    $page->layout = $tag->getLayout();
+                if ($tag && $tag->getCmsLayout() !== false) {
+                    $page->layout = $tag->getCmsLayout();
                 }
 
                 App::instance('dynamedia.posts.tag', $tag);

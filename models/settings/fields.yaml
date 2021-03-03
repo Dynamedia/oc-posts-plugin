@@ -55,7 +55,7 @@ tabs:
             default: 'published_at desc'
             options: \Dynamedia\Posts\Classes\Helpers\Form::getDefaultPostListSortOptions
 
-        tagsPostsListPerPage:
+        tagPostsListPerPage:
             tab: Tags
             label: Posts Per Page
             type: dropdown

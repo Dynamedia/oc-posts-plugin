@@ -54,7 +54,7 @@ class ListPosts extends ComponentBase
                 'default'           => '',
                 'showExternalParam' => false
             ],
-            'NotPostIds' => [
+            'notPostIds' => [
                 'title'             => 'Exclude Posts',
                 'description'       => 'Exclude these post Id\'s',
                 'validationPattern' => '^\d+(,\d+)*$',
@@ -150,6 +150,7 @@ class ListPosts extends ComponentBase
         if ($this->property('notPostIds')) {
              $excludes = array_merge($excludes, explode(",", $this->property('notPostIds')));
         }
+
 
         $postListOptions['optionsNotPostIds'] = $excludes;
 

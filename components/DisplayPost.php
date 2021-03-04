@@ -6,12 +6,14 @@ use Lang;
 use Str;
 use App;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Dynamedia\Posts\Traits\PaginationTrait;
 use Input;
 
 
 class DisplayPost extends ComponentBase
 {
+    use PaginationTrait;
+
     public function componentDetails()
     {
         return [
@@ -22,6 +24,7 @@ class DisplayPost extends ComponentBase
 
     public $category;
     public $post;
+    public $paginator;
     public $defer;
 
     public function defineProperties()
@@ -56,6 +59,8 @@ class DisplayPost extends ComponentBase
                 }
             }
         }
+
+        $this->setPaginator();
     }
 
     /**
@@ -97,19 +102,18 @@ class DisplayPost extends ComponentBase
         }
     }
 
-    public function getCurrentPage()
+    private function setPaginator()
     {
-        return $this->post->pages[$this->getRequestedPage() - 1];
+        if (empty($this->post->pages)) return;
+
+        $paginatorOptions = [
+            'items'         => $this->post->pages[$this->getRequestedPage() - 1],
+            'totalResults'  => count($this->post->pages),
+            'itemsPerPage'  => 1,
+            'requestedPage' => $this->getRequestedPage()
+        ];
+
+        $this->paginator = $this->getPaginator($paginatorOptions, $this->currentPageUrl());
     }
 
-    public function getPaginator()
-    {
-        $paginator = new LengthAwarePaginator(
-            $this->getCurrentPage(),
-            count($this->post->pages),
-            1,
-            $this->getRequestedPage()
-        );
-        return $paginator->withPath($this->currentPageUrl());
-    }
 }

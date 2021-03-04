@@ -1,15 +1,16 @@
 <?php namespace Dynamedia\Posts\Components;
 
 use Cms\Classes\ComponentBase;
-use Dynamedia\Posts\Classes\Helpers\Form;
+use Dynamedia\Posts\Traits\PaginationTrait;
 use Dynamedia\Posts\Models\Post;
-use Dynamedia\Posts\Models\Tag;
 use Lang;
 use App;
 use Input;
 
 class DisplayTag extends ComponentBase
 {
+    use PaginationTrait;
+
     public $tag;
     public $posts;
 
@@ -31,8 +32,6 @@ class DisplayTag extends ComponentBase
     public function onRun()
     {
         $this->setTag();
-        //$this->tag = json_decode($this->tag->toJson());
-
 
         if (!$this->tag) return $this->controller->run('404');
 
@@ -55,13 +54,9 @@ class DisplayTag extends ComponentBase
             'optionsPerPage'    => $this->tag->post_list_per_page
         ];
 
-        $this->posts = Post::getPostsList($postListOptions);
+        $postList = Post::getPostsList($postListOptions);
 
-    }
-
-    public function getRequestedPage()
-    {
-        return (int) Input::get('page') > 0 ? (int) Input::get('page') : 1;
+        $this->posts = $this->getPaginator($postList, $this->currentPageUrl());
     }
 
 }

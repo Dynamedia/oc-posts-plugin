@@ -3,6 +3,7 @@
 use Cms\Classes\ComponentBase;
 use Cms\Classes\Page;
 use Dynamedia\Posts\Models\Post;
+use Dynamedia\Posts\Traits\PaginationTrait;
 use Lang;
 use Str;
 use App;
@@ -11,6 +12,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class DisplayCategory extends ComponentBase
 {
+    use PaginationTrait;
+
     public function componentDetails()
     {
         return [
@@ -34,8 +37,6 @@ class DisplayCategory extends ComponentBase
     public function onRun()
     {
         $this->setCategory();
-        //$this->category = json_decode($this->category->toJson());
-
 
         // Check that we are at the right url. If not, redirect and get back here.
         // ONLY if we're getting the category from the URL
@@ -92,15 +93,11 @@ class DisplayCategory extends ComponentBase
             'optionsCategoryIds' => $this->category->post_list_ids,
             'optionsSort'        => $this->category->post_list_sort,
             'optionsPage'        => $this->getRequestedPage(),
-            'optionsPerPage'     => $this->category->post_list_per_page
+            'optionsPerPage'     => $this->category->post_list_per_page,
         ];
 
-        $this->posts = Post::getPostsList($postListOptions);
-    }
+        $postList = Post::getPostsList($postListOptions);
 
-    public function getRequestedPage()
-    {
-        return (int) Input::get('page') > 0 ? (int) Input::get('page') : 1;
+        $this->posts = $this->getPaginator($postList, $this->currentPageUrl());
     }
-
 }

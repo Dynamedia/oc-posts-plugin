@@ -2,10 +2,13 @@
 
 use Cms\Classes\ComponentBase;
 use Dynamedia\Posts\Models\Post;
+use Dynamedia\Posts\Traits\PaginationTrait;
 use Input;
 
 class SearchPosts extends ComponentBase
 {
+    use PaginationTrait;
+
     public $posts;
     public $searchQuery;
 
@@ -66,15 +69,18 @@ class SearchPosts extends ComponentBase
 
     private function setPosts()
     {
-        $options = [
-            'searchQuery' => $this->searchQuery,
-            'limit' => (int) $this->property('postsLimit'),
-            'perPage' => (int) $this->property('postsPerPage'),
+        $postListOptions = [
+            'optionsLimit'       => (int) $this->property('postsLimit'),
+            'optionsPerPage'     => (int) $this->property('postsPerPage'),
+            'optionsPage'        => $this->getRequestedPage(),
+            'optionsSort'        => $this->property('sortOrder'),
+            'optionsSearchQuery' => $this->searchQuery
         ];
 
-        $query = new Post();
-        $this->posts = $query->getPostsList($options);
-    }
+        $postList = Post::getPostsList($postListOptions);
+        $this->posts = $this->getPaginator($postList, $this->currentPageUrl())
+            ->appends(["q" => $this->searchQuery]);
+        }
 
     private function setSearchQuery()
     {

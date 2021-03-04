@@ -89,7 +89,12 @@ class Form
 
     public static function getPostListPerPageOptions()
     {
-        $inherit = ['__inherit__' => 'Inherit'];
-        return array_merge($inherit, static::getDefaultPostListPerPageOptions());
+        $appended = ['__inherit__' => 'Inherit'];
+        $default  = static::getDefaultPostListPerPageOptions();
+
+        foreach ($default as $entry) {
+            $appended[$entry] = $entry;
+        }
+        return $appended;
     }
 }

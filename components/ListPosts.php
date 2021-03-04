@@ -5,10 +5,13 @@ use Dynamedia\Posts\Classes\Helpers\Form;
 use Dynamedia\Posts\Models\Category;
 use Dynamedia\Posts\Models\Post;
 use Dynamedia\Posts\Models\Tag;
+use Dynamedia\Posts\Traits\PaginationTrait;
 use Lang;
 
 class ListPosts extends ComponentBase
 {
+    use PaginationTrait;
+
     public $posts;
 
     public function componentDetails()
@@ -111,6 +114,7 @@ class ListPosts extends ComponentBase
         $postListOptions = [
             'optionsLimit'       => (int) $this->property('postsLimit'),
             'optionsPerPage'     => (int) $this->property('postsPerPage'),
+            'optionsPage'        => $this->getRequestedPage(),
             'optionsSort'        => $this->property('sortOrder')
         ];
 
@@ -126,7 +130,9 @@ class ListPosts extends ComponentBase
             $postListOptions['optionsPostIds'] = explode(",", $this->property('postIds'));
         }
 
-        $this->posts = Post::getPostsList($postListOptions);
+        $postList = Post::getPostsList($postListOptions);
+
+        $this->posts = $this->getPaginator($postList, $this->currentPageUrl());
     }
 
     public function getSortOrderOptions()

@@ -16,6 +16,7 @@ use Dynamedia\Posts\Traits\SeoTrait;
 use Dynamedia\Posts\Traits\ImagesTrait;
 use Dynamedia\Posts\Traits\ControllerTrait;
 use \October\Rain\Database\Traits\Validation;
+use Cache;
 
 /**
  * post Model
@@ -287,9 +288,23 @@ class Post extends Model
         ]);
     }
 
+    /**
+     * Get a list of posts
+     * Implements a simple micro-cahce of 10 seconds to reduce load.
+     * todo document fully and abstract caching with support for multiple drivers
+     *
+     * @param $options
+     * @return array
+     */
     public static function getPostsList($options)
     {
+        $cacheKey = md5(serialize($options));
+        if (Cache::has($cacheKey)) {
+            return Cache::get($cacheKey);
+        }
+
         // Set some defaults to be overridden by extract
+        $optionsOutput       = 'array';
         $optionsTagId        = null;
         $optionsCategoryIds  = [];
         $optionsPostIds      = [];
@@ -335,11 +350,39 @@ class Post extends Model
             ->applyWithTags()
             ->applyWithUser();
 
-        if ($optionsLimit) {
-            return $query->limit($optionsLimit)->get();
+        // We need to do paging ourselves to support later API. Paginate in the components for now
+        $totalResults = $query->count();
+
+        // Apply limits if required
+        if ($optionsLimit && $optionsLimit < $totalResults) {
+            $totalResults = $optionsLimit;
+            if ($optionsLimit < $optionsPerPage) {
+                $optionsPerPage = $optionsLimit;
+            }
         }
 
-        return $query->paginate($optionsPerPage, $optionsPage);
+        $totalPages = (int) ceil($totalResults / $optionsPerPage);
+
+        $result = [
+            'totalResults'      => $totalResults,
+            'totalPages'        => $totalPages,
+            'requestedPage'     => $optionsPage,
+            'itemsPerPage'      => $optionsPerPage,
+        ];
+
+        $offset = ($optionsPage - 1) * $optionsPerPage;
+
+
+        $items = $query->skip($offset)
+            ->take($optionsPerPage)
+            ->get()
+            ->toArray();
+
+        $result ['items'] = $items;
+
+        Cache::put($cacheKey, $result, 10);
+
+        return $result;
     }
 
 

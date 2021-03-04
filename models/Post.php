@@ -370,7 +370,7 @@ class Post extends Model
                 $optionsPerPage = $optionsLimit;
             }
         }
-        
+
         $totalPages = (int) ceil($totalResults / $optionsPerPage);
 
         $result = [

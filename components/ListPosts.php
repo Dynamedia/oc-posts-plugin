@@ -160,6 +160,6 @@ class ListPosts extends ComponentBase
 
     public function getSortOrderOptions()
     {
-        return Form::getComponentSortOptions();
+        return Form::getDefaultPostListSortOptions();
     }
 }

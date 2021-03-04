@@ -8,6 +8,7 @@ use October\Rain\Argon\Argon;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Input;
 use Str;
+use App;
 use BackendAuth;
 use Cms\Classes\Controller;
 use Cms\Classes\Theme;
@@ -288,6 +289,11 @@ class Post extends Model
         ]);
     }
 
+    public function scopeApplyExcludePosts($query, array $ids)
+    {
+        return $query->whereNotIn('id', $ids);
+    }
+
     /**
      * Get a list of posts
      * Implements a simple micro-cahce of 10 seconds to reduce load.
@@ -304,10 +310,10 @@ class Post extends Model
         }
 
         // Set some defaults to be overridden by extract
-        $optionsOutput       = 'array';
         $optionsTagId        = null;
         $optionsCategoryIds  = [];
         $optionsPostIds      = [];
+        $optionsNotPostIds   = [];
         $optionsPage         = 1;
         $optionsPerPage      = 10;
         $optionsLimit        = false;
@@ -317,6 +323,10 @@ class Post extends Model
         extract($options);
 
         $query = static::applyIsPublished();
+
+        if ($optionsNotPostIds) {
+            $query->applyExcludePosts($optionsNotPostIds);
+        }
 
         if ($optionsTagId) {
             $query->applyWhereHasTag($optionsTagId);
@@ -360,7 +370,7 @@ class Post extends Model
                 $optionsPerPage = $optionsLimit;
             }
         }
-
+        
         $totalPages = (int) ceil($totalResults / $optionsPerPage);
 
         $result = [

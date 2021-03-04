@@ -6,6 +6,7 @@ use Dynamedia\Posts\Models\Category;
 use Dynamedia\Posts\Models\Post;
 use Dynamedia\Posts\Models\Tag;
 use Dynamedia\Posts\Traits\PaginationTrait;
+use App;
 use Lang;
 
 class ListPosts extends ComponentBase
@@ -48,6 +49,14 @@ class ListPosts extends ComponentBase
             'postIds' => [
                 'title'             => 'Post Filter',
                 'description'       => 'Restrict results to these post Id\'s',
+                'validationPattern' => '^\d+(,\d+)*$',
+                'validationMessage' => 'Please enter a comma separated list of post Id\'s',
+                'default'           => '',
+                'showExternalParam' => false
+            ],
+            'NotPostIds' => [
+                'title'             => 'Exclude Posts',
+                'description'       => 'Exclude these post Id\'s',
                 'validationPattern' => '^\d+(,\d+)*$',
                 'validationMessage' => 'Please enter a comma separated list of post Id\'s',
                 'default'           => '',
@@ -129,6 +138,20 @@ class ListPosts extends ComponentBase
         if ($this->property('postIds')) {
             $postListOptions['optionsPostIds'] = explode(",", $this->property('postIds'));
         }
+
+        $excludes = [];
+        if (App::bound('dynamedia.posts.post')) {
+            $self = App::make('dynamedia.posts.post');
+            if (!empty($self->id)) {
+                $excludes[] = $self->id;
+            }
+        }
+
+        if ($this->property('notPostIds')) {
+             $excludes = array_merge($excludes, explode(",", $this->property('notPostIds')));
+        }
+
+        $postListOptions['optionsNotPostIds'] = $excludes;
 
         $postList = Post::getPostsList($postListOptions);
 

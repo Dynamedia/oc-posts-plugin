@@ -45,12 +45,13 @@ class DisplayPost extends ComponentBase
             return;
         }
         // Check that we are at the right url. If not, redirect and get back here.
-        if ($this->currentPageUrl() != $this->post->url) {
-            return redirect($this->post->url, 301);
+        if ($this->currentPageUrl() != $this->post['url']) {
+            return redirect($this->post['url'], 301);
         }
         // Check publishing status and permissions
-        if (!$this->post->is_published) {
-            if (! BackendAuth::getUser() || ! $this->post->userCanEdit(BackendAuth::getUser())) {
+        if (!$this->post['is_published']) {
+            $user = BackendAuth::getUser();
+            if (!$user || !$user->id == $this->post['user']['id'] || !$user->hasAccess(['edit_all_unpublished_posts']) ) {
                 try {
                 return $this->controller
                     ->setStatusCode(403)->run('403');
@@ -104,11 +105,11 @@ class DisplayPost extends ComponentBase
 
     private function setPaginator()
     {
-        if (empty($this->post->pages)) return;
+        if (empty($this->post['pages'])) return;
 
         $paginatorOptions = [
-            'items'         => $this->post->pages[$this->getRequestedPage() - 1],
-            'totalResults'  => count($this->post->pages),
+            'items'         => $this->post['pages'][$this->getRequestedPage() - 1],
+            'totalResults'  => count($this->post['pages']),
             'itemsPerPage'  => 1,
             'requestedPage' => $this->getRequestedPage()
         ];

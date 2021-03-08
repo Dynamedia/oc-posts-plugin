@@ -238,6 +238,34 @@ class Tag extends Model
         }
     }
 
+    /**
+     * Get a single tag as an array
+     *
+     * todo move to a tag repository
+     *
+     * @param $options
+     * @return array
+     */
+    public static function getTagAsArray($slug)
+    {
+        $cacheKey = md5(__METHOD__ . "tag_{$slug}");
+        if (Cache::has($cacheKey)) {
+            return Cache::get($cacheKey);
+        }
+
+        $query = static::where('slug', $slug);
+
+        $result = $query->first();
+
+        if ($result) {
+            $result = $result->toArray();
+            Cache::put($cacheKey, $result, 10);
+            return $result;
+        } else {
+            return [];
+        }
+    }
+
 
 
     // ------------------------------ //

@@ -19,7 +19,7 @@ class ListPosts extends ComponentBase
     {
         return [
             'name'        => 'ListPosts Component',
-            'description' => 'No description provided yet...'
+            'description' => 'Create a list of posts'
         ];
     }
 

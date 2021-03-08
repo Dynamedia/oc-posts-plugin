@@ -9,6 +9,7 @@ use Cms\Classes\Theme;
 use Config;
 use Input;
 use Str;
+use Cache;
 use Dynamedia\Posts\Traits\SeoTrait;
 use Dynamedia\Posts\Traits\ImagesTrait;
 use Dynamedia\Posts\Traits\ControllerTrait;
@@ -164,6 +165,13 @@ class Category extends Model
         });
     }
 
+    public function scopeApplyWithChildren($query)
+    {
+        return $query->with([
+            'children'
+        ]);
+    }
+
 
 
     // -------------------- //
@@ -219,6 +227,45 @@ class Category extends Model
         }
 
         return $value;
+    }
+
+    /**
+     * Get a single category as an array
+     *
+     * todo move to a tag repository
+     *
+     * @param $options
+     * @return array
+     */
+    public static function getCategoryAsArray($options)
+    {
+        $cacheKey = md5(__METHOD__ . serialize($options));
+        if (Cache::has($cacheKey)) {
+            return Cache::get($cacheKey);
+        }
+
+        $optionsSlug            = false;
+        $optionsWithChildren    = false;
+
+        extract($options);
+
+        if (!$optionsSlug) return [];
+
+        $query = static::where('slug', $optionsSlug);
+
+        if ($optionsWithChildren) {
+            $query->applyWithChildren();
+        }
+
+        $result = $query->first();
+
+        if ($result) {
+            $result = $result->toArray();
+            Cache::put($cacheKey, $result, 10);
+            return $result;
+        } else {
+            return [];
+        }
     }
 
 
@@ -366,6 +413,7 @@ class Category extends Model
     {
         return $this->getAllChildren()->lists('id');
     }
+
 
 
 

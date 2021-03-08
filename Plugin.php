@@ -39,7 +39,6 @@ class Plugin extends PluginBase
      */
     public function register()
     {
-        \DB::connection()->enableQueryLog();
     }
 
     /**
@@ -49,7 +48,6 @@ class Plugin extends PluginBase
      */
     public function boot()
     {
-
         ThemeData::extend(function ($model) {
             $model->addJsonable('images');
         });
@@ -64,35 +62,30 @@ class Plugin extends PluginBase
             if (!$slug) return;
 
             if ($displayCategory) {
-                $category = Category::where('slug', $slug)->first();
+                $category = Category::getCategoryAsArray(['optionsSlug' => $slug]);
 
-                if ($category && $category->computed_cms_layout !== false) {
-                    $page->layout = $category->computed_cms_layout;
+                if ($category && $category['computed_cms_layout'] !== false) {
+                    $page->layout = $category['computed_cms_layout'];
                 }
 
                 App::instance('dynamedia.posts.category', $category);
             }
 
             if ($displayPost) {
-                $post = Post::where('slug', $slug)
-                    ->applyWithPrimaryCategory()
-                    ->applyWithTags()
-                    ->applyWithUser()
-                    ->first();
+                $post = Post::getPostAsArray(['optionsSlug' => $slug]);
 
-                if ($post && $post->computed_cms_layout !== false) {
-                    $page->layout = $post->computed_cms_layout;
+                if ($post && $post['computed_cms_layout'] !== false) {
+                    $page->layout = $post['computed_cms_layout'];
                 }
 
                 App::instance('dynamedia.posts.post', $post);
             }
 
             if ($displayTag) {
-                $tag = Tag::where('slug', $slug)
-                    ->first();
+                $tag = Tag::getTagAsArray($slug);
 
-                if ($tag && $tag->getCmsLayout() !== false) {
-                    $page->layout = $tag->getCmsLayout();
+                if ($tag && $tag['computed_cms_layout'] !== false) {
+                    $page->layout = $tag['computed_cms_layout'];
                 }
 
                 App::instance('dynamedia.posts.tag', $tag);

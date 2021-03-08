@@ -45,8 +45,8 @@ class DisplayCategory extends ComponentBase
                 $this->defer = true;
                 return;
             }
-            if ($this->currentPageUrl() != $this->category->url) {
-                return redirect($this->category->url, 301);
+            if ($this->currentPageUrl() != $this->category['url']) {
+                return redirect($this->category['url'], 301);
             }
 
         $this->setPosts();
@@ -90,10 +90,10 @@ class DisplayCategory extends ComponentBase
     public function setPosts()
     {
         $postListOptions = [
-            'optionsCategoryIds' => $this->category->post_list_ids,
-            'optionsSort'        => $this->category->post_list_sort,
+            'optionsCategoryIds' => $this->category['post_list_ids'],
+            'optionsSort'        => $this->category['post_list_sort'],
             'optionsPage'        => $this->getRequestedPage(),
-            'optionsPerPage'     => $this->category->post_list_per_page,
+            'optionsPerPage'     => $this->category['post_list_per_page'],
         ];
 
         $postList = Post::getPostsList($postListOptions);

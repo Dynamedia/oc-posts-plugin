@@ -1,18 +1,50 @@
 {% set tag = __SELF__.tag %}
 {% set posts = __SELF__.posts %}
+<style>
+    h1 {
+        text-align: center; margin-top: 30px;
+    }
+    table {
+        width:100%; margin:30px auto;
+    }
 
-{% partial __SELF__ ~ "::style" %}
+    pre {
+        max-width: 600px;
+    }
+</style>
+<h1>Tag & List Properties</h1>
+<p>
+    This plugin component ({{ __SELF__.alias }}) provides default markup as a convenience to developers but should be overridden by the theme (<a href="https://octobercms.com/docs/cms/components#overriding-partials" target="_blank">October CMS Docs</a>).
+    <br>
+    <br>
+    To view and download a completed theme to help with implementation, please see <a href="https://oc-posts.dynamedia.uk" target="_blank">oc-posts.dynamedia.uk</a> and <a href="https://github.com/Dynamedia/oc-posts-demo" target="_blank">Github</a>.
+    The demo theme is MIT licensed and is therefore free to modify and redistribute.
+</p>
 
-<article class="dynamedia posts tag">
-    {% partial __SELF__ ~ "::banner" tag = tag %}
+<h2>Tag</h2>
+<table>
+    <tr>
+        <th>Property</th>
+        <th>Value</th>
+    </tr>
+    {% for key, value in tag %}
+        <tr>
+            <td>{{ key }}</td>
+            <td>{{ dump(value) }}</td>
+        </tr>
+    {% endfor %}
+</table>
 
-    <h1>{{ tag.name }}</h1>
-
-    {% partial __SELF__ ~ "::body" tag = tag %}
-
-</article>
-
-<div class="dynamedia posts list">
-    <h2>Posts tagged {{ tag.name }}</h2>
-    {% partial __SELF__ ~ "::postslist" posts = posts %}
-</div>
+<h2>Post List (First Item)</h2>
+<table>
+    <tr>
+        <th>Property</th>
+        <th>Value</th>
+    </tr>
+    {% for key, value in posts | first  %}
+        <tr>
+            <td>{{ key }}</td>
+            <td>{{ dump(value) }}</td>
+        </tr>
+    {% endfor %}
+</table>

@@ -295,6 +295,55 @@ class Post extends Model
     }
 
     /**
+     * Get a single post as an array
+     *
+     * todo move to a post repository
+     *
+     * @param $options
+     * @return array
+     */
+    public static function getPostAsArray($options)
+    {
+        $cacheKey = md5(__METHOD__ . serialize($options));
+        if (Cache::has($cacheKey)) {
+            return Cache::get($cacheKey);
+        }
+
+        $optionsSlug                = false;
+        $optionsWithPrimaryCategory = true;
+        $optionsWithTags            = true;
+        $optionsWithUser            = true;
+
+        extract($options);
+
+        if (!$optionsSlug) return [];
+
+        $query = Post::where('slug', $optionsSlug);
+
+        if ($optionsWithPrimaryCategory) {
+            $query->applyWithPrimaryCategory();
+        }
+
+        if ($optionsWithTags) {
+            $query->applyWithTags();
+        }
+
+        if ($optionsWithUser) {
+            $query->applyWithUser();
+        }
+
+        $result = $query->first();
+
+        if ($result) {
+            $result = $result->toArray();
+            Cache::put($cacheKey, $result, 10);
+            return $result;
+        } else {
+            return [];
+        }
+    }
+
+    /**
      * Get a list of posts
      * Implements a simple micro-cahce of 10 seconds to reduce load.
      * todo document fully and abstract caching with support for multiple drivers
@@ -304,7 +353,7 @@ class Post extends Model
      */
     public static function getPostsList($options)
     {
-        $cacheKey = md5(serialize($options));
+        $cacheKey = md5(__METHOD__ . serialize($options));
         if (Cache::has($cacheKey)) {
             return Cache::get($cacheKey);
         }

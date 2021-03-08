@@ -1,8 +1,0 @@
-{% if category.images.banner.default %}
-    {% partial __SELF__ ~ "::helpers/image"
-        image = category.images.banner.default
-        srcset = category.images.banner.srcset
-        alt = category.images.banner_alt
-        class = "category-image banner " ~ category.images.banner.class
-    %}
-{% endif %}

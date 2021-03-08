@@ -48,10 +48,10 @@ class DisplayTag extends ComponentBase
     public function setPosts()
     {
         $postListOptions = [
-            'optionsTagId'      => $this->tag->id,
-            'optionsSort'       => $this->tag->post_list_sort,
+            'optionsTagId'      => $this->tag['id'],
+            'optionsSort'       => $this->tag['post_list_sort'],
             'optionsPage'       => $this->getRequestedPage(),
-            'optionsPerPage'    => $this->tag->post_list_per_page
+            'optionsPerPage'    => $this->tag['post_list_per_page']
         ];
 
         $postList = Post::getPostsList($postListOptions);

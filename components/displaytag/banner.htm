@@ -1,8 +1,0 @@
-{% if tag.images.banner.default %}
-    {% partial __SELF__ ~ "::helpers/image"
-        image = tag.images.banner.default
-        srcset = tag.images.banner.srcset
-        alt = tag.images.banner_alt
-        class = "tag-image banner " ~ tag.images.banner.class
-    %}
-{% endif %}

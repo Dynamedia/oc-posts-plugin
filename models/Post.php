@@ -413,12 +413,18 @@ class Post extends Model
         $totalResults = $query->count();
 
         // Apply limits if required
-        if ($optionsLimit && $optionsLimit < $totalResults) {
+        // Do not paginate
+        if ($optionsLimit == $optionsPerPage) {
+            $optionsPage = 1;
+        } elseif ($optionsLimit && $optionsLimit < $totalResults) {
             $totalResults = $optionsLimit;
             if ($optionsLimit < $optionsPerPage) {
                 $optionsPerPage = $optionsLimit;
+            } elseif ($optionsLimit == $optionsPerPage) {
+                $optionsPage = 1;
             }
         }
+
 
         $totalPages = (int) ceil($totalResults / $optionsPerPage);
 

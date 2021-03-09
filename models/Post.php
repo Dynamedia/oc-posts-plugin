@@ -321,7 +321,7 @@ class Post extends Model
     public static function getPostAsArray($options)
     {
         $cacheKey = md5(__METHOD__ . serialize($options));
-        if (Cache::has($cacheKey)) {
+        if (Settings::get('enableMicroCache') && Cache::has($cacheKey)) {
             return Cache::get($cacheKey);
         }
 
@@ -352,8 +352,10 @@ class Post extends Model
 
         if ($result) {
             $result = $result->toArray();
-
-            Cache::put($cacheKey, $result, 10);
+            if (Settings::get('enableMicroCache') && Settings::get('microCacheDuration')) {
+                $expiresAt = Argon::now()->addSeconds(Settings::get('microCacheDuration'));
+                Cache::put($cacheKey, $result, $expiresAt);
+            }
             return $result;
         } else {
             return [];
@@ -371,7 +373,7 @@ class Post extends Model
     public static function getPostsList($options)
     {
         $cacheKey = md5(__METHOD__ . serialize($options));
-        if (Cache::has($cacheKey)) {
+        if (Settings::get('enableMicroCache') && Cache::has($cacheKey)) {
             return Cache::get($cacheKey);
         }
 
@@ -471,7 +473,10 @@ class Post extends Model
 
         $result ['items'] = $items;
 
-        Cache::put($cacheKey, $result, 10);
+        if (Settings::get('enableMicroCache') && Settings::get('microCacheDuration')) {
+            $expiresAt = Argon::now()->addSeconds(Settings::get('microCacheDuration'));
+            Cache::put($cacheKey, $result, $expiresAt);
+        }
 
         return $result;
     }

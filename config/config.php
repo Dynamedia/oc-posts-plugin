@@ -9,4 +9,6 @@ return [
     ],
     'postsListMinPerPage' => 1,
     'postsListMaxPerPage' => 20,
+    'microCacheMinDuration' => 1,
+    'microCacheMaxDuration' => 60,
 ];

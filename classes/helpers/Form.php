@@ -97,4 +97,15 @@ class Form
         }
         return $appended;
     }
+
+    public static function getMicroCacheDuration()
+    {
+        $min = Config::get('dynamedia.posts::microCacheMinDuration');
+        $max = Config::get('dynamedia.posts::microCacheMaxDuration');
+
+        for ($i = $min; $i <= $max; $i++) {
+            $perPage[$i] = $i;
+        }
+        return $perPage;
+    }
 }

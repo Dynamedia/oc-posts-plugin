@@ -1,6 +1,7 @@
 <?php namespace Dynamedia\Posts\Models;
 
 use Dynamedia\Posts\Models\Settings;
+use October\Rain\Argon\Argon;
 use Model;
 use BackendAuth;
 use Cms\Classes\Controller;
@@ -240,7 +241,7 @@ class Category extends Model
     public static function getCategoryAsArray($options)
     {
         $cacheKey = md5(__METHOD__ . serialize($options));
-        if (Cache::has($cacheKey)) {
+        if (Settings::get('enableMicroCache') && Cache::has($cacheKey)) {
             return Cache::get($cacheKey);
         }
 
@@ -261,7 +262,12 @@ class Category extends Model
 
         if ($result) {
             $result = $result->toArray();
-            Cache::put($cacheKey, $result, 10);
+
+            if (Settings::get('enableMicroCache') && Settings::get('microCacheDuration')) {
+                $expiresAt = Argon::now()->addSeconds(Settings::get('microCacheDuration'));
+                Cache::put($cacheKey, $result, $expiresAt);
+            }
+
             return $result;
         } else {
             return [];

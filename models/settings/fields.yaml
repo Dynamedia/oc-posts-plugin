@@ -79,3 +79,17 @@ tabs:
             label: Default Tag Layout
             type: dropdown
             options: \Dynamedia\Posts\Classes\Helpers\Form::getCmsLayoutOptions
+
+        enableMicroCache:
+            tab: Cache
+            label: Enable Micro Cache
+            type: switch
+            default: true
+
+        microCacheDuration:
+            tab: Cache
+            label: Micro Cache Duration (Seconds)
+            type: dropdown
+            options: \Dynamedia\Posts\Classes\Helpers\Form::getMicroCacheDuration
+
+

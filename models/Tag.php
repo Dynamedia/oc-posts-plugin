@@ -2,6 +2,7 @@
 
 use Dynamedia\Posts\Models\Post;
 use Dynamedia\Posts\Models\Settings;
+use October\Rain\Argon\Argon;
 use Model;
 use Str;
 use Input;
@@ -249,7 +250,7 @@ class Tag extends Model
     public static function getTagAsArray($slug)
     {
         $cacheKey = md5(__METHOD__ . "tag_{$slug}");
-        if (Cache::has($cacheKey)) {
+        if (Settings::get('enableMicroCache') && Cache::has($cacheKey)) {
             return Cache::get($cacheKey);
         }
 
@@ -259,7 +260,12 @@ class Tag extends Model
 
         if ($result) {
             $result = $result->toArray();
-            Cache::put($cacheKey, $result, 10);
+
+            if (Settings::get('enableMicroCache') && Settings::get('microCacheDuration')) {
+                $expiresAt = Argon::now()->addSeconds(Settings::get('microCacheDuration'));
+                Cache::put($cacheKey, $result, $expiresAt);
+            }
+
             return $result;
         } else {
             return [];

@@ -57,6 +57,12 @@ tabs:
             usePanelStyles: false
             form: $/dynamedia/posts/config/forms/seo.yaml
 
+        user:
+            tab: dynamedia.posts::lang.common.tabs.settings
+            label: dynamedia.posts::lang.common.labels.user_author
+            type: relation
+            select: concat(first_name, ' ', last_name)
+
         cms_layout:
             tab: dynamedia.posts::lang.common.tabs.settings
             label: dynamedia.posts::lang.common.labels.cms_layout

@@ -67,6 +67,7 @@ return [
             'seo'           => 'SEO',
             'posts'         => 'Posts',
             'cms_layout'    => 'CMS Layout',
+            'user_author'   => 'Author',
             'block_heading' => 'Section Heading',
             'block_id'      => 'Section ID',
             'block_content' => 'Section Content'

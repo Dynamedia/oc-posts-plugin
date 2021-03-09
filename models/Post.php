@@ -284,7 +284,8 @@ class Post extends Model
     {
         return $query->with([
             'user' => function($q) {
-                $q->select('id', 'first_name', 'last_name');
+                $q->select('id', 'first_name', 'last_name')
+                    ->with('profile');
             }
         ]);
     }
@@ -292,6 +293,21 @@ class Post extends Model
     public function scopeApplyExcludePosts($query, array $ids)
     {
         return $query->whereNotIn('id', $ids);
+    }
+
+    public function scopeApplyExcludeCategoryPosts($query, array $ids)
+    {
+        return $query->whereDoesntHave('categories', function ($q) use ($ids) {
+            $q->whereIn('id', $ids);
+        })
+            ->whereNotIn('primary_category_id', $ids);
+    }
+
+    public function scopeApplyExcludeTagPosts($query, array $ids)
+    {
+        return $query->whereDoesntHave('tags', function ($q) use ($ids) {
+            $q->whereIn('id', $ids);
+        });
     }
 
     /**
@@ -306,7 +322,7 @@ class Post extends Model
     {
         $cacheKey = md5(__METHOD__ . serialize($options));
         if (Cache::has($cacheKey)) {
-            return Cache::get($cacheKey);
+            //return Cache::get($cacheKey);
         }
 
         $optionsSlug                = false;
@@ -336,6 +352,7 @@ class Post extends Model
 
         if ($result) {
             $result = $result->toArray();
+
             Cache::put($cacheKey, $result, 10);
             return $result;
         } else {
@@ -346,7 +363,7 @@ class Post extends Model
     /**
      * Get a list of posts
      * Implements a simple micro-cahce of 10 seconds to reduce load.
-     * todo document fully and abstract caching with support for multiple drivers
+     * todo document fully and abstract caching with support for multiple drivers + json api
      *
      * @param $options
      * @return array
@@ -359,15 +376,17 @@ class Post extends Model
         }
 
         // Set some defaults to be overridden by extract
-        $optionsTagId        = null;
-        $optionsCategoryIds  = [];
-        $optionsPostIds      = [];
-        $optionsNotPostIds   = [];
-        $optionsPage         = 1;
-        $optionsPerPage      = 10;
-        $optionsLimit        = false;
-        $optionsSearchQuery  = null;
-        $optionsSort         = 'published_at desc';
+        $optionsTagId           = null;
+        $optionsCategoryIds     = [];
+        $optionsPostIds         = [];
+        $optionsNotPostIds      = [];
+        $optionsNotCategoryIds  = [];
+        $optionsNotTagIds       = [];
+        $optionsPage            = 1;
+        $optionsPerPage         = 10;
+        $optionsLimit           = false;
+        $optionsSearchQuery     = null;
+        $optionsSort            = 'published_at desc';
 
         extract($options);
 
@@ -375,6 +394,14 @@ class Post extends Model
 
         if ($optionsNotPostIds) {
             $query->applyExcludePosts($optionsNotPostIds);
+        }
+
+        if ($optionsNotCategoryIds) {
+            $query->applyExcludeCategoryPosts($optionsNotCategoryIds);
+        }
+
+        if ($optionsNotTagIds) {
+            $query->applyExcludeTagPosts($optionsNotTagIds);
         }
 
         if ($optionsTagId) {
@@ -701,6 +728,20 @@ class Post extends Model
         }
     }
 
+    /**
+     * Check if user has required permissions to assign posts
+     * @param $user
+     * @return bool
+     */
+    public function userCanAssignPosts($user)
+    {
+        if (!$user->hasAccess('dynamedia.posts.assign_posts')) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 
     // --------------------- //
     // ---- Form Widget ---- //
@@ -709,6 +750,15 @@ class Post extends Model
     public function filterFields($fields, $context = null)
     {
         $user = BackendAuth::getUser();
+
+        // Set user on create
+        if (!$this->user && isset($fields->user)) {
+            $fields->user->value = $user->id;
+        }
+        if (isset($fields->user) && !$this->userCanAssignPosts($user)) {
+            $fields->user->readOnly = true;
+            $fields->user->comment = "You do not have permission to re-assign this post";
+        }
 
         if ($this->is_published) {
             if (!$this->userCanUnpublish($user)) {

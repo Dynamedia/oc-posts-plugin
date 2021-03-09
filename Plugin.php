@@ -10,6 +10,9 @@ use Cms\Models\ThemeData;
 use Dynamedia\Posts\Models\Post;
 use Dynamedia\Posts\Models\Category;
 use Dynamedia\Posts\Models\Tag;
+use Backend\Models\User as BackendUserModel;
+use Backend\Controllers\Users as BackendUserController;
+use Dynamedia\Posts\Models\Profile;
 
 
 /**
@@ -50,6 +53,52 @@ class Plugin extends PluginBase
     {
         ThemeData::extend(function ($model) {
             $model->addJsonable('images');
+        });
+
+        BackendUserModel::extend(function($model) {
+            $model->hasOne['profile'] = ['Dynamedia\Posts\Models\Profile'];
+        });
+
+        BackendUserController::extendFormFields(function($form, $model, $context) {
+            if (!$model instanceof BackendUserModel) {
+                return;
+            }
+            if (!$model->exists) {
+                return;
+            }
+
+            Profile::getFromUser($model);
+
+            $form->addTabFields([
+                'profile[twitter_handle]' => [
+                    'label' => 'Twitter Username',
+                    'tab'   => 'Profile'
+                ],
+                'profile[instagram_handle]' => [
+                    'label' => 'Instagram Username',
+                    'tab'   => 'Profile'
+                ],
+                'profile[facebook_handle]' => [
+                'label' => 'Twitter Username',
+                'tab'   => 'Profile'
+                ],
+                'profile[website_url]' => [
+                    'label' => 'Website URL',
+                    'tab'   => 'Profile'
+                ],
+                'profile[mini_biography]' => [
+                    'label' => 'Mini Biography',
+                    'tab'   => 'Profile',
+                    'type'  => 'richeditor',
+                ],
+                'profile[full_biography]' => [
+                    'label' => 'Full Biography',
+                    'tab'   => 'Biography',
+                    'type'  => 'richeditor',
+                    'size'  => 'huge',
+                    'stretch' => true
+                ]
+            ]);
         });
 
         Event::listen('cms.page.beforeDisplay', function ($controller, $url, $page) {
@@ -163,108 +212,113 @@ class Plugin extends PluginBase
             'dynamedia.posts.create_posts' => [
                 'tab' => 'Posts',
                 'label' => 'Create Posts',
-                'order' => 1001
+                'order' => 1010
             ],
             'dynamedia.posts.categorize_posts' => [
                 'tab' => 'Posts',
                 'label' => 'Categorize Posts'
                 ,
-                'order' => 1002
+                'order' => 1020
             ],
             'dynamedia.posts.tag_posts' => [
                 'tab' => 'Posts',
                 'label' => 'Tag Posts',
-                'order' => 1003
+                'order' => 1030
             ],
             'dynamedia.posts.set_layout' => [
                 'tab' => 'Posts',
                 'label' => 'Set Post Layout',
-                'order' => 1004
+                'order' => 1040
             ],
             'dynamedia.posts.publish_own_posts' => [
                 'tab' => 'Posts',
                 'label' => 'Publish Own Posts',
-                'order' => 1005
+                'order' => 1050
             ],
             'dynamedia.posts.unpublish_own_posts' => [
                 'tab' => 'Posts',
                 'label' => 'Unpublish Own Posts',
-                'order' => 1006
+                'order' => 1060
             ],
             'dynamedia.posts.edit_own_published_posts' => [
                 'tab' => 'Posts',
                 'label' => 'Edit Own Published Posts',
-                'order' => 1007
+                'order' => 1070
             ],
             'dynamedia.posts.delete_own_unpublished_posts' => [
                 'tab' => 'Posts',
                 'label' => 'Delete Own Unpublished Posts',
-                'order' => 1008
+                'order' => 1080
             ],
             'dynamedia.posts.delete_own_published_posts' => [
                 'tab' => 'Posts',
                 'label' => 'Delete Own Published Posts',
-                'order' => 1009
+                'order' => 1090
             ],
             'dynamedia.posts.publish_all_posts' => [
                 'tab' => 'Posts',
                 'label' => 'Publish All Posts',
-                'order' => 1010
+                'order' => 1100
             ],
             'dynamedia.posts.unpublish_all_posts' => [
                 'tab' => 'Posts',
                 'label' => 'Unpublish All Posts',
-                'order' => 1011
+                'order' => 1110
             ],
             'dynamedia.posts.edit_all_unpublished_posts' => [
                 'tab' => 'Posts',
                 'label' => 'Edit All Unpublished Posts',
-                'order' => 1012
+                'order' => 1120
             ],
             'dynamedia.posts.edit_all_published_posts' => [
                 'tab' => 'Posts',
                 'label' => 'Edit All Published Posts',
-                'order' => 1013
+                'order' => 1130
             ],
             'dynamedia.posts.delete_all_unpublished_posts' => [
                 'tab' => 'Posts',
                 'label' => 'Delete All Unpublished Posts',
-                'order' => 1014
+                'order' => 1140
             ],
             'dynamedia.posts.delete_all_published_posts' => [
                 'tab' => 'Posts',
                 'label' => 'Delete All Published Posts',
-                'order' => 1015
+                'order' => 1150
+            ],
+            'dynamedia.posts.assign_posts' => [
+                'tab' => 'Posts',
+                'label' => 'Assign Post to User',
+                'order' => 1160
             ],
             'dynamedia.posts.view_categories' => [
                 'tab' => 'Posts',
                 'label' => 'View Categories',
-                'order' => 1016
+                'order' => 1170
             ],
             'dynamedia.posts.manage_categories' => [
                 'tab' => 'Posts',
                 'label' => 'Manage Categories',
-                'order' => 1017
+                'order' => 1180
             ],
             'dynamedia.posts.view_tags' => [
                 'tab' => 'Posts',
                 'label' => 'View Tags',
-                'order' => 1018
+                'order' => 1190
             ],
             'dynamedia.posts.manage_tags' => [
                 'tab' => 'Posts',
                 'label' => 'Manage Tags',
-                'order' => 1019
+                'order' => 1200
             ],
              'dynamedia.posts.view_settings' => [
                 'tab' => 'Posts',
                 'label' => 'View Settings',
-                 'order' => 1020
+                 'order' => 1210
             ],
             'dynamedia.posts.manage_settings' => [
                 'tab' => 'Posts',
                 'label' => 'Manage Settings',
-                'order' => 1021
+                'order' => 1220
             ],
         ];
     }

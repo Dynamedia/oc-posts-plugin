@@ -62,6 +62,22 @@ class ListPosts extends ComponentBase
                 'default'           => '',
                 'showExternalParam' => false
             ],
+            'notCategoryIds' => [
+                'title'             => 'Exclude Posts From Category',
+                'description'       => 'Exclude these category Id\'s',
+                'validationPattern' => '^\d+(,\d+)*$',
+                'validationMessage' => 'Please enter a comma separated list of category Id\'s',
+                'default'           => '',
+                'showExternalParam' => false
+            ],
+            'notTagIds' => [
+                'title'             => 'Exclude Posts With These Tags',
+                'description'       => 'Exclude these tag Id\'s',
+                'validationPattern' => '^\d+(,\d+)*$',
+                'validationMessage' => 'Please enter a comma separated list of tag Id\'s',
+                'default'           => '',
+                'showExternalParam' => false
+            ],
             'postsLimit' => [
                 'title'             => 'Total posts',
                 'description'       => 'Limit the number of posts to fetch',
@@ -139,6 +155,7 @@ class ListPosts extends ComponentBase
             $postListOptions['optionsPostIds'] = explode(",", $this->property('postIds'));
         }
 
+
         $excludes = [];
         if (App::bound('dynamedia.posts.post')) {
             $self = App::make('dynamedia.posts.post');
@@ -151,8 +168,15 @@ class ListPosts extends ComponentBase
              $excludes = array_merge($excludes, explode(",", $this->property('notPostIds')));
         }
 
-
         $postListOptions['optionsNotPostIds'] = $excludes;
+
+        if ($this->property('notCategoryIds')) {
+            $postListOptions['optionsNotCategoryIds'] = explode(",", $this->property('notCategoryIds'));
+        }
+
+        if ($this->property('notTagIds')) {
+            $postListOptions['optionsNotTagIds'] = explode(",", $this->property('notTagIds'));
+        }
 
         $postList = Post::getPostsList($postListOptions);
 

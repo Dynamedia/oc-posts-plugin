@@ -322,7 +322,7 @@ class Post extends Model
     {
         $cacheKey = md5(__METHOD__ . serialize($options));
         if (Cache::has($cacheKey)) {
-            //return Cache::get($cacheKey);
+            return Cache::get($cacheKey);
         }
 
         $optionsSlug                = false;
@@ -463,7 +463,6 @@ class Post extends Model
         ];
 
         $offset = ($optionsPage - 1) * $optionsPerPage;
-
 
         $items = $query->skip($offset)
             ->take($optionsPerPage)

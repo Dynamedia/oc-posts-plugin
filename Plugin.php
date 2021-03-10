@@ -111,33 +111,6 @@ class Plugin extends PluginBase
             ]);
         });
 
-        Event::listen('backend.form.extendFields', function($widget) {
-            // Only for the Posts controller
-            if (!$widget->getController() instanceof Posts) {
-                return;
-            }
-            // Extend the seo tabs depending on the selected type of post. todo lots!
-            if ($widget->alias == 'formSeonestedform') {
-                $widget->addTabFields([
-                    'post_type' => [
-                        'tab' => 'JSON+LD',
-                        'label' => 'Post Type',
-                        'type' => 'dropdown',
-                        'options' => [
-                            'article' => 'Article',
-                            'blogposting' => 'Blog Posting'
-                        ]
-                    ],
-                    // Force the refresh of the form so we can hook in
-                    '_dependent' => [
-                        'tab' => 'JSON+LD',
-                        'label' => 'Testing',
-                        'dependsOn' => 'post_type',
-                    ]
-                ]);
-            }
-        });
-
 
 
         Event::listen('cms.page.beforeDisplay', function ($controller, $url, $page) {

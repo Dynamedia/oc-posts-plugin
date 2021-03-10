@@ -21,3 +21,7 @@ tabs:
       tab: Twitter Card
       label: Description
       type: textarea
+    json_ld:
+      tab: JSON+LD
+      label: PLACEHOLDER FOR NESTED FORM
+

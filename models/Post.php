@@ -766,7 +766,7 @@ class Post extends Model
     public function filterFields($fields, $context = null)
     {
         $user = BackendAuth::getUser();
-        
+
 
 
         // Set user on create

@@ -1,6 +1,7 @@
 <?php namespace Dynamedia\Posts;
 
 use Backend;
+use Dynamedia\Posts\Controllers\Posts;
 use System\Classes\PluginBase;
 use Lang;
 use App;
@@ -78,19 +79,23 @@ class Plugin extends PluginBase
                 ],
                 'profile[twitter_handle]' => [
                     'label' => 'Twitter Username',
-                    'tab'   => 'Profile'
+                    'tab'   => 'Profile',
+                    'placeholder' => "@yourUsername"
                 ],
                 'profile[instagram_handle]' => [
                     'label' => 'Instagram Username',
-                    'tab'   => 'Profile'
+                    'tab'   => 'Profile',
+                    'placeholder' => "@yourUsername"
                 ],
                 'profile[facebook_handle]' => [
                 'label' => 'Twitter Username',
-                'tab'   => 'Profile'
+                'tab'   => 'Profile',
+                'placeholder' => "yourUsername"
                 ],
                 'profile[website_url]' => [
                     'label' => 'Website URL',
-                    'tab'   => 'Profile'
+                    'tab'   => 'Profile',
+                    'placeholder' => "https://yourwebsite.com"
                 ],
                 'profile[mini_biography]' => [
                     'label' => 'Mini Biography',
@@ -105,6 +110,35 @@ class Plugin extends PluginBase
                 ]
             ]);
         });
+
+        Event::listen('backend.form.extendFields', function($widget) {
+            // Only for the Posts controller
+            if (!$widget->getController() instanceof Posts) {
+                return;
+            }
+            // Extend the seo tabs depending on the selected type of post. todo lots!
+            if ($widget->alias == 'formSeonestedform') {
+                $widget->addTabFields([
+                    'post_type' => [
+                        'tab' => 'JSON+LD',
+                        'label' => 'Post Type',
+                        'type' => 'dropdown',
+                        'options' => [
+                            'article' => 'Article',
+                            'blogposting' => 'Blog Posting'
+                        ]
+                    ],
+                    // Force the refresh of the form so we can hook in
+                    '_dependent' => [
+                        'tab' => 'JSON+LD',
+                        'label' => 'Testing',
+                        'dependsOn' => 'post_type',
+                    ]
+                ]);
+            }
+        });
+
+
 
         Event::listen('cms.page.beforeDisplay', function ($controller, $url, $page) {
 

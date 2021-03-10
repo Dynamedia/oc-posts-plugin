@@ -766,6 +766,8 @@ class Post extends Model
     public function filterFields($fields, $context = null)
     {
         $user = BackendAuth::getUser();
+        
+
 
         // Set user on create
         if (!$this->user && isset($fields->user)) {
@@ -828,6 +830,7 @@ class Post extends Model
                 $fields->cms_layout->readOnly = true;
             }
         }
+
     }
 
 

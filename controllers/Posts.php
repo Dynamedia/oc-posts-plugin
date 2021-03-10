@@ -36,6 +36,7 @@ class Posts extends Controller
 
         BackendMenu::setContext('Dynamedia.Posts', 'posts', 'posts');
     }
-    
-    
+
+
+
 }

@@ -16,4 +16,11 @@ return [
     'microCacheMinDuration' => 1,
     'microCacheMaxDuration' => 60,
     'microCacheDurationStep' => 1,
+    'seo_json' => [
+        'BlogPosting' => [
+            'fields' => [
+                'test' => 'Test'
+            ]
+        ]
+    ]
 ];

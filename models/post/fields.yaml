@@ -51,7 +51,7 @@ tabs:
             type: taglist
             mode: relation
 
-        post_type:
+        _post_type:
             tab: dynamedia.posts::lang.common.tabs.seo
             label: Post Type
             type: dropdown

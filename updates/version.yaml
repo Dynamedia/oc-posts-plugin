@@ -16,3 +16,6 @@
 0.9.04:
   - Create Profiles model for backend user extension
   - create_profiles_table.php
+0.9.05:
+  - Add a user profile slug. Avoids exposing login
+  - update_profiles_table_v0.9.05.php

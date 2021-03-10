@@ -121,5 +121,16 @@ class Settings extends Model
         return array_merge(['' => 'None'], $pages);
     }
 
+    public function getUserPageOptions()
+    {
+        return Page::sortBy('baseFileName')
+            ->filter(function ($page) {
+                if (!$page->hasComponent('displayUser')) return false;
+                if (!Str::contains($page->url, 'postsUsername')) return false;
+                return true;
+            })
+            ->lists('baseFileName', 'baseFileName');
+    }
+
 }
 

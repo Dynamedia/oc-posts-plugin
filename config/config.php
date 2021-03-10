@@ -7,8 +7,13 @@ return [
         'full-above' => 'Above',
         'full-below' => 'Below',
     ],
+    // Posts per page
     'postsListMinPerPage' => 1,
     'postsListMaxPerPage' => 20,
+    'postsListMaxPerPage' => 20,
+    'postsListPerPageStep' => 1,
+    // Micro Cache
     'microCacheMinDuration' => 1,
     'microCacheMaxDuration' => 60,
+    'microCacheDurationStep' => 1,
 ];

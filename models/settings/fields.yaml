@@ -62,6 +62,25 @@ tabs:
             options: \Dynamedia\Posts\Classes\Helpers\Form::getDefaultPostListPerPageOptions
             default: 10
 
+        userPage:
+            tab: Users
+            label: User Display Page
+            type: dropdown
+
+        userPostsListSortOrder:
+            tab: Users
+            label: Default Posts Sort Order
+            type: dropdown
+            default: 'published_at desc'
+            options: \Dynamedia\Posts\Classes\Helpers\Form::getDefaultPostListSortOptions
+
+        userPostsListPerPage:
+            tab: Users
+            label: Posts Per Page
+            type: dropdown
+            options: \Dynamedia\Posts\Classes\Helpers\Form::getDefaultPostListPerPageOptions
+            default: 10
+
         defaultPostLayout:
             tab: CMS Layouts
             label: Default Post Layout

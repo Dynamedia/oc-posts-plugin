@@ -285,9 +285,16 @@ class Post extends Model
         return $query->with([
             'user' => function($q) {
                 $q->select('id', 'first_name', 'last_name')
-                    ->with('profile');
+                    ->with('avatar', 'profile');
             }
         ]);
+    }
+
+    public function scopeApplyWhereUsername($query, $username)
+    {
+        return $query->whereHas('user.profile', function ($q) use ($username) {
+           $q->where('username', $username);
+        });
     }
 
     public function scopeApplyExcludePosts($query, array $ids)
@@ -374,7 +381,7 @@ class Post extends Model
     {
         $cacheKey = md5(__METHOD__ . serialize($options));
         if (Settings::get('enableMicroCache') && Cache::has($cacheKey)) {
-            return Cache::get($cacheKey);
+            //return Cache::get($cacheKey);
         }
 
         // Set some defaults to be overridden by extract
@@ -384,6 +391,7 @@ class Post extends Model
         $optionsNotPostIds      = [];
         $optionsNotCategoryIds  = [];
         $optionsNotTagIds       = [];
+        $optionsUsername        = null;
         $optionsPage            = 1;
         $optionsPerPage         = 10;
         $optionsLimit           = false;
@@ -412,6 +420,10 @@ class Post extends Model
 
         if ($optionsCategoryIds) {
             $query->applyWhereHasCategories($optionsCategoryIds);
+        }
+
+        if ($optionsUsername) {
+            $query->applyWhereUsername($optionsUsername);
         }
 
         if ($optionsSearchQuery) {

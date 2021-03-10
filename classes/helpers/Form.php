@@ -102,8 +102,9 @@ class Form
     {
         $min = Config::get('dynamedia.posts::microCacheMinDuration');
         $max = Config::get('dynamedia.posts::microCacheMaxDuration');
+        $step = Config::get('dynamedia.posts::microCacheDurationStep') ? Config::get('dynamedia.posts::microCacheDurationStep') : 1;
 
-        for ($i = $min; $i <= $max; $i++) {
+        for ($i = $min; $i <= $max; $i += $step) {
             $perPage[$i] = $i;
         }
         return $perPage;

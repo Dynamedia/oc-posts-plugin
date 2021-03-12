@@ -777,6 +777,7 @@ class Post extends Model
         if (!$this->author && isset($fields->author)) {
             $fields->author->value = $user->id;
         }
+
         if (isset($fields->author) && !$this->userCanAssignPosts($user)) {
             $fields->author->readOnly = true;
             $fields->author->comment = "You do not have permission to re-assign this post";

@@ -70,6 +70,7 @@ tabs:
             span: right
             type: relation
             select: concat(first_name, ' ', last_name)
+            emptyOption: "Please Select"
 
         cms_layout:
             tab: dynamedia.posts::lang.common.tabs.settings

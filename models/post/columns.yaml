@@ -9,9 +9,13 @@ columns:
     title:
         label: Title
         searchable: true
-    user:
+    author:
         label: By
-        relation: user
+        relation: author
+        select: concat(first_name, ' ', last_name)
+    editor:
+        label: Editor
+        relation: editor
         select: concat(first_name, ' ', last_name)
     published_at:
         label: Published

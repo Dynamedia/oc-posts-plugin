@@ -1,17 +1,17 @@
 tabs:
     fields:
         list:
-            tab: dynamedia.posts::lang.post.tab.list
+            tab: dynamedia.posts::lang.images.tabs.list
             type: nestedform
             usePanelStyles: false
             form: $/dynamedia/posts/config/forms/image/list.yaml
         banner:
-            tab: dynamedia.posts::lang.post.tab.banner
+            tab: dynamedia.posts::lang.images.tabs.banner
             type: nestedform
             usePanelStyles: false
             form: $/dynamedia/posts/config/forms/image/banner.yaml
         social:
-            tab: Social Images
+            tab: dynamedia.posts::lang.images.tabs.social
             type: nestedform
             usePanelStyles: false
             form: $/dynamedia/posts/config/forms/image/social.yaml

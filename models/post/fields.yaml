@@ -51,22 +51,23 @@ tabs:
             type: taglist
             mode: relation
 
-        _post_type:
-            tab: dynamedia.posts::lang.common.tabs.seo
-            label: Post Type
-            type: dropdown
-            options:
-                article: Article
-                blogpost: Blog Posting
         seo:
             tab: dynamedia.posts::lang.common.tabs.seo
             type: nestedform
             usePanelStyles: false
             form: $/dynamedia/posts/config/forms/seo.yaml
 
-        user:
+        author:
             tab: dynamedia.posts::lang.common.tabs.settings
-            label: dynamedia.posts::lang.common.labels.user_author
+            label: dynamedia.posts::lang.common.labels.author
+            span: left
+            type: relation
+            select: concat(first_name, ' ', last_name)
+
+        editor:
+            tab: dynamedia.posts::lang.common.tabs.settings
+            label: dynamedia.posts::lang.common.labels.editor
+            span: right
             type: relation
             select: concat(first_name, ' ', last_name)
 

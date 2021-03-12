@@ -181,6 +181,14 @@ class Tag extends Model
                 $field->hidden = true;
             }
         }
+
+        if (isset($fields->type)) {
+            $fields->type->hidden = true;
+        }
+        if (isset($fields->about)) {
+            $fields->about->hidden = true;
+        }
+
     }
 
 

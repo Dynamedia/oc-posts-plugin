@@ -421,7 +421,15 @@ class Category extends Model
     }
 
 
-
+    public function filterFields($fields, $context = null)
+    {
+        if (isset($fields->type)) {
+            $fields->type->hidden = true;
+        }
+        if (isset($fields->about)) {
+            $fields->about->hidden = true;
+        }
+    }
 
     // ---------------------------- //
     // ---- Rainlab Pages Menu ---- //

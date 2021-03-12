@@ -111,7 +111,8 @@ class Post extends Model
     public $hasOneThrough = [];
     public $hasManyThrough = [];
     public $belongsTo = [
-        'user' => ['Backend\Models\User'],
+        'author' => ['Backend\Models\User'],
+        'editor' => ['Backend\Models\User'],
         'primary_category' => ['Dynamedia\Posts\Models\Category']
     ];
     public $belongsToMany = [
@@ -140,10 +141,10 @@ class Post extends Model
     {
         $user = BackendAuth::getUser();
 
-        if (empty($this->user)) {
+        if (empty($this->author)) {
 
             if (!is_null($user)) {
-                $this->user = $user->id;
+                $this->author = $user->id;
             }
         }
 
@@ -281,10 +282,14 @@ class Post extends Model
         ]);
     }
 
-    public function scopeApplyWithUser($query)
+    public function scopeApplyWithUsers($query)
     {
         return $query->with([
-            'user' => function($q) {
+            'author' => function($q) {
+                $q->select('id', 'first_name', 'last_name')
+                    ->with('avatar', 'profile');
+            },
+            'editor' => function($q) {
                 $q->select('id', 'first_name', 'last_name')
                     ->with('avatar', 'profile');
             }
@@ -293,7 +298,7 @@ class Post extends Model
 
     public function scopeApplyWhereUsername($query, $username)
     {
-        return $query->whereHas('user.profile', function ($q) use ($username) {
+        return $query->whereHas('author.profile', function ($q) use ($username) {
            $q->where('username', $username);
         });
     }
@@ -336,7 +341,7 @@ class Post extends Model
         $optionsSlug                = false;
         $optionsWithPrimaryCategory = true;
         $optionsWithTags            = true;
-        $optionsWithUser            = true;
+        $optionsWithUsers           = true;
 
         extract($options);
 
@@ -352,8 +357,8 @@ class Post extends Model
             $query->applyWithTags();
         }
 
-        if ($optionsWithUser) {
-            $query->applyWithUser();
+        if ($optionsWithUsers) {
+            $query->applyWithUsers();
         }
 
         $result = $query->first();
@@ -382,7 +387,7 @@ class Post extends Model
     {
         $cacheKey = md5(__METHOD__ . serialize($options));
         if (Settings::get('enableMicroCache') && Cache::has($cacheKey)) {
-            //return Cache::get($cacheKey);
+            return Cache::get($cacheKey);
         }
 
         // Set some defaults to be overridden by extract
@@ -449,7 +454,7 @@ class Post extends Model
 
         $query->applyWithPrimaryCategory()
             ->applyWithTags()
-            ->applyWithUser();
+            ->applyWithUsers();
 
         // We need to do paging ourselves to support later API. Paginate in the components for now
         $totalResults = $query->count();
@@ -630,7 +635,7 @@ class Post extends Model
         if ($this->is_published) {
             if (!$user->hasAccess('dynamedia.posts.delete_all_published_posts')
                 && !($user->hasAccess('dynamedia.posts.delete_own_published_posts')
-                    && $user->id == $this->user_id)) {
+                    && $user->id == $this->author_id)) {
                 return false;
             } else {
                 return true;
@@ -638,7 +643,7 @@ class Post extends Model
         } else {
             if (!$user->hasAccess('dynamedia.posts.delete_all_unpublished_posts')
                 && !($user->hasAccess('dynamedia.posts.delete_own_unpublished_posts')
-                    && $user->id == $this->user_id)) {
+                    && $user->id == $this->author_id)) {
                 return false;
             } else {
                 return true;
@@ -656,14 +661,14 @@ class Post extends Model
         if ($this->is_published && !$this->isDirty('is_published')) {
             if (!$user->hasAccess('dynamedia.posts.edit_all_published_posts')
                 && !($user->hasAccess('dynamedia.posts.edit_own_published_posts')
-                    && $user->id == $this->user_id)) {
+                    && $user->id == $this->author_id)) {
                 return false;
             } else {
                 return true;
             }
         } else {
             if (!$user->hasAccess('dynamedia.posts.edit_all_unpublished_posts')
-                && $user->id != $this->user_id) {
+                && $user->id != $this->author_id) {
                 return false;
             } else {
                 return true;
@@ -680,7 +685,7 @@ class Post extends Model
     {
         if (!$user->hasAccess('dynamedia.posts.publish_all_posts')
             && !($user->hasAccess('dynamedia.posts.publish_own_posts')
-                && $user->id == $this->user_id)) {
+                && $user->id == $this->author_id)) {
             return false;
         } else {
             return true;
@@ -696,7 +701,7 @@ class Post extends Model
     {
         if (!$user->hasAccess('dynamedia.posts.unpublish_all_posts')
             && !($user->hasAccess('dynamedia.posts.unpublish_own_posts')
-                && $user->id == $this->user_id)) {
+                && $user->id == $this->author_id)) {
             return false;
         } else {
             return true;
@@ -768,15 +773,18 @@ class Post extends Model
     {
         $user = BackendAuth::getUser();
 
-
-
-        // Set user on create
-        if (!$this->user && isset($fields->user)) {
-            $fields->user->value = $user->id;
+        // Set author on create
+        if (!$this->author && isset($fields->author)) {
+            $fields->author->value = $user->id;
         }
-        if (isset($fields->user) && !$this->userCanAssignPosts($user)) {
-            $fields->user->readOnly = true;
-            $fields->user->comment = "You do not have permission to re-assign this post";
+        if (isset($fields->author) && !$this->userCanAssignPosts($user)) {
+            $fields->author->readOnly = true;
+            $fields->author->comment = "You do not have permission to re-assign this post";
+        }
+
+        if (isset($fields->editor) && !$this->userCanAssignPosts($user)) {
+            $fields->editor->readOnly = true;
+            $fields->editor->comment = "You do not have permission to re-assign this post";
         }
 
         if ($this->is_published) {
@@ -891,11 +899,12 @@ class Post extends Model
         return $this->getPages();
     }
 
+    // todo tidy up and objectify
     public function getSchemaAttribute()
     {
         $schema = [
             "@context"          => "https://schema.org",
-            "@type"             => "BlogPosting",
+            "@type"             => !empty($this->seo['type']) ? $this->seo['type'] : "Article",
             "headline"          => $this->title,
             "dateCreated"       => $this->created_at,
             "url"               => $this->url,
@@ -903,25 +912,16 @@ class Post extends Model
                 "@context"  => "https://schema.org",
                 "@type"     => "webPage",
                 "url"       => $this->url, // There is no differentiation of pages
-                ]
+            ]
         ];
 
-        if (Settings::get('publisherName')) {
-            $schema['publisher'] = [
-                "@context" => "https://schema.org",
-                "@type" => Settings::get('publisherType'),
-                "name" => Settings::get('publisherName'),
-                "logo"  => [
-                    "@context"  => "https://schema.org",
-                    "@type"     => "ImageObject",
-                    'url'       => \URL::to(\System\Classes\MediaLibrary::url(Settings::get('publisherLogo')))
-                ]
-            ];
-            if (Settings::get('publisherUrl')) {
-                $schema['publisher']['url'] = Settings::get('publisherUrl');
-            } else {
-                $schema['publisher']['url'] = \URL::to('/');
-            }
+        if ($this->excerpt) {
+            $schema['abstract'] = strip_tags($this->excerpt);
+        }
+
+        if ($this->primary_category) {
+            $schema['articleSection'] = $this->primary_category->name;
+
         }
 
         if ($this->is_published && $this->published_at) {
@@ -931,12 +931,51 @@ class Post extends Model
             }
         }
 
+        if (!empty($this->seo['about'])) {
+            $schema['about'] = [
+                "@context"  => "https://schema.org/",
+                "@type"     => "Thing",
+                "name"      => $this->seo['about']
+            ];
+        }
+
+        if (!empty($this->seo['keywords']) && is_array($this->seo['keywords'])) {
+            $schema['keywords'] = implode(", ", $this->seo['keywords']);
+        }
+
+        if ($this->published_until) {
+            $schema['expires'] = $this->published_until;
+        }
+
+        if (Settings::get('publisherName')) {
+            $schema['publisher'] = [
+                "@context" => "https://schema.org",
+                "@type" => Settings::get('publisherType'),
+                "name" => Settings::get('publisherName'),
+                "logo"  => [
+                    "@context"  => "https://schema.org",
+                    "@type"     => "ImageObject",
+                    'url'       => \URL::to(\System\Classes\MediaLibrary::url(Settings::get('publisherLogo'))),
+                    'caption'   => Settings::get('publisherName'),
+                ]
+            ];
+            if (Settings::get('publisherUrl')) {
+                $schema['publisher']['url'] = Settings::get('publisherUrl');
+            } else {
+                $schema['publisher']['url'] = \URL::to('/');
+            }
+        }
+
         if ($this->getBestImage()) {
             $schema['image'] = \URL::to(\System\Classes\MediaLibrary::url($this->getBestImage()));
         }
 
-        if (!empty($this->user->profile)) {
-            $schema['author'] = $this->user->profile->schema;
+        if (!empty($this->author->profile)) {
+            $schema['author'] = $this->author->profile->schema;
+        }
+
+        if (!empty($this->editor->profile)) {
+            $schema['editor'] = $this->editor->profile->schema;
         }
 
         return $schema;

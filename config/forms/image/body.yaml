@@ -1,20 +1,20 @@
 tabs:
     fields:
         default:
-            tab: Default
+            tab: dynamedia.posts::lang.images.tabs.default
             type: mediafinder
             mode: image
             imageHeight: 260
             imageWidth: 260
 
         alt:
-            tab: Default
-            label: Image Alt Text
+            tab: dynamedia.posts::lang.images.tabs.default
+            label: dynamedia.posts::lang.images.labels.alt_text
         class:
-            tab: Default
-            label: Image CSS Class
+            tab: dynamedia.posts::lang.images.tabs.default
+            label: dynamedia.posts::lang.images.labels.css_class
         responsive:
-            tab: Responsive
+            tab: dynamedia.posts::lang.images.tabs.responsive
             type: repeater
             form:
                 fields:
@@ -25,12 +25,12 @@ tabs:
                         imageWidth: 260
                     media_query:
                         span: left
-                        label: Media Query
+                        label: dynamedia.posts::lang.images.labels.media_query
                         type: dropdown
                         options:
-                            max-width: Max Width
-                            min-width: Min Width
+                            max-width: dynamedia.posts::lang.images.options.max_width
+                            min-width: dynamedia.posts::lang.images.options.min_width
                     screen_width:
                         span: right
-                        label: Screen Width
+                        label: dynamedia.posts::lang.images.labels.screen_width
                         type: number

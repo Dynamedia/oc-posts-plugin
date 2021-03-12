@@ -40,7 +40,6 @@ return [
         'section' => [
             'tabs'  => [
                 'main'  => 'Main',
-                'main'  => 'Main',
             ],
             'labels' => [
 
@@ -67,11 +66,32 @@ return [
             'seo'           => 'SEO',
             'posts'         => 'Posts',
             'cms_layout'    => 'CMS Layout',
-            'user_author'   => 'Author',
+            'author'        => 'Author',
+            'editor'        => 'Editor',
             'block_heading' => 'Section Heading',
             'block_id'      => 'Section ID',
             'block_content' => 'Section Content'
         ]
-
     ],
+    'images' => [
+        'tabs' => [
+            'list'          => 'List Image',
+            'banner'        => 'Banner Image',
+            'default'       => 'Default',
+            'responsive'    => 'Responsive',
+            'social'        => 'Social Images',
+            'facebook'      => 'Facebook',
+            'twitter'       => 'Twitter',
+        ],
+        'labels' => [
+            'alt_text'      => 'Image Alt Text',
+            'css_class'     => 'Image CSS Class',
+            'media_query'   => 'Media Query',
+            'screen_width'  => 'Screen Width',
+        ],
+        'options' => [
+            'min_width'     => 'Min Width',
+            'max_width'     => 'Max Width',
+        ]
+    ]
 ];

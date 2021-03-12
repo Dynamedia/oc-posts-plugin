@@ -1,5 +1,21 @@
 tabs:
   fields:
+    type:
+      tab: General
+      label: Post Type
+      type: dropdown
+      options:
+        Article: Article
+        BlogPosting: Blog Post
+        NewsArticle: News Article
+    about:
+      tab: General
+      label: Post is About
+    keywords:
+      tab: General
+      label: Keywords
+      type: taglist
+      mode: array
     title:
       tab: Search
       label: Page Title
@@ -21,12 +37,4 @@ tabs:
       tab: Twitter Card
       label: Description
       type: textarea
-    json_ld:
-      tab: JSON+LD
-      type: nestedform
-      form:
-        fields:
-          json_form:
-            label: test
-      dependsOn: _post_type
 

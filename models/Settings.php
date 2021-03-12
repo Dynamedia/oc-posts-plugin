@@ -11,7 +11,7 @@ use BackendAuth;
  */
 class Settings extends Model
 {
-    //use \October\Rain\Database\Traits\Validation;
+    use \October\Rain\Database\Traits\Validation;
 
     public $implement = ['System.Behaviors.SettingsModel'];
 
@@ -20,6 +20,13 @@ class Settings extends Model
 
     // Reference to field configuration
     public $settingsFields = 'fields.yaml';
+
+    public $rules = [
+        'publisherName' => 'required',
+        'publisherType' => 'required',
+        'publisherUrl' => 'required|url',
+        'publisherLogo' => 'required',
+    ];
 
     public function beforeSave()
     {

@@ -37,6 +37,7 @@ class DisplayUser extends ComponentBase
         }
 
         $this->setPosts();
+
     }
 
     private function setUser()

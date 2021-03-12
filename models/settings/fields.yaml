@@ -4,6 +4,34 @@
 tabs:
     stretch: true
     fields:
+        publisherName:
+            tab: Publisher
+            label: Publisher Name
+            required: true
+
+        publisherType:
+            tab: Publisher
+            label: Publisher Type
+            required: true
+            type: dropdown
+            options:
+                Organization: Organization
+                Person: Person
+
+        publisherUrl:
+            tab: Publisher
+            required: true
+            label: Publisher URL
+
+        publisherLogo:
+            tab: Publisher
+            label: Publisher Logo
+            required: true
+            type: mediafinder
+            mode: image
+            imageHeight: 250
+            imageWidth: 250
+
         postPage:
             tab: Posts
             label: Post Display Page (With Categories)

@@ -4,6 +4,7 @@ use Model;
 use Backend\Models\User as BackendUser;
 use Dynamedia\Posts\Traits\ControllerTrait;
 use \October\Rain\Database\Traits\Validation;
+use URL;
 
 use ValidationException;
 
@@ -54,7 +55,8 @@ class Profile extends Model
      * @var array Attributes to be appended to the API representation of the model (ex. toArray())
      */
     protected $appends = [
-        'url'
+        'url',
+        'schema'
     ];
 
     /**
@@ -129,6 +131,66 @@ class Profile extends Model
         ];
 
         return strtolower($this->getController()->pageUrl(Settings::get('userPage'), $params));
+    }
+
+    public function getSchemaAttribute()
+    {
+        $schema = [
+            "@context"  => "https://schema.org",
+            "@type"     => "Person",
+            "name"      => "{$this->user->first_name} {$this->user->last_name}",
+            "url"       => $this->website_url ? $this->website_url : $this->url,
+        ];
+        if (isset($this->user->avatar)) {
+            $schema['image'] = $this->user->avatar->path;
+        }
+        if (!empty($this->twitter_handle)  || !empty($this->facebook_handle) || !empty($this->instagram_handle)) {
+            $sameAs = [];
+            if (!empty($this->twitter_handle)) $sameAs[] = "https://twitter.com/{$this->getAsUsername($this->twitter_handle)}";
+            if (!empty($this->instagram_handle)) $sameAs[] = "https://instagram.com/{$this->getAsUsername($this->instagram_handle)}";
+            if (!empty($this->facebook_handle)) $sameAs[] = "https://facebook.com/{$this->getAsUsername($this->facebook_handle)}";
+            $schema["sameAs"] = $sameAs;
+        }
+
+        return $schema;
+    }
+
+    /**
+     * Get a handle or username as a username
+     *
+     * @param false $handle
+     * @return false|string
+     */
+    public function getAsUsername($handle = false)
+    {
+        if (!$handle) return false;
+
+        $username = trim($handle);
+
+        if (starts_with($username, "@")) {
+            return substr($username, 1);
+        } else {
+            return $username;
+        }
+    }
+
+    /**
+     * Get a handle or username as a handle
+     *
+     * @param false $username
+     * @return false|string
+     */
+    public function getAsHandle($username = false)
+    {
+        if (!$username) return false;
+
+        $handle = trim($username);
+
+        if (starts_with($handle, "@")) {
+            return $handle;
+        } else {
+            return "@{$handle}";
+        }
     }
 
 }

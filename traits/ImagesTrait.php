@@ -82,4 +82,16 @@ Trait ImagesTrait {
         return null;
     }
 
+    public function getBestImage()
+    {
+        if ($this->getBannerImage()) return $this->getBannerImage();
+        if ($this->getListImage()) return $this->getListImage();
+        if ($this->getFacebookImage()) return $this->getFacebookImage();
+        if ($this->getTwitterImage()) return $this->getTwitterImage();
+        if ($this->getThemeBannerImage()) return $this->getThemeBannerImage();
+        if ($this->getThemeBannerImage()) return $this->getThemeTwitterImage();
+        if ($this->getThemeFacebookImage()) return $this->getThemeFacebookImage();
+        return null;
+    }
+
 }

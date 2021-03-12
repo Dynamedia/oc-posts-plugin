@@ -84,6 +84,7 @@ class Post extends Model
         'seo_twitter_description',
         'seo_twitter_image',
         'computed_cms_layout',
+        'schema',
     ];
 
     /**
@@ -888,6 +889,57 @@ class Post extends Model
     public function getPagesAttribute()
     {
         return $this->getPages();
+    }
+
+    public function getSchemaAttribute()
+    {
+        $schema = [
+            "@context"          => "https://schema.org",
+            "@type"             => "BlogPosting",
+            "headline"          => $this->title,
+            "dateCreated"       => $this->created_at,
+            "url"               => $this->url,
+            "mainEntityOfPage"  => [
+                "@context"  => "https://schema.org",
+                "@type"     => "webPage",
+                "url"       => $this->url, // There is no differentiation of pages
+                ]
+        ];
+
+        if (Settings::get('publisherName')) {
+            $schema['publisher'] = [
+                "@context" => "https://schema.org",
+                "@type" => Settings::get('publisherType'),
+                "name" => Settings::get('publisherName'),
+                "logo"  => [
+                    "@context"  => "https://schema.org",
+                    "@type"     => "ImageObject",
+                    'url'       => \URL::to(\System\Classes\MediaLibrary::url(Settings::get('publisherLogo')))
+                ]
+            ];
+            if (Settings::get('publisherUrl')) {
+                $schema['publisher']['url'] = Settings::get('publisherUrl');
+            } else {
+                $schema['publisher']['url'] = \URL::to('/');
+            }
+        }
+
+        if ($this->is_published && $this->published_at) {
+            $schema['datePublished'] = $this->published_at;
+            if ($this->updated_at > $this->published_at) {
+                $schema['dateModified'] = $this->updated_at;
+            }
+        }
+
+        if ($this->getBestImage()) {
+            $schema['image'] = \URL::to(\System\Classes\MediaLibrary::url($this->getBestImage()));
+        }
+
+        if (!empty($this->user->profile)) {
+            $schema['author'] = $this->user->profile->schema;
+        }
+
+        return $schema;
     }
 
 

@@ -52,6 +52,7 @@ class Plugin extends PluginBase
      */
     public function boot()
     {
+
         ThemeData::extend(function ($model) {
             $model->addJsonable('images');
         });
@@ -62,6 +63,7 @@ class Plugin extends PluginBase
         });
 
         BackendUserController::extendFormFields(function($form, $model, $context) {
+
             if (!$model instanceof BackendUserModel) {
                 return;
             }
@@ -88,7 +90,7 @@ class Plugin extends PluginBase
                     'placeholder' => "@yourUsername"
                 ],
                 'profile[facebook_handle]' => [
-                'label' => 'Twitter Username',
+                'label' => 'Facebook Username',
                 'tab'   => 'Profile',
                 'placeholder' => "yourUsername"
                 ],

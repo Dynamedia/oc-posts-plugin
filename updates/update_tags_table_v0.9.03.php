@@ -9,7 +9,7 @@ class UpdateTagsTableV0903 extends Migration
     public function up()
     {
         Schema::table('dynamedia_posts_tags', function (Blueprint $table) {
-            $table->json('post_list_options');
+            $table->json('post_list_options')->nullable();
         });
     }
 

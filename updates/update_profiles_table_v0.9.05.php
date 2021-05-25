@@ -10,7 +10,7 @@ class UpdateProfilesTableV0905 extends Migration
     public function up()
     {
         Schema::table('dynamedia_posts_profiles', function (Blueprint $table) {
-            $table->string('username')->index();
+            $table->string('username')->nullable()->index();
         });
     }
 

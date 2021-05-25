@@ -10,8 +10,8 @@ class UpdatePostsTableV0906 extends Migration
     {
         Schema::table('dynamedia_posts_posts', function (Blueprint $table) {
             $table->dropColumn('user_id');
-            $table->integer('author_id')->unsigned()->index();
-            $table->integer('editor_id')->unsigned()->index();
+            $table->integer('author_id')->unsigned()->nullable()->index();
+            $table->integer('editor_id')->unsigned()->nullable()->index();
         });
     }
 

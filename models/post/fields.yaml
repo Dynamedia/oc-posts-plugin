@@ -62,14 +62,14 @@ tabs:
             label: dynamedia.posts::lang.common.labels.author
             span: left
             type: relation
-            select: concat(first_name, ' ', last_name)
+            nameFrom: profile.full_name
 
         editor:
             tab: dynamedia.posts::lang.common.tabs.settings
             label: dynamedia.posts::lang.common.labels.editor
             span: right
             type: relation
-            select: concat(first_name, ' ', last_name)
+            nameFrom: profile.full_name
             emptyOption: "Please Select"
 
         cms_layout:
@@ -85,7 +85,7 @@ tabs:
             label: dynamedia.posts::lang.posts.labels.is_published
             type: switch
             default: off
-            
+
         show_contents:
             tab: dynamedia.posts::lang.common.tabs.settings
             span: right

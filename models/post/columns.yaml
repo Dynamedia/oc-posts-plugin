@@ -12,11 +12,13 @@ columns:
     author:
         label: By
         relation: author
-        select: concat(first_name, ' ', last_name)
+        valueFrom: profile[fullName]
+
     editor:
         label: Editor
         relation: editor
-        select: concat(first_name, ' ', last_name)
+        valueFrom: profile[fullName]
+
     published_at:
         label: Published
 

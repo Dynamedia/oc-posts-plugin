@@ -15,7 +15,7 @@ class Posts extends Controller
         'Backend.Behaviors.FormController',
         'Backend.Behaviors.ListController'
     ];
-    
+
     public $requiredPermissions = [
         'dynamedia.posts.access_plugin'
     ];
@@ -37,6 +37,11 @@ class Posts extends Controller
         BackendMenu::setContext('Dynamedia.Posts', 'posts', 'posts');
     }
 
+    public function listExtendQuery($query)
+    {
+        $query->with('author.profile','editor.profile');
+        return $query;
+    }
 
 
 }

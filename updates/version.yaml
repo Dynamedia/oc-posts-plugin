@@ -22,6 +22,3 @@
 0.9.06:
   - Drop users column and create authors and editors
   - update_posts_table_v0.9.06.php
-0.9.07:
-  - Allow null value for editor
-  - update_posts_table_v0.9.07.php

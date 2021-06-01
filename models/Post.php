@@ -18,6 +18,7 @@ use Dynamedia\Posts\Traits\ImagesTrait;
 use Dynamedia\Posts\Traits\ControllerTrait;
 use \October\Rain\Database\Traits\Validation;
 use Cache;
+use Winter\Storm\Support\Facades\Flash;
 
 /**
  * post Model
@@ -535,6 +536,14 @@ class Post extends Model
         $defaultPostsPage = Settings::get('postPage');
         $noCategoryPostsPage = Settings::get('postPageWithoutCategory');
         $categoryPage = Settings::get('categoryPage');
+
+        // Plugin not configure
+        if (!$defaultPostsPage) {
+            if (BackendAuth::getUser()) {
+                return Flash::warning('The Posts plugin has not been configured ');
+            }
+            return;
+        }
 
         // Exit here as no issues to navigate
         if ($this->primary_category) {

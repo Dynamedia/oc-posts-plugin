@@ -56,7 +56,8 @@ class Profile extends Model
      */
     protected $appends = [
         'url',
-        'schema'
+        'schema',
+        'fullName',
     ];
 
     /**
@@ -93,6 +94,11 @@ class Profile extends Model
     public $attachOne = [];
     public $attachMany = [];
 
+    public function getFullNameAttribute()
+    {
+        return "{$this->user->first_name} {$this->user->last_name}";
+    }
+
     // per https://octobercms.com/support/article/ob-10
     public static function getFromUser($user)
     {
@@ -102,6 +108,8 @@ class Profile extends Model
 
         $profile = new static;
         $profile->user = $user;
+        // We need a username that is not a login. User will want to set their own
+        $profile->username = strtolower($user->last_name . $user->first_name) . rand(0,999);
         $profile->save();
 
         $user->profile = $profile;
@@ -129,7 +137,7 @@ class Profile extends Model
         $params = [
             'postsUsername' => $this->username
         ];
-
+        if (!Settings::get('userPage')) return "/";
         return strtolower($this->getController()->pageUrl(Settings::get('userPage'), $params));
     }
 

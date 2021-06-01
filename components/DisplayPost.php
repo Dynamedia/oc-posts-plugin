@@ -51,7 +51,7 @@ class DisplayPost extends ComponentBase
         // Check publishing status and permissions
         if (!$this->post['is_published']) {
             $user = BackendAuth::getUser();
-            if (!$user || !$user->id == $this->post['user']['id'] || !$user->hasAccess(['edit_all_unpublished_posts']) ) {
+            if (!$user || !$user->id == $this->post['author']['id'] || !$user->hasAccess(['edit_all_unpublished_posts']) ) {
                 try {
                 return $this->controller
                     ->setStatusCode(403)->run('403');
@@ -67,7 +67,7 @@ class DisplayPost extends ComponentBase
     /**
      * Check if there is a displayCategory component after this one
      * and that it will process from the URL paramater
-     * 
+     *
      * @return bool
      **/
     private function deferToCategoryComponent() {
@@ -77,7 +77,7 @@ class DisplayPost extends ComponentBase
                if ($c->name == 'displayCategory') return true;
             });
             // true if this component is first or other component was successful
-            if ($components->count() == 2 
+            if ($components->count() == 2
                 && ($components->first()->alias == $this->alias
                     || !empty($components->first()->category))) {
                 return true;

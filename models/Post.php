@@ -440,9 +440,12 @@ class Post extends Model
         // Where Post ID's are specified the sorting is done here to keep them in order
         if ($optionsPostIds) {
             $stringIds = implode(",", $optionsPostIds);
-            $query->whereIn('id', $optionsPostIds)
-                ->orderByRaw("FIELD(id, $stringIds)");
-            $optionsSort = false;
+            $query->whereIn('id', $optionsPostIds);
+            // SQLite does not support FIELD and will get default ordering. Sorry! todo change this behaviour
+            if (\DB::connection()->getPDO()->getAttribute(\PDO::ATTR_DRIVER_NAME) != 'sqlite') {
+                $query->orderByRaw("FIELD(id, $stringIds)");
+                $optionsSort = false;
+            }
         }
 
         if ($optionsSort) {

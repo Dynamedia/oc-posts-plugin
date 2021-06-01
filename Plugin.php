@@ -58,7 +58,7 @@ class Plugin extends PluginBase
         });
 
         BackendUserModel::extend(function($model) {
-            $model->addHidden('id', 'login', 'permissions', 'is_superuser', 'role_id', 'is_activated', 'activated_at', 'created_at', 'updated_at', 'deleted_at');
+            $model->addHidden('login', 'permissions', 'is_superuser', 'role_id', 'is_activated', 'activated_at', 'created_at', 'updated_at', 'deleted_at');
             $model->hasOne['profile'] = ['Dynamedia\Posts\Models\Profile'];
         });
 

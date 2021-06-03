@@ -1,0 +1,32 @@
+{
+    "name": "dynamedia/wn-posts-plugin",
+    "type": "winter-plugin",
+    "description": "Posts publishing plugin",
+    "homepage": "https://github.com/wintercms/wn-test-plugin",
+    "keywords": [
+        "winter",
+        "wintercms",
+        "laravel",
+        "blog",
+        "posts",
+        "publishing"
+    ],
+    "license": "Dual Licence",
+    "authors": [
+        {
+            "name": "Rob Ballantyne",
+            "email": "rob@dynamedia.uk",
+            "role": "Author"
+        }
+    ],
+    "support": {
+        "source": "https://github.com/dynamedia/wn-posts-plugin"
+    },
+    "require": {
+        "php": ">=7.2",
+        "composer/installers": "~1.0"
+    },
+    "extra": {
+        "installer-name": "posts"
+    }
+}

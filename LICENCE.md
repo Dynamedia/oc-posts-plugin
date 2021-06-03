@@ -3,9 +3,9 @@
 ## Dual license
 
 Where this plugin (Dynamedia Posts) is installed
-alongside a valid copy of the 'Dynamedia Posts 
+alongside a valid copy of the 'Dynamedia Posts
 (Commercial Use)'
-plugin obtained from The October CMS Marketplace, the license
+plugin obtained from either The Winter CMS Marketplace or The October CMS Marketplace, the license
 applicable to Dynamedia Posts (Commercial Use) will also apply
 to this plugin.
 

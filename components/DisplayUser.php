@@ -46,22 +46,11 @@ class DisplayUser extends ComponentBase
 
         if (!$username) return;
 
-        $cacheKey = md5(__METHOD__ . $username);
-        if (Settings::get('enableMicroCache') && Cache::has($cacheKey)) {
-            $this->user = Cache::get($cacheKey);
-        }
-
         $this->user = BackendUser::whereHas('profile', function ($q) use ($username) {
             $q->where('username', $username);
         })
             ->with('profile','avatar')
             ->first();
-
-        if ($this->user) {
-            $this->user = $this->user->toArray();
-            $expiresAt = Argon::now()->addSeconds(Settings::get('microCacheDuration'));
-            Cache::put($cacheKey, $this->user, $expiresAt);
-        }
     }
 
     private function setPosts()

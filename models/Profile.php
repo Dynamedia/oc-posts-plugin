@@ -109,6 +109,7 @@ class Profile extends Model
         $profile = new static;
         $profile->user = $user;
         // We need a username that is not a login. User will want to set their own
+        // todo this needs to be unique. Currently highly probable but not guaranteed
         $profile->username = strtolower($user->last_name . $user->first_name) . rand(0,999);
         $profile->save();
 

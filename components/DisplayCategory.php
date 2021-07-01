@@ -45,8 +45,8 @@ class DisplayCategory extends ComponentBase
                 $this->defer = true;
                 return;
             }
-            if ($this->currentPageUrl() != $this->category['url']) {
-                return redirect($this->category['url'], 301);
+            if ($this->currentPageUrl() != $this->category->url) {
+                return redirect($this->category->url, 301);
             }
 
         $this->setPosts();
@@ -61,7 +61,7 @@ class DisplayCategory extends ComponentBase
     /**
      * Check if there is a displayPost component after this one
      * and that it will process from the URL paramater
-     * 
+     *
      * @return bool
      **/
     private function deferToPostComponent() {
@@ -71,7 +71,7 @@ class DisplayCategory extends ComponentBase
                if ($c->name == 'displayPost') return true;
             });
             // true if this component is first or other component was successful
-            if ($components->count() == 2 
+            if ($components->count() == 2
                 && ($components->first()->alias == $this->alias
                     || !empty($components->first()->post))) {
                 return true;
@@ -90,10 +90,10 @@ class DisplayCategory extends ComponentBase
     public function setPosts()
     {
         $postListOptions = [
-            'optionsCategoryIds' => $this->category['post_list_ids'],
-            'optionsSort'        => $this->category['post_list_sort'],
+            'optionsCategoryIds' => $this->category->post_list_ids,
+            'optionsSort'        => $this->category->post_list_sort,
             'optionsPage'        => $this->getRequestedPage(),
-            'optionsPerPage'     => $this->category['post_list_per_page'],
+            'optionsPerPage'     => $this->category->post_list_per_page,
         ];
 
         $postList = Post::getPostsList($postListOptions);

@@ -238,13 +238,8 @@ class Category extends Model
      * @param $options
      * @return array
      */
-    public static function getCategoryAsArray($options)
+    public static function getCategory($options)
     {
-        $cacheKey = md5(__METHOD__ . serialize($options));
-        if (Settings::get('enableMicroCache') && Cache::has($cacheKey)) {
-            return Cache::get($cacheKey);
-        }
-
         $optionsSlug            = false;
         $optionsWithChildren    = false;
 
@@ -260,18 +255,7 @@ class Category extends Model
 
         $result = $query->first();
 
-        if ($result) {
-            $result = $result->toArray();
-
-            if (Settings::get('enableMicroCache') && Settings::get('microCacheDuration')) {
-                $expiresAt = Argon::now()->addSeconds(Settings::get('microCacheDuration'));
-                Cache::put($cacheKey, $result, $expiresAt);
-            }
-
-            return $result;
-        } else {
-            return [];
-        }
+        return $result ? $result : null;
     }
 
 

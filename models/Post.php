@@ -332,13 +332,8 @@ class Post extends Model
      * @param $options
      * @return array
      */
-    public static function getPostAsArray($options)
+    public static function getPost($options)
     {
-        $cacheKey = md5(__METHOD__ . serialize($options));
-        if (Settings::get('enableMicroCache') && Cache::has($cacheKey)) {
-            return Cache::get($cacheKey);
-        }
-
         $optionsSlug                = false;
         $optionsWithPrimaryCategory = true;
         $optionsWithTags            = true;
@@ -364,16 +359,7 @@ class Post extends Model
 
         $result = $query->first();
 
-        if ($result) {
-            $result = $result->toArray();
-            if (Settings::get('enableMicroCache') && Settings::get('microCacheDuration')) {
-                $expiresAt = Argon::now()->addSeconds(Settings::get('microCacheDuration'));
-                Cache::put($cacheKey, $result, $expiresAt);
-            }
-            return $result;
-        } else {
-            return [];
-        }
+        return $result ? $result : null;
     }
 
     /**
@@ -386,11 +372,6 @@ class Post extends Model
      */
     public static function getPostsList($options)
     {
-        $cacheKey = md5(__METHOD__ . serialize($options));
-        if (Settings::get('enableMicroCache') && Cache::has($cacheKey)) {
-            return Cache::get($cacheKey);
-        }
-
         // Set some defaults to be overridden by extract
         $optionsTagId           = null;
         $optionsCategoryIds     = [];
@@ -490,15 +471,9 @@ class Post extends Model
 
         $items = $query->skip($offset)
             ->take($optionsPerPage)
-            ->get()
-            ->toArray();
+            ->get();
 
         $result ['items'] = $items;
-
-        if (Settings::get('enableMicroCache') && Settings::get('microCacheDuration')) {
-            $expiresAt = Argon::now()->addSeconds(Settings::get('microCacheDuration'));
-            Cache::put($cacheKey, $result, $expiresAt);
-        }
 
         return $result;
     }

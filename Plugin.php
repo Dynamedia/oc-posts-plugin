@@ -125,7 +125,7 @@ class Plugin extends PluginBase
             if (!$slug) return;
 
             if ($displayCategory) {
-                $category = Category::getCategoryAsArray(['optionsSlug' => $slug]);
+                $category = Category::getCategory(['optionsSlug' => $slug]);
 
                 if ($category && $category['computed_cms_layout'] !== false) {
                     $page->layout = $category['computed_cms_layout'];
@@ -135,17 +135,17 @@ class Plugin extends PluginBase
             }
 
             if ($displayPost) {
-                $post = Post::getPostAsArray(['optionsSlug' => $slug]);
+                $post = Post::getPost(['optionsSlug' => $slug]);
 
-                if ($post && $post['computed_cms_layout'] !== false) {
-                    $page->layout = $post['computed_cms_layout'];
+                if ($post && $post->computed_cms_layout !== false) {
+                    $page->layout = $post->computed_cms_layout;
                 }
 
                 App::instance('dynamedia.posts.post', $post);
             }
 
             if ($displayTag) {
-                $tag = Tag::getTagAsArray($slug);
+                $tag = Tag::getTag($slug);
 
                 if ($tag && $tag['computed_cms_layout'] !== false) {
                     $page->layout = $tag['computed_cms_layout'];

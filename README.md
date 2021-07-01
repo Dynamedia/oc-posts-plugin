@@ -1,13 +1,13 @@
-#Posts Publishing Platform
+# Posts Publishing Platform
 
-##For Winter CMS
+## For Winter CMS
 
-###About
+### About
 This plugin has been designed as a replacement for the basic blog.
 
 Before contributing please read the license, as it's source-available proprietary software.
 
-###Goals
+### Goals
 Provide a feature-complete multi-user publishing platform.
 
 Be compatible with standard CMS themes (Pages)

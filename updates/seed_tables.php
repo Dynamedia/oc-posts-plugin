@@ -13,6 +13,11 @@ class SeedAllTables extends Seeder
 
     public function run()
     {
+        // Create profiles for users
+        foreach (User::all() as $user) {
+            Profile::getFromUser($user);
+        }
+
         Category::create([
             'name' => 'Uncategorized',
             'slug' => 'uncategorized',

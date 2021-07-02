@@ -9,6 +9,10 @@ Before contributing please read the license, as it's source-available proprietar
 
 ### Requirements
 
+This plugin should be tested with the accompanying demo theme - Get it from https://github.com/Dynamedia/wn-posts-demo-theme
+
+Ensure that the Winter.Pages plugin is installed.
+
 Please test using Mysql only. SQLite support is coming soon.
 
 ### Goals

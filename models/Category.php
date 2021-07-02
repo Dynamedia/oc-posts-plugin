@@ -140,10 +140,12 @@ class Category extends Model
 
         $user = BackendAuth::getUser();
 
-        if (!$this->userCanManage($user)) {
-            throw new ValidationException([
-                'error' => "Insufficient permissions to edit {$this->name}"
-            ]);
+        if (!app()->runningInConsole()) {
+            if (!$this->userCanManage($user)) {
+                throw new ValidationException([
+                    'error' => "Insufficient permissions to edit {$this->name}"
+                ]);
+            }
         }
     }
 

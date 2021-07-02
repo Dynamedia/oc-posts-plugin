@@ -129,13 +129,15 @@ class Tag extends Model
     {
         $user = BackendAuth::getUser();
 
-        // Allow creation (from posts tag interface)
-        if (!$this->userCanManage($user) && !$this->exists) {
-            $this->is_approved = false;
-        } elseif (!$this->userCanManage($user)) {
-            throw new ValidationException([
-                'error' => "Insufficient permissions to edit {$this->name}"
-            ]);
+        if (!app()->runningInConsole()) {
+            // Allow creation (from posts tag interface)
+            if (!$this->userCanManage($user) && !$this->exists) {
+                $this->is_approved = false;
+            } elseif (!$this->userCanManage($user)) {
+                throw new ValidationException([
+                    'error' => "Insufficient permissions to edit {$this->name}"
+                ]);
+            }
         }
 
         if (!$this->slug) {

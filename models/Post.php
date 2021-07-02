@@ -150,22 +150,24 @@ class Post extends Model
         }
 
         // Permissions logic
-        if (!$this->userCanEdit($user)) {
-            throw new ValidationException([
-                'error' => "Insufficient permissions to edit {$this->slug}"
-            ]);
-        }
-
-        if ($this->isDirty('is_published')) {
-            if ($this->is_published && !$this->userCanPublish($user)) {
+        if (!app()->runningInConsole()) {
+            if (!$this->userCanEdit($user)) {
                 throw new ValidationException([
-                    'error' => "Insufficient permissions to publish {$this->slug}"
+                    'error' => "Insufficient permissions to edit {$this->slug}"
                 ]);
             }
-            if (!$this->is_published && !$this->userCanUnpublish($user)) {
-                throw new ValidationException([
-                    'error' => "Insufficient permissions to unpublish {$this->slug}"
-                ]);
+
+            if ($this->isDirty('is_published')) {
+                if ($this->is_published && !$this->userCanPublish($user)) {
+                    throw new ValidationException([
+                        'error' => "Insufficient permissions to publish {$this->slug}"
+                    ]);
+                }
+                if (!$this->is_published && !$this->userCanUnpublish($user)) {
+                    throw new ValidationException([
+                        'error' => "Insufficient permissions to unpublish {$this->slug}"
+                    ]);
+                }
             }
         }
         // End permissions logic

@@ -34,11 +34,11 @@ cms_content:
             usePanelStyles: false
             form: $/dynamedia/posts/config/forms/block/cms_content.yaml
 
-cms_partial:
-    name: CMS Partial
-    description: Add a CMS partial
-    fields:
-        block:
-            type: nestedform
-            usePanelStyles: false
-            form: $/dynamedia/posts/config/forms/block/cms_partial.yaml
+#cms_partial:
+#    name: CMS Partial
+#    description: Add a CMS partial
+#    fields:
+#        block:
+#            type: nestedform
+#            usePanelStyles: false
+#            form: $/dynamedia/posts/config/forms/block/cms_partial.yaml

@@ -18,7 +18,7 @@ use Dynamedia\Posts\Traits\ImagesTrait;
 use Dynamedia\Posts\Traits\ControllerTrait;
 use \October\Rain\Database\Traits\Validation;
 use Cache;
-use Winter\Storm\Support\Facades\Flash;
+use Flash;
 
 /**
  * post Model

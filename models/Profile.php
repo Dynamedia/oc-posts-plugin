@@ -34,7 +34,7 @@ class Profile extends Model
      * @var array Validation rules for attributes
      */
     public $rules = [
-        'username'  => 'required|unique:dynamedia_posts_profile'
+        'username'  => 'required|unique:dynamedia_posts_profiles'
     ];
 
     public $customMessages = [
@@ -111,6 +111,7 @@ class Profile extends Model
         // We need a username that is not a login. User will want to set their own
         // todo this needs to be unique. Currently highly probable but not guaranteed
         $profile->username = strtolower($user->last_name . $user->first_name) . rand(0,999);
+
         $profile->save();
 
         $user->profile = $profile;

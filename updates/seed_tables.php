@@ -1,8 +1,7 @@
 <?php namespace Dynamedia\Posts\Updates;
 
 use Backend\Models\User;
-use Winter\Storm\Database\Updates\Seeder;
-use Carbon\Carbon;
+use Seeder;
 use Dynamedia\Posts\Models\Post;
 use Dynamedia\Posts\Models\Category;
 use Dynamedia\Posts\Models\Tag;

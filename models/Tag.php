@@ -1,19 +1,14 @@
 <?php namespace Dynamedia\Posts\Models;
 
-use Dynamedia\Posts\Models\Post;
-use Dynamedia\Posts\Models\Settings;
-use October\Rain\Argon\Argon;
 use Model;
 use Str;
-use Input;
-use Config;
 use BackendAuth;
 use ValidationException;
 use Dynamedia\Posts\Traits\SeoTrait;
 use Dynamedia\Posts\Traits\ImagesTrait;
 use Dynamedia\Posts\Traits\ControllerTrait;
 use \October\Rain\Database\Traits\Validation;
-use Cache;
+
 
 
 /**

@@ -4,7 +4,6 @@ use Model;
 use Backend\Models\User as BackendUser;
 use Dynamedia\Posts\Traits\ControllerTrait;
 use \October\Rain\Database\Traits\Validation;
-use URL;
 
 use ValidationException;
 

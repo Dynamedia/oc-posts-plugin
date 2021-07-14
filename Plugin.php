@@ -1,7 +1,6 @@
 <?php namespace Dynamedia\Posts;
 
 use Backend;
-use Dynamedia\Posts\Controllers\Posts;
 use System\Classes\PluginBase;
 use Lang;
 use App;

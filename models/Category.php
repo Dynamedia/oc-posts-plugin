@@ -1,16 +1,8 @@
 <?php namespace Dynamedia\Posts\Models;
 
-use Dynamedia\Posts\Models\Settings;
-use October\Rain\Argon\Argon;
 use Model;
 use BackendAuth;
-use Cms\Classes\Controller;
-use Cms\Classes\Layout;
-use Cms\Classes\Theme;
-use Config;
-use Input;
 use Str;
-use Cache;
 use Dynamedia\Posts\Traits\SeoTrait;
 use Dynamedia\Posts\Traits\ImagesTrait;
 use Dynamedia\Posts\Traits\ControllerTrait;

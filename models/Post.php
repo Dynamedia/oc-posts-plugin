@@ -2,22 +2,15 @@
 
 use Dynamedia\Posts\Models\Settings;
 use Model;
-use Lang;
-use Config;
 use October\Rain\Argon\Argon;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Input;
 use Str;
-use App;
 use BackendAuth;
 use Cms\Classes\Controller;
-use Cms\Classes\Theme;
 use ValidationException;
 use Dynamedia\Posts\Traits\SeoTrait;
 use Dynamedia\Posts\Traits\ImagesTrait;
 use Dynamedia\Posts\Traits\ControllerTrait;
 use \October\Rain\Database\Traits\Validation;
-use Cache;
 use Flash;
 
 /**

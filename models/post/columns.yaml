@@ -9,6 +9,10 @@ columns:
     title:
         label: Title
         searchable: true
+    primary_category:
+        label: Primary Category
+        relation: primary_category
+        valueFrom: name
     author:
         label: By
         relation: author

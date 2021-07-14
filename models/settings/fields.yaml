@@ -15,8 +15,8 @@ tabs:
             required: true
             type: dropdown
             options:
-                Organization: Organization
-                Person: Person
+                Organization: dynamedia.posts::lang.settings.dropdown.organization
+                Person: dynamedia.posts::lang.settings.dropdown.person
 
         publisherUrl:
             tab: dynamedia.posts::lang.settings.tabs.publisher
@@ -33,13 +33,13 @@ tabs:
 
         postPage:
             tab: dynamedia.posts::lang.settings.tabs.posts
-            label: Post Display Page (With Categories)
+            label: dynamedia.posts::lang.settings.labels.post_page
             type: dropdown
             comment: It is recommended to use the same page for post and category
 
         postPageWithoutCategory:
             tab: dynamedia.posts::lang.settings.tabs.posts
-            label: Post Display Page (No Category)
+            label: dynamedia.posts::lang.settings.labels.post_page_no_category
             type: dropdown
             comment: Only used where using separate pages for post and category and post has no primary category
 
@@ -51,40 +51,40 @@ tabs:
 
         categoryPostsListSortOrder:
             tab: dynamedia.posts::lang.settings.tabs.categories
-            label: Default Posts Sort Order
+            label: dynamedia.posts::lang.settings.labels.default_posts_sort_order
             type: dropdown
             default: 'published_at desc'
             options: \Dynamedia\Posts\Classes\Helpers\Form::getDefaultPostListSortOptions
 
         categoryPostsListIncludeSubcategories:
             tab: dynamedia.posts::lang.settings.tabs.categories
-            label: List Posts from Sub-Categories
+            label: dynamedia.posts::lang.settings.labels.include_subcategories
             type: dropdown
             default: false
             options: \Dynamedia\Posts\Classes\Helpers\Form::getDefaultPostListIncludeSubCategoriesOptions
 
         categoryPostsListPerPage:
             tab: dynamedia.posts::lang.settings.tabs.categories
-            label: Posts Per Page
+            label: dynamedia.posts::lang.settings.labels.posts_per_page
             type: dropdown
             options: \Dynamedia\Posts\Classes\Helpers\Form::getDefaultPostListPerPageOptions
             default: 10
 
         tagPage:
             tab: dynamedia.posts::lang.settings.tabs.tags
-            label: Tag Page
+            label: dynamedia.posts::lang.settings.labels.tag_page
             type: dropdown
 
         tagPostsListSortOrder:
             tab: dynamedia.posts::lang.settings.tabs.tags
-            label: Default Posts Sort Order
+            label: dynamedia.posts::lang.settings.labels.default_posts_sort_order
             type: dropdown
             default: 'published_at desc'
             options: \Dynamedia\Posts\Classes\Helpers\Form::getDefaultPostListSortOptions
 
         tagPostsListPerPage:
             tab: dynamedia.posts::lang.settings.tabs.tags
-            label: Posts Per Page
+            label: dynamedia.posts::lang.settings.labels.posts_per_page
             type: dropdown
             options: \Dynamedia\Posts\Classes\Helpers\Form::getDefaultPostListPerPageOptions
             default: 10
@@ -103,7 +103,7 @@ tabs:
 
         userPostsListPerPage:
             tab: dynamedia.posts::lang.settings.tabs.users
-            label: Posts Per Page
+            label: dynamedia.posts::lang.settings.labels.posts_per_page
             type: dropdown
             options: \Dynamedia\Posts\Classes\Helpers\Form::getDefaultPostListPerPageOptions
             default: 10

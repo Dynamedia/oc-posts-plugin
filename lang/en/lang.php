@@ -154,13 +154,24 @@ return [
             'cms_layouts'   => 'CMS Layouts',
         ],
         'labels' => [
-            'publisher_name'        => 'Publisher Name',
-            'publisher_type'        => 'Publisher Type',
-            'publisher_url'         => 'Publisher URL',
-            'publisher_logo'        => 'Publisher Logo',
-            'posts_sort_order'      => 'Posts Sort Order',
-            'posts_per_page'        => 'Posts Per Page',
-            'include_subcategories' => 'List Posts from Sub-Categories',
+            'publisher_name'            => 'Publisher Name',
+            'publisher_type'            => 'Publisher Type',
+            'publisher_url'             => 'Publisher URL',
+            'publisher_logo'            => 'Publisher Logo',
+            'posts_sort_order'          => 'Posts Sort Order',
+            'default_posts_sort_order'  => 'Default Posts Sort Order',
+            'posts_per_page'            => 'Posts Per Page',
+            'include_subcategories'     => 'List Posts from Sub-Categories',
+            'post_page'                 => 'Post Display Page (With Categories)',
+            'post_page_no_category'     => 'Post Display Page (No Category)',
+            'category_page'             => 'Category Display Page',
+            'tag_page'                  => 'Tag Display Page',
+            'user_page'                 => 'User Display Page',
+
+        ],
+        'dropdown' => [
+          'organization'    => 'Organization',
+          'person'          => 'Person',
         ],
     ]
 ];

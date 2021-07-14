@@ -35,19 +35,19 @@ tabs:
             tab: dynamedia.posts::lang.settings.tabs.posts
             label: dynamedia.posts::lang.settings.labels.post_page
             type: dropdown
-            comment: It is recommended to use the same page for post and category
+            comment: dynamedia.posts::lang.settings.comments.post_page
 
         postPageWithoutCategory:
             tab: dynamedia.posts::lang.settings.tabs.posts
             label: dynamedia.posts::lang.settings.labels.post_page_no_category
             type: dropdown
-            comment: Only used where using separate pages for post and category and post has no primary category
+            comment: dynamedia.posts::lang.settings.comments.post_page_no_category
 
         categoryPage:
             tab: dynamedia.posts::lang.settings.tabs.categories
-            label: Category Display Page
+            label: dynamedia.posts::lang.settings.labels.category_page
             type: dropdown
-            comment: It is recommended to use the same page for post and category
+            comment: dynamedia.posts::lang.settings.comments.category_page
 
         categoryPostsListSortOrder:
             tab: dynamedia.posts::lang.settings.tabs.categories
@@ -91,12 +91,12 @@ tabs:
 
         userPage:
             tab: dynamedia.posts::lang.settings.tabs.users
-            label: User Display Page
+            label: dynamedia.posts::lang.settings.labels.user_page
             type: dropdown
 
         userPostsListSortOrder:
             tab: dynamedia.posts::lang.settings.tabs.users
-            label: Default Posts Sort Order
+            label: dynamedia.posts::lang.settings.labels.default_posts_sort_order
             type: dropdown
             default: 'published_at desc'
             options: \Dynamedia\Posts\Classes\Helpers\Form::getDefaultPostListSortOptions
@@ -110,18 +110,18 @@ tabs:
 
         defaultPostLayout:
             tab: dynamedia.posts::lang.settings.tabs.cms_layouts
-            label: Default Post Layout
+            label: dynamedia.posts::lang.settings.labels.default_post_layout
             type: dropdown
             options: \Dynamedia\Posts\Classes\Helpers\Form::getCmsLayoutOptions
 
         defaultCategoryLayout:
             tab: dynamedia.posts::lang.settings.tabs.cms_layouts
-            label: Default Category Layout
+            label: dynamedia.posts::lang.settings.labels.default_category_layout
             type: dropdown
             options: \Dynamedia\Posts\Classes\Helpers\Form::getCmsLayoutOptions
 
         defaultTagLayout:
             tab: dynamedia.posts::lang.settings.tabs.cms_layouts
-            label: Default Tag Layout
+            label: dynamedia.posts::lang.settings.labels.default_tag_layout
             type: dropdown
             options: \Dynamedia\Posts\Classes\Helpers\Form::getCmsLayoutOptions

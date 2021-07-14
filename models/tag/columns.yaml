@@ -7,11 +7,11 @@ columns:
         label: ID
         searchable: true
     name:
-        label: Name
+        label: dynamedia.posts::lang.common.labels.name
         searchable: true
     slug:
-        label: Slug
+        label: dynamedia.posts::lang.common.labels.slug
         searchable: true
     is_approved:
-        label: Approved
+        label: dynamedia.posts::lang.common.labels.approved
 

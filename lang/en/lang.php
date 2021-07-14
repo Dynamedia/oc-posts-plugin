@@ -11,8 +11,11 @@ return [
             'tags'              => 'Tags',
         ],
         'labels' => [
+            'author'            => 'Author',
+            'editor'            => 'Editor',
             'is_published'      => 'Published?',
             'published_at'      => 'Published At',
+            'publishing_time'   => 'Published Time',
             'published_until'   => 'Published Until',
             'show_contents'     => 'Show Contents?',
             'primary_category'  => 'Primary Category',
@@ -91,7 +94,12 @@ return [
             'editor'        => 'Editor',
             'block_heading' => 'Section Heading',
             'block_id'      => 'Section ID',
-            'block_content' => 'Section Content'
+            'block_content' => 'Section Content',
+            'empty_option'  => 'Please Select',
+            'approved'      => 'Approved',
+        ],
+        'dropdown' => [
+            'empty_option'  => 'Please Select',
         ]
     ],
     'images' => [
@@ -167,7 +175,14 @@ return [
             'category_page'             => 'Category Display Page',
             'tag_page'                  => 'Tag Display Page',
             'user_page'                 => 'User Display Page',
-
+            'default_post_layout'       => 'Default Post Layout',
+            'default_category_layout'   => 'Default Category Layout',
+            'default_tag_layout'        => 'Default Tag Layout',
+        ],
+        'comments' => [
+          'post_page' => 'It is recommended to use the same page for post and category',
+          'post_page_no_category' => 'Only used where using separate pages for post and category and post has no primary category',
+          'category_page' => 'It is recommended to use the same page for post and category',
         ],
         'dropdown' => [
           'organization'    => 'Organization',

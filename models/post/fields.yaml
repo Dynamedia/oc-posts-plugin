@@ -70,7 +70,7 @@ tabs:
             span: right
             type: relation
             nameFrom: profile.full_name
-            emptyOption: "Please Select"
+            emptyOption: dynamedia.posts::lang.common.dropdown.empty_option
 
         cms_layout:
             tab: dynamedia.posts::lang.common.tabs.settings

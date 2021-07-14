@@ -7,5 +7,5 @@ columns:
         label: ID
         searchable: true
     name:
-        label: Name
+        label: dynamedia.posts::lang.common.labels.name
         searchable: true

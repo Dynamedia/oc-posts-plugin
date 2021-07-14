@@ -7,22 +7,22 @@ columns:
         label: ID
         searchable: true
     title:
-        label: Title
+        label: dynamedia.posts::lang.common.labels.title
         searchable: true
     primary_category:
-        label: Primary Category
+        label: dynamedia.posts::lang.posts.labels.primary_category
         relation: primary_category
         valueFrom: name
     author:
-        label: By
+        label: dynamedia.posts::lang.posts.labels.author
         relation: author
         valueFrom: profile[fullName]
 
     editor:
-        label: Editor
+        label: dynamedia.posts::lang.posts.labels.editor
         relation: editor
         valueFrom: profile[fullName]
 
     published_at:
-        label: Published
+        label: dynamedia.posts::lang.posts.labels.publishing_time
 

@@ -2,39 +2,39 @@ tabs:
   fields:
     type:
       tab: dynamedia.posts::lang.seo.tabs.general
-      label: Post Type
+      label: dynamedia.posts::lang.seo.labels.post_type
       type: dropdown
       options:
-        Article: Article
-        BlogPosting: Blog Post
-        NewsArticle: News Article
+        Article: dynamedia.posts::lang.seo.dropdown.article
+        BlogPosting: dynamedia.posts::lang.seo.dropdown.blogPosting
+        NewsArticle: dynamedia.posts::lang.seo.dropdown.newsArticle
     about:
       tab: dynamedia.posts::lang.seo.tabs.general
-      label: Post is About
+      label: dynamedia.posts::lang.seo.labels.about
     keywords:
       tab: dynamedia.posts::lang.seo.tabs.general
-      label: Keywords
+      label: dynamedia.posts::lang.seo.labels.keywords
       type: taglist
       mode: array
     title:
       tab: dynamedia.posts::lang.seo.tabs.search
-      label: Page Title
+      label: dynamedia.posts::lang.seo.labels.page_title
     description:
       tab: dynamedia.posts::lang.seo.tabs.search
-      label: Meta Description
+      label: dynamedia.posts::lang.seo.labels.meta_description
       type: textarea
     opengraph_title:
       tab: dynamedia.posts::lang.seo.tabs.opengraph
-      label: Title
+      label: dynamedia.posts::lang.common.labels.title
     opengraph_description:
       tab: dynamedia.posts::lang.seo.tabs.opengraph
-      label: Description
+      label: dynamedia.posts::lang.common.labels.description
       type: textarea
     twitter_title:
       tab: dynamedia.posts::lang.seo.tabs.twitter
-      label: Title
+      label: dynamedia.posts::lang.common.labels.title
     twitter_description:
       tab: dynamedia.posts::lang.seo.tabs.twitter
-      label: Description
+      label: dynamedia.posts::lang.common.labels.description
       type: textarea
 

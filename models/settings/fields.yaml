@@ -5,13 +5,13 @@ tabs:
     stretch: true
     fields:
         publisherName:
-            tab: Publisher
-            label: Publisher Name
+            tab: dynamedia.posts::lang.settings.tabs.publisher
+            label: dynamedia.posts::lang.settings.labels.publisher_name
             required: true
 
         publisherType:
-            tab: Publisher
-            label: Publisher Type
+            tab: dynamedia.posts::lang.settings.tabs.publisher
+            label: dynamedia.posts::lang.settings.labels.publisher_type
             required: true
             type: dropdown
             options:
@@ -19,110 +19,109 @@ tabs:
                 Person: Person
 
         publisherUrl:
-            tab: Publisher
+            tab: dynamedia.posts::lang.settings.tabs.publisher
             required: true
-            label: Publisher URL
+            label: dynamedia.posts::lang.settings.labels.publisher_url
 
         publisherLogo:
-            tab: Publisher
-            label: Publisher Logo
-            required: true
+            tab: dynamedia.posts::lang.settings.tabs.publisher
+            label: dynamedia.posts::lang.settings.labels.publisher_logo
             type: mediafinder
             mode: image
             imageHeight: 250
             imageWidth: 250
 
         postPage:
-            tab: Posts
+            tab: dynamedia.posts::lang.settings.tabs.posts
             label: Post Display Page (With Categories)
             type: dropdown
             comment: It is recommended to use the same page for post and category
 
         postPageWithoutCategory:
-            tab: Posts
+            tab: dynamedia.posts::lang.settings.tabs.posts
             label: Post Display Page (No Category)
             type: dropdown
             comment: Only used where using separate pages for post and category and post has no primary category
 
         categoryPage:
-            tab: Categories
+            tab: dynamedia.posts::lang.settings.tabs.categories
             label: Category Display Page
             type: dropdown
             comment: It is recommended to use the same page for post and category
 
         categoryPostsListSortOrder:
-            tab: Categories
+            tab: dynamedia.posts::lang.settings.tabs.categories
             label: Default Posts Sort Order
             type: dropdown
             default: 'published_at desc'
             options: \Dynamedia\Posts\Classes\Helpers\Form::getDefaultPostListSortOptions
 
         categoryPostsListIncludeSubcategories:
-            tab: Categories
+            tab: dynamedia.posts::lang.settings.tabs.categories
             label: List Posts from Sub-Categories
             type: dropdown
             default: false
             options: \Dynamedia\Posts\Classes\Helpers\Form::getDefaultPostListIncludeSubCategoriesOptions
 
         categoryPostsListPerPage:
-            tab: Categories
+            tab: dynamedia.posts::lang.settings.tabs.categories
             label: Posts Per Page
             type: dropdown
             options: \Dynamedia\Posts\Classes\Helpers\Form::getDefaultPostListPerPageOptions
             default: 10
 
         tagPage:
-            tab: Tags
+            tab: dynamedia.posts::lang.settings.tabs.tags
             label: Tag Page
             type: dropdown
 
         tagPostsListSortOrder:
-            tab: Tags
+            tab: dynamedia.posts::lang.settings.tabs.tags
             label: Default Posts Sort Order
             type: dropdown
             default: 'published_at desc'
             options: \Dynamedia\Posts\Classes\Helpers\Form::getDefaultPostListSortOptions
 
         tagPostsListPerPage:
-            tab: Tags
+            tab: dynamedia.posts::lang.settings.tabs.tags
             label: Posts Per Page
             type: dropdown
             options: \Dynamedia\Posts\Classes\Helpers\Form::getDefaultPostListPerPageOptions
             default: 10
 
         userPage:
-            tab: Users
+            tab: dynamedia.posts::lang.settings.tabs.users
             label: User Display Page
             type: dropdown
 
         userPostsListSortOrder:
-            tab: Users
+            tab: dynamedia.posts::lang.settings.tabs.users
             label: Default Posts Sort Order
             type: dropdown
             default: 'published_at desc'
             options: \Dynamedia\Posts\Classes\Helpers\Form::getDefaultPostListSortOptions
 
         userPostsListPerPage:
-            tab: Users
+            tab: dynamedia.posts::lang.settings.tabs.users
             label: Posts Per Page
             type: dropdown
             options: \Dynamedia\Posts\Classes\Helpers\Form::getDefaultPostListPerPageOptions
             default: 10
 
         defaultPostLayout:
-            tab: CMS Layouts
+            tab: dynamedia.posts::lang.settings.tabs.cms_layouts
             label: Default Post Layout
             type: dropdown
             options: \Dynamedia\Posts\Classes\Helpers\Form::getCmsLayoutOptions
 
         defaultCategoryLayout:
-            tab: CMS Layouts
+            tab: dynamedia.posts::lang.settings.tabs.cms_layouts
             label: Default Category Layout
             type: dropdown
             options: \Dynamedia\Posts\Classes\Helpers\Form::getCmsLayoutOptions
 
         defaultTagLayout:
-            tab: CMS Layouts
+            tab: dynamedia.posts::lang.settings.tabs.cms_layouts
             label: Default Tag Layout
             type: dropdown
             options: \Dynamedia\Posts\Classes\Helpers\Form::getCmsLayoutOptions

@@ -1,12 +1,12 @@
 fields:
   sort_order:
-    label: Posts Sort Order
+    label: dynamedia.posts::lang.settings.labels.posts_sort_order
     type: dropdown
     default: '__inherit__'
     options: \Dynamedia\Posts\Classes\Helpers\Form::getPostListSortOptions
 
   per_page:
-    label: Posts Per Page
+    label: dynamedia.posts::lang.settings.labels.posts_sort_order
     type: dropdown
     default: '__inherit__'
     options: \Dynamedia\Posts\Classes\Helpers\Form::getPostListPerPageOptions

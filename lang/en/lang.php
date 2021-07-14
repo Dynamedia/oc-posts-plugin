@@ -81,6 +81,7 @@ return [
         'labels' => [
             'name'          => 'Name',
             'title'         => 'Title',
+            'description'   => 'Description',
             'slug'          => 'Slug',
             'excerpt'       => 'Excerpt',
             'seo'           => 'SEO',
@@ -128,13 +129,38 @@ return [
             'twitter'   => 'Twitter Cards',
         ],
         'labels' => [
+            'post_type'         => 'Post Type',
+            'about'             => 'Post is About',
+            'keywords'          => 'Keywords',
+            'page_title'        => 'Page Title',
+            'meta_description'  => 'Meta Description',
 
         ],
         // Not set in config as these are schema defined and don't need altering
         'dropdown' => [
-            'article'       => 'dynamedia.posts::lang.seo.dropdown.article',
-            'blogPosting'   => 'dynamedia.posts::lang.seo.dropdown.blogPosting',
-            'newsArticle'   => 'dynamedia.posts::lang.seo.dropdown.newsArticle',
+            'article'       => 'Article',
+            'blogPosting'   => 'Blog Post',
+            'newsArticle'   => 'News Article',
         ]
+    ],
+
+    'settings' => [
+        'tabs' => [
+            'publisher'     => 'Publisher',
+            'posts'         => 'Posts',
+            'categories'    => 'Categories',
+            'tags'          => 'Tags',
+            'users'         => 'Users',
+            'cms_layouts'   => 'CMS Layouts',
+        ],
+        'labels' => [
+            'publisher_name'        => 'Publisher Name',
+            'publisher_type'        => 'Publisher Type',
+            'publisher_url'         => 'Publisher URL',
+            'publisher_logo'        => 'Publisher Logo',
+            'posts_sort_order'      => 'Posts Sort Order',
+            'posts_per_page'        => 'Posts Per Page',
+            'include_subcategories' => 'List Posts from Sub-Categories',
+        ],
     ]
 ];

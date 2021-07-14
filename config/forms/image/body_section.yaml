@@ -11,7 +11,7 @@ secondaryTabs:
         image_style:
             tab: dynamedia.posts::lang.images.tabs.default
             span: right
-            label: Image Style
+            label: dynamedia.posts::lang.images.labels.image_style
             type: dropdown
             options: \Dynamedia\Posts\Classes\Helpers\Form::getImageStyleOptions
         alt:

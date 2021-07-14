@@ -6,11 +6,11 @@ secondaryTabs:
             mode: image
             imageHeight: 260
             imageWidth: 260
-            comment: Social sharing image for Facebook
+            comment: dynamedia.posts::lang.images.comments.facebook
         twitter:
             tab: dynamedia.posts::lang.images.tabs.twitter
             type: mediafinder
             mode: image
             imageHeight: 260
             imageWidth: 260
-            comment: Social sharing image for Twitter
+            comment: dynamedia.posts::lang.images.comments.twitter

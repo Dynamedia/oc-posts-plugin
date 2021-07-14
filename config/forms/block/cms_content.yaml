@@ -1,7 +1,7 @@
 tabs:
   fields:
     cms_content:
-      label: CMS Content
-      tab: Main
+      label: dynamedia.posts::lang.blocks.section.labels.cms_content
+      tab: dynamedia.posts::lang.common.tabs.main
       type: dropdown
       options: \Dynamedia\Posts\Classes\Helpers\Form::getCmsContentOptions

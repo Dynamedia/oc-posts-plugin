@@ -1,8 +1,8 @@
 tabs:
     fields:
         content:
-            label: HTML Block
-            tab: Main
+            label: dynamedia.posts::lang.blocks.section.labels.html
+            tab: dynamedia.posts::lang.common.tabs.main
             type: codeeditor
             language: html
             size: huge

@@ -1,7 +1,7 @@
 tabs:
   fields:
     type:
-      tab: General
+      tab: dynamedia.posts::lang.seo.tabs.general
       label: Post Type
       type: dropdown
       options:
@@ -9,32 +9,32 @@ tabs:
         BlogPosting: Blog Post
         NewsArticle: News Article
     about:
-      tab: General
+      tab: dynamedia.posts::lang.seo.tabs.general
       label: Post is About
     keywords:
-      tab: General
+      tab: dynamedia.posts::lang.seo.tabs.general
       label: Keywords
       type: taglist
       mode: array
     title:
-      tab: Search
+      tab: dynamedia.posts::lang.seo.tabs.search
       label: Page Title
     description:
-      tab: Search
+      tab: dynamedia.posts::lang.seo.tabs.search
       label: Meta Description
       type: textarea
     opengraph_title:
-      tab: Facebook OG
+      tab: dynamedia.posts::lang.seo.tabs.opengraph
       label: Title
     opengraph_description:
-      tab: Facebook OG
+      tab: dynamedia.posts::lang.seo.tabs.opengraph
       label: Description
       type: textarea
     twitter_title:
-      tab: Twitter Card
+      tab: dynamedia.posts::lang.seo.tabs.twitter
       label: Title
     twitter_description:
-      tab: Twitter Card
+      tab: dynamedia.posts::lang.seo.tabs.twitter
       label: Description
       type: textarea
 

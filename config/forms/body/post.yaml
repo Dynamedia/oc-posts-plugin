@@ -1,6 +1,6 @@
 section:
-    name: Section Block
-    description: Add a section of content
+    name: dynamedia.posts::lang.blocks.names.section
+    description: dynamedia.posts::lang.blocks.descriptions.section
     fields:
         block:
             type: nestedform
@@ -8,8 +8,8 @@ section:
             form: $/dynamedia/posts/config/forms/block/post_section.yaml
 
 html:
-    name: HTML Block
-    description: Add a block of html
+    name: dynamedia.posts::lang.blocks.names.html
+    description: dynamedia.posts::lang.blocks.descriptions.html
     fields:
         block:
             type: nestedform
@@ -17,8 +17,8 @@ html:
             form: $/dynamedia/posts/config/forms/block/html.yaml
 
 image:
-    name: Image Block
-    description: Add an image block
+    name: dynamedia.posts::lang.blocks.names.image
+    description: dynamedia.posts::lang.blocks.descriptions.image
     fields:
         block:
             type: nestedform
@@ -26,8 +26,8 @@ image:
             form: $/dynamedia/posts/config/forms/image/body.yaml
 
 cms_content:
-    name: CMS Content
-    description: Add CMS content block
+    name: dynamedia.posts::lang.blocks.names.cms_content
+    description: dynamedia.posts::lang.blocks.descriptions.cms_content
     fields:
         block:
             type: nestedform
@@ -35,8 +35,8 @@ cms_content:
             form: $/dynamedia/posts/config/forms/block/cms_content.yaml
 
 #cms_partial:
-#    name: CMS Partial
-#    description: Add a CMS partial
+#    name: dynamedia.posts::lang.blocks.names.cms_partial
+#    description: dynamedia.posts::lang.blocks.descriptions.cms_partial
 #    fields:
 #        block:
 #            type: nestedform
@@ -44,8 +44,8 @@ cms_content:
 #            form: $/dynamedia/posts/config/forms/block/cms_partial.yaml
 
 pagebreak:
-    name: Page Break
-    description: Add a simple page break
+    name: dynamedia.posts::lang.blocks.names.page_break
+    description: dynamedia.posts::lang.blocks.descriptions.page_break
     fields:
         title:
             label: Page break

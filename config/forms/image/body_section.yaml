@@ -2,6 +2,7 @@ secondaryTabs:
     fields:
         default:
             tab: dynamedia.posts::lang.images.tabs.default
+            label: dynamedia.posts::lang.images.labels.image_select
             span: left
             type: mediafinder
             mode: image

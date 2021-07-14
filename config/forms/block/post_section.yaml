@@ -11,19 +11,19 @@ tabs:
             span: right
             label: Section ID
             preset: heading
-    
+
         content:
             tab: Main
             label: Section Content
             type: richeditor
             size: huge
-    
+
         image:
             tab: Image
             type: nestedform
             usePanelStyles: false
             form: $/dynamedia/posts/config/forms/image/body_section.yaml
-    
+
         in_contents:
             tab: Settings
             type: switch

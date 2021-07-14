@@ -84,6 +84,7 @@ return [
             'twitter'       => 'Twitter',
         ],
         'labels' => [
+            'image_select'  => 'Choose an Image',
             'alt_text'      => 'Image Alt Text',
             'css_class'     => 'Image CSS Class',
             'media_query'   => 'Media Query',

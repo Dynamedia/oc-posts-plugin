@@ -1,11 +1,13 @@
 {
-    "name": "dynamedia/wn-posts-plugin",
-    "type": "winter-plugin",
+    "name": "dynamedia/oc-posts-plugin",
+    "type": "octobercms-plugin",
     "description": "Posts publishing plugin",
-    "homepage": "https://github.com/wintercms/wn-test-plugin",
+    "homepage": "https://github.com/dynamedia/oc-posts-plugin",
     "keywords": [
+        "october",
+        "october cms",
         "winter",
-        "wintercms",
+        "winter cms",
         "laravel",
         "blog",
         "posts",
@@ -20,7 +22,7 @@
         }
     ],
     "support": {
-        "source": "https://github.com/dynamedia/wn-posts-plugin"
+        "source": "https://github.com/dynamedia/oc-posts-plugin"
     },
     "require": {
         "php": ">=7.2",

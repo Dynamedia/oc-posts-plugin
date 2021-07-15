@@ -3,9 +3,7 @@
 use Cms\Classes\ComponentBase;
 use Dynamedia\Posts\Traits\PaginationTrait;
 use Dynamedia\Posts\Models\Post;
-use Lang;
 use App;
-use Input;
 
 class DisplayTag extends ComponentBase
 {
@@ -17,8 +15,8 @@ class DisplayTag extends ComponentBase
     public function componentDetails()
     {
         return [
-            'name'        => 'Display Tag',
-            'description' => 'Display a tag with posts'
+            'name'        => 'dynamedia.posts::lang.components.display_tag.name',
+            'description' => 'dynamedia.posts::lang.components.display_tag.description'
         ];
     }
 

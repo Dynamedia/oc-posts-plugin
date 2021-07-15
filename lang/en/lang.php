@@ -188,5 +188,87 @@ return [
           'organization'    => 'Organization',
           'person'          => 'Person',
         ],
+    ],
+    'components' => [
+        'common' => [
+
+        ],
+        'display_post' => [
+            'name'          => 'Display Post',
+            'description'   => 'Show post content',
+        ],
+        'display_category'  => [
+            'name'          => 'Display Category',
+            'description'   => 'Show category content with posts',
+        ],
+        'display_tag'  => [
+            'name'          => 'Display Tag',
+            'description'   => 'Show tag content with posts',
+        ],
+        'display_user'  => [
+            'name'          => 'Display User',
+            'description'   => 'Show user profile with authored posts',
+        ],
+        'list_posts'  => [
+            'name'          => 'List Posts',
+            'description'   => 'Configurable posts list',
+            'properties'    => [
+                'category_filter' => [
+                    'title'         => 'Category Filter',
+                    'description'   => 'Restrict results to this category',
+                ],
+                'include_subcategories' => [
+                    'title'         => 'Include Subcategories',
+                    'description'   => 'List posts from subcategories of selected category',
+                ],
+                'tag_filter' => [
+                    'title'         => 'Tag Filter',
+                    'description'   => 'Restrict results to this tag',
+                ],
+                'post_ids' => [
+                    'title'         => 'Post Filter',
+                    'description'   => 'Restrict results to these post ID\'s',
+                    'validation'    => 'Please enter a comma separated list of post ID\'s'
+                ],
+                'not_post_ids' => [
+                    'title'         => 'Exclude Posts',
+                    'description'   => 'Exclude these post ID\'s',
+                    'validation'    => 'Please enter a comma separated list of post ID\'s'
+                ],
+                'not_category_ids' => [
+                    'title'         => 'Exclude Posts from Category',
+                    'description'   => 'Exclude these category ID\'s',
+                    'validation'    => 'Please enter a comma separated list of category ID\'s'
+                ],
+                'not_tag_ids' => [
+                    'title'         => 'Exclude Posts from Tag',
+                    'description'   => 'Exclude these tag ID\'s',
+                    'validation'    => 'Please enter a comma separated list of tag ID\'s'
+                ],
+                'posts_limit' => [
+                    'title'         => 'Total Posts',
+                    'description'   => 'Limit the number of posts to fetch',
+                    'validation'    => 'Please enter a positive whole number or leave blank'
+                ],
+                'posts_per_page' => [
+                    'title'         => 'Posts per Page',
+                    'description'   => 'Limit the number of posts per page',
+                    'validation'    => 'Please enter a positive whole number'
+                ],
+                'no_posts_message' => [
+                    'title'         => 'No Posts Message',
+                    'description'   => 'Message to display when no posts are found',
+                    'default'       => 'No posts found',
+                ],
+                'sort_order' => [
+                    'title'         => 'Sort Order',
+                    'description'   => 'Sort the fetched posts',
+                ],
+            ],
+        ],
+        'search_posts'  => [
+            'name'          => 'Search Posts',
+            'description'   => 'Show search results',
+        ],
     ]
 ];

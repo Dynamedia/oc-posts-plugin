@@ -4,9 +4,7 @@ use Cms\Classes\ComponentBase;
 use Backend\Models\User as BackendUser;
 use Dynamedia\Posts\Models\Post;
 use Dynamedia\Posts\Models\Settings;
-use October\Rain\Argon\Argon;
 use Dynamedia\Posts\Traits\PaginationTrait;
-use Cache;
 
 class DisplayUser extends ComponentBase
 {
@@ -18,8 +16,8 @@ class DisplayUser extends ComponentBase
     public function componentDetails()
     {
         return [
-            'name'        => 'Display a User',
-            'description' => 'A user and their posts'
+            'name'        => 'dynamedia.posts::lang.components.display_user.name',
+            'description' => 'dynamedia.posts::lang.components.display_user.description'
         ];
     }
 

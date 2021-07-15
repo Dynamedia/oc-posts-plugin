@@ -1,14 +1,9 @@
 <?php namespace Dynamedia\Posts\Components;
 
 use Cms\Classes\ComponentBase;
-use Cms\Classes\Page;
 use Dynamedia\Posts\Models\Post;
 use Dynamedia\Posts\Traits\PaginationTrait;
-use Lang;
-use Str;
 use App;
-use Input;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class DisplayCategory extends ComponentBase
 {
@@ -17,8 +12,8 @@ class DisplayCategory extends ComponentBase
     public function componentDetails()
     {
         return [
-            'name'        => 'Display Category',
-            'description' => 'Display a category with posts'
+            'name'        => 'dynamedia.posts::lang.components.display_category.name',
+            'description' => 'dynamedia.posts::lang.components.display_category.description'
         ];
     }
 

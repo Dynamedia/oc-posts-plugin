@@ -18,8 +18,8 @@ class ListPosts extends ComponentBase
     public function componentDetails()
     {
         return [
-            'name'        => 'ListPosts Component',
-            'description' => 'Create a list of posts'
+            'name'        => 'dynamedia.posts::lang.components.list_posts.name',
+            'description' => 'dynamedia.posts::lang.components.list_posts.description'
         ];
     }
 
@@ -27,85 +27,85 @@ class ListPosts extends ComponentBase
     {
         return [
             'categoryFilter' => [
-                'title'         => 'Category Filter',
-                'description'   => 'Restrict results to this category',
+                'title'         => 'dynamedia.posts::lang.components.list_posts.properties.category_filter.title',
+                'description'   => 'dynamedia.posts::lang.components.list_posts.properties.category_filter.description',
                 'type'          => 'dropdown',
                 'default'       => '',
                 'showExternalParam' => false
             ],
             'includeSubcategories' => [
-                'title'       => 'Include Subcategories',
-                'description' => 'List posts from subcategories of selected category',
+                'title'         => 'dynamedia.posts::lang.components.list_posts.properties.include_subcategories.title',
+                'description'   => 'dynamedia.posts::lang.components.list_posts.properties.include_subcategories.description',
                 'type'        => 'checkbox',
                 'showExternalParam' => false,
             ],
             'tagFilter' => [
-                'title'         => 'Tag Filter',
-                'description'   => 'Restrict results to this tag',
+                'title'         => 'dynamedia.posts::lang.components.list_posts.properties.tag_filter.title',
+                'description'   => 'dynamedia.posts::lang.components.list_posts.properties.tag_filter.description',
                 'type'          => 'dropdown',
                 'default'       => '',
                 'showExternalParam' => false
             ],
             'postIds' => [
-                'title'             => 'Post Filter',
-                'description'       => 'Restrict results to these post Id\'s',
+                'title'         => 'dynamedia.posts::lang.components.list_posts.properties.post_ids.title',
+                'description'   => 'dynamedia.posts::lang.components.list_posts.properties.post_ids.description',
                 'validationPattern' => '^\d+(,\d+)*$',
-                'validationMessage' => 'Please enter a comma separated list of post Id\'s',
+                'validationMessage' => 'dynamedia.posts::lang.components.list_posts.properties.post_ids.validation',
                 'default'           => '',
                 'showExternalParam' => false
             ],
             'notPostIds' => [
-                'title'             => 'Exclude Posts',
-                'description'       => 'Exclude these post Id\'s',
+                'title'         => 'dynamedia.posts::lang.components.list_posts.properties.not_post_ids.title',
+                'description'   => 'dynamedia.posts::lang.components.list_posts.properties.not_post_ids.description',
                 'validationPattern' => '^\d+(,\d+)*$',
-                'validationMessage' => 'Please enter a comma separated list of post Id\'s',
+                'validationMessage' => 'dynamedia.posts::lang.components.list_posts.properties.not_post_ids.validation',
                 'default'           => '',
                 'showExternalParam' => false
             ],
             'notCategoryIds' => [
-                'title'             => 'Exclude Posts From Category',
-                'description'       => 'Exclude these category Id\'s',
+                'title'         => 'dynamedia.posts::lang.components.list_posts.properties.not_category_ids.title',
+                'description'   => 'dynamedia.posts::lang.components.list_posts.properties.not_category_ids.description',
                 'validationPattern' => '^\d+(,\d+)*$',
-                'validationMessage' => 'Please enter a comma separated list of category Id\'s',
+                'validationMessage' => 'dynamedia.posts::lang.components.list_posts.properties.not_category_ids.validation',
                 'default'           => '',
                 'showExternalParam' => false
             ],
             'notTagIds' => [
-                'title'             => 'Exclude Posts With These Tags',
-                'description'       => 'Exclude these tag Id\'s',
+                'title'         => 'dynamedia.posts::lang.components.list_posts.properties.not_tag_ids.title',
+                'description'   => 'dynamedia.posts::lang.components.list_posts.properties.not_tag_ids.description',
                 'validationPattern' => '^\d+(,\d+)*$',
-                'validationMessage' => 'Please enter a comma separated list of tag Id\'s',
+                'validationMessage' => 'dynamedia.posts::lang.components.list_posts.properties.not_tag_ids.validation',
                 'default'           => '',
                 'showExternalParam' => false
             ],
             'postsLimit' => [
-                'title'             => 'Total posts',
-                'description'       => 'Limit the number of posts to fetch',
+                'title'         => 'dynamedia.posts::lang.components.list_posts.properties.posts_limit.title',
+                'description'   => 'dynamedia.posts::lang.components.list_posts.properties.posts_limit.description',
                 'type'              => 'string',
                 'validationPattern' => '^[1-9]\d*$',
-                'validationMessage' => 'Please enter a positive whole number or leave blank',
+                'validationMessage' => 'dynamedia.posts::lang.components.list_posts.properties.posts_limit.validation',
                 'default'           => '',
                 'showExternalParam' => false,
             ],
             'postsPerPage' => [
-                'title'             => 'Posts per page',
-                'description'       => 'Limit the number of posts per page',
+                'title'         => 'dynamedia.posts::lang.components.list_posts.properties.posts_per_page.title',
+                'description'   => 'dynamedia.posts::lang.components.list_posts.properties.posts_per_page.description',
                 'type'              => 'string',
                 'validationPattern' => '^[1-9]\d*$',
-                'validationMessage' => 'Please enter a positive whole number',
+                'validationMessage' => 'dynamedia.posts::lang.components.list_posts.properties.posts_per_page.validation',
                 'default'           => '10',
                 'showExternalParam' => false,
             ],
             'noPostsMessage' => [
-                'title'             => 'No Posts Message',
-                'description'       => 'Message to display when no posts are found',
+                'title'         => 'dynamedia.posts::lang.components.list_posts.properties.no_posts_message.title',
+                'description'   => 'dynamedia.posts::lang.components.list_posts.properties.no_posts_message.description',
                 'type'              => 'string',
-                'default'           => "No posts found",
+                'default'           => Lang::get('dynamedia.posts::lang.components.list_posts.properties.no_posts_message.default'),
                 'showExternalParam' => false,
             ],
             'sortOrder' => [
-                'title'       => 'Sort Order',
-                'description' => 'Sort the fetched posts',
+                'title'         => 'dynamedia.posts::lang.components.list_posts.properties.sort_order.title',
+                'description'   => 'dynamedia.posts::lang.components.list_posts.properties.sort_order.description',
                 'type'        => 'dropdown',
                 'default'     => 'published_at desc',
                 'showExternalParam' => false,

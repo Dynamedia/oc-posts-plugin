@@ -2,10 +2,7 @@
 
 use Cms\Classes\ComponentBase;
 use BackendAuth;
-use Lang;
-use Str;
 use App;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Dynamedia\Posts\Traits\PaginationTrait;
 use Input;
 
@@ -17,8 +14,8 @@ class DisplayPost extends ComponentBase
     public function componentDetails()
     {
         return [
-            'name'        => 'Display Post',
-            'description' => 'Display a post'
+            'name'        => 'dynamedia.posts::lang.components.display_post.name',
+            'description' => 'dynamedia.posts::lang.components.display_post.description'
         ];
     }
 

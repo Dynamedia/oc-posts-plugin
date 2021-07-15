@@ -1,6 +1,6 @@
 {
     "name": "dynamedia/oc-posts-plugin",
-    "type": "octobercms-plugin",
+    "type": "october-plugin",
     "description": "Posts publishing plugin",
     "homepage": "https://github.com/dynamedia/oc-posts-plugin",
     "keywords": [

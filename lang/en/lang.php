@@ -100,6 +100,12 @@ return [
         ],
         'dropdown' => [
             'empty_option'  => 'Please Select',
+            'newest_first'  => 'Newest First',
+            'oldest_first'  => 'Oldest First',
+            'recent_update' => 'Recently Updated',
+            'random'        => 'Random',
+            'yes'           => 'Yes',
+            'no'            => 'No',
         ]
     ],
     'images' => [
@@ -191,7 +197,6 @@ return [
     ],
     'components' => [
         'common' => [
-
         ],
         'display_post' => [
             'name'          => 'Display Post',

@@ -1,6 +1,7 @@
 <?php
 namespace Dynamedia\Posts\Classes\Helpers;
 use Config;
+use Lang;
 use Cms\Classes\Theme;
 use Cms\Classes\Layout;
 use Cms\Classes\Partial;
@@ -48,10 +49,10 @@ class Form
     public static function getDefaultPostListSortOptions()
     {
         return [
-            'published_at desc' => 'Newest First',
-            'published_at asc'  => 'Oldest First',
-            'updated_at desc'   => 'Recently Updated',
-            '__random__'        => 'Random'
+            'published_at desc' => Lang::get('dynamedia.posts::lang.common.dropdown.newest_first'),
+            'published_at asc'  => Lang::get('dynamedia.posts::lang.common.dropdown.oldest_first'),
+            'updated_at desc'   => Lang::get('dynamedia.posts::lang.common.dropdown.recent_update'),
+            '__random__'        => Lang::get('dynamedia.posts::lang.common.dropdown.random')
         ];
     }
 
@@ -64,8 +65,8 @@ class Form
     public static function getDefaultPostListIncludeSubCategoriesOptions()
     {
         return [
-            false => 'No',
-            true => 'Yes'
+            false => Lang::get('dynamedia.posts::lang.common.dropdown.no'),
+            true  => Lang::get('dynamedia.posts::lang.common.dropdown.yes')
         ];
     }
 

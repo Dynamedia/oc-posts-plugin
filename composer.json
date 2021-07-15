@@ -1,5 +1,5 @@
 {
-    "name": "dynamedia/oc-posts-plugin",
+    "name": "dynamedia/posts-plugin",
     "type": "october-plugin",
     "description": "Posts publishing plugin",
     "homepage": "https://github.com/dynamedia/oc-posts-plugin",

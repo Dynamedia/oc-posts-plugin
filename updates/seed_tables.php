@@ -1,6 +1,7 @@
 <?php namespace Dynamedia\Posts\Updates;
 
 use Backend\Models\User;
+use Backend\Models\UserRole;
 use Seeder;
 use Dynamedia\Posts\Models\Post;
 use Dynamedia\Posts\Models\Category;
@@ -12,6 +13,85 @@ class SeedAllTables extends Seeder
 
     public function run()
     {
+        // Create non-system user roles - These should not automatically inherit access to CMS capabilities
+        // Use developer and publisher roles for full access
+        $writer = UserRole::updateOrCreate([
+            'name' => 'Post Writer',
+            'code' => 'post-writer',
+            'description' => 'Create and edit own posts',
+        ]);
+        $writer->permissions = [
+                'dynamedia.posts.access_plugin' => 1,
+                'dynamedia.posts.create_posts' => 1,
+                'dynamedia.posts.categorize_posts' => 1,
+                'dynamedia.posts.tag_posts' => 1,
+                'dynamedia.posts.set_layout' => 1,
+                'dynamedia.posts.publish_own_posts' => 1,
+                'dynamedia.posts.unpublish_own_posts' => 1,
+                'dynamedia.posts.edit_own_published_posts' => 1,
+                'dynamedia.posts.delete_own_unpublished_posts' => 1,
+                'dynamedia.posts.delete_own_published_posts' => 1,
+                'dynamedia.posts.publish_all_posts' => 1,
+                'dynamedia.posts.unpublish_all_posts' => 1,
+                'dynamedia.posts.edit_all_unpublished_posts' => 1,
+                'dynamedia.posts.edit_all_published_posts' => 1,
+                'dynamedia.posts.delete_all_unpublished_posts' => 1,
+                'dynamedia.posts.delete_all_published_posts' => 1,
+                'dynamedia.posts.assign_posts' => 1,
+                'dynamedia.posts.view_categories' => 1,
+                'dynamedia.posts.manage_categories' => 1,
+                'dynamedia.posts.view_tags' => 1,
+                'dynamedia.posts.manage_tags' => 1,
+                'dynamedia.posts.view_settings' => 1,
+                'dynamedia.posts.manage_settings' => 1,
+            ];
+        $writer->save();
+
+        $guest = UserRole::updateOrCreate([
+            'name' => 'Guest Post Writer',
+            'code' => 'guest-post-writer',
+            'description' => 'Create posts',
+        ]);
+        $guest->permissions = [
+            'dynamedia.posts.access_plugin' => 1,
+            'dynamedia.posts.create_posts' => 1,
+            'dynamedia.posts.categorize_posts' => 1,
+            'dynamedia.posts.tag_posts' => 1,
+            'dynamedia.posts.delete_own_unpublished_posts' => 1,
+            'dynamedia.posts.view_categories' => 1,
+            'dynamedia.posts.view_tags' => 1,
+        ];
+        $guest->save();
+
+        $editor = UserRole::updateOrCreate([
+            'name' => 'Posts Editor',
+            'code' => 'post-editor',
+            'description' => 'Edit and publish posts',
+        ]);
+        $editor->permissions = [
+            'dynamedia.posts.access_plugin' => 1,
+            'dynamedia.posts.create_posts' => 1,
+            'dynamedia.posts.categorize_posts' => 1,
+            'dynamedia.posts.tag_posts' => 1,
+            'dynamedia.posts.set_layout' => 1,
+            'dynamedia.posts.publish_own_posts' => 1,
+            'dynamedia.posts.unpublish_own_posts' => 1,
+            'dynamedia.posts.edit_own_published_posts' => 1,
+            'dynamedia.posts.delete_own_unpublished_posts' => 1,
+            'dynamedia.posts.delete_own_published_posts' => 1,
+            'dynamedia.posts.publish_all_posts' => 1,
+            'dynamedia.posts.unpublish_all_posts' => 1,
+            'dynamedia.posts.edit_all_unpublished_posts' => 1,
+            'dynamedia.posts.edit_all_published_posts' => 1,
+            'dynamedia.posts.assign_posts' => 1,
+            'dynamedia.posts.view_categories' => 1,
+            'dynamedia.posts.manage_categories' => 1,
+            'dynamedia.posts.view_tags' => 1,
+            'dynamedia.posts.manage_tags' => 1,
+        ];
+        $editor->save();
+
+
         // Create profiles for users
         foreach (User::all() as $user) {
             Profile::getFromUser($user);

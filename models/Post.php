@@ -359,8 +359,8 @@ class Post extends Model
 
     /**
      * Get a list of posts
-     * Implements a simple micro-cahce of 10 seconds to reduce load.
-     * todo document fully and abstract caching with support for multiple drivers + json api
+     *
+     * todo document fully + json api
      *
      * @param $options
      * @return array
@@ -447,7 +447,7 @@ class Post extends Model
                 $totalResults = $optionsLimit;
             }
         }
-        
+
         $totalPages = (int) ceil($totalResults / $optionsPerPage);
 
         $result = [

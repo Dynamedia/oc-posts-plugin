@@ -441,18 +441,13 @@ class Post extends Model
 
         // Apply limits if required
         // Do not paginate
-        if ($optionsLimit == $optionsPerPage) {
+        if ($optionsLimit && $optionsLimit <= $optionsPerPage) {
             $optionsPage = 1;
-        } elseif ($optionsLimit && $optionsLimit < $totalResults) {
-            $totalResults = $optionsLimit;
-            if ($optionsLimit < $optionsPerPage) {
-                $optionsPerPage = $optionsLimit;
-            } elseif ($optionsLimit == $optionsPerPage) {
-                $optionsPage = 1;
+            if ($totalResults > $optionsLimit) {
+                $totalResults = $optionsLimit;
             }
         }
-
-
+        
         $totalPages = (int) ceil($totalResults / $optionsPerPage);
 
         $result = [

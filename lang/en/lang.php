@@ -186,9 +186,9 @@ return [
             'default_tag_layout'        => 'Default Tag Layout',
         ],
         'comments' => [
-          'post_page' => 'It is recommended to use the same page for post and category',
+          'post_page' => 'It is recommended to use a CMS page capable of handling both posts and categories',
           'post_page_no_category' => 'Only used where using separate pages for post and category and post has no primary category',
-          'category_page' => 'It is recommended to use the same page for post and category',
+          'category_page' => 'It is recommended to use a CMS page capable of handling both posts and categories',
         ],
         'dropdown' => [
           'organization'    => 'Organization',

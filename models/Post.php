@@ -505,7 +505,7 @@ class Post extends Model
         $noCategoryPostsPage = Settings::get('postPageWithoutCategory');
         $categoryPage = Settings::get('categoryPage');
 
-        // Plugin not configure
+        // Plugin not configured
         if (!$defaultPostsPage) {
             if (BackendAuth::getUser()) {
                 return Flash::warning('The Posts plugin has not been configured ');

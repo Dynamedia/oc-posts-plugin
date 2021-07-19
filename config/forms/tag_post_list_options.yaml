@@ -6,7 +6,7 @@ fields:
     options: \Dynamedia\Posts\Classes\Helpers\Form::getPostListSortOptions
 
   per_page:
-    label: dynamedia.posts::lang.settings.labels.posts_sort_order
+    label: dynamedia.posts::lang.settings.labels.posts_per_page
     type: dropdown
     default: '__inherit__'
     options: \Dynamedia\Posts\Classes\Helpers\Form::getPostListPerPageOptions

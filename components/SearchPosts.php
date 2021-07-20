@@ -41,13 +41,6 @@ class SearchPosts extends ComponentBase
                 'default'           => '10',
                 'showExternalParam' => false,
             ],
-            'noPostsMessage' => [
-                'title'             => 'No Posts Message',
-                'description'       => 'Message to display when no posts are found',
-                'type'              => 'string',
-                'default'           => "No posts found",
-                'showExternalParam' => false,
-            ],
             'sortOrder' => [
                 'title'       => 'Sort Order',
                 'description' => 'Sort the fetched posts',

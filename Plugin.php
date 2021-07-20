@@ -446,7 +446,7 @@ class Plugin extends PluginBase
         } elseif ($controller->param('postsTagSlug')) {
             $slug = $controller->param('postsTagSlug');
         }
-
+        
         return $slug;
     }
 

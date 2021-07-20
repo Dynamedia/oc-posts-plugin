@@ -59,6 +59,7 @@ class DisplayPost extends ComponentBase
         }
 
         $this->setPaginator();
+
     }
 
     /**
@@ -73,6 +74,7 @@ class DisplayPost extends ComponentBase
                if ($c->alias == $this->alias) return true;
                if ($c->name == 'displayCategory') return true;
             });
+
             // true if this component is first or other component was successful
             if ($components->count() == 2
                 && ($components->first()->alias == $this->alias

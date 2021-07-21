@@ -643,7 +643,7 @@ Relation           | Type          | Model
 ------------------ | ------------- | ----------
 primary_category   | BelongsTo     | Category
 author             | BelongsTo     | Backend\Models\User
-primary_category   | BelongsTo     | Backend\Models\User
+editor             | BelongsTo     | Backend\Models\User
 categories         | BelongsToMany | Category
 tags               | BelongsToMany | Tag
 

@@ -1,10 +1,15 @@
 ## Introduction
 
-This plugin provides functionality to write posts (blog posts, news articles etc). To facilitate this, you will need several CMS pages containing relevant plugin components.
+This plugin provides functionality to write posts (blog posts, news articles etc).
+To facilitate this, you will need several CMS pages containing relevant plugin components.
 
-To properly implement this plugin into your website, you will likely want to be able to display the content of your posts and have a way to list posts according to various criteria, perhaps by date posted or by the associated category, tag or author.
+To properly implement this plugin into your website, you will likely want to be able
+to display the content of your posts and have a way to list posts according
+to various criteria, perhaps by date posted or by the associated category, tag or author.
 
-A demonstration theme has been made available at  https://github.com/Dynamedia/oc-posts-demo-theme which is a useful resource for developers looking to get a quick start.
+A demonstration theme is available at https://github.com/Dynamedia/oc-posts-demo-theme
+which is a useful resource for developers looking to get a quick start. Additionally,
+a live demo site can be accessed at https://oc-posts.dynamedia.uk
 
 ## On Installation
 
@@ -647,3 +652,81 @@ editor             | BelongsTo     | Backend\Models\User
 categories         | BelongsToMany | Category
 tags               | BelongsToMany | Tag
 
+---
+
+### Category
+
+Model `Dynamedia\Posts\Category`
+
+Table `dynamedia_posts_categories`
+
+##### Category Attributes
+
+Attribute                   | Type
+--------------------------- | -------------
+name                        | String
+slug                        | String
+excerpt                     | Text (html)
+body                        | Array
+url                         | String *
+seo_search_title            | String *
+seo_search_description      | String *
+seo_opengraph_title         | String *
+seo_opengraph_description   | String *
+seo_opengraph_image         | String *
+seo_twitter_title           | String *
+seo_twitter_description     | String *
+seo_twitter_image           | String *
+post_list_ids               | Array *
+post_list_sort              | String *
+post_list_per_page          | Integer *
+computed_cms_layout         | String *
+path_from_root              | Array *
+path_to_root                | Array *
+subcategory_ids             | Array *
+
+##### Category Relationships
+
+Relation           | Type          | Model
+------------------ | ------------- | ----------
+posts              | BelongsToMany | Post
+self               | NestedTree    | Category
+
+---
+
+### Tag
+
+Model `Dynamedia\Posts\Tag`
+
+Table `dynamedia_posts_tags`
+
+##### Tag Attributes
+
+Attribute                   | Type
+--------------------------- | -------------
+name                        | String
+slug                        | String
+excerpt                     | Text (html)
+body                        | Array
+is_approved                 | Boolean
+url                         | String *
+seo_search_title            | String *
+seo_search_description      | String *
+seo_opengraph_title         | String *
+seo_opengraph_description   | String *
+seo_opengraph_image         | String *
+seo_twitter_title           | String *
+seo_twitter_description     | String *
+seo_twitter_image           | String *
+post_list_sort              | String *
+post_list_per_page          | Integer *
+computed_cms_layout         | String *
+
+##### Tag Relationships
+
+Relation           | Type          | Model
+------------------ | ------------- | ----------
+posts              | BelongsToMany | Post
+
+
+NOTE: This is a work in progress. This document is not complete.

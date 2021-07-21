@@ -19,7 +19,7 @@ class DisplayCategory extends ComponentBase
 
     public $category = null;
     public $posts;
-    public $defer;
+    private $defer;
 
 
     public function defineProperties()

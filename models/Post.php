@@ -77,8 +77,8 @@ class Post extends Model
         'seo_twitter_title',
         'seo_twitter_description',
         'seo_twitter_image',
+        'seo_schema',
         'computed_cms_layout',
-        'schema',
     ];
 
     /**
@@ -878,7 +878,7 @@ class Post extends Model
     }
 
     // todo tidy up and objectify
-    public function getSchemaAttribute()
+    public function getSeoSchemaAttribute()
     {
         $schema = [
             "@context"          => "https://schema.org",

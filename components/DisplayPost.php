@@ -19,10 +19,9 @@ class DisplayPost extends ComponentBase
         ];
     }
 
-    public $category;
     public $post;
     public $paginator;
-    public $defer;
+    private $defer;
 
     public function defineProperties()
     {
@@ -60,11 +59,13 @@ class DisplayPost extends ComponentBase
 
         $this->setPaginator();
 
+        dd($this->post->seo_schema);
+
     }
 
     /**
      * Check if there is a displayCategory component after this one
-     * and that it will process from the URL paramater
+     * and that it will process from the URL parameter
      *
      * @return bool
      **/

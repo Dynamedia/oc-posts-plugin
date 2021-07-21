@@ -685,6 +685,8 @@ path_from_root              | Array *
 path_to_root                | Array *
 subcategory_ids             | Array *
 
+\* Appended attribute
+
 ##### Category Relationships
 
 Relation           | Type          | Model
@@ -722,11 +724,45 @@ post_list_sort              | String *
 post_list_per_page          | Integer *
 computed_cms_layout         | String *
 
+\* Appended attribute
+
 ##### Tag Relationships
 
 Relation           | Type          | Model
 ------------------ | ------------- | ----------
 posts              | BelongsToMany | Post
+
+---
+
+### Profile
+
+Model `Dynamedia\Posts\Profile`
+
+Table `dynamedia_posts_profiles`
+
+##### Profile Attributes
+
+Attribute                   | Type
+--------------------------- | -------------
+username                    | String
+website_url                 | String
+facebook_handle             | String
+twitter_handle              | String
+instagram_handle            | String
+mini_biography              | Text
+full_biography              | Text
+url                         | String *
+full_name                   | String *
+seo_schema                  | Array *
+user_id                     | Integer (Backend\Models\User ID)
+
+\* Appended attribute
+
+##### Profile Relationships
+
+Relation           | Type          | Model
+------------------ | ------------- | ----------
+user               | BelongsToMany | Backend\Models\User
 
 
 NOTE: This is a work in progress. This document is not complete.

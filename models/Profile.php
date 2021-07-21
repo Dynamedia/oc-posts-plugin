@@ -55,8 +55,8 @@ class Profile extends Model
      */
     protected $appends = [
         'url',
-        'schema',
-        'fullName',
+        'seo_schema',
+        'full_name',
     ];
 
     /**
@@ -142,7 +142,7 @@ class Profile extends Model
         return strtolower($this->getController()->pageUrl(Settings::get('userPage'), $params));
     }
 
-    public function getSchemaAttribute()
+    public function getSeoSchemaAttribute()
     {
         $schema = [
             "@context"  => "https://schema.org",

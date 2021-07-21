@@ -16,12 +16,12 @@ columns:
     author:
         label: dynamedia.posts::lang.posts.labels.author
         relation: author
-        valueFrom: profile[fullName]
+        valueFrom: profile[full_name]
 
     editor:
         label: dynamedia.posts::lang.posts.labels.editor
         relation: editor
-        valueFrom: profile[fullName]
+        valueFrom: profile[full_name]
 
     published_at:
         label: dynamedia.posts::lang.posts.labels.publishing_time

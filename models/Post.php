@@ -949,11 +949,11 @@ class Post extends Model
         }
 
         if (!empty($this->author->profile)) {
-            $schema['author'] = $this->author->profile->schema;
+            $schema['author'] = $this->author->profile->seo_schema;
         }
 
         if (!empty($this->editor->profile)) {
-            $schema['editor'] = $this->editor->profile->schema;
+            $schema['editor'] = $this->editor->profile->seo_schema;
         }
 
         return $schema;

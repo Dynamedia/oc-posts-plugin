@@ -313,7 +313,7 @@ url = "/user/:postsUsername"
 
 displayCategory will inject the following variables:
 
- - **user** - The BackendUser object.
+ - **user** - The backend User object.
 
  - **posts** - a LengthAwarePaginator containing post items.
 
@@ -429,7 +429,7 @@ Model `Dynamedia\Posts\Post`
 
 Table `dynamedia_posts_posts`
 
-#####Attributes
+#####Post Attributes
 
 Attribute     | Type
 ------------- | -------------
@@ -454,10 +454,196 @@ computed_cms_layout | String *
 show_contents | Boolean
 is_published | Boolean
 published_at | DateTime
-author_id     | Integer (BackendUser ID)
-editor_id     | Integer (BackendUser ID)
+author_id     | Integer (Backend\Models\User ID)
+editor_id     | Integer (Backend\Models\User ID)
 primary_category_id | Integer (Category ID)
 
-* Appended attribute
+\* Appended attribute
 
+To aid in development, some example dd dumps are provided below for the
+array attributes.
+
+#####body attribute
+
+~~~
+^ array:4 [▼
+  0 => array:2 [▼
+    "block" => array:5 [▼
+      "sId" => "first"
+      "image" => array:4 [▼
+        "alt" => ""
+        "class" => ""
+        "default" => ""
+        "image_style" => "inline-left"
+      ]
+      "content" => "<p>Construct your posts using as many or as few blocks as you like!</p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidid ▶"
+      "heading" => "A content block"
+      "in_contents" => "1"
+    ]
+    "_group" => "section"
+  ]
+  1 => array:2 [▶]
+  2 => array:1 [▼
+    "_group" => "pagebreak"
+  ]
+  3 => array:2 [▼
+    "block" => array:5 [▼
+      "sId" => "third"
+      "image" => array:4 [▶]
+      "content" => "<p>Posts can, if you want, be written over multiple pages. It's all handled internally so just add a pagebreak block. Easy!</p>"
+      "heading" => "New page content"
+      "in_contents" => "1"
+    ]
+    "_group" => "section"
+  ]
+]
+~~~
+
+#####pages attribute
+
+This is derived from the body and separates body sections by pagebreaks
+~~~
+^ array:2 [▼
+  0 => array:2 [▼
+    0 => array:3 [▼
+      "block" => array:5 [▼
+        "sId" => "first"
+        "image" => array:4 [▶]
+        "content" => "<p>Construct your posts using as many or as few blocks as you like!</p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidid ▶"
+        "heading" => "A content block"
+        "in_contents" => "1"
+      ]
+      "_group" => "section"
+      "page" => 1
+    ]
+    1 => array:3 [▶]
+  ]
+  1 => array:1 [▼
+    0 => array:3 [▼
+      "block" => array:5 [▼
+        "sId" => "third"
+        "image" => array:4 [▶]
+        "content" => "<p>Posts can, if you want, be written over multiple pages. It's all handled internally so just add a pagebreak block. Easy!</p>"
+        "heading" => "New page content"
+        "in_contents" => "1"
+      ]
+      "_group" => "section"
+      "page" => 2
+    ]
+  ]
+]
+~~~
+
+#####images attribute
+
+This contains the main images, which are separate from the post body images.
+URL's should be used with the `| media` twig filter.
+
+~~~
+^ array:3 [▼
+  "list" => array:3 [▼
+    "alt" => "The List Image"
+    "class" => "optional-class"
+    "default" => "/list-image.png"
+  ]
+  "banner" => array:3 [▼
+    "alt" => "The Banner Image"
+    "class" => "optional-class"
+    "default" => "/banner-image.png"
+  ]
+  "social" => array:2 [▼
+    "twitter" => "/twitter-image.png"
+    "facebook" => "/facebook-image.png"
+  ]
+]
+~~~
+
+#####contents_list attribute
+
+Post sections with in_contents set to *true*
+
+~~~
+^ array:3 [▼
+  0 => array:4 [▼
+    "title" => "A content block"
+    "page" => 1
+    "url" => "http://octobercms.local/uncategorized/first-blog-post#first"
+    0 => "contents_list"
+  ]
+  1 => array:4 [▼
+    "title" => "Another content block"
+    "page" => 1
+    "url" => "http://octobercms.local/uncategorized/first-blog-post#second"
+    0 => "contents_list"
+  ]
+  2 => array:4 [▼
+    "title" => "New page content"
+    "page" => 2
+    "url" => "http://octobercms.local/uncategorized/first-blog-post?page=2#third"
+    0 => "contents_list"
+  ]
+]
+~~~
+
+
+#####seo_schema attribute
+
+Output this array as json to have ready-made json+ld schema for your seo
+
+~~~
+^ array:14 [▼
+  "@context" => "https://schema.org"
+  "@type" => "Article"
+  "headline" => "First Blog Post"
+  "dateCreated" => October\Rain\Argon\Argon @1626434219 {#1264 ▶}
+  "url" => "http://octobercms.local/uncategorized/first-blog-post"
+  "mainEntityOfPage" => array:3 [▼
+    "@context" => "https://schema.org"
+    "@type" => "webPage"
+    "url" => "http://octobercms.local/uncategorized/first-blog-post"
+  ]
+  "abstract" => "This is the excerpt for your first post. You should probably write a nice introduction here."
+  "articleSection" => "Uncategorized"
+  "datePublished" => "2021-07-19 08:43:51"
+  "dateModified" => October\Rain\Argon\Argon @1626861898 {#1284 ▶}
+  "publisher" => array:5 [▼
+    "@context" => "https://schema.org"
+    "@type" => "Organization"
+    "name" => "Dynamedia"
+    "logo" => array:4 [▼
+      "@context" => "https://schema.org"
+      "@type" => "ImageObject"
+      "url" => "http://octobercms.local/storage/app/media/logo.jpg"
+      "caption" => "Dynamedia"
+    ]
+    "url" => "https://dynamedia.uk"
+  ]
+  "image" => "http://octobercms.local/storage/app/media/main.png"
+  "author" => array:5 [▼
+    "@context" => "https://schema.org"
+    "@type" => "Person"
+    "name" => "Rob Ballantyne"
+    "url" => "http://octobercms.local/user/reballantyne"
+    "image" => "http://octobercms.local/storage/app/uploads/public/60e/dbb/e3e/60edbbe3e632e117247261.jpg"
+  ]
+  "editor" => array:5 [▼
+    "@context" => "https://schema.org"
+    "@type" => "Person"
+    "name" => "Admin Person"
+    "url" => "http://octobercms.local/user/ausername"
+    "image" => "http://octobercms.local/storage/app/uploads/public/60e/dbb/e3e/60edbbe3e632e117247261.jpg"
+  ]
+]
+~~~
+
+
+#####Post Relationships
+
+Relation           | Type          | Model
+------------------ | ------------- | ----------
+primary_category   | BelongsTo     | Category
+author             | BelongsTo     | Backend\Models\User
+primary_category   | BelongsTo     | Backend\Models\User
+categories         | BelongsToMany | Category
+tags               | BelongsToMany | Tag
 

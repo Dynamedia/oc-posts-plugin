@@ -429,7 +429,7 @@ Model `Dynamedia\Posts\Post`
 
 Table `dynamedia_posts_posts`
 
-#####Post Attributes
+##### Post Attributes
 
 Attribute     | Type
 ------------- | -------------
@@ -463,7 +463,7 @@ primary_category_id | Integer (Category ID)
 To aid in development, some example dd dumps are provided below for the
 array attributes.
 
-#####body attribute
+##### body attribute
 
 ~~~
 ^ array:4 [▼
@@ -499,7 +499,7 @@ array attributes.
 ]
 ~~~
 
-#####pages attribute
+##### pages attribute
 
 This is derived from the body and separates body sections by pagebreaks
 ~~~
@@ -534,7 +534,7 @@ This is derived from the body and separates body sections by pagebreaks
 ]
 ~~~
 
-#####images attribute
+##### images attribute
 
 This contains the main images, which are separate from the post body images.
 URL's should be used with the `| media` twig filter.
@@ -558,7 +558,7 @@ URL's should be used with the `| media` twig filter.
 ]
 ~~~
 
-#####contents_list attribute
+##### contents_list attribute
 
 Post sections with in_contents set to *true*
 
@@ -586,7 +586,7 @@ Post sections with in_contents set to *true*
 ~~~
 
 
-#####seo_schema attribute
+##### seo_schema attribute
 
 Output this array as json to have ready-made json+ld schema for your seo
 
@@ -637,7 +637,7 @@ Output this array as json to have ready-made json+ld schema for your seo
 ~~~
 
 
-#####Post Relationships
+##### Post Relationships
 
 Relation           | Type          | Model
 ------------------ | ------------- | ----------

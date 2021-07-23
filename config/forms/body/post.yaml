@@ -34,14 +34,14 @@ cms_content:
             usePanelStyles: false
             form: $/dynamedia/posts/config/forms/block/cms_content.yaml
 
-#cms_partial:
-#    name: dynamedia.posts::lang.blocks.names.cms_partial
-#    description: dynamedia.posts::lang.blocks.descriptions.cms_partial
-#    fields:
-#        block:
-#            type: nestedform
-#            usePanelStyles: false
-#            form: $/dynamedia/posts/config/forms/block/cms_partial.yaml
+cms_partial:
+    name: dynamedia.posts::lang.blocks.names.cms_partial
+    description: dynamedia.posts::lang.blocks.descriptions.cms_partial
+    fields:
+        block:
+            type: nestedform
+            usePanelStyles: false
+            form: $/dynamedia/posts/config/forms/block/cms_partial.yaml
 
 pagebreak:
     name: dynamedia.posts::lang.blocks.names.page_break

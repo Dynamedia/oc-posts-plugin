@@ -11,6 +11,7 @@ class Form
 {
     public static function getCmsContentOptions()
     {
+        $options = [];
         $content = Content::listInTheme(Theme::getActiveTheme(), true);
         foreach ($content as $item) {
             $options[$item->fileName] = $item->fileName;
@@ -20,9 +21,12 @@ class Form
 
     public static function getCmsPartialOptions()
     {
+        $options = [];
         $partial = Partial::listInTheme(Theme::getActiveTheme(), true);
         foreach ($partial as $item) {
-            $options[$item->fileName] = $item->fileName;
+            if (starts_with($item->fileName, 'postbody')) {
+                $options[$item->fileName] = $item->fileName;
+            }
         }
         return $options;
     }

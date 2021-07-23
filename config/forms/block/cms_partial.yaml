@@ -1,7 +1,19 @@
 tabs:
     fields:
         cms_partial:
-            label: dynamedia.posts::lang.blocks.section.labels.cms_partial
+            label: dynamedia.posts::lang.blocks.labels.cms_partial
             tab: dynamedia.posts::lang.common.tabs.main
             type: dropdown
             options: \Dynamedia\Posts\Classes\Helpers\Form::getCmsPartialOptions
+        data:
+            label: Pass variables to the partial
+            tab: Data
+            type: repeater
+            form:
+                fields:
+                    key:
+                        label: Key
+                        span: left
+                    value:
+                        label: Value
+                        span: right

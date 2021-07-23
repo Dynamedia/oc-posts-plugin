@@ -426,6 +426,27 @@ class Plugin extends PluginBase
         ];
     }
 
+    public function registerMarkupTags() {
+        return [
+            'functions' => [
+                'extractRepeaterData' => [$this, 'extractRepeaterData'],
+            ],
+        ];
+    }
+
+    /*
+     * Takes repeater data and converts to key/value array
+     */
+    public function extractRepeaterData($data) {
+        $keyVal = [];
+        if (is_array($data)) {
+            foreach ($data as $item) {
+                $keyVal[$item['key']] = $item['value'];
+            }
+        }
+        return $keyVal;
+    }
+
     /**
      * Check for a relevant url parameter
      * @param $controller
@@ -446,7 +467,7 @@ class Plugin extends PluginBase
         } elseif ($controller->param('postsTagSlug')) {
             $slug = $controller->param('postsTagSlug');
         }
-        
+
         return $slug;
     }
 

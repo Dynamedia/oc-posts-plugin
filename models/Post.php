@@ -320,7 +320,7 @@ class Post extends Model
     }
 
     /**
-     * Get a single post as an array
+     * Get a single post
      *
      * todo move to a post repository
      *

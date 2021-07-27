@@ -1,16 +1,36 @@
 # About Posts for October CMS
 
-Posts is a free-to-use (non-commercial - see license) publishing system for October CMS.
+Posts is for users who want to create great content without hassle.
 
+It's a plugin that can be used by content creators of all sizes, from individual bloggers
+to large publishing houses. Posts is powerful, but it's also really simple to use.
 
-Created from the ground up, Posts empowers your users to write great content
-in a friendly, intuitive manner.
+It's a good idea to check out the [live demo website](https://oc-posts.dynamedia.uk).
+You can log in to the [backend](https://oc-posts.dynamedia.uk/backend) with the following
+details.
+~~~
+username: demo
+password: demo123
+~~~
 
-The body of a post is constructed from 'building blocks' which can be
-textual content, images, plain html or you can add in existing CMS content files
-and partials. Users are free to write their content using as many or as few blocks as
-needed. A post could be written using a single content block or may have tens of them.
-You have the freedom to choose.
+The above user has 'guest posting' privileges and is able to look around and write posts
+but cannot publish them.
+
+## Structure
+
+A post is an article, such as a blog post or a news item. Posts are often grouped
+by category and/or by tag, and they are associated with their author.
+
+In Posts, everything is content. Categories and tags are more than simple lists of posts.
+Each category and tag can be built up with content in just the same way as a post.
+
+## Creating a Post
+
+The following video (external link to YouTube) gives a brief overview of the interface and shows how to
+construct a post, displaying it on the frontend with the posts demo theme.
+
+[![Image of youtube video](https://oc-posts.dynamedia.uk/storage/app/media/documentation-images/youtube-post-create.png)](https://www.youtube.com/watch?v=k8hgjIfIx6Y)
+
 
 ## User Permissions
 
@@ -19,7 +39,7 @@ and organizations of any size.  Advanced permissions and user roles
 can be granted so that site owners have full control of the website while allowing
 for other users to simply login and write. Other users might be granted editorial
 or management permission, but however you choose to allocate permission, you
-can be confident that your users have the permission they need and none they don't.
+can be confident that your users have all the privileges they need and none they don't.
 
 ## Grouping Posts
 

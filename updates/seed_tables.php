@@ -133,11 +133,6 @@ class SeedAllTables extends Seeder
         $posts = [
             'First',
             'Second',
-            'Third',
-            'Fourth',
-            'Fifth',
-            'Sixth',
-            'Seventh'
         ];
         foreach ($posts as $item) {
             $post = Post::create([

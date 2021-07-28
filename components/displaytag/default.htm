@@ -1,17 +1,6 @@
 {% set tag = __SELF__.tag %}
 {% set posts = __SELF__.posts %}
-<style>
-    h1 {
-        text-align: center; margin-top: 30px;
-    }
-    table {
-        width:100%; margin:30px auto;
-    }
 
-    pre {
-        max-width: 600px;
-    }
-</style>
 <h1>Tag & List Properties</h1>
 <p>
     This plugin component ({{ __SELF__.alias }}) provides default markup as a convenience to developers but should be overridden by the theme (<a href="https://octobercms.com/docs/cms/components#overriding-partials" target="_blank">October CMS Docs</a>).
@@ -22,29 +11,11 @@
 </p>
 
 <h2>Tag</h2>
-<table>
-    <tr>
-        <th>Property</th>
-        <th>Value</th>
-    </tr>
-    {% for key, value in tag %}
-        <tr>
-            <td>{{ key }}</td>
-            <td>{{ dump(value) }}</td>
-        </tr>
-    {% endfor %}
-</table>
+<p>A dump of the model as an array</p>
+
+{{ dump(tag | modelToArray) }}
 
 <h2>Post List (First Item)</h2>
-<table>
-    <tr>
-        <th>Property</th>
-        <th>Value</th>
-    </tr>
-    {% for key, value in posts | first  %}
-        <tr>
-            <td>{{ key }}</td>
-            <td>{{ dump(value) }}</td>
-        </tr>
-    {% endfor %}
-</table>
+<p>Dumping the first item of the post list</p>
+
+{{ dump(posts.first | modelToArray) }}

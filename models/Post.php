@@ -267,7 +267,9 @@ class Post extends Model
     public function scopeApplyWithTags($query)
     {
         return $query->with([
-            'tags'
+            'tags' =>function($q) {
+                $q->applyIsApproved();
+            }
         ]);
     }
 

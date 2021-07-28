@@ -426,10 +426,14 @@ class Plugin extends PluginBase
         ];
     }
 
-    public function registerMarkupTags() {
+    public function registerMarkupTags()
+    {
         return [
             'functions' => [
                 'extractRepeaterData' => [$this, 'extractRepeaterData'],
+            ],
+            'filters' => [
+                'modelToArray' => [$this, 'modelToArray'],
             ],
         ];
     }
@@ -437,7 +441,8 @@ class Plugin extends PluginBase
     /*
      * Takes repeater data and converts to key/value array
      */
-    public function extractRepeaterData($data) {
+    public function extractRepeaterData($data)
+    {
         $keyVal = [];
         if (is_array($data)) {
             foreach ($data as $item) {
@@ -445,6 +450,11 @@ class Plugin extends PluginBase
             }
         }
         return $keyVal;
+    }
+
+    public function modelToArray($data)
+    {
+        return $data->toArray();
     }
 
     /**

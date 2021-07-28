@@ -254,7 +254,8 @@ class Tag extends Model
      */
     public static function getTag($slug)
     {
-        $query = static::where('slug', $slug);
+        $query = static::where('slug', $slug)
+            ->applyIsApproved();
 
         $result = $query->first();
 

@@ -78,6 +78,8 @@ class Post extends Model
         'seo_twitter_description',
         'seo_twitter_image',
         'seo_schema',
+        'category_ids',
+        'tag_ids',
         'computed_cms_layout',
     ];
 
@@ -227,10 +229,10 @@ class Post extends Model
             ->orWhere('published_at', '>', Argon::now());
     }
 
-    public function scopeApplyWhereHasTag($query, int $tagId)
+    public function scopeApplyWhereHasTags($query, array $tagIds)
     {
-        return $query->whereHas('tags', function($q) use ($tagId) {
-            $q->where('id', $tagId)
+        return $query->whereHas('tags', function($q) use ($tagIds) {
+            $q->whereIn('id', $tagIds)
                 ->applyIsApproved();
         });
     }
@@ -370,7 +372,7 @@ class Post extends Model
     public static function getPostsList($options)
     {
         // Set some defaults to be overridden by extract
-        $optionsTagId           = null;
+        $optionsTagIds          = [];
         $optionsCategoryIds     = [];
         $optionsPostIds         = [];
         $optionsNotPostIds      = [];
@@ -399,8 +401,8 @@ class Post extends Model
             $query->applyExcludeTagPosts($optionsNotTagIds);
         }
 
-        if ($optionsTagId) {
-            $query->applyWhereHasTag($optionsTagId);
+        if ($optionsTagIds) {
+            $query->applyWhereHasTags($optionsTagIds);
         }
 
         if ($optionsCategoryIds) {
@@ -877,6 +879,37 @@ class Post extends Model
     public function getPagesAttribute()
     {
         return $this->getPages();
+    }
+
+    /**
+     * Return an array of all Category IDs associated with this Post
+     *
+     * @return array
+     */
+    public function getCategoryIdsAttribute()
+    {
+        $ids = [];
+        if ($this->primary_category) {
+            $ids = [$this->primary_category->id];
+        }
+        if ($this->categories->count()) {
+            $ids = array_unique(array_merge($ids, $this->categories->pluck('id')->toArray()));
+        }
+        return $ids;
+    }
+
+    /**
+     * Return an array of all Tag IDs associated with this Post
+     *
+     * @return array
+     */
+    public function getTagIdsAttribute()
+    {
+        $ids = [];
+        if ($this->tags->count()) {
+            $ids = array_merge($ids, $this->tags()->applyIsApproved()->pluck('id')->toArray());
+        }
+        return $ids;
     }
 
     // todo tidy up and objectify

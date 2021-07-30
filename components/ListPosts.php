@@ -148,7 +148,7 @@ class ListPosts extends ComponentBase
         }
 
         if ($this->property('tagFilter')) {
-            $postListOptions['optionsTagId'] = $this->property('categoryFilter');
+            $postListOptions['optionsTagIds'] = explode(",", $this->property('tagFilter'));
         }
 
         if ($this->property('postIds')) {

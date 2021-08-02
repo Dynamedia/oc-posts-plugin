@@ -430,10 +430,11 @@ class Plugin extends PluginBase
     {
         return [
             'functions' => [
-                'extractRepeaterData' => [$this, 'extractRepeaterData'],
+                'extractRepeaterData' => [$this, 'extractRepeaterDataFunction'],
             ],
             'filters' => [
-                'modelToArray' => [$this, 'modelToArray'],
+                'modelToArray' => [$this, 'modelToArrayFilter'],
+                'extractUrlParam' => [$this, 'extractUrlParamFilter'],
             ],
         ];
     }
@@ -441,7 +442,7 @@ class Plugin extends PluginBase
     /*
      * Takes repeater data and converts to key/value array
      */
-    public function extractRepeaterData($data)
+    public function extractRepeaterDataFunction($data)
     {
         $keyVal = [];
         if (is_array($data)) {
@@ -452,7 +453,20 @@ class Plugin extends PluginBase
         return $keyVal;
     }
 
-    public function modelToArray($data)
+    /*
+     * Extracts the given paramater from an url
+     */
+    public function extractUrlParamFilter($data, $param)
+    {
+        $query = !empty(parse_url($data)['query']) ? parse_url($data)['query'] : false;
+        if ($query) {
+            parse_str($query, $params);
+        }
+        return !empty($params[$param]) ? $params[$param] : null;
+    }
+
+
+    public function modelToArrayFilter($data)
     {
         return $data->toArray();
     }

@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Post Translation
+
+# Model Form Field configuration
+form: $/dynamedia/posts/models/posttranslation/fields.yaml
+
+# Model Class name
+modelClass: Dynamedia\Posts\Models\PostTranslation
+
+# Default redirect location
+defaultRedirect: dynamedia/posts/posttranslations
+
+# Create page
+create:
+    title: backend::lang.form.create_title
+    redirect: dynamedia/posts/posttranslations/update/:id
+    redirectClose: dynamedia/posts/posttranslations
+
+# Update page
+update:
+    title: backend::lang.form.update_title
+    redirect: dynamedia/posts/posttranslations
+    redirectClose: dynamedia/posts/posttranslations
+
+# Preview page
+preview:
+    title: backend::lang.form.preview_title

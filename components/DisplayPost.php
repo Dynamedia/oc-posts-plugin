@@ -3,6 +3,7 @@
 use Cms\Classes\ComponentBase;
 use BackendAuth;
 use App;
+use Dynamedia\Posts\Models\PostTranslation;
 use Dynamedia\Posts\Traits\PaginationTrait;
 use Input;
 
@@ -32,6 +33,9 @@ class DisplayPost extends ComponentBase
 
     public function onRun()
     {
+        $translation = new PostTranslation();
+        dd($translation);
+
         $this->setPost();
 
         // 404 if post not found

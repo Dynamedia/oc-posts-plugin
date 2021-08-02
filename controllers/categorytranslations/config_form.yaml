@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Category Translation
+
+# Model Form Field configuration
+form: $/dynamedia/posts/models/categorytranslation/fields.yaml
+
+# Model Class name
+modelClass: Dynamedia\Posts\Models\CategoryTranslation
+
+# Default redirect location
+defaultRedirect: dynamedia/posts/categorytranslations
+
+# Create page
+create:
+    title: backend::lang.form.create_title
+    redirect: dynamedia/posts/categorytranslations/update/:id
+    redirectClose: dynamedia/posts/categorytranslations
+
+# Update page
+update:
+    title: backend::lang.form.update_title
+    redirect: dynamedia/posts/categorytranslations
+    redirectClose: dynamedia/posts/categorytranslations
+
+# Preview page
+preview:
+    title: backend::lang.form.preview_title

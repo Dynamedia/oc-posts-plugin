@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Tag Translation
+
+# Model Form Field configuration
+form: $/dynamedia/posts/models/tagtranslation/fields.yaml
+
+# Model Class name
+modelClass: Dynamedia\Posts\Models\TagTranslation
+
+# Default redirect location
+defaultRedirect: dynamedia/posts/tagtranslations
+
+# Create page
+create:
+    title: backend::lang.form.create_title
+    redirect: dynamedia/posts/tagtranslations/update/:id
+    redirectClose: dynamedia/posts/tagtranslations
+
+# Update page
+update:
+    title: backend::lang.form.update_title
+    redirect: dynamedia/posts/tagtranslations
+    redirectClose: dynamedia/posts/tagtranslations
+
+# Preview page
+preview:
+    title: backend::lang.form.preview_title

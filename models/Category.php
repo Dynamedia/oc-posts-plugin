@@ -37,7 +37,11 @@ class Category extends Model
      */
     public $rules = [
         'name' => 'required',
-        'slug' => 'required|unique:dynamedia_posts_categories|unique:dynamedia_posts_posts',
+        'slug' => 'required|
+            unique:dynamedia_posts_posts|
+            unique:dynamedia_posts_post_translations|
+            unique:dynamedia_posts_categories|
+            unique:dynamedia_posts_category_translations',
     ];
 
     public $customMessages = [

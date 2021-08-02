@@ -41,7 +41,7 @@ class Tag extends Model
      */
     public $rules = [
         'name' => 'required',
-        'slug' => 'unique:dynamedia_posts_tags',
+        'slug' => 'unique:dynamedia_posts_tags|unique:dynamedia_posts_tag_translations',
     ];
 
     public $customMessages = [

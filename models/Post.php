@@ -41,7 +41,11 @@ class Post extends Model
      */
     public $rules = [
         'title' => 'required',
-        'slug' => 'required|unique:dynamedia_posts_posts|unique:dynamedia_posts_categories',
+        'slug' => 'required|
+            unique:dynamedia_posts_posts|
+            unique:dynamedia_posts_post_translations|
+            unique:dynamedia_posts_categories|
+            unique:dynamedia_posts_category_translations'
     ];
 
     public $customMessages = [
@@ -103,7 +107,12 @@ class Post extends Model
      * @var array Relations
      */
     public $hasOne = [];
-    public $hasMany = [];
+    public $hasMany = [
+        'translations' => [
+            'Dynamedia\Posts\Models\PostTranslation',
+            'key' => 'native_id'
+        ]
+    ];
     public $hasOneThrough = [];
     public $hasManyThrough = [];
     public $belongsTo = [

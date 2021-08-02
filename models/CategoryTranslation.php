@@ -1,13 +1,17 @@
 <?php namespace Dynamedia\Posts\Models;
 
 use Model;
+use Dynamedia\Posts\Traits\SeoTrait;
+use Dynamedia\Posts\Traits\ImagesTrait;
+use Dynamedia\Posts\Traits\ControllerTrait;
+use \October\Rain\Database\Traits\Validation;
 
 /**
  * CategoryTranslation Model
  */
 class CategoryTranslation extends Model
 {
-    use \October\Rain\Database\Traits\Validation;
+    use SeoTrait, ImagesTrait, ControllerTrait, Validation;
 
     /**
      * @var string table associated with the model
@@ -27,7 +31,14 @@ class CategoryTranslation extends Model
     /**
      * @var array rules for validation
      */
-    public $rules = [];
+    public $rules = [
+        'name' => 'required',
+        'slug' => 'required|
+            unique:dynamedia_posts_posts|
+            unique:dynamedia_posts_post_translations|
+            unique:dynamedia_posts_categories|
+            unique:dynamedia_posts_category_translations',
+    ];
 
     /**
      * @var array Attributes to be cast to native types
@@ -37,7 +48,11 @@ class CategoryTranslation extends Model
     /**
      * @var array jsonable attribute names that are json encoded and decoded from the database
      */
-    protected $jsonable = [];
+    protected $jsonable = [
+        'body',
+        'images',
+        'seo',
+    ];
 
     /**
      * @var array appends attributes to the API representation of the model (ex. toArray())
@@ -62,7 +77,9 @@ class CategoryTranslation extends Model
      */
     public $hasOne = [];
     public $hasMany = [];
-    public $belongsTo = [];
+    public $belongsTo = [
+        'native' => ['Dynamedia\Posts\Models\Category']
+    ];
     public $belongsToMany = [];
     public $morphTo = [];
     public $morphOne = [];

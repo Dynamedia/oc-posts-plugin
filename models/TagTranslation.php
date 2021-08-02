@@ -27,7 +27,14 @@ class TagTranslation extends Model
     /**
      * @var array rules for validation
      */
-    public $rules = [];
+    public $rules = [
+        'name' => 'required',
+        'slug' => 'unique:dynamedia_posts_tags|unique:dynamedia_posts_tag_translations',
+    ];
+
+    public $customMessages = [
+        'required' => 'The :attribute field is required.',
+    ];
 
     /**
      * @var array Attributes to be cast to native types
@@ -37,7 +44,11 @@ class TagTranslation extends Model
     /**
      * @var array jsonable attribute names that are json encoded and decoded from the database
      */
-    protected $jsonable = [];
+    protected $jsonable = [
+        'body',
+        'images',
+        'seo',
+    ];
 
     /**
      * @var array appends attributes to the API representation of the model (ex. toArray())
@@ -62,7 +73,9 @@ class TagTranslation extends Model
      */
     public $hasOne = [];
     public $hasMany = [];
-    public $belongsTo = [];
+    public $belongsTo = [
+        'native' => ['Dynamedia\Posts\Models\Tag']
+    ];
     public $belongsToMany = [];
     public $morphTo = [];
     public $morphOne = [];

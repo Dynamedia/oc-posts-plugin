@@ -2,7 +2,46 @@
 #  Form Field Definitions
 # ===================================
 
-fields:
-    id:
-        label: ID
-        disabled: true
+tabs:
+    fields:
+        name:
+            label: dynamedia.posts::lang.common.labels.name
+            tab: dynamedia.posts::lang.common.tabs.detail
+            span: left
+
+        slug:
+            label: dynamedia.posts::lang.common.labels.slug
+            tab: dynamedia.posts::lang.common.tabs.detail
+            span: right
+            preset: name
+
+        excerpt:
+            tab: dynamedia.posts::lang.common.tabs.detail
+            label: dynamedia.posts::lang.common.labels.excerpt
+            type: richeditor
+            size: huge
+
+        images:
+            tab: dynamedia.posts::lang.common.tabs.images
+            type: nestedform
+            usePanelStyles: false
+            form: $/dynamedia/posts/config/forms/image/main_image.yaml
+
+        body:
+            tab: dynamedia.posts::lang.common.tabs.body
+            type: repeater
+            style: accordion
+            groups: $/dynamedia/posts/config/forms/body/category_tag.yaml
+
+        seo:
+            tab: dynamedia.posts::lang.common.tabs.seo
+            type: nestedform
+            usePanelStyles: false
+            form: $/dynamedia/posts/config/forms/seo.yaml
+
+        cms_layout:
+            tab: dynamedia.posts::lang.common.tabs.settings
+            label: dynamedia.posts::lang.common.labels.cms_layout
+            type: dropdown
+            default: '__inherit__'
+            options: \Dynamedia\Posts\Classes\Helpers\Form::getCmsLayoutOptions

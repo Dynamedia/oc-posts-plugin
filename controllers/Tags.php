@@ -15,7 +15,8 @@ class Tags extends Controller
      */
     public $implement = [
         'Backend.Behaviors.FormController',
-        'Backend.Behaviors.ListController'
+        'Backend.Behaviors.ListController',
+        'Backend.Behaviors.RelationController',
     ];
 
     public $requiredPermissions = [
@@ -27,6 +28,11 @@ class Tags extends Controller
      * @var string Configuration file for the `FormController` behavior.
      */
     public $formConfig = 'config_form.yaml';
+
+    /**
+     * @var string Configuration file for the `RelationController` behavior.
+     */
+    public $relationConfig = 'config_relation.yaml';
 
     /**
      * @var string Configuration file for the `ListController` behavior.

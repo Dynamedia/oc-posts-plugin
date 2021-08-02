@@ -4,6 +4,10 @@
 
 tabs:
     fields:
+        locale:
+            type: relation
+            nameFrom: name
+            span: left
         name:
             label: dynamedia.posts::lang.common.labels.name
             tab: dynamedia.posts::lang.common.tabs.detail

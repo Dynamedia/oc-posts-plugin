@@ -1,0 +1,12 @@
+# ===================================
+#  Relation Behavior Config
+# ===================================
+
+translations:
+    label: Translations
+    view:
+        list: $/dynamedia/posts/models/categorytranslation/columns.yaml
+        toolbarButtons: create|delete
+    manage:
+        form: $/dynamedia/posts/models/categorytranslation/fields.yaml
+        recordsPerPage: 10

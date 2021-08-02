@@ -8,7 +8,7 @@ tabs:
             label: dynamedia.posts::lang.common.labels.name
             tab: dynamedia.posts::lang.common.tabs.detail
             span: left
-            
+
         slug:
             label: dynamedia.posts::lang.common.labels.slug
             tab: dynamedia.posts::lang.common.tabs.detail
@@ -44,6 +44,11 @@ tabs:
             tab: dynamedia.posts::lang.common.tabs.posts
             type: relation
             select: title
+
+        translations:
+            tab: dynamedia.posts::lang.common.tabs.translations
+            type: partial
+            path: $/dynamedia/posts/models/category/_translation_relation.htm
 
         cms_layout:
             tab: dynamedia.posts::lang.common.tabs.settings

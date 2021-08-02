@@ -80,6 +80,7 @@ return [
             'posts'         => 'Posts',
             'settings'      => 'Settings',
             'main'          => 'Main',
+            'translations'  => 'Translations',
         ],
         'labels' => [
             'name'          => 'Name',

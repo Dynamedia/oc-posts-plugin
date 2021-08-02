@@ -57,6 +57,11 @@ tabs:
             usePanelStyles: false
             form: $/dynamedia/posts/config/forms/seo.yaml
 
+        translations:
+            tab: dynamedia.posts::lang.common.tabs.translations
+            type: partial
+            path: $/dynamedia/posts/models/post/_translation_relation.htm
+
         author:
             tab: dynamedia.posts::lang.common.tabs.settings
             label: dynamedia.posts::lang.common.labels.author

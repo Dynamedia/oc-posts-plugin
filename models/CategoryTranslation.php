@@ -78,7 +78,8 @@ class CategoryTranslation extends Model
     public $hasOne = [];
     public $hasMany = [];
     public $belongsTo = [
-        'native' => ['Dynamedia\Posts\Models\Category']
+        'native' => ['Dynamedia\Posts\Models\Category'],
+        'locale' => ['Rainlab\Translate\Models\Locale'],
     ];
     public $belongsToMany = [];
     public $morphTo = [];

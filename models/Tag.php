@@ -101,7 +101,12 @@ class Tag extends Model
      * @var array Relations
      */
     public $hasOne = [];
-    public $hasMany = [];
+    public $hasMany = [
+        'translations' => [
+            'Dynamedia\Posts\Models\TagTranslation',
+            'key' => 'native_id'
+        ]
+    ];
     public $hasOneThrough = [];
     public $hasManyThrough = [];
     public $belongsTo = [];

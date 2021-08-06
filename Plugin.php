@@ -12,6 +12,8 @@ use Dynamedia\Posts\Models\Tag;
 use Backend\Models\User as BackendUserModel;
 use Backend\Controllers\Users as BackendUserController;
 use Dynamedia\Posts\Models\Profile;
+use Illuminate\Support\Facades\Validator;
+use Dynamedia\Posts\Rules\Postslug;
 
 
 /**
@@ -50,6 +52,8 @@ class Plugin extends PluginBase
      */
     public function boot()
     {
+        Validator::extend('postslug', Postslug::class);
+
         ThemeData::extend(function ($model) {
             $model->addJsonable('images');
         });
@@ -111,8 +115,6 @@ class Plugin extends PluginBase
                 ]
             ]);
         });
-
-
 
         Event::listen('cms.page.beforeDisplay', function ($controller, $url, $page) {
 
@@ -191,6 +193,7 @@ class Plugin extends PluginBase
                 return Post::resolveMenuItem($item, $url, $theme);
             }
         });
+
     }
 
     /**

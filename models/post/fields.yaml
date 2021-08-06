@@ -57,7 +57,7 @@ tabs:
             usePanelStyles: false
             form: $/dynamedia/posts/config/forms/seo.yaml
 
-        translations:
+        translations@update:
             tab: dynamedia.posts::lang.common.tabs.translations
             type: partial
             path: $/dynamedia/posts/models/post/_translation_relation.htm

@@ -4,6 +4,11 @@
 
 tabs:
     fields:
+        locale_id:
+            tab: dynamedia.posts::lang.common.tabs.detail
+            label: Locale
+            type: dropdown
+
         name:
             label: dynamedia.posts::lang.common.labels.name
             tab: dynamedia.posts::lang.common.tabs.detail

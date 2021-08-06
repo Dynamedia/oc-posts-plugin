@@ -5,4 +5,17 @@
 columns:
     id:
         label: ID
+
+    locale:
+        label: dynamedia.posts::lang.common.labels.locale
+        relation: locale
+        valueFrom: name
+        searchable: true
+
+    name:
+        label: dynamedia.posts::lang.common.labels.name
+        searchable: true
+
+    slug:
+        label: dynamedia.posts::lang.common.labels.slug
         searchable: true

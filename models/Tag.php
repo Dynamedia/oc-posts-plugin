@@ -7,8 +7,7 @@ use ValidationException;
 use Dynamedia\Posts\Traits\SeoTrait;
 use Dynamedia\Posts\Traits\ImagesTrait;
 use Dynamedia\Posts\Traits\ControllerTrait;
-use \October\Rain\Database\Traits\Validation;
-
+use October\Rain\Database\Traits\Validation;
 
 
 /**
@@ -41,7 +40,6 @@ class Tag extends Model
      */
     public $rules = [
         'name' => 'required',
-        'slug' => 'unique:dynamedia_posts_tags|unique:dynamedia_posts_tag_translations',
     ];
 
     public $customMessages = [
@@ -125,6 +123,24 @@ class Tag extends Model
     // ------------------------ //
     // ---- Event Handling ---- //
     // ------------------------ //
+
+    // todo move this into a custom validation rule
+    public function beforeValidate()
+    {
+        $takenTag = Tag::where('slug', $this->slug)
+            ->where('id', '<>', $this->id)
+            ->count();
+
+        $takenTagTranslation = TagTranslation::where('slug', $this->slug)
+            ->whereHas('native', function($q) {
+                $q->where('id', '<>', $this->id);
+            })
+            ->count();
+
+        if ($takenTag || $takenTagTranslation) {
+            throw new ValidationException(['slug' => 'This slug has already been taken']);
+        }
+    }
 
     // For tag widget
     public function beforeSave()

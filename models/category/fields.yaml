@@ -45,7 +45,7 @@ tabs:
             type: relation
             select: title
 
-        translations:
+        translations@update:
             tab: dynamedia.posts::lang.common.tabs.translations
             type: partial
             path: $/dynamedia/posts/models/category/_translation_relation.htm

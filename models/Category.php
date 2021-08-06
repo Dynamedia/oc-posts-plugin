@@ -8,6 +8,8 @@ use Dynamedia\Posts\Traits\ImagesTrait;
 use Dynamedia\Posts\Traits\ControllerTrait;
 use \October\Rain\Database\Traits\Validation;
 use \October\Rain\Database\Traits\NestedTree;
+use RainLab\Translate\Classes\Translator;
+use ValidationException;
 
 /**
  * category Model
@@ -37,11 +39,6 @@ class Category extends Model
      */
     public $rules = [
         'name' => 'required',
-        'slug' => 'required|
-            unique:dynamedia_posts_posts|
-            unique:dynamedia_posts_post_translations|
-            unique:dynamedia_posts_categories|
-            unique:dynamedia_posts_category_translations',
     ];
 
     public $customMessages = [
@@ -134,6 +131,50 @@ class Category extends Model
     // ------------------------- //
     // ---- Events Handling ---- //
     // ------------------------- //
+
+    // todo move this into a custom validation rule
+    public function beforeValidate()
+    {
+        $takenCategory = Category::where('slug', $this->slug)
+            ->where('id', '<>', $this->id)
+            ->count();
+
+        // A category can have the same slug as its own translations
+        $takenCategoryTranslation = CategoryTranslation::where('slug', $this->slug)
+            ->whereHas('native', function($q) {
+                $q->where('id', '<>', $this->id);
+            })
+            ->count();
+
+        $takenPost = Post::where('slug', $this->slug)
+            ->count();
+
+        $takenPostTranslation = PostTranslation::where('slug', $this->slug)
+            ->count();
+
+        if ($takenPost || $takenPostTranslation || $takenCategory || $takenCategoryTranslation) {
+            throw new ValidationException(['slug' => 'This slug has already been taken']);
+        }
+    }
+
+    // override attributes with their translations
+//    public function afterFetch()
+//    {
+//        $translator = Translator::instance();
+//        if ($translator->getLocale() !== $translator->getDefaultLocale()) {
+//            $translation = $this->translations()->whereHas('locale', function($q) use ($translator) {
+//                $q->where('code', $translator->getLocale());
+//            })->first();
+//            if ($translation) {
+//                $this->attributes['translation_id'] = $translation->id;
+//                foreach($translation->attributes as $attribute => $value) {
+//                    if (!empty($value) && !in_array($attribute, $translation->getHidden())) {
+//                        $this->attributes[$attribute] = $value;
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     public function beforeSave()
     {

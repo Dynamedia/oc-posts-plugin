@@ -80,7 +80,7 @@ return [
             'posts'         => 'Posts',
             'settings'      => 'Settings',
             'main'          => 'Main',
-            'translations'  => 'Translations',
+            'translations'  => 'Translations'
         ],
         'labels' => [
             'name'          => 'Name',
@@ -98,6 +98,7 @@ return [
             'block_content' => 'Section Content',
             'empty_option'  => 'Please Select',
             'approved'      => 'Approved',
+            'locale'        => 'Locale',
         ],
         'dropdown' => [
             'empty_option'  => 'Please Select',

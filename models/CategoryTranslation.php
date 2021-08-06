@@ -5,6 +5,8 @@ use Dynamedia\Posts\Traits\SeoTrait;
 use Dynamedia\Posts\Traits\ImagesTrait;
 use Dynamedia\Posts\Traits\ControllerTrait;
 use \October\Rain\Database\Traits\Validation;
+use RainLab\Translate\Models\Locale;
+use ValidationException;
 
 /**
  * CategoryTranslation Model
@@ -31,14 +33,7 @@ class CategoryTranslation extends Model
     /**
      * @var array rules for validation
      */
-    public $rules = [
-        'name' => 'required',
-        'slug' => 'required|
-            unique:dynamedia_posts_posts|
-            unique:dynamedia_posts_post_translations|
-            unique:dynamedia_posts_categories|
-            unique:dynamedia_posts_category_translations',
-    ];
+    public $rules = [];
 
     /**
      * @var array Attributes to be cast to native types
@@ -62,7 +57,11 @@ class CategoryTranslation extends Model
     /**
      * @var array hidden attributes removed from the API representation of the model (ex. toArray())
      */
-    protected $hidden = [];
+    protected $hidden = [
+        'id',
+        'created_at',
+        'updated_at',
+    ];
 
     /**
      * @var array dates attributes that should be mutated to dates
@@ -87,4 +86,54 @@ class CategoryTranslation extends Model
     public $morphMany = [];
     public $attachOne = [];
     public $attachMany = [];
+
+    // todo move this into a custom validation rule
+    public function beforeValidate()
+    {
+        if (empty($this->slug)) {
+            throw new ValidationException(['slug' => 'The slug is required']);
+        }
+
+        $takenCategory = Category::where('slug', $this->slug)
+            ->where('id', '<>', $this->native->id)
+            ->count();
+
+        // A category can have the same slug as its own translations
+        $takenCategoryTranslation = PostTranslation::where('slug', $this->slug)
+            ->whereHas('native', function($q) {
+                $q->where('id', '<>', $this->native->id);
+            })
+            ->count();
+
+        $takenPost = Post::where('slug', $this->slug)
+            ->count();
+
+        $takenPostTranslation = PostTranslation::where('slug', $this->slug)
+            ->count();
+
+        if ($takenPost || $takenPostTranslation || $takenCategory || $takenCategoryTranslation) {
+            throw new ValidationException(['slug' => 'This slug has already been taken']);
+        }
+    }
+
+    // todo get this moved and minify it?
+    public function getLocaleIdOptions()
+    {
+        $alreadyTranslated = [];
+        if (!empty($this->native->translations)) {
+            foreach ($this->native->translations as $translation) {
+                if ($translation->id != $this->id) {
+                    $alreadyTranslated[] = $translation->locale->id;
+                }
+            }
+        }
+
+        $locales = Locale::where('is_default', '<>', 1)
+            ->whereNotIn('id', $alreadyTranslated)
+            ->order()
+            ->pluck('name', 'id')
+            ->all();
+
+        return $locales;
+    }
 }

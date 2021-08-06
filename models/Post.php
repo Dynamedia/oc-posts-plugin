@@ -1,6 +1,7 @@
 <?php namespace Dynamedia\Posts\Models;
 
 use Dynamedia\Posts\Models\Settings;
+use RainLab\Translate\Classes\Translator;
 use Model;
 use October\Rain\Argon\Argon;
 use Str;
@@ -41,11 +42,6 @@ class Post extends Model
      */
     public $rules = [
         'title' => 'required',
-        'slug' => 'required|
-            unique:dynamedia_posts_posts|
-            unique:dynamedia_posts_post_translations|
-            unique:dynamedia_posts_categories|
-            unique:dynamedia_posts_category_translations'
     ];
 
     public $customMessages = [
@@ -110,7 +106,7 @@ class Post extends Model
     public $hasMany = [
         'translations' => [
             'Dynamedia\Posts\Models\PostTranslation',
-            'key' => 'native_id'
+            'key' => 'native_id',
         ]
     ];
     public $hasOneThrough = [];
@@ -138,9 +134,54 @@ class Post extends Model
     public $attachOne = [];
     public $attachMany = [];
 
+
     // ------------------------- //
     // ---- Events Handling ---- //
     // ------------------------- //
+
+    // todo move this into a custom validation rule
+    public function beforeValidate()
+    {
+        $takenPost = Post::where('slug', $this->slug)
+            ->where('id', '<>', $this->id)
+            ->count();
+
+        // A post can have the same slug as its own translations
+        $takenPostTranslation = PostTranslation::where('slug', $this->slug)
+            ->whereHas('native', function($q) {
+                $q->where('id', '<>', $this->id);
+            })
+            ->count();
+
+        $takenCategory = Category::where('slug', $this->slug)
+            ->count();
+
+        $takenCategoryTranslation = CategoryTranslation::where('slug', $this->slug)
+            ->count();
+
+        if ($takenPost || $takenPostTranslation || $takenCategory || $takenCategoryTranslation) {
+            throw new ValidationException(['slug' => 'This slug has already been taken']);
+        }
+    }
+
+    // override attributes with their translations
+//    public function afterFetch()
+//    {
+//        $translator = Translator::instance();
+//        if ($translator->getLocale() !== $translator->getDefaultLocale()) {
+//            $translation = $this->translations->whereHas('locale', function($q) use ($translator) {
+//               $q->where('code', $translator->getLocale());
+//            })->first();
+//            if ($translation) {
+//                $this->attributes['translation_id'] = $translation->id;
+//                foreach($translation->attributes as $attribute => $value) {
+//                    if (!empty($value) && !in_array($attribute, $translation->getHidden())) {
+//                        $this->attributes[$attribute] = $value;
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     public function beforeSave()
     {
@@ -253,6 +294,15 @@ class Post extends Model
         });
     }
 
+    public function scopeApplyWithActiveTranslation($query)
+    {
+        return $this->query->with(['translations' => function ($q) {
+           $q->whereHas('locale', function($q)  {
+               $q->where('code', Translator::instance()->getLocale());
+           })->first();
+        }]);
+    }
+
     /**
      * This is an EXTREMELY basic search - There is no index on any of the searched columns
      * todo Implement a fast cross-db solution. Consider full text and generated (by php) column from title, excerpt and searchable body sections
@@ -281,6 +331,13 @@ class Post extends Model
             'tags' =>function($q) {
                 $q->applyIsApproved();
             }
+        ]);
+    }
+
+    public function scopeApplyWithTranslations($query)
+    {
+        return $query->with([
+            'translations'
         ]);
     }
 
@@ -351,7 +408,19 @@ class Post extends Model
 
         if (!$optionsSlug) return [];
 
-        $query = Post::where('slug', $optionsSlug);
+        $query = Post::where('slug', $optionsSlug)
+            ->orWhereHas('translations', function ($t) use ($optionsSlug) {
+                $t->where('slug', $optionsSlug)
+                    ->whereHas('locale', function($q) {
+                        $q->where('code', Translator::instance()->getLocale());
+                    })
+                    ->orWhereHas('native', function($q) use ($optionsSlug) {
+                       $q->where('slug', $optionsSlug);
+                    });
+            });
+
+        $query->applyWithTranslations();
+
 
         if ($optionsWithPrimaryCategory) {
             $query->applyWithPrimaryCategory();
@@ -447,7 +516,8 @@ class Post extends Model
 
         $query->applyWithPrimaryCategory()
             ->applyWithTags()
-            ->applyWithUsers();
+            ->applyWithUsers()
+            ->applyWithTranslations();
 
         // We need to do paging ourselves to support later API. Paginate in the components for now
         $totalResults = $query->count();
@@ -1217,6 +1287,5 @@ class Post extends Model
         }
         return $result;
     }
-
 
 }

@@ -3,6 +3,10 @@
 # ===================================
 tabs:
     fields:
+        locale_id:
+            tab: dynamedia.posts::lang.common.tabs.detail
+            label: Locale
+            type: dropdown
         title:
             tab: dynamedia.posts::lang.common.tabs.detail
             span: left

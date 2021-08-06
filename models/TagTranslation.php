@@ -1,13 +1,16 @@
 <?php namespace Dynamedia\Posts\Models;
 
 use Model;
+use October\Rain\Database\Traits\Validation;
+use RainLab\Translate\Models\Locale;
+use ValidationException;
 
 /**
  * TagTranslation Model
  */
 class TagTranslation extends Model
 {
-    use \October\Rain\Database\Traits\Validation;
+    use Validation;
 
     /**
      * @var string table associated with the model
@@ -27,14 +30,9 @@ class TagTranslation extends Model
     /**
      * @var array rules for validation
      */
-    public $rules = [
-        'name' => 'required',
-        'slug' => 'unique:dynamedia_posts_tags|unique:dynamedia_posts_tag_translations',
-    ];
+    public $rules = [];
 
-    public $customMessages = [
-        'required' => 'The :attribute field is required.',
-    ];
+    public $customMessages = [];
 
     /**
      * @var array Attributes to be cast to native types
@@ -74,7 +72,8 @@ class TagTranslation extends Model
     public $hasOne = [];
     public $hasMany = [];
     public $belongsTo = [
-        'native' => ['Dynamedia\Posts\Models\Tag']
+        'native' => ['Dynamedia\Posts\Models\Tag'],
+        'locale' => ['Rainlab\Translate\Models\Locale'],
     ];
     public $belongsToMany = [];
     public $morphTo = [];
@@ -82,4 +81,47 @@ class TagTranslation extends Model
     public $morphMany = [];
     public $attachOne = [];
     public $attachMany = [];
+
+    // todo move this into a custom validation rule
+    public function beforeValidate()
+    {
+        if (empty($this->slug)) {
+            throw new ValidationException(['slug' => 'The slug is required']);
+        }
+
+        $takenTag = Tag::where('slug', $this->slug)
+            ->where('id', '<>', $this->native->id)
+            ->count();
+
+        $takenTagTranslation = TagTranslation::where('slug', $this->slug)
+            ->whereHas('native', function($q) {
+                $q->where('id', '<>', $this->native->id);
+            })
+            ->count();
+
+        if ($takenTag || $takenTagTranslation) {
+            throw new ValidationException(['slug' => 'This slug has already been taken']);
+        }
+    }
+
+    // todo get this moved and minify it?
+    public function getLocaleIdOptions()
+    {
+        $alreadyTranslated = [];
+        if (!empty($this->native->translations)) {
+            foreach ($this->native->translations as $translation) {
+                if ($translation->id != $this->id) {
+                    $alreadyTranslated[] = $translation->locale->id;
+                }
+            }
+        }
+
+        $locales = Locale::where('is_default', '<>', 1)
+            ->whereNotIn('id', $alreadyTranslated)
+            ->order()
+            ->pluck('name', 'id')
+            ->all();
+
+        return $locales;
+    }
 }

@@ -3,7 +3,6 @@
 use Cms\Classes\ComponentBase;
 use BackendAuth;
 use App;
-use Dynamedia\Posts\Models\PostTranslation;
 use Dynamedia\Posts\Traits\PaginationTrait;
 use Input;
 

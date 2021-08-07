@@ -158,23 +158,17 @@ class Category extends Model
     }
 
     // override attributes with their translations
-//    public function afterFetch()
-//    {
-//        $translator = Translator::instance();
-//        if ($translator->getLocale() !== $translator->getDefaultLocale()) {
-//            $translation = $this->translations()->whereHas('locale', function($q) use ($translator) {
-//                $q->where('code', $translator->getLocale());
-//            })->first();
-//            if ($translation) {
-//                $this->attributes['translation_id'] = $translation->id;
-//                foreach($translation->attributes as $attribute => $value) {
-//                    if (!empty($value) && !in_array($attribute, $translation->getHidden())) {
-//                        $this->attributes[$attribute] = $value;
-//                    }
-//                }
-//            }
-//        }
-//    }
+    public function afterFetch()
+    {
+        if ($this->active_translation) {
+            $this->attributes['translation_id'] = $this->active_translation->id;
+            foreach($this->active_translation->attributes as $attribute => $value) {
+                if (!empty($value) && !in_array($attribute, $this->active_translation->getHidden())) {
+                    $this->attributes[$attribute] = $value;
+                }
+            }
+        }
+    }
 
     public function beforeSave()
     {
@@ -291,7 +285,16 @@ class Category extends Model
 
         if (!$optionsSlug) return [];
 
-        $query = static::where('slug', $optionsSlug);
+        $query = static::where('slug', $optionsSlug)
+            ->orWhereHas('translations', function ($t) use ($optionsSlug) {
+                $t->where('slug', $optionsSlug)
+                    ->whereHas('locale', function($q) {
+                        $q->where('code', Translator::instance()->getLocale());
+                    })
+                    ->orWhereHas('native', function($q) use ($optionsSlug) {
+                        $q->where('slug', $optionsSlug);
+                    });
+            });
 
         if ($optionsWithChildren) {
             $query->applyWithChildren();
@@ -457,6 +460,16 @@ class Category extends Model
         if (isset($fields->about)) {
             $fields->about->hidden = true;
         }
+    }
+
+    public function getActiveTranslationAttribute()
+    {
+        if (!empty($this->translations)) {
+            return $this->translations->reject(function ($value, $key) {
+                return empty($value->locale) || $value->locale->code != Translator::instance()->getLocale();
+            })->first();
+        }
+        return null;
     }
 
     // ---------------------------- //

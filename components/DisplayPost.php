@@ -1,5 +1,6 @@
 <?php namespace Dynamedia\Posts\Components;
 
+use Carbon\Translator;
 use Cms\Classes\ComponentBase;
 use BackendAuth;
 use App;

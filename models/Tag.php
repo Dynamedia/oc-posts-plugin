@@ -1,6 +1,7 @@
 <?php namespace Dynamedia\Posts\Models;
 
 use Model;
+use RainLab\Translate\Classes\Translator;
 use Str;
 use BackendAuth;
 use ValidationException;
@@ -142,6 +143,19 @@ class Tag extends Model
         }
     }
 
+    // override attributes with their translations
+    public function afterFetch()
+    {
+        if ($this->active_translation) {
+            $this->attributes['translation_id'] = $this->active_translation->id;
+            foreach($this->active_translation->attributes as $attribute => $value) {
+                if (!empty($value) && !in_array($attribute, $this->active_translation->getHidden())) {
+                    $this->attributes[$attribute] = $value;
+                }
+            }
+        }
+    }
+
     // For tag widget
     public function beforeSave()
     {
@@ -276,6 +290,15 @@ class Tag extends Model
     public static function getTag($slug)
     {
         $query = static::where('slug', $slug)
+            ->orWhereHas('translations', function ($t) use ($slug) {
+                $t->where('slug', $slug)
+                    ->whereHas('locale', function($q) {
+                        $q->where('code', Translator::instance()->getLocale());
+                    })
+                    ->orWhereHas('native', function($q) use ($slug) {
+                        $q->where('slug', $slug);
+                    });
+            })
             ->applyIsApproved();
 
         $result = $query->first();
@@ -358,6 +381,16 @@ class Tag extends Model
     public function getComputedCmsLayoutAttribute()
     {
         return $this->getCmsLayout();
+    }
+
+    public function getActiveTranslationAttribute()
+    {
+        if (!empty($this->translations)) {
+            return $this->translations->reject(function ($value, $key) {
+                return empty($value->locale) || $value->locale->code != Translator::instance()->getLocale();
+            })->first();
+        }
+        return null;
     }
 
 

@@ -114,17 +114,6 @@ class PostTranslation extends Model
         }
     }
 
-    public function afterFetch()
-    {
-        if (!empty($this->native->id)) {
-            foreach ($this->attributes as $attribute => $value) {
-                if (in_array($attribute, $this->attributes)) {
-                    $this->attributes[$attribute] = $this->native->attributes[$attribute];
-                }
-            }
-        }
-    }
-
     // todo get this moved and minify it?
     public function getLocaleIdOptions()
     {

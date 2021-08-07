@@ -165,23 +165,18 @@ class Post extends Model
     }
 
     // override attributes with their translations
-//    public function afterFetch()
-//    {
-//        $translator = Translator::instance();
-//        if ($translator->getLocale() !== $translator->getDefaultLocale()) {
-//            $translation = $this->translations->whereHas('locale', function($q) use ($translator) {
-//               $q->where('code', $translator->getLocale());
-//            })->first();
-//            if ($translation) {
-//                $this->attributes['translation_id'] = $translation->id;
-//                foreach($translation->attributes as $attribute => $value) {
-//                    if (!empty($value) && !in_array($attribute, $translation->getHidden())) {
-//                        $this->attributes[$attribute] = $value;
-//                    }
-//                }
-//            }
-//        }
-//    }
+    public function afterFetch()
+    {
+        if ($this->active_translation) {
+            $this->attributes['translation_id'] = $this->active_translation->id;
+            foreach($this->active_translation->attributes as $attribute => $value) {
+                if (!empty($value) && !in_array($attribute, $this->active_translation->getHidden())) {
+                    $this->attributes[$attribute] = $value;
+                }
+            }
+        }
+    }
+
 
     public function beforeSave()
     {
@@ -337,7 +332,7 @@ class Post extends Model
     public function scopeApplyWithTranslations($query)
     {
         return $query->with([
-            'translations'
+            'translations.locale'
         ]);
     }
 
@@ -1071,6 +1066,16 @@ class Post extends Model
         }
 
         return $schema;
+    }
+
+    public function getActiveTranslationAttribute()
+    {
+        if (!empty($this->translations)) {
+            return $this->translations->reject(function ($value, $key) {
+                return empty($value->locale) || $value->locale->code != Translator::instance()->getLocale();
+            })->first();
+        }
+        return null;
     }
 
 

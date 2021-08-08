@@ -2,22 +2,27 @@
 
 use Model;
 use BackendAuth;
+use October\Rain\Database\Traits\NestedTree;
 use Str;
+use RainLab\Translate\Classes\Translator;
+use ValidationException;
 use Dynamedia\Posts\Traits\SeoTrait;
 use Dynamedia\Posts\Traits\ImagesTrait;
 use Dynamedia\Posts\Traits\ControllerTrait;
-use \October\Rain\Database\Traits\Validation;
-use \October\Rain\Database\Traits\NestedTree;
-use RainLab\Translate\Classes\Translator;
-use ValidationException;
+use October\Rain\Database\Traits\Validation;
+use Dynamedia\Posts\Traits\TranslatableContentObjectTrait;
 
 /**
  * category Model
  */
 class Category extends Model
 {
-
-    use SeoTrait, ImagesTrait, ControllerTrait, NestedTree, Validation;
+    use SeoTrait;
+    use ImagesTrait;
+    use ControllerTrait;
+    use Validation;
+    use NestedTree;
+    use TranslatableContentObjectTrait;
 
     /**
      * @var string The database table used by the model.
@@ -154,19 +159,6 @@ class Category extends Model
 
         if ($takenPost || $takenPostTranslation || $takenCategory || $takenCategoryTranslation) {
             throw new ValidationException(['slug' => 'This slug has already been taken']);
-        }
-    }
-
-    // override attributes with their translations
-    public function afterFetch()
-    {
-        if ($this->active_translation) {
-            $this->attributes['translation_id'] = $this->active_translation->id;
-            foreach($this->active_translation->attributes as $attribute => $value) {
-                if (!empty($value) && !in_array($attribute, $this->active_translation->getHidden())) {
-                    $this->attributes[$attribute] = $value;
-                }
-            }
         }
     }
 
@@ -462,15 +454,6 @@ class Category extends Model
         }
     }
 
-    public function getActiveTranslationAttribute()
-    {
-        if (!empty($this->translations)) {
-            return $this->translations->reject(function ($value, $key) {
-                return empty($value->locale) || $value->locale->code != Translator::instance()->getLocale();
-            })->first();
-        }
-        return null;
-    }
 
     // ---------------------------- //
     // ---- Rainlab Pages Menu ---- //

@@ -1,23 +1,25 @@
 <?php namespace Dynamedia\Posts\Models;
-
 use Model;
+use Dynamedia\Posts\Traits\ControllerTrait;
+use Dynamedia\Posts\Traits\ImagesTrait;
+use Dynamedia\Posts\Traits\SeoTrait;
+use Dynamedia\Posts\Traits\TranslatableContentObjectTrait;
+use October\Rain\Database\Traits\Validation;
 use RainLab\Translate\Classes\Translator;
 use Str;
 use BackendAuth;
 use ValidationException;
-use Dynamedia\Posts\Traits\SeoTrait;
-use Dynamedia\Posts\Traits\ImagesTrait;
-use Dynamedia\Posts\Traits\ControllerTrait;
-use October\Rain\Database\Traits\Validation;
-
 
 /**
  * tag Model
  */
 class Tag extends Model
 {
-
-    use SeoTrait, ImagesTrait, ControllerTrait, Validation;
+    use SeoTrait;
+    use ImagesTrait;
+    use ControllerTrait;
+    use Validation;
+    use TranslatableContentObjectTrait;
 
     /**
      * @var string The database table used by the model.
@@ -140,19 +142,6 @@ class Tag extends Model
 
         if ($takenTag || $takenTagTranslation) {
             throw new ValidationException(['slug' => 'This slug has already been taken']);
-        }
-    }
-
-    // override attributes with their translations
-    public function afterFetch()
-    {
-        if ($this->active_translation) {
-            $this->attributes['translation_id'] = $this->active_translation->id;
-            foreach($this->active_translation->attributes as $attribute => $value) {
-                if (!empty($value) && !in_array($attribute, $this->active_translation->getHidden())) {
-                    $this->attributes[$attribute] = $value;
-                }
-            }
         }
     }
 
@@ -381,16 +370,6 @@ class Tag extends Model
     public function getComputedCmsLayoutAttribute()
     {
         return $this->getCmsLayout();
-    }
-
-    public function getActiveTranslationAttribute()
-    {
-        if (!empty($this->translations)) {
-            return $this->translations->reject(function ($value, $key) {
-                return empty($value->locale) || $value->locale->code != Translator::instance()->getLocale();
-            })->first();
-        }
-        return null;
     }
 
 

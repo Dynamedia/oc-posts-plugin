@@ -2,6 +2,15 @@
 #  Relation Behavior Config
 # ===================================
 
+categoryslugs:
+    label: Slugs
+    view:
+        list: $/dynamedia/posts/models/categoryslug/columns.yaml
+        toolbarButtons: unlink
+    manage:
+        form: $/dynamedia/posts/models/categoryslug/fields.yaml
+        recordsPerPage: 10
+
 translations:
     label: Translations
     view:

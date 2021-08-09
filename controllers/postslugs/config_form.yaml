@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Post Slug
+
+# Model Form Field configuration
+form: $/dynamedia/posts/models/postslug/fields.yaml
+
+# Model Class name
+modelClass: Dynamedia\Posts\Models\PostSlug
+
+# Default redirect location
+defaultRedirect: dynamedia/posts/postslugs
+
+# Create page
+create:
+    title: backend::lang.form.create_title
+    redirect: dynamedia/posts/postslugs/update/:id
+    redirectClose: dynamedia/posts/postslugs
+
+# Update page
+update:
+    title: backend::lang.form.update_title
+    redirect: dynamedia/posts/postslugs
+    redirectClose: dynamedia/posts/postslugs
+
+# Preview page
+preview:
+    title: backend::lang.form.preview_title

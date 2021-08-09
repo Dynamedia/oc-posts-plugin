@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Category Slug
+
+# Model Form Field configuration
+form: $/dynamedia/posts/models/categoryslug/fields.yaml
+
+# Model Class name
+modelClass: Dynamedia\Posts\Models\CategorySlug
+
+# Default redirect location
+defaultRedirect: dynamedia/posts/categoryslugs
+
+# Create page
+create:
+    title: backend::lang.form.create_title
+    redirect: dynamedia/posts/categoryslugs/update/:id
+    redirectClose: dynamedia/posts/categoryslugs
+
+# Update page
+update:
+    title: backend::lang.form.update_title
+    redirect: dynamedia/posts/categoryslugs
+    redirectClose: dynamedia/posts/categoryslugs
+
+# Preview page
+preview:
+    title: backend::lang.form.preview_title

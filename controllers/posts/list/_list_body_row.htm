@@ -1,19 +1,6 @@
-<?php
-    $expanded = $showTree ? $this->isTreeNodeExpanded($record) : null;
-    $childRecords = $showTree ? $record->getChildren() : null;
-    $treeLevelClass = $showTree ? 'list-tree-level-'.$treeLevel : '';
-?>
-<tr class="<?= $treeLevelClass ?> <?= $this->getRowClass($record) ?>">
+<tr class="<?= $this->getRowClass($record) ?>">
     <?php if ($showCheckboxes): ?>
         <?= $this->makePartial('list_body_checkbox', ['record' => $record]) ?>
-    <?php endif ?>
-
-    <?php if ($showTree): ?>
-        <?= $this->makePartial('list_body_tree', [
-            'record' => $record,
-            'expanded' => $expanded,
-            'childCount' => $record->getChildCount()
-        ]) ?>
     <?php endif ?>
 
     <?php $index = $url = 0; foreach ($columns as $key => $column): ?>
@@ -34,6 +21,3 @@
     <?php endif ?>
 </tr>
 
-<?php if ($showTree && $expanded): ?>
-    <?= $this->makePartial('list_body_rows', ['records' => $childRecords, 'treeLevel' => $treeLevel+1]) ?>
-<?php endif ?>

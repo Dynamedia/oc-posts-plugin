@@ -113,6 +113,10 @@ class Category extends Model
      */
     public $hasOne = [];
     public $hasMany = [
+        'categoryslugs' => [
+            'Dynamedia\Posts\Models\CategorySlug',
+            'key' => 'category_id',
+        ],
         'translations' => [
             'Dynamedia\Posts\Models\CategoryTranslation',
             'key' => 'native_id'
@@ -140,25 +144,22 @@ class Category extends Model
     // todo move this into a custom validation rule
     public function beforeValidate()
     {
-        $takenCategory = Category::where('slug', $this->slug)
+        // Posts and categories are linked via the URL paths, they must have separate slugs
+
+        $takenCategory = CategorySlug::where('slug', $this->slug)
             ->where('id', '<>', $this->id)
             ->count();
+        if ($takenCategory) {
+            $clashName = Category::where('id', CategorySlug::where('slug', $this->slug)->first()->category_id)->first()->name;
+            throw new ValidationException(['slug' => "This slug has already been taken by Category: '{$clashName}'"]);
+        }
 
-        // A category can have the same slug as its own translations
-        $takenCategoryTranslation = CategoryTranslation::where('slug', $this->slug)
-            ->whereHas('native', function($q) {
-                $q->where('id', '<>', $this->id);
-            })
+        $takenPost = Postslug::where('slug', $this->slug)
+            ->where('post_id', '<>', $this->id)
             ->count();
-
-        $takenPost = Post::where('slug', $this->slug)
-            ->count();
-
-        $takenPostTranslation = PostTranslation::where('slug', $this->slug)
-            ->count();
-
-        if ($takenPost || $takenPostTranslation || $takenCategory || $takenCategoryTranslation) {
-            throw new ValidationException(['slug' => 'This slug has already been taken']);
+        if ($takenPost) {
+            $clashName = Post::where('id', PostSlug::where('slug', $this->slug)->first()->post_id)->first()->title;
+            throw new ValidationException(['slug' => "This slug has already been taken by Post: '{$clashName}'"]);
         }
     }
 
@@ -174,6 +175,18 @@ class Category extends Model
                     'error' => "Insufficient permissions to edit {$this->name}"
                 ]);
             }
+        }
+    }
+
+    public function afterSave()
+    {
+        if ($this->isDirty('slug')) {
+            $newSlug = CategorySlug::firstOrCreate([
+                'slug' => $this->slug,
+            ],
+                [
+                    'category_id' => $this->id
+                ]);
         }
     }
 

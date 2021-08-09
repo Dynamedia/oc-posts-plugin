@@ -50,6 +50,11 @@ tabs:
             type: partial
             path: $/dynamedia/posts/models/category/_translation_relation.htm
 
+        categoryslugs:
+            tab: dynamedia.posts::lang.common.tabs.slugs
+            type: partial
+            path: $/dynamedia/posts/models/category/_categoryslugs_relation.htm
+
         cms_layout:
             tab: dynamedia.posts::lang.common.tabs.settings
             label: dynamedia.posts::lang.common.labels.cms_layout

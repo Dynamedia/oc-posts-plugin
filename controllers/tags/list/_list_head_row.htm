@@ -12,12 +12,6 @@
     </th>
     <?php endif ?>
 
-    <?php if ($showTree): ?>
-    <th class="list-tree">
-        <span></span>
-    </th>
-    <?php endif ?>
-
     <?php foreach ($columns as $key => $column): ?>
     <?php if ($showSorting && $column->sortable): ?>
     <th

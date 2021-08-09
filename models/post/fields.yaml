@@ -77,6 +77,11 @@ tabs:
             nameFrom: profile.full_name
             emptyOption: dynamedia.posts::lang.common.dropdown.empty_option
 
+        postslugs:
+            tab: dynamedia.posts::lang.common.tabs.slugs
+            type: partial
+            path: $/dynamedia/posts/models/post/_postslugs_relation.htm
+
         cms_layout:
             tab: dynamedia.posts::lang.common.tabs.settings
             label: dynamedia.posts::lang.common.labels.cms_layout

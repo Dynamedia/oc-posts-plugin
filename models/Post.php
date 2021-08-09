@@ -108,6 +108,10 @@ class Post extends Model
      */
     public $hasOne = [];
     public $hasMany = [
+        'postslugs' => [
+            'Dynamedia\Posts\Models\PostSlug',
+            'key' => 'post_id',
+        ],
         'translations' => [
             'Dynamedia\Posts\Models\PostTranslation',
             'key' => 'native_id',
@@ -143,28 +147,24 @@ class Post extends Model
     // ---- Events Handling ---- //
     // ------------------------- //
 
-    // todo move this into a custom validation rule
+    // todo move this into a custom validation rule. Lang support
     public function beforeValidate()
     {
-        $takenPost = Post::where('slug', $this->slug)
-            ->where('id', '<>', $this->id)
+        // Posts and categories are linked via the URL paths, they must have separate slugs
+        // Ensure no Post has this slug
+        $takenPost = Postslug::where('slug', $this->slug)
+            ->where('post_id', '<>', $this->id)
             ->count();
+        if ($takenPost) {
+            $clashName = Post::where('id', PostSlug::where('slug', $this->slug)->first()->post_id)->first()->title;
+            throw new ValidationException(['slug' => "This slug has already been taken by Post: '{$clashName}'"]);
+        }
 
-        // A post can have the same slug as its own translations
-        $takenPostTranslation = PostTranslation::where('slug', $this->slug)
-            ->whereHas('native', function($q) {
-                $q->where('id', '<>', $this->id);
-            })
+        $takenCategory = CategorySlug::where('slug', $this->slug)
             ->count();
-
-        $takenCategory = Category::where('slug', $this->slug)
-            ->count();
-
-        $takenCategoryTranslation = CategoryTranslation::where('slug', $this->slug)
-            ->count();
-
-        if ($takenPost || $takenPostTranslation || $takenCategory || $takenCategoryTranslation) {
-            throw new ValidationException(['slug' => 'This slug has already been taken']);
+        if ($takenCategory) {
+            $clashName = Category::where('id', CategorySlug::where('slug', $this->slug)->first()->category_id)->first()->name;
+            throw new ValidationException(['slug' => "This slug has already been taken by Category: '{$clashName}'"]);
         }
     }
 
@@ -223,6 +223,17 @@ class Post extends Model
             if ($this->categories->count() > 0) {
                 $this->primary_category = $this->categories->first();
             }
+        }
+
+        // Create the postsslug relationship. Required for auto redirection on change
+        // Must be validated as unique per post
+        if ($this->isDirty('slug')) {
+            $newSlug = PostSlug::firstOrCreate([
+                'slug' => $this->slug,
+            ],
+                [
+                    'post_id' => $this->id
+                ]);
         }
     }
 

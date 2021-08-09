@@ -22,9 +22,13 @@
 0.9.06:
   - Drop users column and create authors and editors
   - update_posts_table_v0.9.06.php
-  - seed_tables.php
 0.9.07:
   - Create translation tables
   - create_post_translations_table_v0.9.07.php
   - create_category_translations_table_v0.9.07.php
   - create_tag_translations_table_v0.9.07.php
+0.9.08:
+  - Create Posts Slug tables
+  - create_post_slugs_table_v0.9.08.php
+  - create_category_slugs_table_v0.9.08.php
+  - create_tag_slugs_table_v0.9.08.php

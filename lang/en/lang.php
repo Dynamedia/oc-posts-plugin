@@ -80,7 +80,8 @@ return [
             'posts'         => 'Posts',
             'settings'      => 'Settings',
             'main'          => 'Main',
-            'translations'  => 'Translations'
+            'translations'  => 'Translations',
+            'slugs'         => 'Related Slugs',
         ],
         'labels' => [
             'name'          => 'Name',
@@ -89,7 +90,12 @@ return [
             'slug'          => 'Slug',
             'excerpt'       => 'Excerpt',
             'seo'           => 'SEO',
+            'post'          => 'Post',
             'posts'         => 'Posts',
+            'category'      => 'Category',
+            'categories'    => 'Categories',
+            'tag'           => 'Tag',
+            'tags'          => 'Tags',
             'cms_layout'    => 'CMS Layout',
             'author'        => 'Author',
             'editor'        => 'Editor',

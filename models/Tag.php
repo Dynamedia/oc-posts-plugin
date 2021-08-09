@@ -103,6 +103,10 @@ class Tag extends Model
      */
     public $hasOne = [];
     public $hasMany = [
+        'tagslugs' => [
+            'Dynamedia\Posts\Models\TagSlug',
+            'key' => 'tag_id',
+        ],
         'translations' => [
             'Dynamedia\Posts\Models\TagTranslation',
             'key' => 'native_id'
@@ -130,18 +134,12 @@ class Tag extends Model
     // todo move this into a custom validation rule
     public function beforeValidate()
     {
-        $takenTag = Tag::where('slug', $this->slug)
+        $takenTag = TagSlug::where('slug', $this->slug)
             ->where('id', '<>', $this->id)
             ->count();
-
-        $takenTagTranslation = TagTranslation::where('slug', $this->slug)
-            ->whereHas('native', function($q) {
-                $q->where('id', '<>', $this->id);
-            })
-            ->count();
-
-        if ($takenTag || $takenTagTranslation) {
-            throw new ValidationException(['slug' => 'This slug has already been taken']);
+        if ($takenTag) {
+            $clashName = Tag::where('id', TagSlug::where('slug', $this->slug)->first()->tag_id)->first()->name;
+            throw new ValidationException(['slug' => "This slug has already been taken by Tag: '{$clashName}'"]);
         }
     }
 
@@ -166,6 +164,19 @@ class Tag extends Model
         }
 
         $this->slug = Str::slug($this->slug);
+    }
+
+    public function afterSave()
+    {
+
+        if ($this->isDirty('slug')) {
+            $newSlug = TagSlug::firstOrCreate([
+                'slug' => $this->slug,
+            ],
+                [
+                    'tag_id' => $this->id
+                ]);
+        }
     }
 
     public function afterDelete()

@@ -75,7 +75,15 @@ class TagTranslation extends Model
         'native' => ['Dynamedia\Posts\Models\Tag'],
         'locale' => ['Rainlab\Translate\Models\Locale'],
     ];
-    public $belongsToMany = [];
+    public $belongsToMany = [
+        'tagslugs' => [
+            'Dynamedia\Posts\Models\TagSlug',
+            'table' => 'dynamedia_posts_tag_trans_slug',
+            'key'       => 'trans_id',
+            'otherKey'  => 'slug_id',
+            'order' => 'id'
+        ],
+    ];
     public $morphTo = [];
     public $morphOne = [];
     public $morphMany = [];
@@ -85,23 +93,17 @@ class TagTranslation extends Model
     // todo move this into a custom validation rule
     public function beforeValidate()
     {
-        if (empty($this->slug)) {
-            throw new ValidationException(['slug' => 'The slug is required']);
+        if (!TagSlug::isAvailable($this->native->id, $this->slug)) {
+            throw new ValidationException(['slug' => "Slug is not available"]);
         }
+    }
 
-        $takenTag = Tag::where('slug', $this->slug)
-            ->where('id', '<>', $this->native->id)
-            ->count();
-
-        $takenTagTranslation = TagTranslation::where('slug', $this->slug)
-            ->whereHas('native', function($q) {
-                $q->where('id', '<>', $this->native->id);
-            })
-            ->count();
-
-        if ($takenTag || $takenTagTranslation) {
-            throw new ValidationException(['slug' => 'This slug has already been taken']);
-        }
+    public function afterSave()
+    {
+        $slug = $this->native->tagslugs()->firstOrCreate([
+            'slug' => $this->slug,
+        ]);
+        $this->tagslugs()->attach($slug);
     }
 
     // todo get this moved and minify it?

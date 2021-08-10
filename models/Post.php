@@ -150,21 +150,8 @@ class Post extends Model
     // todo move this into a custom validation rule. Lang support
     public function beforeValidate()
     {
-        // Posts and categories are linked via the URL paths, they must have separate slugs
-        // Ensure no Post has this slug
-        $takenPost = Postslug::where('slug', $this->slug)
-            ->where('post_id', '<>', $this->id)
-            ->count();
-        if ($takenPost) {
-            $clashName = Post::where('id', PostSlug::where('slug', $this->slug)->first()->post_id)->first()->title;
-            throw new ValidationException(['slug' => "This slug has already been taken by Post: '{$clashName}'"]);
-        }
-
-        $takenCategory = CategorySlug::where('slug', $this->slug)
-            ->count();
-        if ($takenCategory) {
-            $clashName = Category::where('id', CategorySlug::where('slug', $this->slug)->first()->category_id)->first()->name;
-            throw new ValidationException(['slug' => "This slug has already been taken by Category: '{$clashName}'"]);
+        if (!PostSlug::isAvailable($this->id, $this->slug)) {
+            throw new ValidationException(['slug' => "Slug is not available"]);
         }
     }
 
@@ -224,17 +211,11 @@ class Post extends Model
                 $this->primary_category = $this->categories->first();
             }
         }
-
         // Create the postsslug relationship. Required for auto redirection on change
         // Must be validated as unique per post
-        if ($this->isDirty('slug')) {
-            $newSlug = PostSlug::firstOrCreate([
-                'slug' => $this->slug,
-            ],
-                [
-                    'post_id' => $this->id
-                ]);
-        }
+        $this->postslugs()->firstOrCreate([
+            'slug' => $this->slug,
+        ]);
     }
 
     public function beforeDelete()

@@ -80,7 +80,15 @@ class CategoryTranslation extends Model
         'native' => ['Dynamedia\Posts\Models\Category'],
         'locale' => ['Rainlab\Translate\Models\Locale'],
     ];
-    public $belongsToMany = [];
+    public $belongsToMany = [
+        'categoryslugs' => [
+            'Dynamedia\Posts\Models\CategorySlug',
+            'table' => 'dynamedia_posts_category_trans_slug',
+            'key'       => 'trans_id',
+            'otherKey'  => 'slug_id',
+            'order' => 'id'
+        ],
+    ];
     public $morphTo = [];
     public $morphOne = [];
     public $morphMany = [];
@@ -90,30 +98,17 @@ class CategoryTranslation extends Model
     // todo move this into a custom validation rule
     public function beforeValidate()
     {
-        if (empty($this->slug)) {
-            throw new ValidationException(['slug' => 'The slug is required']);
+        if (!CategorySlug::isAvailable($this->native->id, $this->slug)) {
+            throw new ValidationException(['slug' => "Slug is not available"]);
         }
+    }
 
-        $takenCategory = Category::where('slug', $this->slug)
-            ->where('id', '<>', $this->native->id)
-            ->count();
-
-        // A category can have the same slug as its own translations
-        $takenCategoryTranslation = PostTranslation::where('slug', $this->slug)
-            ->whereHas('native', function($q) {
-                $q->where('id', '<>', $this->native->id);
-            })
-            ->count();
-
-        $takenPost = Post::where('slug', $this->slug)
-            ->count();
-
-        $takenPostTranslation = PostTranslation::where('slug', $this->slug)
-            ->count();
-
-        if ($takenPost || $takenPostTranslation || $takenCategory || $takenCategoryTranslation) {
-            throw new ValidationException(['slug' => 'This slug has already been taken']);
-        }
+    public function afterSave()
+    {
+        $slug = $this->native->categoryslugs()->firstOrCreate([
+            'slug' => $this->slug,
+        ]);
+        $this->categoryslugs()->attach($slug);
     }
 
     // todo get this moved and minify it?

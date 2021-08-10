@@ -1,0 +1,12 @@
+# ===================================
+#  Relation Behavior Config
+# ===================================
+
+postslugs:
+    label: Slugs
+    view:
+        list: $/dynamedia/posts/models/postslug/columns.yaml
+        toolbarButtons: unlink
+    manage:
+        form: $/dynamedia/posts/models/postslug/fields.yaml
+        recordsPerPage: 10

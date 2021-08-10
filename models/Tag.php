@@ -134,12 +134,8 @@ class Tag extends Model
     // todo move this into a custom validation rule
     public function beforeValidate()
     {
-        $takenTag = TagSlug::where('slug', $this->slug)
-            ->where('id', '<>', $this->id)
-            ->count();
-        if ($takenTag) {
-            $clashName = Tag::where('id', TagSlug::where('slug', $this->slug)->first()->tag_id)->first()->name;
-            throw new ValidationException(['slug' => "This slug has already been taken by Tag: '{$clashName}'"]);
+        if (!TagSlug::isAvailable($this->id, $this->slug)) {
+            throw new ValidationException(['slug' => "Slug is not available"]);
         }
     }
 
@@ -164,19 +160,14 @@ class Tag extends Model
         }
 
         $this->slug = Str::slug($this->slug);
+
     }
 
     public function afterSave()
     {
-
-        if ($this->isDirty('slug')) {
-            $newSlug = TagSlug::firstOrCreate([
-                'slug' => $this->slug,
-            ],
-                [
-                    'tag_id' => $this->id
-                ]);
-        }
+        $this->tagslugs()->firstOrCreate([
+            'slug' => $this->slug,
+        ]);
     }
 
     public function afterDelete()

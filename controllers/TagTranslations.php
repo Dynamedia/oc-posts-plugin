@@ -10,7 +10,8 @@ class TagTranslations extends Controller
 {
     public $implement = [
         \Backend\Behaviors\FormController::class,
-        \Backend\Behaviors\ListController::class
+        \Backend\Behaviors\ListController::class,
+        \Backend\Behaviors\RelationController::class,
     ];
 
     /**
@@ -22,6 +23,11 @@ class TagTranslations extends Controller
      * @var string listConfig file
      */
     public $listConfig = 'config_list.yaml';
+
+    /**
+     * @var string Configuration file for the `RelationController` behavior.
+     */
+    public $relationConfig = 'config_relation.yaml';
 
     /**
      * __construct the controller

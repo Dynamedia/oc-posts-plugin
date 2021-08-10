@@ -43,6 +43,11 @@ tabs:
             usePanelStyles: false
             form: $/dynamedia/posts/config/forms/seo.yaml
 
+        postslugs:
+            tab: dynamedia.posts::lang.common.tabs.slugs
+            type: partial
+            path: $/dynamedia/posts/models/posttranslation/_postslugs_relation.htm
+
         cms_layout:
             tab: dynamedia.posts::lang.common.tabs.settings
             label: dynamedia.posts::lang.common.labels.cms_layout

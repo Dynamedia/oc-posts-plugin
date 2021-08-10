@@ -144,22 +144,8 @@ class Category extends Model
     // todo move this into a custom validation rule
     public function beforeValidate()
     {
-        // Posts and categories are linked via the URL paths, they must have separate slugs
-
-        $takenCategory = CategorySlug::where('slug', $this->slug)
-            ->where('id', '<>', $this->id)
-            ->count();
-        if ($takenCategory) {
-            $clashName = Category::where('id', CategorySlug::where('slug', $this->slug)->first()->category_id)->first()->name;
-            throw new ValidationException(['slug' => "This slug has already been taken by Category: '{$clashName}'"]);
-        }
-
-        $takenPost = Postslug::where('slug', $this->slug)
-            ->where('post_id', '<>', $this->id)
-            ->count();
-        if ($takenPost) {
-            $clashName = Post::where('id', PostSlug::where('slug', $this->slug)->first()->post_id)->first()->title;
-            throw new ValidationException(['slug' => "This slug has already been taken by Post: '{$clashName}'"]);
+        if (!CategorySlug::isAvailable($this->id, $this->slug)) {
+            throw new ValidationException(['slug' => "Slug is not available"]);
         }
     }
 
@@ -180,14 +166,9 @@ class Category extends Model
 
     public function afterSave()
     {
-        if ($this->isDirty('slug')) {
-            $newSlug = CategorySlug::firstOrCreate([
-                'slug' => $this->slug,
-            ],
-                [
-                    'category_id' => $this->id
-                ]);
-        }
+        $this->categoryslugs()->firstOrCreate([
+            'slug' => $this->slug,
+        ]);
     }
 
     public function afterDelete()

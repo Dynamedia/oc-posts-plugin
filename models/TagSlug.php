@@ -62,16 +62,36 @@ class TagSlug extends Model
      */
     public $hasOne = [];
     public $hasMany = [];
-    public $belongsTo = [];
-    public $belongsToMany = [];
+    public $belongsTo = [
+        'tag' => ['Dynamedia\Posts\Models\Tag'],
+    ];
+    public $belongsToMany = [
+        'tagtranslations' => [
+            'Dynamedia\Posts\Models\TagTranslation',
+            'table' => 'dynamedia_posts_tag_trans_slug',
+            'key'       => 'slug_id',
+            'otherKey'  => 'trans_id',
+            'order' => 'id'
+        ],
+    ];
     public $morphTo = [];
     public $morphOne = [];
     public $morphMany = [];
     public $attachOne = [];
     public $attachMany = [];
 
-    public function beforeSave()
+    public static function isAvailable($tagId, $slug)
     {
+        $available = false;
 
+        $takenTag = self::where('slug', $slug)
+            ->where('tag_id', '<>', $tagId)
+            ->count();
+
+        if (!$takenTag) {
+            $available = true;
+        }
+
+        return $available;
     }
 }

@@ -27,7 +27,10 @@ class CategorySlug extends Model
     /**
      * @var array rules for validation
      */
-    public $rules = [];
+    public $rules = [
+        'slug'      => 'required',
+        'category'  => 'required'
+    ];
 
     /**
      * @var array Attributes to be cast to native types
@@ -62,11 +65,39 @@ class CategorySlug extends Model
      */
     public $hasOne = [];
     public $hasMany = [];
-    public $belongsTo = [];
-    public $belongsToMany = [];
+    public $belongsTo = [
+        'category' => ['Dynamedia\Posts\Models\Category'],
+    ];
+    public $belongsToMany = [
+        'categorytranslations' => [
+            'Dynamedia\Posts\Models\CategoryTranslation',
+            'table' => 'dynamedia_posts_category_trans_slug',
+            'key'       => 'slug_id',
+            'otherKey'  => 'trans_id',
+            'order' => 'id'
+        ],
+    ];
     public $morphTo = [];
     public $morphOne = [];
     public $morphMany = [];
     public $attachOne = [];
     public $attachMany = [];
+
+    public static function isAvailable($categoryId, $slug)
+    {
+        $available = false;
+
+        $takenCategory = self::where('slug', $slug)
+            ->where('category_id', '<>', $categoryId)
+            ->count();
+
+        $takenPost = PostSlug::where('slug', $slug)
+            ->count();
+
+        if (!$takenCategory && !$takenPost) {
+            $available = true;
+        }
+
+        return $available;
+    }
 }

@@ -1,6 +1,7 @@
 <?php namespace Dynamedia\Posts\Models;
 
 use Model;
+use ValidationException;
 
 /**
  * PostSlug Model
@@ -27,7 +28,10 @@ class PostSlug extends Model
     /**
      * @var array rules for validation
      */
-    public $rules = [];
+    public $rules = [
+        'slug'  => 'required',
+        'post'  => 'required'
+    ];
 
     /**
      * @var array Attributes to be cast to native types
@@ -62,11 +66,39 @@ class PostSlug extends Model
      */
     public $hasOne = [];
     public $hasMany = [];
-    public $belongsTo = [];
-    public $belongsToMany = [];
+    public $belongsTo = [
+        'post' => ['Dynamedia\Posts\Models\Post'],
+    ];
+    public $belongsToMany = [
+        'posttranslations' => [
+            'Dynamedia\Posts\Models\PostTranslation',
+            'table' => 'dynamedia_posts_post_trans_slug',
+            'key'       => 'slug_id',
+            'otherKey'  => 'trans_id',
+            'order' => 'id'
+        ],
+    ];
     public $morphTo = [];
     public $morphOne = [];
     public $morphMany = [];
     public $attachOne = [];
     public $attachMany = [];
+
+    public static function isAvailable($postId, $slug)
+    {
+        $available = false;
+
+        $takenPost = self::where('slug', $slug)
+            ->where('post_id', '<>', $postId)
+            ->count();
+
+        $takenCategory = CategorySlug::where('slug', $slug)
+            ->count();
+
+        if (!$takenPost && !$takenCategory) {
+            $available = true;
+        }
+
+        return $available;
+    }
 }

@@ -30,9 +30,15 @@ class PostTranslation extends Model
      */
     protected $fillable = [];
 
-    public $rules = [];
+    public $rules = [
+        'native' =>'required',
+        'locale' => 'required'
+    ];
 
-    public $customMessages = [];
+    public $customMessages = [
+        'native.required' => 'Translations cannot be created without a post.',
+        'locale.required' => 'Translations must specify their locale',
+    ];
 
     /**
      * @var array Attributes to be cast to native types
@@ -79,7 +85,15 @@ class PostTranslation extends Model
         'native' => ['Dynamedia\Posts\Models\Post'],
         'locale' => ['Rainlab\Translate\Models\Locale']
     ];
-    public $belongsToMany = [];
+    public $belongsToMany = [
+        'postslugs' => [
+            'Dynamedia\Posts\Models\PostSlug',
+            'table' => 'dynamedia_posts_post_trans_slug',
+            'key'       => 'trans_id',
+            'otherKey'  => 'slug_id',
+            'order' => 'id'
+        ],
+    ];
     public $morphTo = [];
     public $morphOne = [];
     public $morphMany = [];
@@ -89,29 +103,17 @@ class PostTranslation extends Model
     // todo move this into a custom validation rule
     public function beforeValidate()
     {
-        if (empty($this->slug)) {
-            throw new ValidationException(['slug' => 'The slug is required']);
+        if (!PostSlug::isAvailable($this->native->id, $this->slug)) {
+            throw new ValidationException(['slug' => "Slug is not available"]);
         }
-        $takenPost = Post::where('slug', $this->slug)
-            ->where('id', '<>', $this->native->id)
-            ->count();
+    }
 
-        // A post can have the same slug as its own translations
-        $takenPostTranslation = PostTranslation::where('slug', $this->slug)
-            ->whereHas('native', function ($q) {
-                $q->where('id', '<>', $this->native->id);
-            })
-            ->count();
-
-        $takenCategory = Category::where('slug', $this->slug)
-            ->count();
-
-        $takenCategoryTranslation = CategoryTranslation::where('slug', $this->slug)
-            ->count();
-
-        if ($takenPost || $takenPostTranslation || $takenCategory || $takenCategoryTranslation) {
-            throw new ValidationException(['slug' => 'This slug has already been taken']);
-        }
+    public function afterSave()
+    {
+        $slug = $this->native->postslugs()->firstOrCreate([
+            'slug' => $this->slug,
+        ]);
+        $this->postslugs()->attach($slug);
     }
 
     // todo get this moved and minify it?

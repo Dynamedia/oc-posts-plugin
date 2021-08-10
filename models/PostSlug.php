@@ -124,4 +124,5 @@ class PostSlug extends Model
         }
         $this->posttranslations()->detach();
     }
+
 }

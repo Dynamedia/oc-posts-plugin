@@ -269,18 +269,14 @@ class Category extends Model
 
         extract($options);
 
-        if (!$optionsSlug) return [];
+        // Look for a category which uses, or has used this slug
+        // All category slugs (current, historical, translations and translation historical) exist as CategorySlugs
 
-        $query = static::where('slug', $optionsSlug)
-            ->orWhereHas('translations', function ($t) use ($optionsSlug) {
-                $t->where('slug', $optionsSlug)
-                    ->whereHas('locale', function($q) {
-                        $q->where('code', Translator::instance()->getLocale());
-                    })
-                    ->orWhereHas('native', function($q) use ($optionsSlug) {
-                        $q->where('slug', $optionsSlug);
-                    });
-            });
+        $categoryId = CategorySlug::where('slug', $optionsSlug)->pluck('category_id')->toArray();
+
+        if (!$optionsSlug || !$categoryId) return null;
+
+        $query = Category::whereIn('id', $categoryId);
 
         if ($optionsWithChildren) {
             $query->applyWithChildren();

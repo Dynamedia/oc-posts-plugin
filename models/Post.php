@@ -384,21 +384,16 @@ class Post extends Model
 
         extract($options);
 
-        if (!$optionsSlug) return [];
+        // Look for a post which uses, or has used this slug
+        // All post slugs (current, historical, translations and translation historical) exist as PostSlugs
 
-        $query = Post::where('slug', $optionsSlug)
-            ->orWhereHas('translations', function ($t) use ($optionsSlug) {
-                $t->where('slug', $optionsSlug)
-                    ->whereHas('locale', function($q) {
-                        $q->where('code', Translator::instance()->getLocale());
-                    })
-                    ->orWhereHas('native', function($q) use ($optionsSlug) {
-                       $q->where('slug', $optionsSlug);
-                    });
-            });
+        $postId = PostSlug::where('slug', $optionsSlug)->pluck('post_id')->toArray();
+
+        if (!$optionsSlug || !$postId) return null;
+
+        $query = Post::whereIn('id', $postId);
 
         $query->applyWithTranslations();
-
 
         if ($optionsWithPrimaryCategory) {
             $query->applyWithPrimaryCategory();

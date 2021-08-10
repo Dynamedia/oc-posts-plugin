@@ -280,17 +280,16 @@ class Tag extends Model
      */
     public static function getTag($slug)
     {
-        $query = static::where('slug', $slug)
-            ->orWhereHas('translations', function ($t) use ($slug) {
-                $t->where('slug', $slug)
-                    ->whereHas('locale', function($q) {
-                        $q->where('code', Translator::instance()->getLocale());
-                    })
-                    ->orWhereHas('native', function($q) use ($slug) {
-                        $q->where('slug', $slug);
-                    });
-            })
-            ->applyIsApproved();
+        // Look for a tag which uses, or has used this slug
+        // All tag slugs (current, historical, translations and translation historical) exist as TagSlugs
+
+        $tagId = TagSlug::where('slug', $slug)->pluck('tag_id')->toArray();
+
+        if (!$tagId) return null;
+
+        $query = Tag::whereIn('id', $tagId);
+
+        $query->applyIsApproved();
 
         $result = $query->first();
 

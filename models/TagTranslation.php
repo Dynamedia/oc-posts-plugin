@@ -106,6 +106,11 @@ class TagTranslation extends Model
         $this->tagslugs()->attach($slug);
     }
 
+    public function beforeDelete()
+    {
+
+    }
+
     // todo get this moved and minify it?
     public function getLocaleIdOptions()
     {

@@ -100,4 +100,26 @@ class CategorySlug extends Model
 
         return $available;
     }
+
+    private function isActive()
+    {
+        return $this->slug == $this->category->slug;
+    }
+
+    private function isActiveForTranslation()
+    {
+        if ($this->categorytranslations()->where('slug', $this->slug)->count() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function beforeDelete()
+    {
+        if ($this->isActive() || $this->isActiveForTranslation()) {
+            throw new ValidationException(['slug' => "Cannot delete an active slug"]);
+        }
+        $this->categorytranslations()->detach();
+    }
 }

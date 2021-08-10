@@ -15,7 +15,7 @@ postslugs:
     label: Slugs
     view:
         list: $/dynamedia/posts/models/postslug/columns.yaml
-        toolbarButtons: unlink
+        toolbarButtons: delete
     manage:
         form: $/dynamedia/posts/models/postslug/fields.yaml
         recordsPerPage: 10

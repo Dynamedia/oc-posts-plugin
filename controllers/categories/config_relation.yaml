@@ -6,7 +6,7 @@ categoryslugs:
     label: Slugs
     view:
         list: $/dynamedia/posts/models/categoryslug/columns.yaml
-        toolbarButtons: unlink
+        toolbarButtons: delete
     manage:
         form: $/dynamedia/posts/models/categoryslug/fields.yaml
         recordsPerPage: 10

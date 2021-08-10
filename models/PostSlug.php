@@ -1,5 +1,6 @@
 <?php namespace Dynamedia\Posts\Models;
 
+use Composer\Package\Package;
 use Model;
 use ValidationException;
 
@@ -100,5 +101,27 @@ class PostSlug extends Model
         }
 
         return $available;
+    }
+
+    private function isActive()
+    {
+        return $this->slug == $this->post->slug;
+    }
+
+    private function isActiveForTranslation()
+    {
+        if ($this->posttranslations()->where('slug', $this->slug)->count() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function beforeDelete()
+    {
+        if ($this->isActive() || $this->isActiveForTranslation()) {
+            throw new ValidationException(['slug' => "Cannot delete an active slug"]);
+        }
+        $this->posttranslations()->detach();
     }
 }

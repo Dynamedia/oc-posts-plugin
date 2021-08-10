@@ -94,4 +94,26 @@ class TagSlug extends Model
 
         return $available;
     }
+
+    private function isActive()
+    {
+        return $this->slug == $this->tag->slug;
+    }
+
+    private function isActiveForTranslation()
+    {
+        if ($this->tagtranslations()->where('slug', $this->slug)->count() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function beforeDelete()
+    {
+        if ($this->isActive() || $this->isActiveForTranslation()) {
+            throw new ValidationException(['slug' => "Cannot delete an active slug"]);
+        }
+        $this->posttranslations()->detach();
+    }
 }

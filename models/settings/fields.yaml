@@ -35,19 +35,11 @@ tabs:
             tab: dynamedia.posts::lang.settings.tabs.posts
             label: dynamedia.posts::lang.settings.labels.post_page
             type: dropdown
-            comment: dynamedia.posts::lang.settings.comments.post_page
-
-        postPageWithoutCategory:
-            tab: dynamedia.posts::lang.settings.tabs.posts
-            label: dynamedia.posts::lang.settings.labels.post_page_no_category
-            type: dropdown
-            comment: dynamedia.posts::lang.settings.comments.post_page_no_category
 
         categoryPage:
             tab: dynamedia.posts::lang.settings.tabs.categories
             label: dynamedia.posts::lang.settings.labels.category_page
             type: dropdown
-            comment: dynamedia.posts::lang.settings.comments.category_page
 
         categoryPostsListSortOrder:
             tab: dynamedia.posts::lang.settings.tabs.categories

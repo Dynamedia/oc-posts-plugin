@@ -184,8 +184,7 @@ return [
             'default_posts_sort_order'  => 'Default Posts Sort Order',
             'posts_per_page'            => 'Posts Per Page',
             'include_subcategories'     => 'List Posts from Sub-Categories',
-            'post_page'                 => 'Post Display Page (With Categories)',
-            'post_page_no_category'     => 'Post Display Page (No Category)',
+            'post_page'                 => 'Post Display Page',
             'category_page'             => 'Category Display Page',
             'tag_page'                  => 'Tag Display Page',
             'user_page'                 => 'User Display Page',
@@ -194,9 +193,6 @@ return [
             'default_tag_layout'        => 'Default Tag Layout',
         ],
         'comments' => [
-          'post_page' => 'It is recommended to use a CMS page capable of handling both posts and categories',
-          'post_page_no_category' => 'Only used where using separate pages for post and category and post has no primary category',
-          'category_page' => 'It is recommended to use a CMS page capable of handling both posts and categories',
         ],
         'dropdown' => [
           'organization'    => 'Organization',

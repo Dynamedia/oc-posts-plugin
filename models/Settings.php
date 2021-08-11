@@ -110,10 +110,6 @@ class Settings extends Model
         return array_merge(['' => 'None'], $pages);
     }
 
-    public function getPostPageWithoutCategoryOptions()
-    {
-        return $this->getPostPageOptions();
-    }
 
 
     public function getCategoryPageOptions()

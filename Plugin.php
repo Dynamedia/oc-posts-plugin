@@ -154,10 +154,7 @@ class Plugin extends PluginBase
                 $category = Category::getCategory(['optionsSlug' => $this->extractSlug($controller)]);
                 App::instance('dynamedia.posts.category', $category);
             }
-
-//            dd([$matchedPage,$postPage, $categoryPage
-//            ]);
-
+            
             if (!empty($post)) return $controller->render($postPage['page'], $params);
             if (!empty($category)) return $controller->render($categoryPage['page'], $params);
 

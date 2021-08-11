@@ -1,11 +1,13 @@
 <?php namespace Dynamedia\Posts;
 
 use Backend;
+use Dynamedia\Posts\Models\Settings;
 use System\Classes\PluginBase;
 use App;
 use Event;
 use Str;
 use Cms\Models\ThemeData;
+use Cms\Classes\Page;
 use Dynamedia\Posts\Models\Post;
 use Dynamedia\Posts\Models\Category;
 use Dynamedia\Posts\Models\Tag;
@@ -117,44 +119,55 @@ class Plugin extends PluginBase
         });
 
         Event::listen('cms.page.beforeDisplay', function ($controller, $url, $page) {
+            // Having completely semantic URLs is nice, but it causes post and category display routes to clash
+            // We can deal with that by checking whether the provided slug is either a Post or a Category
+            // It can't be both, as we don't allow it through validation. We will force render the relevant page.
 
-            $displayCategory = $this->getComponents($page, "displayCategory");
-            $displayPost = $this->getComponents($page, "displayPost");
-            $displayTag = $this->getComponents($page, "displayTag");
-            $slug = $this->extractSlug($controller);
+            // Get info for potential clashing pages and the page the router actually matched
+            $params = $controller->getRouter()->getParameters();
 
-            if (!$slug) return;
+            $postPage = [
+                'page' => $pg = Settings::get('postPage'),
+                'url'  => Page::url($pg, $params)
+            ];
+            $categoryPage = [
+                'page' => $pg = Settings::get('categoryPage'),
+                'url'  => Page::url($pg, $params)
+            ];
+            $matchedPage = [
+                'page' => $pg = $page->getFileNameParts()[0],
+                'url' => Page::url($pg, $params)
+            ];
 
-            if ($displayCategory) {
-                $category = Category::getCategory(['optionsSlug' => $slug]);
 
-                if ($category && $category['computed_cms_layout'] !== false) {
-                    $page->layout = $category['computed_cms_layout'];
-                }
+            // Logic attempts to avoid querying both Posts and Categories if at all possible
+            // But no way to avoid if the post and category pages do clash
 
-                App::instance('dynamedia.posts.category', $category);
-            }
-
-            if ($displayPost) {
-                $post = Post::getPost(['optionsSlug' => $slug]);
-
-                if ($post && $post->computed_cms_layout !== false) {
-                    $page->layout = $post->computed_cms_layout;
-                }
-
+            // Post Page
+            if ($matchedPage['url'] == $postPage['url']) {
+                $post = Post::getPost(['optionsSlug' => $this->extractSlug($controller)]);
                 App::instance('dynamedia.posts.post', $post);
             }
 
-            if ($displayTag) {
-                $tag = Tag::getTag($slug);
+            // Category Page
+            if ($matchedPage['url'] == $categoryPage['url']) {
+                $category = Category::getCategory(['optionsSlug' => $this->extractSlug($controller)]);
+                App::instance('dynamedia.posts.category', $category);
+            }
 
-                if ($tag && $tag['computed_cms_layout'] !== false) {
-                    $page->layout = $tag['computed_cms_layout'];
-                }
+//            dd([$matchedPage,$postPage, $categoryPage
+//            ]);
 
+            if (!empty($post)) return $controller->render($postPage['page'], $params);
+            if (!empty($category)) return $controller->render($categoryPage['page'], $params);
+
+            // Tags can't clash with Posts and Tags so can share the same name
+            if ($matchedPage == Settings::get('tagPage')) {
+                $tag = Tag::getTag(['optionsSlug' => $this->extractSlug($controller)]);
                 App::instance('dynamedia.posts.tag', $tag);
             }
-    });
+        });
+
         /*
          * Register menu items for the RainLab.Pages plugin
          */

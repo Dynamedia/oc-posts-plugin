@@ -19,8 +19,6 @@ class DisplayCategory extends ComponentBase
 
     public $category = null;
     public $posts;
-    private $defer;
-
 
     public function defineProperties()
     {
@@ -36,9 +34,7 @@ class DisplayCategory extends ComponentBase
         // Check that we are at the right url. If not, redirect and get back here.
         // ONLY if we're getting the category from the URL
             if (!$this->category) {
-                if (!$this->deferToPostComponent()) return $this->controller->run('404');
-                $this->defer = true;
-                return;
+                return $this->controller->run('404');
             }
             if ($this->currentPageUrl() != $this->category->url) {
                 return redirect($this->category->url, 301);
@@ -46,34 +42,6 @@ class DisplayCategory extends ComponentBase
 
         $this->setPosts();
     }
-
-    public function onRender()
-    {
-        // Return an empty string and avoid rendering the markup. todo Find a better way?
-        if ($this->defer) return " ";
-    }
-
-    /**
-     * Check if there is a displayPost component after this one
-     * and that it will process from the URL paramater
-     *
-     * @return bool
-     **/
-    private function deferToPostComponent() {
-        $components = collect($this->page->components)
-            ->filter(function($c) {
-               if ($c->alias == $this->alias) return true;
-               if ($c->name == 'displayPost') return true;
-            });
-            // true if this component is first or other component was successful
-            if ($components->count() == 2
-                && ($components->first()->alias == $this->alias
-                    || !empty($components->first()->post))) {
-                return true;
-            }
-            return false;
-    }
-
 
     private function setCategory()
     {

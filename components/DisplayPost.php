@@ -22,7 +22,6 @@ class DisplayPost extends ComponentBase
 
     public $post;
     public $paginator;
-    private $defer;
 
     public function defineProperties()
     {
@@ -37,9 +36,7 @@ class DisplayPost extends ComponentBase
 
         // 404 if post not found
         if (!$this->post) {
-           if (!$this->deferToCategoryComponent()) return $this->controller->run('404');
-            $this->defer = true;
-            return;
+            return $this->controller->run('404');
         }
         // Check that we are at the right url. If not, redirect and get back here.
         if ($this->currentPageUrl() != $this->post->url) {
@@ -61,33 +58,6 @@ class DisplayPost extends ComponentBase
         $this->setPaginator();
     }
 
-    /**
-     * Check if there is a displayCategory component after this one
-     * and that it will process from the URL parameter
-     *
-     * @return bool
-     **/
-    private function deferToCategoryComponent() {
-        $components = collect($this->page->components)
-            ->filter(function($c) {
-               if ($c->alias == $this->alias) return true;
-               if ($c->name == 'displayCategory') return true;
-            });
-
-            // true if this component is first or other component was successful
-            if ($components->count() == 2
-                && ($components->first()->alias == $this->alias
-                    || !empty($components->first()->category))) {
-                return true;
-            }
-            return false;
-    }
-
-    public function onRender()
-    {
-        // Return an empty string and avoid rendering the markup. todo Find a better way?
-        if ($this->defer) return " ";
-    }
 
     public function getRequestedPage()
     {

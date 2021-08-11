@@ -64,16 +64,48 @@ This is useful for large sites that want to maintain
 a familiar look, but whose categories, for example, might need to look quite different.
 
 Component settings have been kept as simple as possible,
-with the majority of configuration options being made available in the main plugin
+with the majority of configuration options being available in the main plugin
 settings. It is important to visit the settings to choose the CMS page to use for
 displaying posts, categories, tags and user profile.
 
-It is recommended to use a single CMS page to display both posts and categories so you
-would have the postDisplay and categoryDisplay components in the same place.
+It is recommended to use the same URL for both the post display and category display pages.
+The plugin handles the logic to resolve the correct page in the event of a URL clash.
 This allows for semantic URL's which can even begin at the project root.
 
-For example, if you have a 'Widgets' category and a post titled 'Blue Widgets',
-you could have your category listing available at /widgets and your post at
-/widgets/blue-widgets.
-Sub categories are supported and automatic redirection occurs if you change your
-site structure,  Of course, you are free to define your site structure as you wish.
+Post Display Page.
+~~~
+title = "Post Display Page"
+url = "/:postsFullPath*"
+layout = "default"
+meta_title = "Post Display Page"
+is_hidden = 0
+
+[displayPost]
+==
+{% component 'displayPost' %}
+~~~
+Category Display Page
+~~~
+title = "Category Display Page"
+url = "/:postsFullPath*"
+layout = "default"
+meta_title = "Category Display Page"
+is_hidden = 0
+
+[displayCategory]
+includeSubcategories = 1
+postsPerPage = 11
+noPostsMessage = "No posts found"
+sortOrder = "published_at desc"
+==
+{% component 'displayCategory' %}
+~~~
+
+By using the above recommended settings, the following would all be valid:
+- /a-category
+- /an-uncategorized-post
+- /a-category/a-post-in-a-category
+- /a-category/a-sub-category/a-post-in-the-subcategory
+
+You can, of course refer to the documentation and define your site structure as you please.
+

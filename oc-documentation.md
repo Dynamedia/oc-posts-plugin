@@ -207,27 +207,41 @@ displayCategory will inject the following variables:
 
 
 ##### Combining displayPost and displayCategory
+It is recommended to use the same URL for both the post display and category display pages.
+The plugin handles the logic to resolve the correct page in the event of a URL clash.
+This allows for semantic URL's which can even begin at the project root.
 
-It is recommended to place both of the components on a single CMS page
-using the `:postsFullPath*` parameter in the url. The plugin will check whether the
-last part of the URL path is either a category slug or a post slug and load the
-relevant data and partial accordingly.
+You can achieve this my utilising the `:postsFullPath*` parameter in the url
 
-In this case, you could use the following snippet.
+In this case, you could use the following snippets for both pages.
 
+Post Display Page.
 ~~~
-title = "Posts and Category Display Page"
+title = "Post Display Page"
 url = "/:postsFullPath*"
-
-[displayCategory]
-includeSubcategories = 1
-postsPerPage = 10
-sortOrder = "published_at desc"
+layout = "default"
+meta_title = "Post Display Page"
+is_hidden = 0
 
 [displayPost]
 ==
-{% component 'displayCategory' %}
 {% component 'displayPost' %}
+~~~
+Category Display Page
+~~~
+title = "Category Display Page"
+url = "/:postsFullPath*"
+layout = "default"
+meta_title = "Category Display Page"
+is_hidden = 0
+
+[displayCategory]
+includeSubcategories = 1
+postsPerPage = 11
+noPostsMessage = "No posts found"
+sortOrder = "published_at desc"
+==
+{% component 'displayCategory' %}
 ~~~
 
 This would match, for example:

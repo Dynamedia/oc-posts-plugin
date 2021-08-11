@@ -22,10 +22,7 @@ class Settings extends Model
     public $settingsFields = 'fields.yaml';
 
     public $rules = [
-        'publisherName' => 'required',
-        'publisherType' => 'required',
-        'publisherUrl' => 'required|url',
-        'publisherLogo' => 'required',
+        'publisherUrl' =>  'url',
     ];
 
     public function beforeSave()

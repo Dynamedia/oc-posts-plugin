@@ -125,7 +125,8 @@ class Plugin extends PluginBase
 
             // Get info for potential clashing pages and the page the router actually matched
             $params = $controller->getRouter()->getParameters();
-
+            $activeThemeCode = \Cms\Classes\Theme::getActiveThemeCode();
+            
             $postPage = [
                 'page' => $pg = Settings::get('postPage'),
                 'url'  => Page::url($pg, $params)
@@ -134,11 +135,16 @@ class Plugin extends PluginBase
                 'page' => $pg = Settings::get('categoryPage'),
                 'url'  => Page::url($pg, $params)
             ];
+            $tagPage = [
+                'page' => $pg = Settings::get('tagPage'),
+                'url'  => Page::url($pg, $params)
+            ];
             $matchedPage = [
                 'page' => $pg = $page->getFileNameParts()[0],
                 'url' => Page::url($pg, $params)
             ];
-
+            
+            
 
             // Logic attempts to avoid querying both Posts and Categories if at all possible
             // But no way to avoid if the post and category pages do clash
@@ -146,21 +152,35 @@ class Plugin extends PluginBase
             // Post Page
             if ($matchedPage['url'] == $postPage['url']) {
                 $post = Post::getPost(['optionsSlug' => $this->extractSlug($controller)]);
-                App::instance('dynamedia.posts.post', $post);
             }
 
             // Category Page
             if ($matchedPage['url'] == $categoryPage['url']) {
                 $category = Category::getCategory(['optionsSlug' => $this->extractSlug($controller)]);
+            }
+            
+            // Tag Page
+            if ($matchedPage['url'] == $tagPage['url']) {
+                $tag = Tag::getTag($this->extractSlug($controller));
+            }
+            
+            if (!empty($post)) {
+                $newPage = Page::loadCached($activeThemeCode, $postPage['page']);
+                $post->getCmsLayout() ? $newPage->layout = $post->getCmsLayout() : null;
+                App::instance('dynamedia.posts.post', $post);
+                return $newPage;
+            
+            }
+            if (!empty($category)) {
+                $newPage = Page::loadCached($activeThemeCode,$categoryPage['page']);
+                $category->getCmsLayout() ? $newPage->layout = $category->getCmsLayout() : null;
                 App::instance('dynamedia.posts.category', $category);
+                return $newPage;
             }
 
-            if (!empty($post)) return $controller->render($postPage['page'], $params);
-            if (!empty($category)) return $controller->render($categoryPage['page'], $params);
-
             // Tags can't clash with Posts and Tags so can share the same name
-            if ($matchedPage == Settings::get('tagPage')) {
-                $tag = Tag::getTag(['optionsSlug' => $this->extractSlug($controller)]);
+            if (!empty($tag)) {
+                $tag->getCmsLayout() ? $page->layout = $tag->getCmsLayout() : null;
                 App::instance('dynamedia.posts.tag', $tag);
             }
         });

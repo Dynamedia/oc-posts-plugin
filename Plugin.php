@@ -4,6 +4,7 @@ use Backend;
 use Dynamedia\Posts\Classes\Acl\AccessControl;
 use Dynamedia\Posts\Classes\Extenders\ExtendBackendUser;
 use Dynamedia\Posts\Classes\Listeners\PostsRouteDetection;
+use Dynamedia\Posts\Classes\Listeners\AccessControl as AccessControlListener;
 use Dynamedia\Posts\Classes\Listeners\StaticPagesMenu;
 use Dynamedia\Posts\Classes\Twig\TwigFilters;
 use Dynamedia\Posts\Classes\Twig\TwigFunctions;
@@ -133,6 +134,7 @@ class Plugin extends PluginBase
     public function registerEvents()
     {
         Event::subscribe(PostsRouteDetection::class);
+        Event::subscribe(AccessControlListener::class);
         Event::subscribe(StaticPagesMenu::class);
     }
 

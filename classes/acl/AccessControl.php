@@ -146,4 +146,87 @@ class AccessControl
             ],
         ];
     }
+
+    /**
+     * Check if user has required permissions to edit
+     * @param $user
+     * @return bool
+     */
+    public static function userCanEditPost($post, $user)
+    {   // isDirty prevents failure if setting the attribute
+        if ($post->is_published && !$post->isDirty('is_published')) {
+            if (!$user->hasAccess('dynamedia.posts.edit_all_published_posts')
+                && !($user->hasAccess('dynamedia.posts.edit_own_published_posts')
+                    && $user->id == $post->author_id)) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            if (!$user->hasAccess('dynamedia.posts.edit_all_unpublished_posts')
+                && $user->id != $post->author_id) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
+
+    /**
+     * Check if user has required permissions to delete
+     * @param $user
+     * @return bool
+     */
+    public static function userCanDeletePost($post, $user)
+    {
+        if ($post->is_published) {
+            if (!$user->hasAccess('dynamedia.posts.delete_all_published_posts')
+                && !($user->hasAccess('dynamedia.posts.delete_own_published_posts')
+                    && $user->id == $post->author_id)) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            if (!$user->hasAccess('dynamedia.posts.delete_all_unpublished_posts')
+                && !($user->hasAccess('dynamedia.posts.delete_own_unpublished_posts')
+                    && $user->id == $post->author_id)) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
+
+    /**
+     * Check if user has required permissions to publish
+     * @param $user
+     * @return bool
+     */
+    public static function userCanPublishPost($post, $user)
+    {
+        if (!$user->hasAccess('dynamedia.posts.publish_all_posts')
+            && !($user->hasAccess('dynamedia.posts.publish_own_posts')
+                && $user->id == $post->author_id)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Check if user has required permissions to unpublish
+     * @param $user
+     * @return bool
+     */
+    public static function userCanUnpublishPost($post, $user)
+    {
+        if (!$user->hasAccess('dynamedia.posts.unpublish_all_posts')
+            && !($user->hasAccess('dynamedia.posts.unpublish_own_posts')
+                && $user->id == $post->author_id)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }

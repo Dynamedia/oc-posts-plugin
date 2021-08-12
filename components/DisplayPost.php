@@ -56,6 +56,7 @@ class DisplayPost extends ComponentBase
         }
 
         $this->setPaginator();
+        dd($this->post->getObservableEvents());
     }
 
 

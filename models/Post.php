@@ -1,5 +1,6 @@
 <?php namespace Dynamedia\Posts\Models;
 
+use Dynamedia\Posts\Classes\Acl\AccessControl;
 use Dynamedia\Posts\Models\Settings;
 use RainLab\Translate\Classes\Translator;
 use Model;
@@ -158,6 +159,7 @@ class Post extends Model
 
     public function beforeSave()
     {
+        \Event::fire('dynamedia.posts.saving', [$this, BackendAuth::getUser()]);
         $user = BackendAuth::getUser();
 
         if (empty($this->author)) {
@@ -167,28 +169,6 @@ class Post extends Model
             }
         }
 
-        // Permissions logic
-        if (!app()->runningInConsole()) {
-            if (!$this->userCanEdit($user)) {
-                throw new ValidationException([
-                    'error' => "Insufficient permissions to edit {$this->slug}"
-                ]);
-            }
-
-            if ($this->isDirty('is_published')) {
-                if ($this->is_published && !$this->userCanPublish($user)) {
-                    throw new ValidationException([
-                        'error' => "Insufficient permissions to publish {$this->slug}"
-                    ]);
-                }
-                if (!$this->is_published && !$this->userCanUnpublish($user)) {
-                    throw new ValidationException([
-                        'error' => "Insufficient permissions to unpublish {$this->slug}"
-                    ]);
-                }
-            }
-        }
-        // End permissions logic
 
         $this->slug = Str::slug($this->slug);
 
@@ -658,88 +638,11 @@ class Post extends Model
     // ---- Permissions Checking ---- //
     // ------------------------------ //
 
-    /**
-     * Check if user has required permissions to delete
-     * @param $user
-     * @return bool
-     */
-    public function userCanDelete($user)
-    {
-        if ($this->is_published) {
-            if (!$user->hasAccess('dynamedia.posts.delete_all_published_posts')
-                && !($user->hasAccess('dynamedia.posts.delete_own_published_posts')
-                    && $user->id == $this->author_id)) {
-                return false;
-            } else {
-                return true;
-            }
-        } else {
-            if (!$user->hasAccess('dynamedia.posts.delete_all_unpublished_posts')
-                && !($user->hasAccess('dynamedia.posts.delete_own_unpublished_posts')
-                    && $user->id == $this->author_id)) {
-                return false;
-            } else {
-                return true;
-            }
-        }
-    }
 
-    /**
-     * Check if user has required permissions to edit
-     * @param $user
-     * @return bool
-     */
-    public function userCanEdit($user)
-    {   // isDirty prevents failure if setting the attribute
-        if ($this->is_published && !$this->isDirty('is_published')) {
-            if (!$user->hasAccess('dynamedia.posts.edit_all_published_posts')
-                && !($user->hasAccess('dynamedia.posts.edit_own_published_posts')
-                    && $user->id == $this->author_id)) {
-                return false;
-            } else {
-                return true;
-            }
-        } else {
-            if (!$user->hasAccess('dynamedia.posts.edit_all_unpublished_posts')
-                && $user->id != $this->author_id) {
-                return false;
-            } else {
-                return true;
-            }
-        }
-    }
 
-    /**
-     * Check if user has required permissions to publish
-     * @param $user
-     * @return bool
-     */
-    public function userCanPublish($user)
-    {
-        if (!$user->hasAccess('dynamedia.posts.publish_all_posts')
-            && !($user->hasAccess('dynamedia.posts.publish_own_posts')
-                && $user->id == $this->author_id)) {
-            return false;
-        } else {
-            return true;
-        }
-    }
 
-    /**
-     * Check if user has required permissions to unpublish
-     * @param $user
-     * @return bool
-     */
-    public function userCanUnpublish($user)
-    {
-        if (!$user->hasAccess('dynamedia.posts.unpublish_all_posts')
-            && !($user->hasAccess('dynamedia.posts.unpublish_own_posts')
-                && $user->id == $this->author_id)) {
-            return false;
-        } else {
-            return true;
-        }
-    }
+
+
 
     /**
      * Check if user has required permissions to tag posts
@@ -822,7 +725,7 @@ class Post extends Model
         }
 
         if ($this->is_published) {
-            if (!$this->userCanUnpublish($user)) {
+            if (!AccessControl::userCanUnPublishPost($this, $user)) {
                 if (isset($fields->is_published)) {
                     $fields->is_published->readOnly = true;
                     $fields->is_published->comment = "You do not have permission to unpublish this post";
@@ -836,7 +739,7 @@ class Post extends Model
                 }
             }
         } else {
-            if (!$this->userCanPublish($user)) {
+            if (!AccessControl::userCanPublishPost($this, $user)) {
                 if (isset($fields->is_published)) {
                     $fields->is_published->readOnly = true;
                     $fields->is_published->comment = "You do not have permission to publish this post";

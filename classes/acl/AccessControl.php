@@ -1,4 +1,13 @@
 <?php namespace Dynamedia\Posts\Classes\Acl;
+use Backend\Models\User;
+
+/**
+ * Class AccessControl
+ *
+ * Static helpers for access control
+ *
+ * @package Dynamedia\Posts\Classes\Acl
+ */
 
 class AccessControl
 {
@@ -149,7 +158,8 @@ class AccessControl
 
     /**
      * Check if user has required permissions to edit
-     * @param $user
+     * @param Post $post
+     * @param User $user
      * @return bool
      */
     public static function userCanEditPost($post, $user)
@@ -174,7 +184,8 @@ class AccessControl
 
     /**
      * Check if user has required permissions to delete
-     * @param $user
+     * @param Post $post
+     * @param User $user
      * @return bool
      */
     public static function userCanDeletePost($post, $user)
@@ -200,7 +211,8 @@ class AccessControl
 
     /**
      * Check if user has required permissions to publish
-     * @param $user
+     * @param Post $post
+     * @param User $user
      * @return bool
      */
     public static function userCanPublishPost($post, $user)
@@ -228,5 +240,81 @@ class AccessControl
         } else {
             return true;
         }
+    }
+
+    /**
+     * Check if user has required permissions to categorize posts
+     * @param User $user
+     * @return bool
+     */
+    public static function userCanCategorizePosts($user)
+    {
+        if (!$user->hasAccess('dynamedia.posts.categorize_posts')) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Check if user has required permissions to tag posts
+     * @param User $user
+     * @return bool
+     */
+    public static function userCanTagPosts($user)
+    {
+        if (!$user->hasAccess('dynamedia.posts.tag_posts')) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Check if user has required permissions to alter layouts
+     * @param User $user
+     * @return bool
+     */
+    public static function userCanSetLayout($user)
+    {
+        if (!$user->hasAccess('dynamedia.posts.set_layout')) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Check if user has required permissions to assign posts to other users
+     * @param $user
+     * @return bool
+     */
+    public static function userCanAssignPosts($user)
+    {
+        if (!$user->hasAccess('dynamedia.posts.assign_posts')) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Check if user has required permissions to assign posts to other users
+     * @param $user
+     * @return bool
+     */
+    public static function postIsViewable($post, $user = false)
+    {
+        if ($post->is_published) {
+            return true;
+        }
+        if (!$user) {
+            return false;
+        }
+        if (!$user->hasAccess('edit_all_unpublished_posts') || $user->id == $post->author->id) {
+            return true;
+        }
+
+        return false;
     }
 }

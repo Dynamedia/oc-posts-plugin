@@ -3,6 +3,7 @@
 use Backend;
 use Dynamedia\Posts\Classes\Acl\AccessControl;
 use Dynamedia\Posts\Classes\Extenders\ExtendBackendUser;
+use Dynamedia\Posts\Classes\Listeners\PostModel;
 use Dynamedia\Posts\Classes\Listeners\PostsRouteDetection;
 use Dynamedia\Posts\Classes\Listeners\AccessControl as AccessControlListener;
 use Dynamedia\Posts\Classes\Listeners\StaticPagesMenu;
@@ -136,6 +137,7 @@ class Plugin extends PluginBase
         Event::subscribe(PostsRouteDetection::class);
         Event::subscribe(AccessControlListener::class);
         Event::subscribe(StaticPagesMenu::class);
+        Event::subscribe(PostModel::class);
     }
 
     public function registerExtenders()

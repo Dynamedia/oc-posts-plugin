@@ -4,6 +4,7 @@ use Dynamedia\Posts\Classes\Acl\AccessControl;
 use Dynamedia\Posts\Models\Settings;
 use RainLab\Translate\Classes\Translator;
 use Model;
+use Event;
 use October\Rain\Argon\Argon;
 use Str;
 use BackendAuth;
@@ -159,27 +160,7 @@ class Post extends Model
 
     public function beforeSave()
     {
-        \Event::fire('dynamedia.posts.saving', [$this, BackendAuth::getUser()]);
-        $user = BackendAuth::getUser();
-
-        if (empty($this->author)) {
-
-            if (!is_null($user)) {
-                $this->author = $user->id;
-            }
-        }
-
-
-        $this->slug = Str::slug($this->slug);
-
-
-        if ($this->is_published && $this->published_at == null) {
-            $this->published_at = Argon::now();
-        }
-
-        if (!$this->is_published) {
-            $this->published_at = null;
-        }
+        Event::fire('dynamedia.posts.post.saving', [$this, $user = BackendAuth::getUser()]);
     }
 
     public function afterSave()
@@ -200,11 +181,7 @@ class Post extends Model
 
     public function beforeDelete()
     {
-        if (!$this->userCanDelete(BackendAuth::getUser())) {
-            throw new ValidationException([
-                'error' => "Insufficient permissions to delete {$this->slug}"
-            ]);
-        }
+        Event::fire('dynamedia.posts.post.deleting', [$this, $user = BackendAuth::getUser()]);
     }
 
     public function afterDelete()
@@ -537,35 +514,17 @@ class Post extends Model
      */
     private function getPostPage()
     {
-        $defaultPostsPage = Settings::get('postPage');
-        $noCategoryPostsPage = Settings::get('postPageWithoutCategory');
-        $categoryPage = Settings::get('categoryPage');
+        $postsPage = Settings::get('postPage');
 
         // Plugin not configured
-        if (!$defaultPostsPage) {
+        if (!$postsPage) {
             if (BackendAuth::getUser()) {
-                return Flash::warning('The Posts plugin has not been configured ');
+                return Flash::warning('Please set the Posts page in settings ');
             }
             return;
         }
 
-        // Exit here as no issues to navigate
-        if ($this->primary_category) {
-            return $defaultPostsPage;
-        }
-
-        // Same page for both components
-        if ($defaultPostsPage == $categoryPage) {
-            return $defaultPostsPage;
-        }
-
-        // Post has no category and needs to be handled with a separate page
-        if ($noCategoryPostsPage) {
-            return $noCategoryPostsPage;
-        }
-
-        // Just return the default page and accept it may have /default/ in the url
-        return $defaultPostsPage;
+        return $postsPage;
     }
 
     /**
@@ -634,73 +593,6 @@ class Post extends Model
 
 
 
-    // ------------------------------ //
-    // ---- Permissions Checking ---- //
-    // ------------------------------ //
-
-
-
-
-
-
-
-    /**
-     * Check if user has required permissions to tag posts
-     * @param $user
-     * @return bool
-     */
-    public function userCanTag($user)
-    {
-        if (!$user->hasAccess('dynamedia.posts.tag_posts')) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    /**
-     * Check if user has required permissions to categorize posts
-     * @param $user
-     * @return bool
-     */
-    public function userCanCategorize($user)
-    {
-        if (!$user->hasAccess('dynamedia.posts.categorize_posts')) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    /**
-     * Check if user has required permissions to categorize posts
-     * @param $user
-     * @return bool
-     */
-    public function userCanSetLayout($user)
-    {
-        if (!$user->hasAccess('dynamedia.posts.set_layout')) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    /**
-     * Check if user has required permissions to assign posts
-     * @param $user
-     * @return bool
-     */
-    public function userCanAssignPosts($user)
-    {
-        if (!$user->hasAccess('dynamedia.posts.assign_posts')) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-
     // --------------------- //
     // ---- Form Widget ---- //
     // --------------------- //
@@ -714,12 +606,12 @@ class Post extends Model
             $fields->author->value = $user->id;
         }
 
-        if (isset($fields->author) && !$this->userCanAssignPosts($user)) {
+        if (isset($fields->author) && !AccessControl::userCanAssignPosts($user)) {
             $fields->author->readOnly = true;
             $fields->author->comment = "You do not have permission to re-assign this post";
         }
 
-        if (isset($fields->editor) && !$this->userCanAssignPosts($user)) {
+        if (isset($fields->editor) && !AccessControl::userCanAssignPosts($user)) {
             $fields->editor->readOnly = true;
             $fields->editor->comment = "You do not have permission to re-assign this post";
         }
@@ -753,7 +645,7 @@ class Post extends Model
             }
         }
 
-        if (!$this->userCanCategorize($user)) {
+        if (!AccessControl::userCanCategorizePosts($user)) {
             if (isset($fields->primary_category)) {
                 $fields->primary_category->comment = "You do not have permission to categorize posts";
                 $fields->primary_category->readOnly = true;
@@ -763,20 +655,19 @@ class Post extends Model
             }
         }
 
-        if (!$this->userCanTag($user)) {
+        if (!AccessControl::userCanTagPosts($user)) {
             if (isset($fields->tags)) {
                 $fields->tags->comment = "You do not have permission to tag posts";
                 $fields->tags->readOnly = true;
             }
         }
 
-        if (!$this->userCanSetLayout($user)) {
+        if (!AccessControl::userCanSetLayout($user)) {
             if (isset($fields->cms_layout)) {
                 $fields->cms_layout->comment = "You do not have permission to change the layout";
                 $fields->cms_layout->readOnly = true;
             }
         }
-
     }
 
 

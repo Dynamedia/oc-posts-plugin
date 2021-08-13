@@ -3,7 +3,7 @@
         <input
                 type="checkbox"
 
-                <?php if (!$record->userCanDelete(BackendAuth::getUser())): ?>
+                <?php if (!Dynamedia\Posts\Classes\Acl\AccessControl::userCanDeletePost($record, BackendAuth::getUser())): ?>
                 disabled
                 <?php endif ?>
 

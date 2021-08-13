@@ -4,6 +4,7 @@ use Carbon\Translator;
 use Cms\Classes\ComponentBase;
 use BackendAuth;
 use App;
+use Dynamedia\Posts\Classes\Acl\AccessControl;
 use Dynamedia\Posts\Traits\PaginationTrait;
 use Input;
 
@@ -43,20 +44,16 @@ class DisplayPost extends ComponentBase
             return redirect($this->post->url, 301);
         }
         // Check publishing status and permissions
-        if (!$this->post->is_published) {
-            $user = BackendAuth::getUser();
-            if (!$user || !$user->id == $this->post->author->id || !$user->hasAccess(['edit_all_unpublished_posts']) ) {
-                try {
+        if (!AccessControl::postIsViewable($this->post, BackendAuth::getUser())) {
+            try {
                 return $this->controller
                     ->setStatusCode(403)->run('403');
-                } catch (\Exception $e) {
-                    return response("Not authorised", 403);
-                }
+            } catch (\Exception $e) {
+                return response("Not authorised", 403);
             }
         }
 
         $this->setPaginator();
-        dd($this->post->getObservableEvents());
     }
 
 

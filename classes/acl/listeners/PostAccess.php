@@ -1,9 +1,7 @@
 <?php namespace Dynamedia\Posts\Classes\Acl\Listeners;
 
-use BackendAuth;
 use Dynamedia\Posts\Classes\Acl\AccessControl;
-use Dynamedia\Posts\Models\Post;
-use Event;
+use ValidationException;
 
 class PostAccess
 {
@@ -11,7 +9,8 @@ class PostAccess
 
     public function subscribe($event)
     {
-        $event->listen('dynamedia.posts.saving', function($post, $user)  {
+
+        $event->listen('dynamedia.posts.post.saving', function($post, $user)  {
             if (!$this->userCanEdit($post, $user)) {
                 throw new \ValidationException([
                     'error' => "Insufficient permissions to edit {$post->slug}"
@@ -30,7 +29,14 @@ class PostAccess
                     ]);
                 }
             }
+        });
 
+        $event->listen('dynamedia.posts.post.deleting', function($post, $user) {
+            if (!$this->userCanDelete($post, $user)) {
+                throw new ValidationException([
+                    'error' => "Insufficient permissions to delete {$post->slug}"
+                ]);
+            }
         });
     }
 
@@ -48,5 +54,10 @@ class PostAccess
     private function userCanUnPublish($post, $user)
     {
         return AccessControl::userCanUnPublishPost($post, $user);
+    }
+
+    private function userCanDelete($post, $user)
+    {
+        return AccessControl::userCanDeletePost($post, $user);
     }
 }

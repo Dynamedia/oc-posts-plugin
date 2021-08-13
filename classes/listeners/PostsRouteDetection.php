@@ -1,6 +1,8 @@
 <?php namespace Dynamedia\Posts\Classes\Listeners;
 
 use App;
+use Backend\Models\User;
+use Event;
 use Cms\Classes\Page;
 use Cms\Classes\Theme;
 use Dynamedia\Posts\Models\Category;
@@ -44,16 +46,19 @@ class PostsRouteDetection
 
             // Post Page
             if ($matchedPage['url'] == $postPage['url']) {
+                Event::fire('dynamedia.posts.matchedPostRoute');
                 $post = Post::getPost(['optionsSlug' => $this->extractSlug($controller)]);
             }
 
             // Category Page
             if ($matchedPage['url'] == $categoryPage['url']) {
+                Event::fire('dynamedia.posts.matchedCategoryRoute');
                 $category = Category::getCategory(['optionsSlug' => $this->extractSlug($controller)]);
             }
 
             // Tag Page
             if ($matchedPage['url'] == $tagPage['url']) {
+                Event::fire('dynamedia.posts.matchedTagRoute');
                 $tag = Tag::getTag($this->extractSlug($controller));
             }
 
@@ -62,8 +67,8 @@ class PostsRouteDetection
                 $post->getCmsLayout() ? $newPage->layout = $post->getCmsLayout() : null;
                 App::instance('dynamedia.posts.post', $post);
                 return $newPage;
-
             }
+
             if (!empty($category)) {
                 $newPage = Page::loadCached($activeThemeCode,$categoryPage['page']);
                 $category->getCmsLayout() ? $newPage->layout = $category->getCmsLayout() : null;

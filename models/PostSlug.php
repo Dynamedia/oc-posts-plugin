@@ -1,6 +1,5 @@
 <?php namespace Dynamedia\Posts\Models;
 
-use Composer\Package\Package;
 use Model;
 use ValidationException;
 
@@ -103,9 +102,14 @@ class PostSlug extends Model
         return $available;
     }
 
+    public function getIsActiveAttribute()
+    {
+        return $this->isActive() || $this->isActiveForTranslation();
+    }
+
     private function isActive()
     {
-        return $this->slug == $this->post->slug;
+        return !empty($this->post) && $this->slug == $this->post->slug;
     }
 
     private function isActiveForTranslation()

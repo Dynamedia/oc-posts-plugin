@@ -1,17 +1,20 @@
 <?php namespace Dynamedia\Posts\Models;
 
+use Dynamedia\Posts\Classes\Acl\AccessControl;
 use Model;
 use Cms\Classes\Page;
 use Str;
 use ValidationException;
+use October\Rain\Database\Traits\Validation;
 use BackendAuth;
+use Event;
 
 /**
  * Settings Model
  */
 class Settings extends Model
 {
-    use \October\Rain\Database\Traits\Validation;
+    use Validation;
 
     public $implement = ['System.Behaviors.SettingsModel'];
 
@@ -27,16 +30,12 @@ class Settings extends Model
 
     public function beforeSave()
     {
-        if (!$this->userCanManage(BackendAuth::getUser())) {
-            throw new ValidationException([
-                'error' => "Insufficient permissions to edit settings"
-            ]);
-        }
+        Event::fire('dynamedia.posts.settings.saving', [$this, $user = BackendAuth::getUser()]);
     }
 
     public function resetDefault()
     {
-        if (!$this->userCanManage(BackendAuth::getUser())) {
+        if (!AccessControl::userCanManageSettings(BackendAuth::getUser())) {
             throw new ValidationException([
                 'error' => "Insufficient permissions to edit settings"
             ]);
@@ -45,45 +44,18 @@ class Settings extends Model
 
     public function filterFields($fields, $context = null)
     {
-        if (!$this->userCanManage(BackendAuth::getUser())) {
+        if (!AccessControl::userCanManageSettings(BackendAuth::getUser())) {
             foreach ($fields as $field) {
                 $field->readOnly = true;
             }
         }
-        if (!$this->userCanView(BackendAuth::getUser())) {
+        if (!AccessControl::userCanViewSettings(BackendAuth::getUser())) {
             foreach ($fields as $field) {
                 $field->hidden = true;
             }
         }
     }
 
-    /**
-     * Check if user has required permissions to manage settings
-     * @param $user
-     * @return bool
-     */
-    private function userCanManage($user)
-    {
-        if (!$user->hasAccess('dynamedia.posts.manage_settings')) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    /**
-     * Check if user has required permissions to view settings
-     * @param $user
-     * @return bool
-     */
-    private function userCanView($user)
-    {
-        if (!$user->hasAccess('dynamedia.posts.view_settings')) {
-            return false;
-        } else {
-            return true;
-        }
-    }
 
     public function getTagPageOptions()
     {

@@ -3,7 +3,7 @@
         <input
                 type="checkbox"
 
-                <?php if (!$record->userCanManage(BackendAuth::getUser())): ?>
+                <?php if (!Dynamedia\Posts\Classes\Acl\AccessControl::userCanManageCategories(BackendAuth::getUser())): ?>
                 disabled
                 <?php endif ?>
 

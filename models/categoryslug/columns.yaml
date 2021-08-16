@@ -8,3 +8,8 @@ columns:
         searchable: true
     slug:
         label: dynamedia.posts::lang.common.labels.slug
+    is_active:
+        label: Active
+        type: partial
+        align: center
+        path: ~/plugins/dynamedia/posts/models/categoryslug/_is_active_column.htm

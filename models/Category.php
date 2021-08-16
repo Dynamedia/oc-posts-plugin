@@ -3,14 +3,12 @@
 use Model;
 use BackendAuth;
 use October\Rain\Database\Traits\NestedTree;
-use Str;
-use RainLab\Translate\Classes\Translator;
-use ValidationException;
 use Dynamedia\Posts\Traits\SeoTrait;
 use Dynamedia\Posts\Traits\ImagesTrait;
 use Dynamedia\Posts\Traits\ControllerTrait;
 use October\Rain\Database\Traits\Validation;
 use Dynamedia\Posts\Traits\TranslatableContentObjectTrait;
+use Event;
 
 /**
  * category Model
@@ -144,36 +142,26 @@ class Category extends Model
     // todo move this into a custom validation rule
     public function beforeValidate()
     {
-        if (!CategorySlug::isAvailable($this->id, $this->slug)) {
-            throw new ValidationException(['slug' => "Slug is not available"]);
-        }
+        Event::fire('dynamedia.posts.category.validating', [$this, $user = BackendAuth::getUser()]);
     }
 
     public function beforeSave()
     {
-        $this->slug = Str::slug($this->slug);
-
-        $user = BackendAuth::getUser();
-
-        if (!app()->runningInConsole()) {
-            if (!$this->userCanManage($user)) {
-                throw new ValidationException([
-                    'error' => "Insufficient permissions to edit {$this->name}"
-                ]);
-            }
-        }
+        Event::fire('dynamedia.posts.category.saving', [$this, $user = BackendAuth::getUser()]);
     }
 
     public function afterSave()
     {
-        $this->categoryslugs()->firstOrCreate([
-            'slug' => $this->slug,
-        ]);
+        Event::fire('dynamedia.posts.category.saved', [$this, $user = BackendAuth::getUser()]);
     }
 
+    public function beforeDelete()
+    {
+        Event::fire('dynamedia.posts.category.deleting', [$this, $user = BackendAuth::getUser()]);
+    }
     public function afterDelete()
     {
-        $this->posts()->detach();
+        Event::fire('dynamedia.posts.category.deleted', [$this, $user = BackendAuth::getUser()]);
     }
 
 
@@ -336,41 +324,6 @@ class Category extends Model
         $path = array_reverse($this->getPathFromRoot());
         return $path;
     }
-
-
-
-    // ------------------------------ //
-    // ---- Permissions Checking ---- //
-    // ------------------------------ //
-
-    /**
-     * Check if user has required permissions to view tags
-     * @param $user
-     * @return bool
-     */
-    public function userCanView($user)
-    {
-        if (!$user->hasAccess('dynamedia.posts.view_categories')) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    /**
-     * Check if user has required permissions to manage tags
-     * @param $user
-     * @return bool
-     */
-    public function userCanManage($user)
-    {
-        if (!$user->hasAccess('dynamedia.posts.manage_categories')) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
 
 
     // ------------------------------------------- //

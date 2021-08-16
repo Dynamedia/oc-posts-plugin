@@ -1,10 +1,12 @@
 <?php namespace Dynamedia\Posts;
 
 use Backend;
+use Dynamedia\Posts\Classes\Listeners\PostsRouteDetection;
 use Dynamedia\Posts\Classes\Acl\AccessControl;
 use Dynamedia\Posts\Classes\Extenders\ExtendBackendUser;
 use Dynamedia\Posts\Classes\Listeners\PostModel;
-use Dynamedia\Posts\Classes\Listeners\PostsRouteDetection;
+use Dynamedia\Posts\Classes\Listeners\CategoryModel;
+use Dynamedia\Posts\Classes\Listeners\TagModel;
 use Dynamedia\Posts\Classes\Listeners\AccessControl as AccessControlListener;
 use Dynamedia\Posts\Classes\Listeners\StaticPagesMenu;
 use Dynamedia\Posts\Classes\Twig\TwigFilters;
@@ -138,6 +140,8 @@ class Plugin extends PluginBase
         Event::subscribe(AccessControlListener::class);
         Event::subscribe(StaticPagesMenu::class);
         Event::subscribe(PostModel::class);
+        Event::subscribe(CategoryModel::class);
+        Event::subscribe(TagModel::class);
     }
 
     public function registerExtenders()

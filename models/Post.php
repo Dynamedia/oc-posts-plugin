@@ -6,10 +6,8 @@ use RainLab\Translate\Classes\Translator;
 use Model;
 use Event;
 use October\Rain\Argon\Argon;
-use Str;
 use BackendAuth;
 use Cms\Classes\Controller;
-use ValidationException;
 use Flash;
 use Dynamedia\Posts\Traits\SeoTrait;
 use Dynamedia\Posts\Traits\ImagesTrait;
@@ -130,7 +128,6 @@ class Post extends Model
         'categories' => [
             'Dynamedia\Posts\Models\Category',
             'table' => 'dynamedia_posts_posts_categories',
-            'order' => 'name'
         ],
         'tags' => [
             'Dynamedia\Posts\Models\Tag',
@@ -149,14 +146,10 @@ class Post extends Model
     // ---- Events Handling ---- //
     // ------------------------- //
 
-    // todo move this into a custom validation rule. Lang support
     public function beforeValidate()
     {
-        if (!PostSlug::isAvailable($this->id, $this->slug)) {
-            throw new ValidationException(['slug' => "Slug is not available"]);
-        }
+        Event::fire('dynamedia.posts.post.validating', [$this, $user = BackendAuth::getUser()]);
     }
-
 
     public function beforeSave()
     {
@@ -165,18 +158,8 @@ class Post extends Model
 
     public function afterSave()
     {
-        if ($this->primary_category) {
-            $this->categories()->sync([$this->primary_category->id], false);
-        } else {
-            if ($this->categories->count() > 0) {
-                $this->primary_category = $this->categories->first();
-            }
-        }
-        // Create the postsslug relationship. Required for auto redirection on change
-        // Must be validated as unique per post
-        $this->postslugs()->firstOrCreate([
-            'slug' => $this->slug,
-        ]);
+        Event::fire('dynamedia.posts.post.saved', [$this, $user = BackendAuth::getUser()]);
+
     }
 
     public function beforeDelete()
@@ -186,8 +169,7 @@ class Post extends Model
 
     public function afterDelete()
     {
-        $this->categories()->detach();
-        $this->tags()->detach();
+        Event::fire('dynamedia.posts.post.deleted', [$this, $user = BackendAuth::getUser()]);
     }
 
 

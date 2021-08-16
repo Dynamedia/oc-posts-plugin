@@ -108,7 +108,8 @@ class TagTranslation extends Model
 
     public function beforeDelete()
     {
-
+        // Remove the pivot record but don't attempt to delete the slug record. It can still resolve to the tag
+        $this->tagslugs()->detach();
     }
 
     // todo get this moved and minify it?

@@ -1,14 +1,13 @@
 <?php namespace Dynamedia\Posts\Models;
+use Dynamedia\Posts\Classes\Acl\AccessControl;
 use Model;
 use Dynamedia\Posts\Traits\ControllerTrait;
 use Dynamedia\Posts\Traits\ImagesTrait;
 use Dynamedia\Posts\Traits\SeoTrait;
 use Dynamedia\Posts\Traits\TranslatableContentObjectTrait;
 use October\Rain\Database\Traits\Validation;
-use RainLab\Translate\Classes\Translator;
-use Str;
 use BackendAuth;
-use ValidationException;
+use Event;
 
 /**
  * tag Model
@@ -131,48 +130,29 @@ class Tag extends Model
     // ---- Event Handling ---- //
     // ------------------------ //
 
-    // todo move this into a custom validation rule
     public function beforeValidate()
     {
-        if (!TagSlug::isAvailable($this->id, $this->slug)) {
-            throw new ValidationException(['slug' => "Slug is not available"]);
-        }
+        Event::fire('dynamedia.posts.tag.validating', [$this, $user = BackendAuth::getUser()]);
     }
 
-    // For tag widget
     public function beforeSave()
     {
-        $user = BackendAuth::getUser();
-
-        if (!app()->runningInConsole()) {
-            // Allow creation (from posts tag interface)
-            if (!$this->userCanManage($user) && !$this->exists) {
-                $this->is_approved = false;
-            } elseif (!$this->userCanManage($user)) {
-                throw new ValidationException([
-                    'error' => "Insufficient permissions to edit {$this->name}"
-                ]);
-            }
-        }
-
-        if (!$this->slug) {
-            $this->slug = Str::slug($this->name);
-        }
-
-        $this->slug = Str::slug($this->slug);
-
+        Event::fire('dynamedia.posts.tag.saving', [$this, $user = BackendAuth::getUser()]);
     }
 
     public function afterSave()
     {
-        $this->tagslugs()->firstOrCreate([
-            'slug' => $this->slug,
-        ]);
+        Event::fire('dynamedia.posts.tag.saved', [$this, $user = BackendAuth::getUser()]);
+    }
+
+    public function beforeDelete()
+    {
+        Event::fire('dynamedia.posts.tag.deleting', [$this, $user = BackendAuth::getUser()]);
     }
 
     public function afterDelete()
     {
-        $this->posts()->detach();
+        Event::fire('dynamedia.posts.tag.deleted', [$this, $user = BackendAuth::getUser()]);
     }
 
 
@@ -201,7 +181,7 @@ class Tag extends Model
     public function filterFields($fields, $context = null)
     {
         // Hide fields if user is here but not permitted to view
-        if (!$this->userCanView(BackendAuth::getUser())) {
+        if (!AccessControl::userCanViewTags(BackendAuth::getUser())) {
             foreach ($fields as $field) {
                 $field->hidden = true;
             }
@@ -294,40 +274,6 @@ class Tag extends Model
         $result = $query->first();
 
         return $result ? $result : null;
-    }
-
-
-
-    // ------------------------------ //
-    // ---- Permissions Checking ---- //
-    // ------------------------------ //
-
-    /**
-     * Check if user has required permissions to view tags
-     * @param $user
-     * @return bool
-     */
-    public function userCanView($user)
-    {
-        if (!$user->hasAccess('dynamedia.posts.view_tags')) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    /**
-     * Check if user has required permissions to manage tags
-     * @param $user
-     * @return bool
-     */
-    public function userCanManage($user)
-    {
-        if (!$user->hasAccess('dynamedia.posts.manage_tags')) {
-            return false;
-        } else {
-            return true;
-        }
     }
 
 

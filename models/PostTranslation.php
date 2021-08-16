@@ -116,6 +116,12 @@ class PostTranslation extends Model
         $this->postslugs()->attach($slug);
     }
 
+    public function beforeDelete()
+    {
+        // Remove the pivot record but don't attempt to delete the slug record. It can still resolve to the post
+        $this->postslugs()->detach();
+    }
+
     // todo get this moved and minify it?
     public function getLocaleIdOptions()
     {

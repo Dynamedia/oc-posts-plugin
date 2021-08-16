@@ -157,6 +157,16 @@ class AccessControl
     }
 
     /**
+     * Check if user has required permissions to view a post
+     * @param Post $post
+     * @param User $user
+     * @return bool
+     */
+    public static function postIsViewable($post, $user)
+    {
+        if ($post->is_published || $user) return true;
+    }
+    /**
      * Check if user has required permissions to edit
      * @param Post $post
      * @param User $user
@@ -299,22 +309,86 @@ class AccessControl
     }
 
     /**
-     * Check if user has required permissions to assign posts to other users
+     * Check if user has required permissions to view Categories
      * @param $user
      * @return bool
      */
-    public static function postIsViewable($post, $user = false)
+    public static function userCanViewCategories($user)
     {
-        if ($post->is_published) {
-            return true;
-        }
-        if (!$user) {
+        if (!$user->hasAccess('dynamedia.posts.view_categories')) {
             return false;
-        }
-        if (!$user->hasAccess('edit_all_unpublished_posts') || $user->id == $post->author->id) {
+        } else {
             return true;
         }
+    }
 
-        return false;
+    /**
+     * Check if user has required permissions to manage Categories
+     * @param $user
+     * @return bool
+     */
+    public static function userCanManageCategories($user)
+    {
+        if (!$user->hasAccess('dynamedia.posts.manage_categories')) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Check if user has required permissions to view Tags
+     * @param $user
+     * @return bool
+     */
+    public static function userCanViewTags($user)
+    {
+        if (!$user->hasAccess('dynamedia.posts.view_tags')) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Check if user has required permissions to manage Tags
+     * @param $user
+     * @return bool
+     */
+    public static function userCanManageTags($user)
+    {
+        if (!$user->hasAccess('dynamedia.posts.manage_tags')) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Check if user has required permissions to view Settings
+     * @param $user
+     * @return bool
+     */
+    public static function userCanViewSettings($user)
+    {
+        if (!$user->hasAccess('dynamedia.posts.view_settings')) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Check if user has required permissions to manage Settings
+     * @param $user
+     * @return bool
+     */
+    public static function userCanManageSettings($user)
+    {
+        if (!$user->hasAccess('dynamedia.posts.manage_settings')) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

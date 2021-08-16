@@ -13,16 +13,20 @@ columns:
         label: dynamedia.posts::lang.posts.labels.primary_category
         relation: primary_category
         valueFrom: name
+        sortable: false
     author:
         label: dynamedia.posts::lang.posts.labels.author
         relation: author
+        sortable: false
         valueFrom: profile[full_name]
 
     editor:
         label: dynamedia.posts::lang.posts.labels.editor
         relation: editor
+        sortable: false
         valueFrom: profile[full_name]
 
     published_at:
         label: dynamedia.posts::lang.posts.labels.publishing_time
+        type: datetime
 

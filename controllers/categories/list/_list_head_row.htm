@@ -1,8 +1,8 @@
 <tr>
     <?php if ($showCheckboxes): ?>
     <th class="list-checkbox">
-        <?php if (BackendAuth::getUser()->hasAccess('dynamedia.posts.manage_categories')): ?>
-            <!--    No select all for non-superusers    -->
+        <?php if (Dynamedia\Posts\Classes\Acl\AccessControl::userCanManageCategories(BackendAuth::getUser())): ?>
+            <!--    No select all for non-managers    -->
             <div class="checkbox custom-checkbox nolabel">
                 <input type="checkbox"
                        id="<?= $this->getId('checkboxAll') ?>" />

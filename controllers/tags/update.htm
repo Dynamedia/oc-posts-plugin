@@ -8,7 +8,7 @@
 <?php if (!$this->fatalError): ?>
 
     <?= Form::open(['class' => 'layout']) ?>
-        <?php if ($this->widget->form->model->userCanManage($this->user)): ?>
+        <?php if (Dynamedia\Posts\Classes\Acl\AccessControl::userCanManageTags($this->user)): ?>
             <div class="layout-row">
                 <?= $this->formRender() ?>
             </div>
@@ -47,7 +47,7 @@
             </div>
         <?php else: ?>
             <div class="layout-row">
-                <?php if ($this->widget->form->model->userCanView($this->user)): ?>
+                <?php if (Dynamedia\Posts\Classes\Acl\AccessControl::userCanViewTags($this->user)): ?>
                     <?= $this->formRenderPreview() ?>
                 <?php endif ?>
             </div>

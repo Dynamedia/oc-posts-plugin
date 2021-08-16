@@ -1,6 +1,7 @@
 <?php namespace Dynamedia\Posts\Models;
 
 use Model;
+use ValidationException;
 
 /**
  * CategorySlug Model
@@ -101,9 +102,14 @@ class CategorySlug extends Model
         return $available;
     }
 
+    public function getIsActiveAttribute()
+    {
+        return $this->isActive() || $this->isActiveForTranslation();
+    }
+
     private function isActive()
     {
-        return $this->slug == $this->category->slug;
+        return !empty($this->category) && $this->slug == $this->category->slug;
     }
 
     private function isActiveForTranslation()

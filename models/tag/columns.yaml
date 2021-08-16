@@ -14,4 +14,7 @@ columns:
         searchable: true
     is_approved:
         label: dynamedia.posts::lang.common.labels.approved
+        align: center
+        type: partial
+        path: ~/plugins/dynamedia/posts/models/tag/_is_approved_column.htm
 

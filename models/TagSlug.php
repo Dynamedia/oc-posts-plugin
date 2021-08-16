@@ -1,7 +1,7 @@
 <?php namespace Dynamedia\Posts\Models;
 
 use Model;
-
+use ValidationException;
 /**
  * TagSlug Model
  */
@@ -95,9 +95,14 @@ class TagSlug extends Model
         return $available;
     }
 
+    public function getIsActiveAttribute()
+    {
+        return $this->isActive() || $this->isActiveForTranslation();
+    }
+
     private function isActive()
     {
-        return $this->slug == $this->tag->slug;
+        return !empty($this->tag) && $this->slug == $this->tag->slug;
     }
 
     private function isActiveForTranslation()
@@ -114,6 +119,6 @@ class TagSlug extends Model
         if ($this->isActive() || $this->isActiveForTranslation()) {
             throw new ValidationException(['slug' => "Cannot delete an active slug"]);
         }
-        $this->posttranslations()->detach();
+        $this->tagtranslations()->detach();
     }
 }

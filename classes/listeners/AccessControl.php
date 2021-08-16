@@ -1,6 +1,9 @@
 <?php namespace Dynamedia\Posts\Classes\Listeners;
-use Event;
 use Dynamedia\Posts\Classes\Acl\Listeners\PostAccess;
+use Dynamedia\Posts\Classes\Acl\Listeners\CategoryAccess;
+use Dynamedia\Posts\Classes\Acl\Listeners\TagAccess;
+use Dynamedia\Posts\Classes\Acl\Listeners\SettingsAccess;
+use Event;
 
 class AccessControl
 {
@@ -10,5 +13,8 @@ class AccessControl
         if (app()->runningInConsole()) return;
 
         Event::subscribe(PostAccess::class);
+        Event::subscribe(CategoryAccess::class);
+        Event::subscribe(TagAccess::class);
+        Event::subscribe(SettingsAccess::class);
     }
 }

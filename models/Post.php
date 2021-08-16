@@ -178,6 +178,12 @@ class Post extends Model
     // ---- Query scopes ---- //
     // ---------------------- //
 
+    public function scopeApplyAssignedToCurrentUser($query)
+    {
+        return $query->where('author_id', BackendAuth::getUser()->id)
+            ->orWhere('editor_id', BackendAuth::getUser()->id);
+    }
+
 
     public function scopeApplyIsPublished($query)
     {

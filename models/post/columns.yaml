@@ -26,6 +26,12 @@ columns:
         sortable: false
         valueFrom: profile[full_name]
 
+    is_published:
+        label: Published
+        type: partial
+        align: center
+        path: ~/plugins/dynamedia/posts/models/post/_is_published_column.htm
+
     published_at:
         label: dynamedia.posts::lang.posts.labels.publishing_time
         type: datetime

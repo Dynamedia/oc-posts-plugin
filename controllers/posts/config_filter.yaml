@@ -1,0 +1,14 @@
+scopes:
+    primary_category:
+        label: Primary Category
+        modelClass: Dynamedia\Posts\Models\Category
+        conditions: primary_category_id in (:filtered)
+        nameFrom: name
+    assigned:
+        label: Assigned to Me
+        scope: applyAssignedToCurrentUser
+        type: checkbox
+    published:
+        label: Published
+        scope: applyIsPublished
+        type: checkbox

@@ -58,7 +58,10 @@ class Posts extends Controller
                 'label' => 'Author',
                 'modelClass' => 'Dynamedia\Posts\Models\Profile',
                 'scope' => 'applyWhereAuthor',
-                'default' => [\BackendAuth::getUser()->profile->id],
+                'default' => [
+                    'id' => \BackendAuth::getUser()->profile->id,
+                    'name' => \BackendAuth::getUser()->profile->full_name
+                ],
                 'nameFrom' => 'fullName',
                 'valueFrom' => 'id'
             ],

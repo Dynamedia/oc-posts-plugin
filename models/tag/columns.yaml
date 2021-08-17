@@ -24,6 +24,7 @@ columns:
         align: center
         type: partial
         path: ~/plugins/dynamedia/posts/models/tag/_is_approved_column.htm
+        sortable: false
     published_posts_count:
         label: Published Posts
         sortable: false

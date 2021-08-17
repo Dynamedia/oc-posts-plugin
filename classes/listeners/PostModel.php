@@ -52,14 +52,15 @@ class PostModel
 
         // Before Delete
         $event->listen('dynamedia.posts.post.deleting', function ($post, $user) {
+            $post->postslugs()->delete();
+            $post->categories()->detach();
+            $post->tags()->detach();
+            $post->translations()->delete();
         });
 
         // After Delete
         $event->listen('dynamedia.posts.post.deleted', function ($post, $user) {
-            $this->categories()->detach();
-            $this->tags()->detach();
-            $this->translations()->delete();
-            $this->postslugs()->delete();
+
         });
     }
 }

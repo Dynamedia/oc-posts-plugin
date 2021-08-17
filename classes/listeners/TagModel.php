@@ -35,14 +35,14 @@ class TagModel
 
         // Before Delete
         $event->listen('dynamedia.posts.tag.deleting', function ($tag, $user) {
-            //
+            $tag->posts()->detach();
+            $tag->translations()->delete();
+            $tag->tagslugs()->delete();
         });
 
         // After Delete
         $event->listen('dynamedia.posts.tag.deleted', function ($tag, $user) {
-            $tag->posts()->detach();
-            $tag->translations()->delete();
-            $tag->tagslugs()->delete();
+
         });
     }
 }

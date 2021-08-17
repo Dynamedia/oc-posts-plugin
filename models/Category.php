@@ -186,7 +186,6 @@ class Category extends Model
     }
 
 
-
     // -------------------- //
     // ---- Posts List ---- //
     // -------------------- //
@@ -384,6 +383,16 @@ class Category extends Model
     public function getSubcategoryIdsAttribute()
     {
         return $this->getAllChildren()->lists('id');
+    }
+
+    public function getPublishedPostsCountAttribute()
+    {
+        return $this->posts()->applyIsPublished()->count();
+    }
+
+    public function getUnpublishedPostsCountAttribute()
+    {
+        return $this->posts()->applyIsNotPublished()->count();
     }
 
 

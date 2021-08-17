@@ -3,12 +3,19 @@
 # ===================================
 
 columns:
-    id:
-        label: ID
-        searchable: true
+#    id:
+#        label: ID
+#        searchable: true
     title:
         label: dynamedia.posts::lang.common.labels.title
         searchable: true
+    link:
+        label: Link
+        clickable: false
+        type: partial
+        align: center
+        sortable: false
+        path: ~/plugins/dynamedia/posts/models/post/_url_link_column.htm
     primary_category:
         label: dynamedia.posts::lang.posts.labels.primary_category
         relation: primary_category

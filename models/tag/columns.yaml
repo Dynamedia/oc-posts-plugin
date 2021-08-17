@@ -3,12 +3,19 @@
 # ===================================
 
 columns:
-    id:
-        label: ID
-        searchable: true
+#    id:
+#        label: ID
+#        searchable: true
     name:
         label: dynamedia.posts::lang.common.labels.name
         searchable: true
+    link:
+        label: Link
+        clickable: false
+        type: partial
+        align: center
+        sortable: false
+        path: ~/plugins/dynamedia/posts/models/tag/_url_link_column.htm
     slug:
         label: dynamedia.posts::lang.common.labels.slug
         searchable: true
@@ -17,4 +24,10 @@ columns:
         align: center
         type: partial
         path: ~/plugins/dynamedia/posts/models/tag/_is_approved_column.htm
+    published_posts_count:
+        label: Published Posts
+        sortable: false
+    unpublished_posts_count:
+        label: Unpublished Posts
+        sortable: false
 

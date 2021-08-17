@@ -1,14 +1,31 @@
 scopes:
-    primary_category:
-        label: Primary Category
+    categories:
+        label: Categories
         modelClass: Dynamedia\Posts\Models\Category
-        conditions: primary_category_id in (:filtered)
+        scope: applyWhereHasCategories
         nameFrom: name
-    assigned:
-        label: Assigned to Me
-        scope: applyAssignedToCurrentUser
+        valueFrom: id
+
+    tags:
+        label: Tags
+        modelClass: Dynamedia\Posts\Models\Tag
+        scope: applyWhereHasTags
+        nameFrom: name
+        valueFrom: id
+
+    hide_published:
+        label: Hide Published
+        scope: applyIsNotPublished
         type: checkbox
-    published:
-        label: Published
-        scope: applyIsPublished
-        type: checkbox
+
+    author_by_profile:
+
+    editor_by_profile:
+
+    published_at:
+        label: Publishing Date
+        type: daterange
+        conditions: created_at >= ':after' AND created_at <= ':before'
+
+
+

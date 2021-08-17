@@ -319,6 +319,16 @@ class Tag extends Model
         return $this->getCmsLayout();
     }
 
+    public function getPublishedPostsCountAttribute()
+    {
+        return $this->posts()->applyIsPublished()->count();
+    }
+
+    public function getUnpublishedPostsCountAttribute()
+    {
+        return $this->posts()->applyIsNotPublished()->count();
+    }
+
 
 
     // ---------------------------- //

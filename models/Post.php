@@ -184,6 +184,23 @@ class Post extends Model
             ->orWhere('editor_id', BackendAuth::getUser()->id);
     }
 
+    public function scopeApplyWhereAuthor($query, $filter = null)
+    {
+        return $query->whereHas('author', function($q) use ($filter) {
+            $q->whereHas('profile', function($q) use ($filter) {
+                $q->where('id', $filter);
+            });
+        });
+    }
+    public function scopeApplyWhereEditor($query, $filter = null)
+    {
+        return $query->whereHas('editor', function($q) use ($filter) {
+            $q->whereHas('profile', function($q) use ($filter) {
+                $q->where('id', $filter);
+            });
+        });
+    }
+
 
     public function scopeApplyIsPublished($query)
     {

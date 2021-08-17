@@ -2,6 +2,7 @@
 
 use BackendMenu;
 use Backend\Classes\Controller;
+use Dynamedia\Posts\Models\Profile;
 
 /**
  * Posts Back-end Controller
@@ -48,6 +49,30 @@ class Posts extends Controller
         $query->with('author.profile','editor.profile');
         return $query;
     }
+
+
+    public function listFilterExtendScopes($filter)
+    {
+        $filter->addScopes([
+            'author_by_profile' => [
+                'label' => 'Author',
+                'modelClass' => 'Dynamedia\Posts\Models\Profile',
+                'scope' => 'applyWhereAuthor',
+                'default' => [\BackendAuth::getUser()->profile->id],
+                'nameFrom' => 'fullName',
+                'valueFrom' => 'id'
+            ],
+            'editor_by_profile' => [
+                'label' => 'Editor',
+                'modelClass' => 'Dynamedia\Posts\Models\Profile',
+                'scope' => 'applyWhereEditor',
+                //'default' => [\BackendAuth::getUser()->profile->id],
+                'nameFrom' => 'fullName',
+                'valueFrom' => 'id'
+            ],
+        ]);
+    }
+
 
 
 }

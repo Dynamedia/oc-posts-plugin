@@ -186,7 +186,6 @@ class Post extends Model
 
     public function scopeApplyWhereAuthor($query, $filter = null)
     {
-        dd($filter);
         return $query->whereHas('author', function($q) use ($filter) {
             $q->whereHas('profile', function($q) use ($filter) {
                 $q->where('id', $filter);

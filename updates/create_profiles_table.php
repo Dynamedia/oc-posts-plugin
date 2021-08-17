@@ -20,11 +20,18 @@ class CreateProfilesTable extends Migration
             $table->text('mini_biography')->nullable()->default(null);
             $table->text('full_biography')->nullable()->default(null);
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('backend_users')
+                ->onDelete('cascade');
         });
     }
 
     public function down()
     {
+        Schema::table('dynamedia_posts_profiles', function (Blueprint $table) {
+            $table->dropForeign('dynamedia_posts_profiles_user_id_foreign');
+        });
+
         Schema::dropIfExists('dynamedia_posts_profiles');
     }
 }

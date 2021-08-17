@@ -15,7 +15,10 @@ class ExtendBackendUser
                 'table' => 'dynamedia_posts_profiles'
             ];
             $model->bindEvent('model.afterSave', function() use ($model) {
-                if ($model->id) $model->profile = Profile::getFromUser($model);
+                if (!$model->exists) {
+                    return;
+                }
+                Profile::getFromUser($model);
             });
         });
 

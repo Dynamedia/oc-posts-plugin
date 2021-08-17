@@ -101,7 +101,7 @@ class Profile extends Model
     // From https://octobercms.com/support/article/ob-10
     public static function getFromUser($user)
     {
-        if ($user->profile) {
+        if ($user->profile || !$user->id) {
             return;
         }
 

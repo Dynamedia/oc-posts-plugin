@@ -1,12 +1,13 @@
 0.9.0:
   - First Beta Version
-  - create_categories_table.php
-  - create_tags_table.php
   - create_posts_table.php
-  - create_profiles_table.php
   - create_post_translations_table.php
-  - create_category_translations_table.php
-  - create_tag_translations_table.php
   - create_post_slugs_table.php
+  - create_categories_table.php
+  - create_category_translations_table.php
   - create_category_slugs_table.php
+  - create_tags_table.php
+  - create_tag_translations_table.php
   - create_tag_slugs_table.php
+  - create_profiles_table.php
+

@@ -29,11 +29,19 @@ class CreateTagsTable extends Migration
             $table->integer('post_id')->unsigned();
             $table->integer('tag_id')->unsigned();
             $table->primary(['post_id', 'tag_id']);
+
+            $table->foreign('post_id')->references('id')->on('dynamedia_posts_posts');
+            $table->foreign('tag_id')->references('id')->on('dynamedia_posts_tags');
         });
     }
 
     public function down()
     {
+        Schema::table('dynamedia_posts_posts_tags', function (Blueprint $table) {
+            $table->dropForeign('dynamedia_posts_posts_tags_post_id_foreign');
+            $table->dropForeign('dynamedia_posts_posts_tags_tag_id_foreign');
+        });
+
         Schema::dropIfExists('dynamedia_posts_tags');
         Schema::dropIfExists('dynamedia_posts_posts_tags');
     }

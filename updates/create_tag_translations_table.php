@@ -25,12 +25,20 @@ class CreateTagTranslationsTable extends Migration
             $table->json('seo')->nullable()->default(null);
             $table->string('cms_layout')->default('__inherit__');
             $table->timestamps();
+
+            $table->foreign('native_id')->references('id')->on('dynamedia_posts_tags');
+            $table->foreign('locale_id')->references('id')->on('rainlab_translate_locales');
         });
 
     }
 
     public function down()
     {
+        Schema::table('dynamedia_posts_tag_translations', function (Blueprint $table) {
+            $table->dropForeign('dynamedia_posts_tag_translations_native_id_foreign');
+            $table->dropForeign('dynamedia_posts_tag_translations_locale_id_foreign');
+        });
+
         Schema::dropIfExists('dynamedia_posts_tag_translations');
     }
 }

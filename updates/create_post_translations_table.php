@@ -27,12 +27,19 @@ class CreatePostTranslationsTable extends Migration
             $table->string('cms_layout')->default('__inherit__');
             $table->boolean('is_published')->index()->default(false);
             $table->timestamps();
-        });
 
+            $table->foreign('native_id')->references('id')->on('dynamedia_posts_posts');
+            $table->foreign('locale_id')->references('id')->on('rainlab_translate_locales');
+        });
     }
 
     public function down()
     {
+        Schema::table('dynamedia_posts_post_translations', function (Blueprint $table) {
+            $table->dropForeign('dynamedia_posts_post_translations_native_id_foreign');
+            $table->dropForeign('dynamedia_posts_post_translations_locale_id_foreign');
+        });
+
         Schema::dropIfExists('dynamedia_posts_post_translations');
     }
 }

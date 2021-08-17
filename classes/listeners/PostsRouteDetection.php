@@ -9,6 +9,7 @@ use Dynamedia\Posts\Models\Category;
 use Dynamedia\Posts\Models\Post;
 use Dynamedia\Posts\Models\Tag;
 use Dynamedia\Posts\Models\Settings;
+use Illuminate\Support\Facades\Log;
 
 class PostsRouteDetection
 {
@@ -17,6 +18,7 @@ class PostsRouteDetection
         // Having completely semantic URLs is nice, but it causes post and category display routes to clash
         // We can deal with that by checking whether the provided slug is either a Post or a Category
         // It can't be both, as we don't allow it through validation. We will force render the relevant page.
+
 
         $event->listen('cms.page.beforeDisplay', function ($controller, $url, $page) {
 

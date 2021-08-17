@@ -11,7 +11,8 @@ class CreatePostsTable extends Migration
         Schema::create('dynamedia_posts_posts', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->integer('user_id')->unsigned()->nullable()->index();
+            $table->integer('author_id')->nullable()->unsigned()->index();
+            $table->integer('editor_id')->nullable()->unsigned()->index();
             $table->integer('primary_category_id')->unsigned()->nullable()->index();
             $table->string('slug')->index();
             $table->string('title');

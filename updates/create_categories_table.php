@@ -17,6 +17,7 @@ class CreateCategoriesTable extends Migration
             $table->text('excerpt')->nullable()->default(null);
             $table->json('body')->nullable()->default(null);
             $table->json('seo')->nullable()->default(null);
+            $table->json('post_list_options')->nullable()->default(null);
             $table->string('cms_layout')->default('__inherit__');
             $table->integer('parent_id')->unsigned()->index()->nullable();
             $table->integer('nest_left')->nullable();

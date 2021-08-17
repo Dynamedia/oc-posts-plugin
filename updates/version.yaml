@@ -3,32 +3,10 @@
   - create_categories_table.php
   - create_tags_table.php
   - create_posts_table.php
-0.9.01:
-  - Add approval for tags
-  - update_tags_table_v0.9.01.php
-0.9.02:
-  - Add layout support for tags
-  - update_tags_table_v0.9.02.php
-0.9.03:
-  - Add default post list options column (json)
-  - update_categories_table_v0.9.03.php
-  - update_tags_table_v0.9.03.php
-0.9.04:
-  - Create Profiles model for backend user extension
   - create_profiles_table.php
-0.9.05:
-  - Add a user profile slug. Avoids exposing login
-  - update_profiles_table_v0.9.05.php
-0.9.06:
-  - Drop users column and create authors and editors
-  - update_posts_table_v0.9.06.php
-0.9.07:
-  - Create translation tables
-  - create_post_translations_table_v0.9.07.php
-  - create_category_translations_table_v0.9.07.php
-  - create_tag_translations_table_v0.9.07.php
-0.9.08:
-  - Create Posts Slug tables
-  - create_post_slugs_table_v0.9.08.php
-  - create_category_slugs_table_v0.9.08.php
-  - create_tag_slugs_table_v0.9.08.php
+  - create_post_translations_table.php
+  - create_category_translations_table.php
+  - create_tag_translations_table.php
+  - create_post_slugs_table.php
+  - create_category_slugs_table.php
+  - create_tag_slugs_table.php

@@ -98,7 +98,7 @@ class Profile extends Model
         return "{$this->user->first_name} {$this->user->last_name}";
     }
 
-    // per https://octobercms.com/support/article/ob-10
+    // From https://octobercms.com/support/article/ob-10
     public static function getFromUser($user)
     {
         if ($user->profile) {

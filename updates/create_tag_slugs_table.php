@@ -7,19 +7,19 @@ use October\Rain\Database\Updates\Migration;
 /**
  * CreatePostSlugsTable Migration
  */
-class CreatePostSlugsTableV0908 extends Migration
+class CreateTagSlugsTable extends Migration
 {
     public function up()
     {
-        Schema::create('dynamedia_posts_post_slugs', function (Blueprint $table) {
+        Schema::create('dynamedia_posts_tag_slugs', function (Blueprint $table) {
             $table->increments('id');
             $table->string('slug')->index();
-            $table->integer('post_id')->unsigned()->index();
+            $table->integer('tag_id')->unsigned()->index();
             $table->timestamps();
         });
 
         // Slug belongs to one post, but many translations of that post.
-        Schema::create('dynamedia_posts_post_trans_slug', function (Blueprint $table) {
+        Schema::create('dynamedia_posts_tag_trans_slug', function (Blueprint $table) {
             $table->integer('trans_id')->unsigned();
             $table->integer('slug_id')->unsigned();
             $table->primary(['trans_id', 'slug_id']);
@@ -30,7 +30,7 @@ class CreatePostSlugsTableV0908 extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('dynamedia_posts_post_slugs');
-        Schema::dropIfExists('dynamedia_posts_post_trans_slug');
+        Schema::dropIfExists('dynamedia_posts_tag_slugs');
+        Schema::dropIfExists('dynamedia_posts_tag_trans_slug');
     }
 }

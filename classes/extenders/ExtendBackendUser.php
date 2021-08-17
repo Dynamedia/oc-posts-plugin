@@ -10,12 +10,15 @@ class ExtendBackendUser
     public function subscribe($event)
     {
         BackendUserModel::extend(function ($model) {
-            $model->addHidden('login', 'permissions', 'is_superuser', 'role_id', 'is_activated', 'activated_at', 'created_at', 'updated_at', 'deleted_at');
             $model->hasOne['profile'] = [
                 'Dynamedia\Posts\Models\Profile',
                 'table' => 'dynamedia_posts_profiles'
             ];
+            $model->bindEvent('model.afterSave', function() use ($model) {
+                if ($model->id) $model->profile = Profile::getFromUser($model);
+            });
         });
+
 
         BackendUserController::extendFormFields(function ($form, $model, $context) {
             if (!$model instanceof BackendUserModel) {
@@ -69,18 +72,4 @@ class ExtendBackendUser
     }
 }
 
-
-//        $event->listen('pages.menuitem.listTypes', function() {
-//            return [
-//                'posts-category'       => 'Posts: A Category',
-//                'posts-all-categories' => 'Posts: All Categories',
-//                'posts-tag'            => 'Posts: A Tag',
-//                'posts-all-tags'       => 'Posts: All Tags',
-//                'posts-post'           => 'Posts: A Post',
-//                'posts-all-posts'      => 'Posts: All Posts',
-//                'posts-category-posts' => 'Posts: All Posts From Category',
-//                'posts-tag-posts'      => 'Posts: All Posts With Tag',
-//            ];
-//        });
-//      }
 

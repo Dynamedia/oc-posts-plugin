@@ -7,7 +7,7 @@ use October\Rain\Database\Updates\Migration;
 /**
  * CreateCategoryTranslationsTable Migration
  */
-class CreateCategoryTranslationsTableV0907 extends Migration
+class CreateCategoryTranslationsTable extends Migration
 {
     public function up()
     {

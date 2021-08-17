@@ -12,6 +12,7 @@ class CreateProfilesTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->integer('user_id')->unsigned()->index();
+            $table->string('username')->nullable()->index();
             $table->string('website_url')->nullable()->default(null);
             $table->string('facebook_handle')->nullable()->default(null);
             $table->string('twitter_handle')->nullable()->default(null);

@@ -17,6 +17,9 @@ class CreateTagsTable extends Migration
             $table->text('excerpt')->nullable()->default(null);
             $table->json('body')->nullable()->default(null);
             $table->json('seo')->nullable()->default(null);
+            $table->boolean('is_approved')->index()->default(false);
+            $table->string('cms_layout')->default('__inherit__');
+            $table->json('post_list_options')->nullable()->default(null);
             $table->timestamps();
         });
 

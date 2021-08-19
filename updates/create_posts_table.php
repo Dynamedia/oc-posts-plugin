@@ -8,9 +8,11 @@ class CreatePostsTable extends Migration
 {
     public function up()
     {
+        //todo missed foreign keys
         Schema::create('dynamedia_posts_posts', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
+            $table->integer('locale_id')->nullable()->unsigned()->index();
             $table->integer('author_id')->nullable()->unsigned()->index();
             $table->integer('editor_id')->nullable()->unsigned()->index();
             $table->integer('primary_category_id')->unsigned()->nullable()->index();
@@ -28,6 +30,7 @@ class CreatePostsTable extends Migration
             $table->timestamps();
         });
     }
+
 
     public function down()
     {

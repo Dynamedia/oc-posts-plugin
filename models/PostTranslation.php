@@ -8,6 +8,7 @@ use Dynamedia\Posts\Traits\ImagesTrait;
 use Dynamedia\Posts\Traits\ControllerTrait;
 use October\Rain\Database\Traits\Validation;
 
+
 /**
  * PostTranslation Model
  */

@@ -14,6 +14,7 @@ use Dynamedia\Posts\Traits\ImagesTrait;
 use Dynamedia\Posts\Traits\ControllerTrait;
 use October\Rain\Database\Traits\Validation;
 use Dynamedia\Posts\Traits\TranslatableContentObjectTrait;
+use RainLab\Translate\Models\Locale;
 
 /**
  * post Model
@@ -122,7 +123,9 @@ class Post extends Model
     public $belongsTo = [
         'author' => ['Backend\Models\User'],
         'editor' => ['Backend\Models\User'],
-        'primary_category' => ['Dynamedia\Posts\Models\Category']
+        'primary_category' => ['Dynamedia\Posts\Models\Category'],
+        // Posts have translations, but not all posts should be available in all locales
+        'locale' => Locale::class
     ];
     public $belongsToMany = [
         'categories' => [

@@ -26,8 +26,10 @@ class CreateCategoryTranslationsTable extends Migration
             $table->string('cms_layout')->default('__inherit__');
             $table->timestamps();
 
-            $table->foreign('native_id')->references('id')->on('dynamedia_posts_categories');
-            $table->foreign('locale_id')->references('id')->on('rainlab_translate_locales');
+            $table->foreign('native_id')->references('id')->on('dynamedia_posts_categories')
+                ->onDelete('cascade');
+            $table->foreign('locale_id')->references('id')->on('rainlab_translate_locales')
+                ->onDelete('set null');
         });
     }
 

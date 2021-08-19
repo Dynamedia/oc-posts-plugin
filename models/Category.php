@@ -336,7 +336,7 @@ class Category extends Model
      */
     public function getUrlAttribute()
     {
-         $path = implode('/', array_map(function ($entry) {
+        $path = implode('/', array_map(function ($entry) {
             return $entry['slug'];
         }, $this->getPathFromRoot()));
 

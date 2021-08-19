@@ -1,5 +1,6 @@
 <?php namespace Dynamedia\Posts\Classes\Listeners;
 use Dynamedia\Posts\Models\CategorySlug;
+use Dynamedia\Posts\Models\Post;
 use Str;
 use ValidationException;
 

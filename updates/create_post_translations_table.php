@@ -28,8 +28,10 @@ class CreatePostTranslationsTable extends Migration
             $table->boolean('is_published')->index()->default(false);
             $table->timestamps();
 
-            $table->foreign('native_id')->references('id')->on('dynamedia_posts_posts');
-            $table->foreign('locale_id')->references('id')->on('rainlab_translate_locales');
+            $table->foreign('native_id')->references('id')->on('dynamedia_posts_posts')
+                ->onDelete('cascade');
+            $table->foreign('locale_id')->references('id')->on('rainlab_translate_locales')
+                ->onDelete('set null');
         });
     }
 

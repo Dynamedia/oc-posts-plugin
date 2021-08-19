@@ -17,8 +17,8 @@ class CreatePostSlugsTable extends Migration
             $table->integer('post_id')->unsigned()->index();
             $table->timestamps();
 
-            $table->foreign('post_id')->references('id')->on('dynamedia_posts_posts');
-
+            $table->foreign('post_id')->references('id')->on('dynamedia_posts_posts')
+                ->onDelete('cascade');
         });
 
         // Slug belongs to one post, but many translations of that post.
@@ -27,8 +27,10 @@ class CreatePostSlugsTable extends Migration
             $table->integer('slug_id')->unsigned();
             $table->primary(['trans_id', 'slug_id']);
 
-            $table->foreign('trans_id')->references('id')->on('dynamedia_posts_post_translations');
-            $table->foreign('slug_id')->references('id')->on('dynamedia_posts_post_slugs');
+            $table->foreign('trans_id')->references('id')->on('dynamedia_posts_post_translations')
+                ->onDelete('cascade');
+            $table->foreign('slug_id')->references('id')->on('dynamedia_posts_post_slugs')
+                ->onDelete('cascade');
         });
     }
 

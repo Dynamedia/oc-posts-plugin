@@ -30,8 +30,10 @@ class CreateTagsTable extends Migration
             $table->integer('tag_id')->unsigned();
             $table->primary(['post_id', 'tag_id']);
 
-            $table->foreign('post_id')->references('id')->on('dynamedia_posts_posts');
-            $table->foreign('tag_id')->references('id')->on('dynamedia_posts_tags');
+            $table->foreign('post_id')->references('id')->on('dynamedia_posts_posts')
+                ->onDelete('cascade');
+            $table->foreign('tag_id')->references('id')->on('dynamedia_posts_tags')
+                ->onDelete('cascade');
         });
     }
 

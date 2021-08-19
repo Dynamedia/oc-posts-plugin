@@ -24,7 +24,12 @@ class CreateCategoriesTable extends Migration
             $table->integer('nest_right')->nullable();
             $table->integer('nest_depth')->nullable();
             $table->timestamps();
+        });
 
+        // Add foreign key to posts table referencing this id
+        Schema::table('dynamedia_posts_posts', function (Blueprint $table) {
+            $table->foreign('primary_category_id')->references('id')->on('dynamedia_posts_categories')
+                ->onDelete('set null');
         });
 
         Schema::create('dynamedia_posts_posts_categories', function($table)
@@ -34,13 +39,20 @@ class CreateCategoriesTable extends Migration
             $table->integer('category_id')->unsigned();
             $table->primary(['post_id', 'category_id']);
 
-            $table->foreign('post_id')->references('id')->on('dynamedia_posts_posts');
-            $table->foreign('category_id')->references('id')->on('dynamedia_posts_categories');
+            $table->foreign('post_id')->references('id')->on('dynamedia_posts_posts')
+                ->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('dynamedia_posts_categories')
+                ->onDelete('cascade');
         });
     }
 
     public function down()
     {
+        // Add foreign key to posts table referencing this id
+        Schema::table('dynamedia_posts_posts', function (Blueprint $table) {
+            $table->dropForeign('dynamedia_posts_posts_primary_category_id_foreign');
+        });
+
         Schema::table('dynamedia_posts_posts_categories', function (Blueprint $table) {
             $table->dropForeign('dynamedia_posts_posts_categories_post_id_foreign');
             $table->dropForeign('dynamedia_posts_posts_categories_category_id_foreign');

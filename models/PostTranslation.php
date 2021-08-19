@@ -135,8 +135,7 @@ class PostTranslation extends Model
             }
         }
 
-        $locales = Locale::where('is_default', '<>', 1)
-            ->whereNotIn('id', $alreadyTranslated)
+        $locales = Locale::whereNotIn('id', $alreadyTranslated)
             ->order()
             ->pluck('name', 'id')
             ->all();

@@ -388,6 +388,7 @@ class Post extends Model
     public static function getPostsList($options)
     {
         // Set some defaults to be overridden by extract
+        $optionsLocale          = Translator::instance()->getLocale();
         $optionsTagIds          = [];
         $optionsCategoryIds     = [];
         $optionsPostIds         = [];
@@ -404,6 +405,16 @@ class Post extends Model
         extract($options);
 
         $query = static::applyIsPublished();
+
+        // Only posts written in our chosen language or translated into it
+        $query->whereHas('locale', function($q) use ($optionsLocale) {
+            $q->where('code', $optionsLocale);
+        })
+        ->orWhereHas('translations', function ($q) use ($optionsLocale) {
+           $q->whereHas('locale', function ($q) use ($optionsLocale) {
+               $q->where('code', $optionsLocale);
+           });
+        });
 
         if ($optionsNotPostIds) {
             $query->applyExcludePosts($optionsNotPostIds);

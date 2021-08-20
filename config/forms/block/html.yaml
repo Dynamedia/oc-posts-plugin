@@ -6,3 +6,20 @@ tabs:
             type: codeeditor
             language: html
             size: huge
+
+        in_contents:
+            tab: dynamedia.posts::lang.common.tabs.settings
+            type: switch
+            label: dynamedia.posts::lang.blocks.labels.in_contents
+            default: true
+
+        heading:
+            tab: dynamedia.posts::lang.common.tabs.settings
+            span: left
+            label: dynamedia.posts::lang.blocks.labels.section_heading
+
+        sId:
+            tab: dynamedia.posts::lang.common.tabs.settings
+            span: right
+            label: dynamedia.posts::lang.blocks.labels.section_id
+            preset: heading

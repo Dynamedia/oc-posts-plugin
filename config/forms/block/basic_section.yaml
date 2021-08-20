@@ -1,23 +1,11 @@
 tabs:
     fields:
-        heading:
-            tab: dynamedia.posts::lang.common.tabs.main
-            span: left
-            label: dynamedia.posts::lang.common.labels.block_heading
-            comment: H2
-
-        sId:
-            tab: dynamedia.posts::lang.common.tabs.main
-            span: right
-            label: dynamedia.posts::lang.common.labels.block_id
-            preset: heading
-    
         content:
             tab: dynamedia.posts::lang.common.tabs.main
             label: dynamedia.posts::lang.common.labels.block_content
             type: richeditor
             size: huge
-    
+
         image:
             tab: dynamedia.posts::lang.common.tabs.image
             type: nestedform

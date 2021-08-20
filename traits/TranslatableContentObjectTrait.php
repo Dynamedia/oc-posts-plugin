@@ -32,6 +32,10 @@ Trait TranslatableContentObjectTrait
         }
     }
 
+    public function getBodyAttribute($value) {
+        return $this->getTranslated('body', $value);
+    }
+
     public function getSlugAttribute($value)
     {
         return $this->getTranslated('slug', $value);
@@ -65,4 +69,5 @@ Trait TranslatableContentObjectTrait
             return $default;
         }
     }
+
 }

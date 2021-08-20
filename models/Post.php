@@ -1,6 +1,7 @@
 <?php namespace Dynamedia\Posts\Models;
 
 use Dynamedia\Posts\Classes\Acl\AccessControl;
+use Dynamedia\Posts\Classes\Body\Formblocks\FormBlockBody;
 use Dynamedia\Posts\Models\Settings;
 use RainLab\Translate\Classes\Translator;
 use Model;
@@ -1076,4 +1077,8 @@ class Post extends Model
         return $result;
     }
 
+    public function getProcessedBodyAttribute()
+    {
+        return new FormBlockBody($this->body);
+    }
 }

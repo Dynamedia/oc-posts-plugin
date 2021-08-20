@@ -1,17 +1,5 @@
 tabs:
     fields:
-        heading:
-            tab: dynamedia.posts::lang.common.tabs.main
-            span: left
-            label: dynamedia.posts::lang.blocks.labels.section_heading
-            comment: H2
-
-        sId:
-            tab: dynamedia.posts::lang.common.tabs.main
-            span: right
-            label: dynamedia.posts::lang.blocks.labels.section_id
-            preset: heading
-
         content:
             tab: dynamedia.posts::lang.common.tabs.main
             label: dynamedia.posts::lang.blocks.labels.section_content
@@ -29,3 +17,14 @@ tabs:
             type: switch
             label: dynamedia.posts::lang.blocks.labels.in_contents
             default: true
+
+        heading:
+            tab: dynamedia.posts::lang.common.tabs.settings
+            span: left
+            label: dynamedia.posts::lang.blocks.labels.section_heading
+
+        sId:
+            tab: dynamedia.posts::lang.common.tabs.settings
+            span: right
+            label: dynamedia.posts::lang.blocks.labels.section_id
+            preset: heading

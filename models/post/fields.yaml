@@ -26,11 +26,20 @@ tabs:
             usePanelStyles: false
             form: $/dynamedia/posts/config/forms/image/main_image.yaml
 
+        body_type:
+            tab: dynamedia.posts::lang.common.tabs.body
+            label: Body Type
+            hidden: true
+            type: dropdown
+            options:
+                form_blocks: Form Blocks
+                richeditor: Simple Rich Editor
+                markdown: Simple Markdown Editor
+
         body:
             tab: dynamedia.posts::lang.common.tabs.body
-            label: Post Body
             type: repeater
-            style: accordion
+            #style: accordion
             groups: $/dynamedia/posts/config/forms/body/post.yaml
 
         primary_category:

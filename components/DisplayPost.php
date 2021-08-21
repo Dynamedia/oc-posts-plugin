@@ -54,7 +54,8 @@ class DisplayPost extends ComponentBase
         }
 
         $this->setPaginator();
-        
+
+        $this->post->getProcessedBody();
     }
 
 

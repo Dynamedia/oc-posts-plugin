@@ -27,6 +27,7 @@ class TwigFilters
 
     public static function modelToArray($data)
     {
+        return;
         return $data->toArray();
     }
 }

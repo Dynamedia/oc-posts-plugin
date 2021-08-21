@@ -1077,8 +1077,10 @@ class Post extends Model
         return $result;
     }
 
-    public function getProcessedBodyAttribute()
+    public function getProcessedBody()
     {
-        return new FormBlockBody($this->body);
+        $body = new FormBlockBody($this->body);
+        return $body->render();
     }
+
 }

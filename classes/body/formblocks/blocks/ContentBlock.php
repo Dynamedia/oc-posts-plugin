@@ -1,9 +1,10 @@
 <?php namespace Dynamedia\Posts\Classes\Body\Formblocks\Blocks;
+use Cms\Classes\Content;
+use Cms\Classes\Theme;
 
-
-class SectionBlock
+class ContentBlock
 {
-    const view = 'dynamedia.posts::blocks.section';
+    const view = 'dynamedia.posts::blocks.content';
 
     private $block;
     private $html;
@@ -18,8 +19,13 @@ class SectionBlock
 
     private function parseBlock()
     {
-        // todo via the view
-        $this->html = $this->block['block']['content'];
+        //todo via the view
+        try {
+            $parsed = Content::load(Theme::getActiveTheme(), $this->block['block']['cms_content'])->parseMarkup();
+            $this->html = $parsed;
+        } catch (\Exception $e) {
+            //
+        }
     }
 
     public function getHtml()

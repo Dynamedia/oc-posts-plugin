@@ -1,4 +1,4 @@
-<?php namespace Dynamedia\Posts\Classes\Body\Formblocks\Blocks;
+<?php namespace Dynamedia\Posts\Classes\Body\Repeaterbody\Blocks;
 use Cms\Classes\Controller;
 use Cms\Classes\Partial;
 use Cms\Classes\Theme;
@@ -6,7 +6,7 @@ use Dynamedia\Posts\Classes\Twig\TwigFunctions;
 
 class PartialBlock
 {
-    const view = 'dynamedia.posts::blocks.partial';
+    const view = 'dynamedia.posts::repeaterbody.blocks.cms_partial_block';
 
     private $block;
     private $html;
@@ -21,15 +21,20 @@ class PartialBlock
 
     private function parseBlock()
     {
-        //todo via the view
         //todo make sure this works in the backend
         try {
             $partial = Partial::load(Theme::getActiveTheme(), $this->block['block']['cms_partial']);
 
             $controller = Controller::getController();
+            if (!$controller) {
+                $controller = new Controller();
+            }
 
             $parsed = $controller->renderPartial($partial->fileName, $this->getDataArray());
-            $this->html = $parsed;
+
+            $this->html = \View::make(self::view, [
+                'content' => $parsed,
+            ])->render();
         } catch (\Exception $e) {
             //
         }
@@ -42,7 +47,7 @@ class PartialBlock
                 // todo This is not sensible. Make the extract method and let the twig function call it
                 'data' => TwigFunctions::extractRepeaterData($this->block['block']['data'])
             ];
-        }
+        } else return [];
     }
 
     public function getHtml()
@@ -53,5 +58,24 @@ class PartialBlock
     public function getContents()
     {
         return $this->contents;
+    }
+
+    /**
+     *
+     * Create an array compatible with the output of a repeater to use when updating the form with dirty data
+     *
+     * @param string $content
+     * @param array $image
+     * @return array[]
+     */
+    public static function makePreviewBlock($content, $data = [])
+    {
+        return [
+            'block' => [
+                'cms_partial' => $content,
+                'data' => $data
+            ],
+            '_group' => 'cms_partial_block'
+        ];
     }
 }

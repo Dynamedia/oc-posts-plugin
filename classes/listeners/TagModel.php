@@ -22,6 +22,8 @@ class TagModel
 
             $tag->slug = Str::slug($tag->slug);
 
+            $tag->body_text = $tag->body->getTextContent();
+
         });
 
         // After Save

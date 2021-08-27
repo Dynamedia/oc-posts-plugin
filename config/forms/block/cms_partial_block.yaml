@@ -1,10 +1,11 @@
 tabs:
     fields:
         cms_partial:
-            label: dynamedia.posts::lang.blocks.labels.cms_partial
+            label: dynamedia.posts::lang.blocks.labels.cms_partial_block
             tab: dynamedia.posts::lang.common.tabs.main
             type: dropdown
             options: \Dynamedia\Posts\Classes\Helpers\Form::getCmsPartialOptions
+            emptyOption: Select the partial
         data:
             label: Pass variables to the partial
             tab: Data
@@ -27,10 +28,23 @@ tabs:
         heading:
             tab: dynamedia.posts::lang.common.tabs.settings
             span: left
-            label: dynamedia.posts::lang.blocks.labels.section_heading
+            label: dynamedia.posts::lang.blocks.labels.richeditor_block_heading
 
         sId:
             tab: dynamedia.posts::lang.common.tabs.settings
             span: right
-            label: dynamedia.posts::lang.blocks.labels.section_id
+            label: dynamedia.posts::lang.blocks.labels.richeditor_block_id
             preset: heading
+
+        _preview_refresh:
+            tab: Preview
+            type: switch
+            label: Refresh
+            span: right
+            cssClass: preview_button
+
+        _preview:
+            tab: Preview
+            type: partial
+            path: $/dynamedia/posts/views/repeaterbody/preview/_cms_partial_block_preview.htm
+            dependsOn: [cms_partial, _preview_refresh]

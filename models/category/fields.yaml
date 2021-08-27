@@ -27,11 +27,12 @@ tabs:
             usePanelStyles: false
             form: $/dynamedia/posts/config/forms/image/main_image.yaml
 
-        body:
+        body_document:
             tab: dynamedia.posts::lang.common.tabs.body
-            type: repeater
-            style: accordion
-            groups: $/dynamedia/posts/config/forms/body/category_tag.yaml
+            type: nestedform
+            usePanelStyles: false
+            showPanel: false
+            form: $/dynamedia/posts/config/forms/body/body_type.yaml
 
         seo:
             tab: dynamedia.posts::lang.common.tabs.seo

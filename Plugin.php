@@ -42,10 +42,22 @@ class Plugin extends PluginBase
         $this->registerEvents();
         $this->registerExtenders();
 
+        Event::listen('backend.form.refresh', function ($formWidget, $result) {
+//            if ($bodyType = $formWidget->getField('body_type')) {
+//                if ($bodyType == 'repeater_body') {
+//                    $formWidget->field('repeater_body')->hidden = false;
+//                    $formWidget->field('richeditor_body')->hidden = true;
+//                }
+//            }
+            //return $formWidget;
+        });
+
+
         // todo move this to the theme. It doesn't belong here
         ThemeData::extend(function ($model) {
             $model->addJsonable('images');
         });
+
     }
 
     public function registerComponents()

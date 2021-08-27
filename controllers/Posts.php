@@ -40,7 +40,7 @@ class Posts extends Controller
     public function __construct()
     {
         parent::__construct();
-
+        $this->addCss("/plugins/dynamedia/posts/assets/css/posts-preview.css", "1.0.0");
         BackendMenu::setContext('Dynamedia.Posts', 'posts', 'posts');
     }
 
@@ -71,6 +71,13 @@ class Posts extends Controller
                 'valueFrom' => 'id'
             ],
         ]);
+    }
+
+    public function update_onSave($recordId = null, $context = null)
+    {
+        parent::update_onSave($recordId, $context);
+        // Update some form fields on save
+        //return ['#Form-field-Post-body-group' => $this->formGetWidget()->renderField('body', ['useContainer' => false])];
     }
 
 

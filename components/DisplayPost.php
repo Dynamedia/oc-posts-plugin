@@ -1,6 +1,5 @@
 <?php namespace Dynamedia\Posts\Components;
 
-use Carbon\Translator;
 use Cms\Classes\ComponentBase;
 use BackendAuth;
 use App;
@@ -55,7 +54,6 @@ class DisplayPost extends ComponentBase
 
         $this->setPaginator();
 
-        $this->post->getProcessedBody();
     }
 
 
@@ -73,16 +71,20 @@ class DisplayPost extends ComponentBase
 
     private function setPaginator()
     {
-        if (empty($this->post->pages)) return;
+        $pages = $this->post->body->getPages();
+        $page = $this->post->body->renderPage($this->getRequestedPage());
+
+        if (empty($pages) || empty($page)) return $this->controller->run('404');
 
         $paginatorOptions = [
-            'items'         => $this->post->pages[$this->getRequestedPage() - 1],
-            'totalResults'  => count($this->post['pages']),
+            'items'         => $page,
+            'totalResults'  => count($pages),
             'itemsPerPage'  => 1,
             'requestedPage' => $this->getRequestedPage()
         ];
 
         $this->paginator = $this->getPaginator($paginatorOptions, $this->currentPageUrl());
+
     }
 
 }

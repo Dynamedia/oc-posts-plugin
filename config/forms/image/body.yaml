@@ -6,7 +6,10 @@ tabs:
             mode: image
             imageHeight: 260
             imageWidth: 260
-
+        caption:
+            tab: dynamedia.posts::lang.images.tabs.default
+            #label: dynamedia.posts::lang.images.labels.alt_text
+            label: Caption
         alt:
             tab: dynamedia.posts::lang.images.tabs.default
             label: dynamedia.posts::lang.images.labels.alt_text
@@ -34,3 +37,16 @@ tabs:
                         span: right
                         label: dynamedia.posts::lang.images.labels.screen_width
                         type: number
+        _preview_refresh:
+            tab: Preview
+            type: switch
+            label: Refresh
+            span: right
+            cssClass: preview_button
+
+        _preview:
+            tab: Preview
+            type: partial
+            path: $/dynamedia/posts/views/repeaterbody/preview/_image_block_preview.htm
+            dependsOn: _preview_refresh
+

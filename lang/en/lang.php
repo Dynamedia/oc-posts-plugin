@@ -41,32 +41,37 @@ return [
 
     'blocks' => [
         'names' => [
-          'section'     => 'Section Block',
-          'html'        => 'HTML Block',
-          'image'       => 'Image Block',
-          'cms_content' => 'CMS Content',
-          'cms_partial' => 'CMS Partial',
-          'page_break'  => 'Page Break',
+          'richeditor_block'       => 'Richeditor Block',
+          'markdown_block'         => 'Markdown Block',
+          'html_block'             => 'HTML Block',
+          'image_block'            => 'Image Block',
+          'cms_content_block'      => 'CMS Content',
+          'cms_partial_block'      => 'CMS Partial',
+          'page_break'             => 'Page Break',
         ],
         'descriptions' => [
-            'section'     => 'Add a content section',
-            'html'        => 'Add a block of HTML',
-            'image'       => 'Add an image block',
-            'cms_content' => 'Add CMS content',
-            'cms_partial' => 'Add a CMS partial',
-            'page_break'  => 'Add a page break'
+            'richeditor_block'  => 'Add a content section (Richeditor)',
+            'markdown_block'    => 'Add a content section (Markdown)',
+            'html_block'        => 'Add a block of HTML',
+            'image_block'       => 'Add an image block',
+            'cms_content_block' => 'Add CMS content',
+            'cms_partial_block' => 'Add a CMS partial',
+            'page_break'        => 'Add a page break'
         ],
         'tabs'  => [
             'main'  => 'Main',
         ],
         'labels' => [
-            'cms_content'       => 'CMS Content',
-            'cms_partial'       => 'CMS Partial',
-            'html'              => 'HTML Block',
-            'section_heading'   => 'Section Heading',
-            'section_id'        => 'Section ID',
-            'section_content'   => 'Section Content',
-            'in_contents'       => 'Include in contents?',
+            'cms_content_block'               => 'CMS Content',
+            'cms_partial_block'               => 'CMS Partial',
+            'html_block'                      => 'HTML Block',
+            'richeditor_block_heading'        => 'Section Heading',
+            'richeditor_block_id'             => 'Section ID',
+            'richeditor_block_content'        => 'Section Content',
+            'markdown_block_heading'          => 'Section Heading',
+            'markdown_block_id'               => 'Section ID',
+            'markdown_block_content'          => 'Section Content',
+            'in_contents'                     => 'Include in contents?',
         ]
     ],
 

@@ -1,0 +1,20 @@
+
+<div class="posts block-preview richeditor-block">
+<?php
+    $live = $this->vars['formModel'];
+
+    if ($live && !empty($live->content) && !empty($live->image)) {
+        $blockData = Dynamedia\Posts\Classes\Body\Repeaterbody\Blocks\RicheditorBlock::makePreviewBlock(
+            $live->content,
+            $live->image
+        );
+    } else {
+        $blockData = Dynamedia\Posts\Classes\Body\Repeaterbody\RepeaterBody::getBlockFromRepeater($model, $field);
+    }
+
+    if ($blockData) {
+        $renderer = new Dynamedia\Posts\Classes\Body\Repeaterbody\Blocks\RicheditorBlock($blockData);
+        echo $renderer->getHtml();
+    }
+?>
+</div>

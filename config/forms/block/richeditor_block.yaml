@@ -2,9 +2,9 @@ tabs:
     fields:
         content:
             tab: dynamedia.posts::lang.common.tabs.main
-            label: dynamedia.posts::lang.blocks.labels.section_content
+            #label: dynamedia.posts::lang.blocks.labels.richeditor_block_content
             type: richeditor
-            size: huge
+            size: giant
 
         image:
             tab: dynamedia.posts::lang.common.tabs.image
@@ -21,10 +21,26 @@ tabs:
         heading:
             tab: dynamedia.posts::lang.common.tabs.settings
             span: left
-            label: dynamedia.posts::lang.blocks.labels.section_heading
+            label: dynamedia.posts::lang.blocks.labels.richeditor_block_heading
 
         sId:
             tab: dynamedia.posts::lang.common.tabs.settings
             span: right
-            label: dynamedia.posts::lang.blocks.labels.section_id
+            label: dynamedia.posts::lang.blocks.labels.richeditor_block_id
             preset: heading
+
+        _preview_refresh:
+            tab: Preview
+            type: switch
+            label: Refresh
+            span: right
+            cssClass: preview_button
+
+        # This is a switch - It needs to be a custom icon when I have time - TODO
+        _preview:
+            tab: Preview
+            type: partial
+            path: $/dynamedia/posts/views/repeaterbody/preview/_richeditor_block_preview.htm
+            dependsOn: _preview_refresh
+
+

@@ -1,6 +1,5 @@
 <?php namespace Dynamedia\Posts\Classes\Listeners;
 use Dynamedia\Posts\Models\CategorySlug;
-use Dynamedia\Posts\Models\Post;
 use Str;
 use ValidationException;
 
@@ -21,6 +20,8 @@ class CategoryModel
                 $category->slug = Str::slug($category->name);
             }
             $category->slug = Str::slug($category->slug);
+
+            $category->body_text = $category->body->getTextContent();
         });
 
         // After Save

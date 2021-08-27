@@ -1,7 +1,7 @@
 <?php namespace Dynamedia\Posts\Models;
 
 use Dynamedia\Posts\Classes\Acl\AccessControl;
-use Dynamedia\Posts\Classes\Body\Formblocks\FormBlockBody;
+use Dynamedia\Posts\Classes\Body\Repeaterbody\RepeaterBody;
 use Dynamedia\Posts\Models\Settings;
 use RainLab\Translate\Classes\Translator;
 use Model;
@@ -16,6 +16,7 @@ use Dynamedia\Posts\Traits\ControllerTrait;
 use October\Rain\Database\Traits\Validation;
 use Dynamedia\Posts\Traits\TranslatableContentObjectTrait;
 use RainLab\Translate\Models\Locale;
+use Dynamedia\Posts\Classes\Body\Body;
 
 /**
  * post Model
@@ -63,7 +64,7 @@ class Post extends Model
      * @var array Attributes to be cast to JSON
      */
     protected $jsonable = [
-        'body',
+        'body_document',
         'images',
         'seo'
     ];
@@ -554,26 +555,7 @@ class Post extends Model
      */
     public function getPages()
     {
-        $bodyPages = [];
-        $page = [];
-        $curPage = 1;
-
-        foreach ($this->body as $item) {
-            // Commit the items to a page when we find a page break
-            if ($item['_group'] == 'pagebreak') {
-                $bodyPages[] = $page;
-                $page = [];
-                $curPage++;
-                continue;
-            }
-            // If our item is not a page break we add it to the page
-            $item['page'] = $curPage;
-            $page[] = $item;
-        }
-        // Add the last page
-        $bodyPages[] = $page;
-
-        return $bodyPages;
+        return $this->body->getPages();
     }
 
 
@@ -620,6 +602,34 @@ class Post extends Model
     public function filterFields($fields, $context = null)
     {
         $user = BackendAuth::getUser();
+
+        // Body Type
+        if (isset($fields->body_type)) {
+
+            if ($fields->body_type->value == 'repeater_body') {
+                $fields->repeater_body->hidden = false;
+                $fields->richeditor_body->hidden = true;
+                $fields->markdown_body->hidden = true;
+            }
+            elseif ($fields->body_type->value == 'richeditor_body') {
+                $fields->repeater_body->hidden = true;
+                $fields->richeditor_body->hidden = false;
+                $fields->markdown_body->hidden = true;
+
+            }
+            elseif ($fields->body_type->value == 'markdown_body') {
+                $fields->repeater_body->hidden = true;
+                $fields->richeditor_body->hidden = true;
+                $fields->markdown_body->hidden = false;
+            }
+            else {
+                $fields->repeater_body->hidden = false;
+                $fields->richeditor_body->hidden = true;
+                $fields->markdown_body->hidden = true;
+            }
+        }
+
+
 
         // Set author on create
         if (!$this->author && isset($fields->author)) {
@@ -1077,10 +1087,13 @@ class Post extends Model
         return $result;
     }
 
-    public function getProcessedBody()
+    /**
+     * @return mixed body object by body_document body_type
+     */
+    public function getBodyAttribute()
     {
-        $body = new FormBlockBody($this->body);
-        return $body->render();
+        $body = Body::getBody($this->body_document);
+        return $body;
     }
 
 }

@@ -1,0 +1,23 @@
+
+<div class="posts block-preview cms-content-block">
+<?php
+    $live = $this->vars['formModel'];
+
+    if ($live && !empty($live->default)) {
+        $blockData = Dynamedia\Posts\Classes\Body\Repeaterbody\Blocks\ImageBlock::makePreviewBlock(
+            $live->default,
+            $live->alt,
+            $live->caption,
+            $live->responsive
+        );
+
+    } else {
+        $blockData = Dynamedia\Posts\Classes\Body\Repeaterbody\RepeaterBody::getBlockFromRepeater($model, $field);
+    }
+
+    if ($blockData) {
+        $renderer = new Dynamedia\Posts\Classes\Body\Repeaterbody\Blocks\ImageBlock($blockData);
+        echo $renderer->getHtml();
+    }
+?>
+</div>

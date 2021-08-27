@@ -20,7 +20,9 @@ class CreatePostsTable extends Migration
             $table->string('title');
             $table->json('images')->nullable()->default(null);
             $table->text('excerpt')->nullable()->default(null);
-            $table->json('body')->nullable()->default(null);
+            $table->json('body_document')->nullable()->default(null);
+            // searchable representation of the body document without having a cross-db solution for generating columns
+            $table->longText('body_text')->nullable()->default(null);
             $table->json('seo')->nullable()->default(null);
             $table->boolean('show_contents')->default(true);
             $table->string('cms_layout')->default('__inherit__');

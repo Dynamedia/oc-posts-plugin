@@ -50,7 +50,7 @@ class PostTranslation extends Model
      * @var array jsonable attribute names that are json encoded and decoded from the database
      */
     protected $jsonable = [
-        'body',
+        'body_document',
         'images',
         'seo'
     ];
@@ -109,12 +109,17 @@ class PostTranslation extends Model
         }
     }
 
+    public function beforeSave()
+    {
+        $this->body_text = $this->body->getTextContent();
+    }
+
     public function afterSave()
     {
         $slug = $this->native->postslugs()->firstOrCreate([
             'slug' => $this->slug,
         ]);
-        $this->postslugs()->attach($slug);
+        $this->postslugs()->sync($slug->id, false);
     }
 
     public function beforeDelete()
@@ -141,5 +146,34 @@ class PostTranslation extends Model
             ->all();
 
         return $locales;
+    }
+
+    public function filterFields($fields, $context = null)
+    {
+        // Body Type
+        if (isset($fields->body_type)) {
+
+            if ($fields->body_type->value == 'repeater_body') {
+                $fields->repeater_body->hidden = false;
+                $fields->richeditor_body->hidden = true;
+                $fields->markdown_body->hidden = true;
+            }
+            elseif ($fields->body_type->value == 'richeditor_body') {
+                $fields->repeater_body->hidden = true;
+                $fields->richeditor_body->hidden = false;
+                $fields->markdown_body->hidden = true;
+
+            }
+            elseif ($fields->body_type->value == 'markdown_body') {
+                $fields->repeater_body->hidden = true;
+                $fields->richeditor_body->hidden = true;
+                $fields->markdown_body->hidden = false;
+            }
+            else {
+                $fields->repeater_body->hidden = false;
+                $fields->richeditor_body->hidden = true;
+                $fields->markdown_body->hidden = true;
+            }
+        }
     }
 }

@@ -1,0 +1,69 @@
+/* Needs to be global */
+@media only screen and (min-width: 800px) {
+    .preview_button {
+        position: absolute;
+        top: 0;
+        right: 50px;
+        display: inline-block;
+        width: auto !important;
+    }
+}
+
+/* This is kept very simple on purpose - You should override it */
+.posts.block-preview {
+    background-color: #fff;
+    padding:10px;
+}
+/* clear fix */
+.posts.block-preview::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.posts.block-preview.richeditor-block figure,
+.posts.block-preview.markdown-block figure {
+    display: block;
+    max-width: 100%;
+    margin: 0 auto 10px auto;
+    border: 1px solid #eee;
+    padding: 5px;
+    overflow: hidden;
+}
+.posts.block-preview.richeditor-block figure img,
+.posts.block-preview.markdown-block figure img {
+    display: block;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.posts.block-preview.richeditor-block figure figcaption,
+.posts.block-preview.markdown-block figure figcaption {
+    padding: 5px 5px 5px 0;
+}
+
+/**
+    Really simple single breakpoint - again, the theme will want to override these styles
+ */
+@media only screen and (min-width: 800px) {
+    .posts.block-preview.richeditor-block figure.inline-left,
+    .posts.block-preview.markdown-block figure.inline-left {
+        max-width:30%;
+        float:left;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+
+    .posts.block-preview.richeditor-block figure.inline-right,
+    .posts.block-preview.markdown-block figure.inline-right {
+        max-width:30%;
+        float:right;
+        margin-left: 10px;
+        margin-bottom: 10px;
+    }
+}
+
+
+.dynamedia-posts.richeditor-block {
+
+}

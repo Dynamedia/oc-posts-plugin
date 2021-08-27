@@ -26,21 +26,13 @@ tabs:
             usePanelStyles: false
             form: $/dynamedia/posts/config/forms/image/main_image.yaml
 
-        body_type:
+        body_document:
             tab: dynamedia.posts::lang.common.tabs.body
-            label: Body Type
-            hidden: true
-            type: dropdown
-            options:
-                form_blocks: Form Blocks
-                richeditor: Simple Rich Editor
-                markdown: Simple Markdown Editor
+            type: nestedform
+            usePanelStyles: false
+            showPanel: false
+            form: $/dynamedia/posts/config/forms/body/body_type.yaml
 
-        body:
-            tab: dynamedia.posts::lang.common.tabs.body
-            type: repeater
-            #style: accordion
-            groups: $/dynamedia/posts/config/forms/body/post.yaml
 
         primary_category:
             tab: dynamedia.posts::lang.posts.tabs.categories

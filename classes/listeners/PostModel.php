@@ -32,6 +32,8 @@ class PostModel
             if (!$post->is_published) {
                 $post->published_at = null;
             }
+
+            $post->body_text = $post->body->getTextContent();
         });
 
         // After Save

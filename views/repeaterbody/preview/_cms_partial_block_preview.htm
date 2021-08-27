@@ -1,0 +1,20 @@
+
+<div class="posts block-preview cms-partial-block">
+<?php
+    $live = $this->vars['formModel'];
+
+    if ($live && !empty($live->cms_partial)) {
+        $blockData = Dynamedia\Posts\Classes\Body\Repeaterbody\Blocks\PartialBlock::makePreviewBlock(
+            $live->cms_partial,
+            $live->data
+        );
+    } else {
+        $blockData = Dynamedia\Posts\Classes\Body\Repeaterbody\RepeaterBody::getBlockFromRepeater($model, $field);
+    }
+
+    if ($blockData) {
+        $renderer = new Dynamedia\Posts\Classes\Body\Repeaterbody\Blocks\PartialBlock($blockData);
+        echo $renderer->getHtml();
+    }
+?>
+</div>

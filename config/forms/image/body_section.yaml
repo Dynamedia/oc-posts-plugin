@@ -14,6 +14,10 @@ secondaryTabs:
             label: dynamedia.posts::lang.images.labels.image_style
             type: dropdown
             options: \Dynamedia\Posts\Classes\Helpers\Form::getImageStyleOptions
+        caption:
+            tab: dynamedia.posts::lang.images.tabs.default
+            #label: dynamedia.posts::lang.images.labels.alt_text
+            label: Caption
         alt:
             tab: dynamedia.posts::lang.images.tabs.default
             label: dynamedia.posts::lang.images.labels.alt_text
@@ -41,3 +45,5 @@ secondaryTabs:
                         span: right
                         label: dynamedia.posts::lang.images.labels.screen_width
                         type: number
+
+

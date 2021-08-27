@@ -1,10 +1,11 @@
 tabs:
   fields:
-    cms_content:
-      label: dynamedia.posts::lang.blocks.labels.cms_content
+    cms_content_block:
+      label: dynamedia.posts::lang.blocks.labels.cms_content_block
       tab: dynamedia.posts::lang.common.tabs.main
       type: dropdown
       options: \Dynamedia\Posts\Classes\Helpers\Form::getCmsContentOptions
+      emptyOption: Select the content
 
     in_contents:
         tab: dynamedia.posts::lang.common.tabs.settings
@@ -15,10 +16,16 @@ tabs:
     heading:
          tab: dynamedia.posts::lang.common.tabs.settings
          span: left
-         label: dynamedia.posts::lang.blocks.labels.section_heading
+         label: dynamedia.posts::lang.blocks.labels.richeditor_block_heading
 
     sId:
          tab: dynamedia.posts::lang.common.tabs.settings
          span: right
-         label: dynamedia.posts::lang.blocks.labels.section_id
+         label: dynamedia.posts::lang.blocks.labels.richeditor_block_id
          preset: heading
+
+    _preview:
+        tab: Preview
+        type: partial
+        path: $/dynamedia/posts/views/repeaterbody/preview/_cms_content_block_preview.htm
+        dependsOn: cms_content_block

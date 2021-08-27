@@ -1,5 +1,6 @@
 <?php namespace Dynamedia\Posts\Models;
 use Dynamedia\Posts\Classes\Acl\AccessControl;
+use Dynamedia\Posts\Classes\Body\Body;
 use Model;
 use Dynamedia\Posts\Traits\ControllerTrait;
 use Dynamedia\Posts\Traits\ImagesTrait;
@@ -57,7 +58,7 @@ class Tag extends Model
      * @var array Attributes to be cast to JSON
      */
     protected $jsonable = [
-        'body',
+        'body_document',
         'images',
         'seo',
         'post_list_options',
@@ -180,6 +181,32 @@ class Tag extends Model
 
     public function filterFields($fields, $context = null)
     {
+        // Body Type
+        if (isset($fields->body_type)) {
+
+            if ($fields->body_type->value == 'repeater_body') {
+                $fields->repeater_body->hidden = false;
+                $fields->richeditor_body->hidden = true;
+                $fields->markdown_body->hidden = true;
+            }
+            elseif ($fields->body_type->value == 'richeditor_body') {
+                $fields->repeater_body->hidden = true;
+                $fields->richeditor_body->hidden = false;
+                $fields->markdown_body->hidden = true;
+
+            }
+            elseif ($fields->body_type->value == 'markdown_body') {
+                $fields->repeater_body->hidden = true;
+                $fields->richeditor_body->hidden = true;
+                $fields->markdown_body->hidden = false;
+            }
+            else {
+                $fields->repeater_body->hidden = false;
+                $fields->richeditor_body->hidden = true;
+                $fields->markdown_body->hidden = true;
+            }
+        }
+
         // Hide fields if user is here but not permitted to view
         if (!AccessControl::userCanViewTags(BackendAuth::getUser())) {
             foreach ($fields as $field) {
@@ -438,5 +465,14 @@ class Tag extends Model
             }
         }
         return $result;
+    }
+
+    /**
+     * @return mixed body object by body_document body_type
+     */
+    public function getBodyAttribute()
+    {
+        $body = Body::getBody($this->body_document);
+        return $body;
     }
 }

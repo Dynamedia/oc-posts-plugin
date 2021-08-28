@@ -1,7 +1,7 @@
 
 <div class="posts block-preview cms-partial-block">
 <?php
-    $live = $this->vars['formModel'];
+    $live = $model;
 
     if ($live && !empty($live->cms_partial)) {
         $blockData = Dynamedia\Posts\Classes\Body\Repeaterbody\Blocks\PartialBlock::makePreviewBlock(

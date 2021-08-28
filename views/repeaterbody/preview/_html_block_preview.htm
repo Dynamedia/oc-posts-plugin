@@ -1,7 +1,7 @@
 
 <div class="posts block-preview html-block">
 <?php
-    $live = $this->vars['formModel'];
+    $live = $model;
 
     if ($live && !empty($live->content)) {
         $blockData = Dynamedia\Posts\Classes\Body\Repeaterbody\Blocks\HtmlBlock::makePreviewBlock(

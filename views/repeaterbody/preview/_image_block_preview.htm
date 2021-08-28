@@ -1,7 +1,7 @@
 
 <div class="posts block-preview cms-content-block">
 <?php
-    $live = $this->vars['formModel'];
+    $live = $model;
 
     if ($live && !empty($live->default)) {
         $blockData = Dynamedia\Posts\Classes\Body\Repeaterbody\Blocks\ImageBlock::makePreviewBlock(

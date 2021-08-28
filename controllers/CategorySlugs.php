@@ -30,6 +30,7 @@ class CategorySlugs extends Controller
     {
         parent::__construct();
 
+        $this->addCss("/plugins/dynamedia/posts/assets/css/posts-preview.css", "1.0.0");
         BackendMenu::setContext('Dynamedia.Posts', 'posts', 'categoryslugs');
     }
 }

@@ -1,6 +1,6 @@
 <div class="dynamedia-posts richeditor-block">
 
-    {% if image_style != 'full-below' %}
+    {% if image and image_style != 'full-below' %}
         {{ image | raw }}
     {% endif %}
 
@@ -8,7 +8,7 @@
         {{ content | raw }}
     {% endif %}
 
-    {% if image_style == 'full-below' %}
+    {% if image and image_style == 'full-below' %}
         {{ image | raw }}
     {% endif %}
 </div>

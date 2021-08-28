@@ -1,17 +1,18 @@
-<div class="dynamedia-posts image-block">
-    <figure class="{{ image.image_style }}">
-        <picture class="{{ image.class }}">
-            {% for entry in image.responsive %}
-                {% if entry.image and entry.screen_width %}
-                    <source srcset="{{ entry.image | media }}" media="({{ entry.media_query }}: {{ entry.screen_width }}px)">
-                {% endif %}
-            {% endfor %}
-            {% if image.default %}
+{% if image.default %}
+    <div class="dynamedia-posts image-block">
+        <figure class="{{ image.image_style }}">
+            <picture class="{{ image.class }}">
+                {% for entry in image.responsive %}
+                    {% if entry.image and entry.screen_width %}
+                        <source srcset="{{ entry.image | media }}" media="({{ entry.media_query }}: {{ entry.screen_width }}px)">
+                    {% endif %}
+                {% endfor %}
                 <img src="{{ image.default | media }}" alt="{{ image.alt }}" class="{{ image.class }} {{ image.image_style }}" />
                 {% if image.caption %}
                     <figcaption>{{ image.caption }}</figcaption>
                 {% endif %}
-            {% endif %}
-        </picture>
-    </figure>
-</div>
+            </picture>
+        </figure>
+    </div>
+{% endif %}
+

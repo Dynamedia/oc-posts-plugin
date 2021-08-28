@@ -1,5 +1,5 @@
 <div class="dynamedia-posts markdown-block">
-    {% if image_style != 'full-below' %}
+    {% if image and image_style != 'full-below' %}
         {{ image | raw }}
     {% endif %}
 
@@ -7,7 +7,7 @@
         {{ content | md }}
     {% endif %}
 
-    {% if image_style == 'full-below' %}
+    {% if image and image_style == 'full-below' %}
         {{ image | raw }}
     {% endif %}
 </div>

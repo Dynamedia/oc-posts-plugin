@@ -1,5 +1,6 @@
 <?php namespace Dynamedia\Posts\Models;
 
+use Dynamedia\Posts\Classes\Body\Body;
 use Model;
 use October\Rain\Database\Traits\Validation;
 use RainLab\Translate\Models\Locale;
@@ -165,5 +166,14 @@ class TagTranslation extends Model
                 $fields->markdown_body->hidden = true;
             }
         }
+    }
+
+    /**
+     * @return mixed body object by body_document body_type
+     */
+    public function getBodyAttribute()
+    {
+        $body = Body::getBody($this->body_document);
+        return $body;
     }
 }

@@ -41,7 +41,7 @@ class Plugin extends PluginBase
     {
         $this->registerEvents();
         $this->registerExtenders();
-        
+
 
         // todo move this to the theme. It doesn't belong here
         ThemeData::extend(function ($model) {

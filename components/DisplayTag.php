@@ -32,7 +32,7 @@ class DisplayTag extends ComponentBase
         $this->setTag();
 
         // Check that we are at the right url. If not, redirect and get back here.
-        // ONLY if we're getting the category from the URL
+        // ONLY if we're getting the tag from the URL
         if (!$this->tag) {
             return $this->controller->run('404');
         }

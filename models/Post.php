@@ -258,7 +258,7 @@ class Post extends Model
     {
         $query->where("title", "LIKE", "%{$searchString}%")
             ->orWhere("excerpt", "LIKE", "%{$searchString}%")
-            ->orWhere("body", "LIKE", "%{$searchString}%");
+            ->orWhere("body_text", "LIKE", "%{$searchString}%");
     }
 
     public function scopeApplyOrdering($query, string $sort)

@@ -559,41 +559,6 @@ class Post extends Model
     }
 
 
-    /**
-     * Get the list of contents
-     *
-     * @return array
-     */
-    public function getContentsList()
-    {
-        if (!$this->show_contents) return [];
-
-        $contentsList = [];
-        foreach ($this->getPages() as $page) {
-            foreach ($page as $item) {
-                if (!empty($item['block']['in_contents'])) {
-
-                    // Page 1 does not require the page param so just use the fragment
-                    if ($item['page'] == 1) {
-                        $url = "{$this->url}#{$item['block']['sId']}";
-                    } else {
-                        $url = "{$this->url}?page={$item['page']}#{$item['block']['sId']}";
-                    }
-
-                    $contentsList[] = [
-                        'title' => $item['block']['heading'],
-                        'page' => $item['page'],
-                        'url' => $url,
-                        'contents_list'
-                    ];
-                }
-            }
-        }
-
-        return $contentsList;
-    }
-
-
 
     // --------------------- //
     // ---- Form Widget ---- //
@@ -747,10 +712,6 @@ class Post extends Model
         return $this->getCmsLayout();
     }
 
-    public function getContentsListAttribute()
-    {
-        return $this->getContentsList();
-    }
 
     public function getPagesAttribute()
     {
@@ -1095,5 +1056,14 @@ class Post extends Model
         $body = Body::getBody($this->body_document);
         return $body;
     }
+
+    public function getContentsListAttribute()
+    {
+        if (!$this->show_contents) return [];
+
+        return $this->body->getContentsList($this->url);
+    }
+
+
 
 }

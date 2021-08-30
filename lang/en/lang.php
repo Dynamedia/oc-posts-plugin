@@ -65,13 +65,9 @@ return [
             'cms_content_block'               => 'CMS Content',
             'cms_partial_block'               => 'CMS Partial',
             'html_block'                      => 'HTML Block',
-            'richeditor_block_heading'        => 'Section Heading',
-            'richeditor_block_id'             => 'Section ID',
-            'richeditor_block_content'        => 'Section Content',
-            'markdown_block_heading'          => 'Section Heading',
-            'markdown_block_id'               => 'Section ID',
-            'markdown_block_content'          => 'Section Content',
             'in_contents'                     => 'Include in contents?',
+            'contents_title'                  => 'Title for Contents',
+            'block_id'                        => 'Section ID',
         ]
     ],
 

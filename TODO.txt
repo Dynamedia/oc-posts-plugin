@@ -2,8 +2,6 @@ Brief notes for issues found in testing
 
 Fix relation manager slug relation from inside of another relation manager (probably just remove for now)
 
-Post categories pulling category name from translations - find out why and fix
-
 Add method for themes to hint views for body rendering
 
 Attempt to redirect tag pages on language change (url section)

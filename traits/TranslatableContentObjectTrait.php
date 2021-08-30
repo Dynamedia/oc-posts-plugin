@@ -63,7 +63,8 @@ Trait TranslatableContentObjectTrait
 
     private function getTranslated($attribute, $default)
     {
-        if ($this->active_translation) {
+        // Do not attempt to translate attributes in the backend - We never want that.
+        if ($this->active_translation && !app()->runningInBackend()) {
             return $this->active_translation->attributes[$attribute];
         } else {
             return $default;

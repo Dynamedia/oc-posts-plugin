@@ -20,16 +20,16 @@ tabs:
             label: dynamedia.posts::lang.blocks.labels.in_contents
             default: true
 
-        heading:
+        contents_title:
             tab: dynamedia.posts::lang.common.tabs.settings
             span: left
-            label: dynamedia.posts::lang.blocks.labels.markdown_block_heading
+            label: dynamedia.posts::lang.blocks.labels.contents_title
 
-        sId:
+        block_id:
             tab: dynamedia.posts::lang.common.tabs.settings
             span: right
-            label: dynamedia.posts::lang.blocks.labels.markdown_block_id
-            preset: heading
+            label: dynamedia.posts::lang.blocks.labels.block_id
+            preset: contents_title
 
         _preview_refresh:
             tab: Preview

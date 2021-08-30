@@ -62,6 +62,14 @@ abstract class Body
         return $this->pages;
     }
 
+    public function getContentsList($baseUrl)
+    {
+        foreach ($this->contents as &$item) {
+            $item['url'] = $baseUrl . $item['url_params'];
+        }
+        return $this->contents;
+    }
+
     public static function getBody($bodyDocument)
     {
         if (array_key_exists($bodyDocument['body_type'], self::classes)) {

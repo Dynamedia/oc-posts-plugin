@@ -28,7 +28,8 @@ class RicheditorBlock
             'content' => $content,
             'image' => $parsedImage,
             'image_style' => !empty($image['image_style']) ? $image['image_style'] : ''
-            ])->render();
+            ])
+        ->render();
     }
 
     public function getHtml()

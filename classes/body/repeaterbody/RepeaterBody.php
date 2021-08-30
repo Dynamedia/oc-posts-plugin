@@ -12,6 +12,7 @@ class RepeaterBody extends Body
 {
     private $blocks;
 
+
     private $blocktypes = [
         'richeditor_block' => [
             'class' => RicheditorBlock::class,
@@ -48,16 +49,36 @@ class RepeaterBody extends Body
     {
         $html = '';
 
+        $currentPage = 1;
         foreach ($this->blocks as $block) {
             try {
                 if ($block['_group'] == 'pagebreak') {
                     $this->pages[] = $html;
+                    $currentPage++;
                     $html = '';
                 }
                 elseif (array_key_exists($blockName = $block['_group'], $this->blocktypes)) {
                     $blockObject = $this->getBlockClass($block);
                     $html .= $blockObject->getHtml();
-                    //$this->contents[] = $blockObject->getHtml();
+                    // Process the contents list returning an array of page and fragment links (model to append to url)
+                    // todo tidy this
+                    try {
+                        if (!empty($block['block']['in_contents']) && !empty($block['block']['block_id'])) {
+                            $title = $block['block']['contents_title'];
+                            if ($currentPage === 1) {
+                                $params = "#{$block['block']['block_id']}";
+                            } else {
+                                $params = "?page={$currentPage}#{$block['block']['block_id']}";
+                            }
+                            $this->contents[] = [
+                                'title'      => $title,
+                                'page'       => $currentPage,
+                                'url_params' => $params
+                            ];
+                        }
+                    } catch (\Exception $e) {
+                        continue;
+                    }
                 }
             } catch (\Exception $e) {
                 continue;

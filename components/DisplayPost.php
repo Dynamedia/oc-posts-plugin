@@ -3,6 +3,7 @@
 use Cms\Classes\ComponentBase;
 use BackendAuth;
 use App;
+use Cms\Classes\Theme;
 use Dynamedia\Posts\Classes\Acl\AccessControl;
 use Dynamedia\Posts\Traits\PaginationTrait;
 use Input;

@@ -4,13 +4,13 @@ Fix relation manager slug relation from inside of another relation manager (prob
 
 Post categories pulling category name from translations - find out why and fix
 
-Add method for themes to hint a css file for backend body previews
-
 Add method for themes to hint views for body rendering
 
 Attempt to redirect tag pages on language change (url section)
 
 Ensure backend users have profiles set - For author/editor dropdowns and posts by user page
+
+Ensure no duplicate translations and no translation into native language
 
 Create classes for rendering SEO more cleanly
 

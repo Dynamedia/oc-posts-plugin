@@ -2,6 +2,7 @@
 
 use BackendMenu;
 use Backend\Classes\Controller;
+use Dynamedia\Posts\Classes\Helpers\ThemeHelper;
 
 /**
  * Categories Back-end Controller
@@ -46,8 +47,7 @@ class Categories extends Controller
     public function __construct()
     {
         parent::__construct();
-
-        $this->addCss("/plugins/dynamedia/posts/assets/css/posts-preview.css", "1.0.0");
+        $this->addCss(ThemeHelper::getBackendCss(), "1.0.0");
         BackendMenu::setContext('Dynamedia.Posts', 'posts', 'categories');
     }
 }

@@ -23,6 +23,7 @@ class ContentBlock
         try {
             $content = Content::load(Theme::getActiveTheme(), $this->block['block']['cms_content_block'])->parseMarkup();
             $this->html = \View::make(self::view, [
+                'block_id' => !empty($this->block['block']['block_id']) ? $this->block['block']['block_id'] : null,
                 'content' => $content,
             ])->render();
         } catch (\Exception $e) {

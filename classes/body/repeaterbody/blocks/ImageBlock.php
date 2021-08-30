@@ -20,17 +20,21 @@ class ImageBlock
     private function parseBlock()
     {
         $image = !empty($this->block['block']) ? $this->block['block'] : [];
+        $blockId = !empty($this->block['block']['block_id']) ? $this->block['block']['block_id'] : null;
         try {
-            $parsed = self::parseImage($image);
+            $parsed = self::parseImage($image, $blockId);
             $this->html = $parsed;
         } catch (\Exception $e) {
             //
         }
     }
 
-    public static function parseImage($image)
+    public static function parseImage($image, $blockId = null)
     {
-        return \View::make(self::view, ['image' => $image])->render();
+        return \View::make(self::view, [
+            'block_id' => $blockId,
+            'image' => $image
+        ])->render();
     }
 
 

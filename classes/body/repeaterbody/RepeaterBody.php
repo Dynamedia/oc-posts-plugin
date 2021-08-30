@@ -50,6 +50,7 @@ class RepeaterBody extends Body
         $html = '';
 
         $currentPage = 1;
+
         foreach ($this->blocks as $block) {
             try {
                 if ($block['_group'] == 'pagebreak') {
@@ -85,6 +86,7 @@ class RepeaterBody extends Body
             }
         }
         $this->pages[] = $html;
+
     }
 
 

@@ -25,6 +25,7 @@ class MarkdownBlock
         $parsedImage = ImageBlock::parseImage($image);
 
         $this->html = \View::make(self::view, [
+            'block_id' => !empty($this->block['block']['block_id']) ? $this->block['block']['block_id'] : null,
             'content' => $content,
             'image' => $parsedImage
             ])->render();

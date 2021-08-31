@@ -1,0 +1,9 @@
+@media only screen and (min-width: 800px) {
+    .preview_button {
+        position: absolute;
+        top: 0;
+        right: 50px;
+        display: inline-block;
+        width: auto !important;
+    }
+}

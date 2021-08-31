@@ -1,3 +1,13 @@
+heading_block:
+    name: Heading Block
+    description: Add a heading
+    fields:
+        block:
+            type: nestedform
+            usePanelStyles: false
+            showPanel: false
+            form: $/dynamedia/posts/config/forms/block/heading_block.yaml
+
 richeditor_block:
     name: dynamedia.posts::lang.blocks.names.richeditor_block
     description: dynamedia.posts::lang.blocks.descriptions.richeditor_block

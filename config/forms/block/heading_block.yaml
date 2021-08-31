@@ -1,0 +1,40 @@
+tabs:
+    fields:
+        type:
+            label: Heading Type
+            tab: dynamedia.posts::lang.common.tabs.main
+            type: dropdown
+            options:
+                h2: H2
+                h3: H3
+                h4: H4
+                h5: H5
+                h6: H6
+                h7: H7
+        content:
+            label: Heading Text
+            tab: dynamedia.posts::lang.common.tabs.main
+
+        in_contents:
+            tab: dynamedia.posts::lang.common.tabs.settings
+            type: switch
+            label: dynamedia.posts::lang.blocks.labels.in_contents
+            default: true
+
+        contents_title:
+            tab: dynamedia.posts::lang.common.tabs.settings
+            span: left
+            label: dynamedia.posts::lang.blocks.labels.contents_title
+
+        block_id:
+            tab: dynamedia.posts::lang.common.tabs.settings
+            span: right
+            label: dynamedia.posts::lang.blocks.labels.block_id
+            preset: contents_title
+
+        # This is a switch - It needs to be a custom icon when I have time - TODO
+        _preview:
+            tab: Preview
+            type: partial
+            path: $/dynamedia/posts/views/repeaterbody/preview/_heading_block_preview.htm
+            dependsOn: [content, type]

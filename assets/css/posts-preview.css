@@ -1,14 +1,3 @@
-/* Needs to be global */
-@media only screen and (min-width: 800px) {
-    .preview_button {
-        position: absolute;
-        top: 0;
-        right: 50px;
-        display: inline-block;
-        width: auto !important;
-    }
-}
-
 /* This is kept very simple on purpose - You should override it */
 .posts.block-preview {
     background-color: #fff;

@@ -47,6 +47,7 @@ class Categories extends Controller
     public function __construct()
     {
         parent::__construct();
+        $this->addCss("/plugins/dynamedia/posts/assets/css/posts-backend-style.css", "1.0.0");
         $this->addCss(ThemeHelper::getBackendCss(), "1.0.0");
         BackendMenu::setContext('Dynamedia.Posts', 'posts', 'categories');
     }

@@ -1,6 +1,7 @@
 <?php namespace Dynamedia\Posts\Classes\Body\Repeaterbody;
 
 use Dynamedia\Posts\Classes\Body\Body;
+use Dynamedia\Posts\Classes\Body\Repeaterbody\Blocks\HeadingBlock;
 use Dynamedia\Posts\Classes\Body\Repeaterbody\Blocks\ContentBlock;
 use Dynamedia\Posts\Classes\Body\Repeaterbody\Blocks\HtmlBlock;
 use Dynamedia\Posts\Classes\Body\Repeaterbody\Blocks\ImageBlock;
@@ -14,6 +15,9 @@ class RepeaterBody extends Body
 
 
     private $blocktypes = [
+        'heading_block' => [
+            'class' => HeadingBlock::class,
+        ],
         'richeditor_block' => [
             'class' => RicheditorBlock::class,
         ],

@@ -334,6 +334,19 @@ class Post extends Model
         });
     }
 
+    public function scopeApplyHasLocale($query, $locale)
+    {
+        // Only posts written in our chosen language or translated into it
+        $query->whereHas('locale', function($q) use ($locale) {
+            $q->where('code', $locale);
+        })
+            ->orWhereHas('translations', function ($q) use ($locale) {
+                $q->whereHas('locale', function ($q) use ($locale) {
+                    $q->where('code', $locale);
+                });
+            });
+    }
+
     /**
      * Get a single post
      *
@@ -359,6 +372,8 @@ class Post extends Model
         if (!$optionsSlug || !$postId) return null;
 
         $query = Post::whereIn('id', $postId);
+
+        $query = $query->applyHasLocale(Translator::instance()->getLocale());
 
         $query->applyWithTranslations();
 

@@ -250,7 +250,7 @@ class Post extends Model
 
     /**
      * This is an EXTREMELY basic search - There is no index on any of the searched columns
-     * todo Implement a fast cross-db solution. Consider full text and generated (by php) column from title, excerpt and searchable body sections
+     * todo Implement a fast cross-db solution. Implement fulltext search
      * @param $query
      * @param string $searchString
      */

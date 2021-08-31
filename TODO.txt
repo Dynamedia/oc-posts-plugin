@@ -14,6 +14,12 @@ Create classes for rendering SEO more cleanly
 
 Avoid processing the body multiple times per request
 
+Extend rainlab.pages with seo attributes to match posts - Might as well make everything awesome
+
+Google translate integration
+
+Moz suite integration
+
 
 
 Think about writing some tests - :)

@@ -258,7 +258,12 @@ class Post extends Model
     {
         $query->where("title", "LIKE", "%{$searchString}%")
             ->orWhere("excerpt", "LIKE", "%{$searchString}%")
-            ->orWhere("body_text", "LIKE", "%{$searchString}%");
+            ->orWhere("body_text", "LIKE", "%{$searchString}%")
+            ->orWhereHas('translations', function ($q) use ($searchString) {
+               $q->where("title", "LIKE", "%{$searchString}%")
+                   ->orWhere("excerpt", "LIKE", "%{$searchString}%")
+                   ->orWhere("body_text", "LIKE", "%{$searchString}%");
+            });
     }
 
     public function scopeApplyOrdering($query, string $sort)
@@ -361,6 +366,7 @@ class Post extends Model
         $optionsWithPrimaryCategory = true;
         $optionsWithTags            = true;
         $optionsWithUsers           = true;
+        $optionsLocale              = $query = Translator::instance()->getLocale();
 
         extract($options);
 
@@ -373,7 +379,7 @@ class Post extends Model
 
         $query = Post::whereIn('id', $postId);
 
-        $query = $query->applyHasLocale(Translator::instance()->getLocale());
+        $query = $query->applyHasLocale($optionsLocale);
 
         $query->applyWithTranslations();
 
@@ -423,15 +429,7 @@ class Post extends Model
 
         $query = static::applyIsPublished();
 
-        // Only posts written in our chosen language or translated into it
-        $query->whereHas('locale', function($q) use ($optionsLocale) {
-            $q->where('code', $optionsLocale);
-        })
-        ->orWhereHas('translations', function ($q) use ($optionsLocale) {
-           $q->whereHas('locale', function ($q) use ($optionsLocale) {
-               $q->where('code', $optionsLocale);
-           });
-        });
+        $query = $query->applyHasLocale($optionsLocale);
 
         if ($optionsNotPostIds) {
             $query->applyExcludePosts($optionsNotPostIds);

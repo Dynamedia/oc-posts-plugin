@@ -19,8 +19,13 @@ class PostsRouteDetection
         // We can deal with that by checking whether the provided slug is either a Post or a Category
         // It can't be both, as we don't allow it through validation. We will force render the relevant page.
 
+        // If we're trying to match at the root URL, all non-existent routes will match for post-display or category-display
+        // The display components will handle 404's if there is no post or category found
+
 
         $event->listen('cms.page.beforeDisplay', function ($controller, $url, $page) {
+
+            if (!$page) return;
 
             // Get info for potential clashing pages and the page the router actually matched
             $params = $controller->getRouter()->getParameters();

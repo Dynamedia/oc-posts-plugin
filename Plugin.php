@@ -40,6 +40,7 @@ class Plugin extends PluginBase
         ];
     }
 
+
     public function boot()
     {
         $this->registerEvents();

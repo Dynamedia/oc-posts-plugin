@@ -22,6 +22,14 @@ class ExtendBackendUser
             });
         });
 
+        // Ensure users always have profiles
+        $event->listen('backend.page.beforeDisplay', function ($backendController, $action, $params) {
+            $user = \BackendAuth::getUser();
+            if (!$user->profie) {
+                 Profile::getFromUser($user);
+            }
+        });
+
 
         BackendUserController::extendFormFields(function ($form, $model, $context) {
             if (!$model instanceof BackendUserModel) {

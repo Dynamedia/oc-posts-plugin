@@ -2,7 +2,6 @@ tabs:
     fields:
         content:
             tab: dynamedia.posts::lang.common.tabs.main
-            #label: dynamedia.posts::lang.blocks.labels.richeditor_block_content
             type: richeditor
             size: giant
 
@@ -16,7 +15,7 @@ tabs:
             tab: dynamedia.posts::lang.common.tabs.settings
             type: switch
             label: dynamedia.posts::lang.blocks.labels.in_contents
-            default: true
+            default: false
 
         contents_title:
             tab: dynamedia.posts::lang.common.tabs.settings
@@ -36,11 +35,11 @@ tabs:
             span: right
             cssClass: preview_button
 
-        # This is a switch - It needs to be a custom icon when I have time - TODO
         _preview:
             tab: Preview
             type: partial
             path: $/dynamedia/posts/views/repeaterbody/preview/_richeditor_block_preview.htm
             dependsOn: _preview_refresh
+
 
 

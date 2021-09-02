@@ -1,7 +1,6 @@
 tabs:
     fields:
         content:
-            #label: dynamedia.posts::lang.blocks.richeditor_block.labels.html
             tab: dynamedia.posts::lang.common.tabs.main
             type: codeeditor
             language: html
@@ -31,7 +30,6 @@ tabs:
             span: right
             cssClass: preview_button
 
-        # This is a switch - It needs to be a custom icon when I have time - TODO
         _preview:
             tab: Preview
             type: partial

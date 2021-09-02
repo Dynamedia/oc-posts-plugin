@@ -32,7 +32,6 @@ tabs:
             label: dynamedia.posts::lang.blocks.labels.block_id
             preset: contents_title
 
-        # This is a switch - It needs to be a custom icon when I have time - TODO
         _preview:
             tab: Preview
             type: partial

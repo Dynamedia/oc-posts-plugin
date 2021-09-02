@@ -2,7 +2,6 @@ tabs:
     fields:
         content:
             tab: dynamedia.posts::lang.common.tabs.main
-            #label: dynamedia.posts::lang.blocks.labels.markdown_block_content
             type: markdown
             size: giant
             mode: split
@@ -38,7 +37,6 @@ tabs:
             span: right
             cssClass: preview_button
 
-        # This is a switch - It needs to be a custom icon when I have time - TODO
         _preview:
             tab: Preview
             type: partial

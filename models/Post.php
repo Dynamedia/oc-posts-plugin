@@ -348,7 +348,8 @@ class Post extends Model
             ->orWhereHas('translations', function ($q) use ($locale) {
                 $q->whereHas('locale', function ($q) use ($locale) {
                     $q->where('code', $locale);
-                });
+                })
+                ->where('is_published', true);
             });
     }
 

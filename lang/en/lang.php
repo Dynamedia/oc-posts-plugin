@@ -108,13 +108,14 @@ return [
             'locale'        => 'Locale',
         ],
         'dropdown' => [
-            'empty_option'  => 'Please Select',
-            'newest_first'  => 'Newest First',
-            'oldest_first'  => 'Oldest First',
-            'recent_update' => 'Recently Updated',
-            'random'        => 'Random',
-            'yes'           => 'Yes',
-            'no'            => 'No',
+            'empty_option'          => 'Please Select',
+            'newest_first'          => 'Newest First',
+            'oldest_first'          => 'Oldest First',
+            'recent_update'         => 'Recently Updated',
+            'random'                => 'Random',
+            'yes'                   => 'Yes',
+            'no'                    => 'No',
+            'locale_placeholder'    => '--- Select from available locales ---'
         ]
     ],
     'images' => [

@@ -7,6 +7,7 @@ tabs:
             tab: dynamedia.posts::lang.common.tabs.detail
             label: Locale
             type: dropdown
+            placeholder: dynamedia.posts::lang.common.dropdown.locale_placeholder
         title:
             tab: dynamedia.posts::lang.common.tabs.detail
             span: left
@@ -42,12 +43,6 @@ tabs:
             type: nestedform
             usePanelStyles: false
             form: $/dynamedia/posts/config/forms/seo.yaml
-
-#        Relation manager causes issues here
-#        postslugs:
-#            tab: dynamedia.posts::lang.common.tabs.slugs
-#            type: partial
-#            path: $/dynamedia/posts/models/posttranslation/_postslugs_relation.htm
 
         cms_layout:
             tab: dynamedia.posts::lang.common.tabs.settings

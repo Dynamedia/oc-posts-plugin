@@ -8,6 +8,7 @@ tabs:
             tab: dynamedia.posts::lang.common.tabs.detail
             label: Locale
             type: dropdown
+            placeholder: dynamedia.posts::lang.common.dropdown.locale_placeholder
         name:
             label: dynamedia.posts::lang.common.labels.name
             tab: dynamedia.posts::lang.common.tabs.detail

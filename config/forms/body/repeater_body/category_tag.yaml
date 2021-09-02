@@ -15,7 +15,18 @@ richeditor_block:
         block:
             type: nestedform
             usePanelStyles: false
+            showPanel: false
             form: $/dynamedia/posts/config/forms/block/richeditor_block.yaml
+
+markdown_block:
+    name: dynamedia.posts::lang.blocks.names.markdown_block
+    description: dynamedia.posts::lang.blocks.descriptions.markdown_block
+    fields:
+        block:
+            type: nestedform
+            usePanelStyles: false
+            showPanel: false
+            form: $/dynamedia/posts/config/forms/block/markdown_block.yaml
 
 html_block:
     name: dynamedia.posts::lang.blocks.names.html_block
@@ -56,3 +67,4 @@ cms_partial_block:
             usePanelStyles: false
             showPanel: false
             form: $/dynamedia/posts/config/forms/block/cms_partial_block.yaml
+

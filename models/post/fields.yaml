@@ -31,7 +31,7 @@ tabs:
             type: nestedform
             usePanelStyles: false
             showPanel: false
-            form: $/dynamedia/posts/config/forms/body/body_type.yaml
+            form: $/dynamedia/posts/config/forms/body/body_type_post.yaml
 
 
         primary_category:

@@ -21,7 +21,10 @@ use Cms\Models\ThemeData;
  */
 class Plugin extends PluginBase
 {
-    public $require = ['RainLab.Translate'];
+    public $require = [
+        'RainLab.Translate',
+        'Rainlab.Pages'
+    ];
     /**
      * Returns information about this plugin.
      *

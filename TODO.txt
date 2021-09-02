@@ -1,7 +1,5 @@
 Brief notes for issues found in testing
 
-Fix relation manager slug relation from inside of another relation manager (probably just remove for now)
-
 Add method for themes to hint views for body rendering
 
 Ensure backend users have profiles set - For author/editor dropdowns and posts by user page

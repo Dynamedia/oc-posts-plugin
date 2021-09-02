@@ -2,8 +2,6 @@ Brief notes for issues found in testing
 
 Add method for themes to hint views for body rendering
 
-Ensure no duplicate translations and no translation into native language
-
 Create classes for rendering SEO more cleanly
 
 Avoid processing the body multiple times per request

@@ -3,6 +3,7 @@
 use Dynamedia\Posts\Classes\Body\Body;
 use Model;
 use October\Rain\Database\Traits\Validation;
+use RainLab\Translate\Classes\Translator;
 use RainLab\Translate\Models\Locale;
 use ValidationException;
 
@@ -118,20 +119,28 @@ class TagTranslation extends Model
         $this->tagslugs()->detach();
     }
 
-    // todo get this moved and minify it?
+    /**
+     * Return the options for the available translation locales
+     *
+     * @return array
+     */
     public function getLocaleIdOptions()
     {
-        $alreadyTranslated = [];
-        if (!empty($this->native->translations)) {
-            foreach ($this->native->translations as $translation) {
-                if ($translation->id != $this->id) {
-                    $alreadyTranslated[] = $translation->locale->id;
-                }
+        $usedIds = [];
+        $formVars = post('Tag');
+        if (!empty($formVars)) {
+            $parentTag = Tag::where('slug', $formVars['slug'])
+                ->with('translations')
+                ->first();
+
+            $usedIds[] = Translator::instance()->getDefaultLocale();
+            foreach ($parentTag->translations as $translation) {
+                $usedIds[] = $translation->locale_id;
             }
         }
 
-        $locales = Locale::where('is_default', '<>', 1)
-            ->whereNotIn('id', $alreadyTranslated)
+        $locales = Locale::whereNotIn('id', $usedIds)
+            ->whereNotIn('code', [Translator::instance()->getDefaultLocale()])
             ->order()
             ->pluck('name', 'id')
             ->all();

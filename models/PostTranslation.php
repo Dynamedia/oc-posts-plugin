@@ -129,19 +129,27 @@ class PostTranslation extends Model
         $this->postslugs()->detach();
     }
 
-    // todo get this moved and minify it?
+    /**
+     * Return the options for the available translation locales
+     *
+     * @return array
+     */
     public function getLocaleIdOptions()
     {
-        $alreadyTranslated = [];
-        if (!empty($this->native->translations)) {
-            foreach ($this->native->translations as $translation) {
-                if ($translation->id != $this->id) {
-                    $alreadyTranslated[] = $translation->locale->id;
-                }
+        $usedIds = [];
+        $formVars = post('Post');
+        if (!empty($formVars)) {
+            $parentPost = Post::where('slug', $formVars['slug'])
+                ->with('translations')
+                ->first();
+
+            $usedIds[] = $formVars['locale'];
+            foreach ($parentPost->translations as $translation) {
+                $usedIds[] = $translation->locale_id;
             }
         }
 
-        $locales = Locale::whereNotIn('id', $alreadyTranslated)
+        $locales = Locale::whereNotIn('id', $usedIds)
             ->order()
             ->pluck('name', 'id')
             ->all();

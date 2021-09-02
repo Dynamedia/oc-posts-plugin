@@ -6,6 +6,7 @@ use Dynamedia\Posts\Traits\SeoTrait;
 use Dynamedia\Posts\Traits\ImagesTrait;
 use Dynamedia\Posts\Traits\ControllerTrait;
 use \October\Rain\Database\Traits\Validation;
+use RainLab\Translate\Classes\Translator;
 use RainLab\Translate\Models\Locale;
 use ValidationException;
 
@@ -123,20 +124,28 @@ class CategoryTranslation extends Model
         $this->categoryslugs()->detach();
     }
 
-    // todo get this moved and minify it?
+    /**
+     * Return the options for the available translation locales
+     *
+     * @return array
+     */
     public function getLocaleIdOptions()
     {
-        $alreadyTranslated = [];
-        if (!empty($this->native->translations)) {
-            foreach ($this->native->translations as $translation) {
-                if ($translation->id != $this->id) {
-                    $alreadyTranslated[] = $translation->locale->id;
-                }
+        $usedIds = [];
+        $formVars = post('Category');
+        if (!empty($formVars)) {
+            $parentCategory = Category::where('slug', $formVars['slug'])
+                ->with('translations')
+                ->first();
+
+            $usedIds[] = Translator::instance()->getDefaultLocale();
+            foreach ($parentCategory->translations as $translation) {
+                $usedIds[] = $translation->locale_id;
             }
         }
 
-        $locales = Locale::where('is_default', '<>', 1)
-            ->whereNotIn('id', $alreadyTranslated)
+        $locales = Locale::whereNotIn('id', $usedIds)
+            ->whereNotIn('code', [Translator::instance()->getDefaultLocale()])
             ->order()
             ->pluck('name', 'id')
             ->all();

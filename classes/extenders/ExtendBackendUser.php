@@ -25,7 +25,7 @@ class ExtendBackendUser
         // Ensure users always have profiles
         $event->listen('backend.page.beforeDisplay', function ($backendController, $action, $params) {
             $user = \BackendAuth::getUser();
-            if (!$user->profie) {
+            if ($user && !$user->profile) {
                  Profile::getFromUser($user);
             }
         });

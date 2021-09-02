@@ -4,8 +4,6 @@ Fix relation manager slug relation from inside of another relation manager (prob
 
 Add method for themes to hint views for body rendering
 
-Attempt to redirect tag pages on language change (url section)
-
 Ensure backend users have profiles set - For author/editor dropdowns and posts by user page
 
 Ensure no duplicate translations and no translation into native language
@@ -20,6 +18,3 @@ Google translate integration
 
 Moz suite integration
 
-
-
-Think about writing some tests - :)

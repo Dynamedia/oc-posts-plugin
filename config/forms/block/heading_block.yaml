@@ -1,6 +1,6 @@
 tabs:
     fields:
-        type:
+        heading_type:
             label: Heading Type
             tab: dynamedia.posts::lang.common.tabs.main
             type: dropdown

@@ -46,7 +46,7 @@ class PostsRouteDetection
             $activeThemeCode = Theme::getActiveThemeCode();
 
             $this->parseSlugParams($controller);
-            
+
 
             // Process slugs matching our cms pages
             $postPage = [

@@ -114,3 +114,13 @@ tabs:
             label: dynamedia.posts::lang.settings.labels.default_tag_layout
             type: dropdown
             options: \Dynamedia\Posts\Classes\Helpers\Form::getCmsLayoutOptions
+
+        rssTitle:
+            tab: RSS
+            label: Main RSS Feed Title
+        rssDescription:
+            tab: RSS
+            label: Main RSS Feed Description
+            type: richeditor
+
+

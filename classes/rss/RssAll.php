@@ -1,6 +1,9 @@
 <?php namespace Dynamedia\Posts\Classes\Rss;
 
+use Cms\Classes\Controller;
+use Cms\Classes\Page;
 use Dynamedia\Posts\Models\Post;
+use Dynamedia\Posts\Models\Settings;
 use RainLab\Translate\Classes\Translator;
 use View;
 use Response;
@@ -14,6 +17,7 @@ class RssAll
         $this->postsList = Post::getPostsList([
             'optionsLimit'     => 10,
         ]);
+
     }
 
     public function makeViewResponse()
@@ -21,9 +25,9 @@ class RssAll
         $view = View::make('dynamedia.posts::rss.all_rss', [
             'posts'         => $this->postsList['items'],
             'language'      => Translator::instance()->getLocale(),
-            'title'         => "The title",
-            'description'   => "The Description",
-            'link'          => "/"
+            'title'         => Settings::instance()->getTranslateAttribute('rssTitle'),
+            'description'   => Settings::instance()->getTranslateAttribute('rssDescription'),
+            'atom_link'     => Controller::getController()->currentPageUrl()
             ]);
 
         return Response::make($view)

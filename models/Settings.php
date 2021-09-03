@@ -16,7 +16,16 @@ class Settings extends Model
 {
     use Validation;
 
-    public $implement = ['System.Behaviors.SettingsModel'];
+    public $implement = [
+        'System.Behaviors.SettingsModel',
+        '@RainLab.Translate.Behaviors.TranslatableModel'
+        ];
+
+    public $translatable = [
+        'rssMainLink',
+        'rssDescription'
+    ];
+
 
     // A unique code
     public $settingsCode = 'dynamedia_posts_settings';

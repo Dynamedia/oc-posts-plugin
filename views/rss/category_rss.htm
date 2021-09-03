@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:sy="http://purl.org/rss/1.0/modules/syndication/">
     <channel>
-        <title>{{ category.name | striptags }} RSS Feed</title>
+        <title>{{ title_prefix | striptags }} ({{ category.name | striptags }})</title>
         <atom:link href="{{ category.url }}.rss" rel="self" type="application/rss+xml"/>
         <link>{{ category.url }}</link>
-        <description>{{ category.excerpt | striptags }}</description>
+        <description>
+            <![CDATA[
+            {{ category.excerpt | raw }}
+            ]]>
+        </description>
         <language>{{ language }}</language>
         {% if posts.first.title %}
             <lastBuildDate>{{ posts.first.published_at | date("D, d M Y h:i:s O") }}</lastBuildDate>

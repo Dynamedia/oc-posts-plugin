@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    {% for category in categories %}
+    <sitemap>
+        <loc>{{ category.url }}.sitemap</loc>
+        <lastmod>{{ category.updated_at }}</lastmod>
+    </sitemap>
+    {% endfor %}
+
+    {% for tag in tags %}
+        <sitemap>
+            <loc>{{ tag.url }}.sitemap</loc>
+            <lastmod>{{ tag.updated_at }}</lastmod>
+        </sitemap>
+    {% endfor %}
+</sitemapindex>
+

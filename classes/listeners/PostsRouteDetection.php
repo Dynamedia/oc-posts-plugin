@@ -1,8 +1,10 @@
 <?php namespace Dynamedia\Posts\Classes\Listeners;
 
 use App;
+use Dynamedia\Posts\Classes\Rss\RssAll;
 use Dynamedia\Posts\Classes\Rss\RssCategory;
 use Dynamedia\Posts\Classes\Rss\RssTag;
+use Dynamedia\Posts\Classes\Sitemap\SitemapAll;
 use Dynamedia\Posts\Classes\Sitemap\SitemapCategory;
 use Dynamedia\Posts\Classes\Sitemap\SitemapTag;
 use Event;
@@ -33,6 +35,7 @@ class PostsRouteDetection
         // If we're trying to match at the root URL, all non-existent routes will match for post-display or category-display
         // The display components will handle 404's if there is no post or category found
 
+        // TODO some refactoring needed here, but lets get it working
 
         $event->listen('cms.page.beforeDisplay', function ($controller, $url, $page) {
 
@@ -43,7 +46,19 @@ class PostsRouteDetection
             $activeThemeCode = Theme::getActiveThemeCode();
 
             $this->parseSlugParams($controller);
-            
+
+            // Handle posts-wide RSS and Sitemaps (saves adding a component or duplicating translate logic via routes)
+            if ($this->slug == 'posts' && $this->suffix == 'rss') {
+                $feed = new RssAll();
+                return $feed->makeViewResponse();
+            }
+
+            if ($this->slug == 'posts' && $this->suffix == 'sitemap') {
+                $feed = new SitemapAll();
+                return $feed->makeViewResponse();
+            }
+
+            // Process slugs matching our cms pages
             $postPage = [
                 'page' => $pg = Settings::get('postPage'),
                 'url'  => $pg ? Page::url($pg, $params) : null

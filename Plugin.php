@@ -63,6 +63,8 @@ class Plugin extends PluginBase
             'Dynamedia\Posts\Components\ListPosts' => 'listPosts',
             'Dynamedia\Posts\Components\SearchPosts' => 'searchPosts',
             'Dynamedia\Posts\Components\DisplayUser' => 'displayUser',
+            'Dynamedia\Posts\Components\MainSitemap' => 'mainSitemap',
+            'Dynamedia\Posts\Components\MainRss' => 'mainRss',
         ];
     }
 

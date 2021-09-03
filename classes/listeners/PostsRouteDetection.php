@@ -46,17 +46,7 @@ class PostsRouteDetection
             $activeThemeCode = Theme::getActiveThemeCode();
 
             $this->parseSlugParams($controller);
-
-            // Handle posts-wide RSS and Sitemaps (saves adding a component or duplicating translate logic via routes)
-            if ($this->slug == 'posts' && $this->suffix == 'rss') {
-                $feed = new RssAll();
-                return $feed->makeViewResponse();
-            }
-
-            if ($this->slug == 'posts' && $this->suffix == 'sitemap') {
-                $feed = new SitemapAll();
-                return $feed->makeViewResponse();
-            }
+            
 
             // Process slugs matching our cms pages
             $postPage = [

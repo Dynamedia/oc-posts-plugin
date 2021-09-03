@@ -22,7 +22,7 @@ class Settings extends Model
         ];
 
     public $translatable = [
-        'rssMainLink',
+        'rssTitle',
         'rssDescription'
     ];
 

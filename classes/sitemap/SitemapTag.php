@@ -20,6 +20,7 @@ class SitemapTag
     public function makeViewResponse()
     {
         $view = View::make('dynamedia.posts::sitemap.sitemap_posts', [
+            'parent'    => $this->tag,
             'posts'     => $this->postsList['items'],
         ]);
 

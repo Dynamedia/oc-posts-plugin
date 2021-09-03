@@ -20,6 +20,7 @@ class SitemapCategory
     public function makeViewResponse()
     {
         $view = View::make('dynamedia.posts::sitemap.sitemap_posts', [
+            'parent'    => $this->category,
             'posts'     => $this->postsList['items'],
         ]);
 

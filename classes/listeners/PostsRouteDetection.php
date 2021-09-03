@@ -1,8 +1,10 @@
 <?php namespace Dynamedia\Posts\Classes\Listeners;
 
 use App;
-use Backend\Models\User;
 use Dynamedia\Posts\Classes\Rss\RssCategory;
+use Dynamedia\Posts\Classes\Rss\RssTag;
+use Dynamedia\Posts\Classes\Sitemap\SitemapCategory;
+use Dynamedia\Posts\Classes\Sitemap\SitemapTag;
 use Event;
 use Cms\Classes\Page;
 use Cms\Classes\Theme;
@@ -10,7 +12,7 @@ use Dynamedia\Posts\Models\Category;
 use Dynamedia\Posts\Models\Post;
 use Dynamedia\Posts\Models\Tag;
 use Dynamedia\Posts\Models\Settings;
-use Illuminate\Support\Facades\Log;
+
 
 class PostsRouteDetection
 {
@@ -18,7 +20,8 @@ class PostsRouteDetection
     private $suffix;
 
     private $allowedSuffix = [
-            'rss'
+            'rss',
+            'sitemap'
         ];
 
     public function subscribe($event)
@@ -40,8 +43,7 @@ class PostsRouteDetection
             $activeThemeCode = Theme::getActiveThemeCode();
 
             $this->parseSlugParams($controller);
-
-
+            
             $postPage = [
                 'page' => $pg = Settings::get('postPage'),
                 'url'  => $pg ? Page::url($pg, $params) : null
@@ -87,13 +89,18 @@ class PostsRouteDetection
                 return $newPage;
             }
 
+            // todo refactor rss/sitemap logic
             if (!empty($category)) {
                 $newPage = Page::loadCached($activeThemeCode,$categoryPage['page']);
                 $category->getCmsLayout() ? $newPage->layout = $category->getCmsLayout() : null;
                 App::instance('dynamedia.posts.category', $category);
                 if ($this->suffix === "rss") {
-                    $reponse = new RssCategory($category);
-                    return $reponse->makeViewResponse();
+                    $feed = new RssCategory($category);
+                    return $feed->makeViewResponse();
+                }
+                if ($this->suffix === 'sitemap') {
+                    $feed = new SitemapCategory($category);
+                    return $feed->makeViewResponse();
                 }
 
                 return $newPage;
@@ -103,6 +110,14 @@ class PostsRouteDetection
             if (!empty($tag)) {
                 $tag->getCmsLayout() ? $page->layout = $tag->getCmsLayout() : null;
                 App::instance('dynamedia.posts.tag', $tag);
+                if ($this->suffix === "rss") {
+                    $feed = new RssTag($tag);
+                    return $feed->makeViewResponse();
+                }
+                if ($this->suffix === 'sitemap') {
+                    $feed = new SitemapTag($tag);
+                    return $feed->makeViewResponse();
+                }
             }
         });
     }

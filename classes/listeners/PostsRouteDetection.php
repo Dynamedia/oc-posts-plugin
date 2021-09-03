@@ -2,6 +2,7 @@
 
 use App;
 use Backend\Models\User;
+use Dynamedia\Posts\Classes\Rss\RssCategory;
 use Event;
 use Cms\Classes\Page;
 use Cms\Classes\Theme;
@@ -13,6 +14,13 @@ use Illuminate\Support\Facades\Log;
 
 class PostsRouteDetection
 {
+    private $slug;
+    private $suffix;
+
+    private $allowedSuffix = [
+            'rss'
+        ];
+
     public function subscribe($event)
     {
         // Having completely semantic URLs is nice, but it causes post and category display routes to clash
@@ -30,6 +38,9 @@ class PostsRouteDetection
             // Get info for potential clashing pages and the page the router actually matched
             $params = $controller->getRouter()->getParameters();
             $activeThemeCode = Theme::getActiveThemeCode();
+
+            $this->parseSlugParams($controller);
+
 
             $postPage = [
                 'page' => $pg = Settings::get('postPage'),
@@ -54,19 +65,19 @@ class PostsRouteDetection
             // Post Page
             if ($matchedPage['url'] == $postPage['url']) {
                 Event::fire('dynamedia.posts.matchedPostRoute');
-                $post = Post::getPost(['optionsSlug' => $this->extractSlug($controller)]);
+                $post = Post::getPost(['optionsSlug' => $this->slug]);
             }
 
             // Category Page
             if ($matchedPage['url'] == $categoryPage['url']) {
                 Event::fire('dynamedia.posts.matchedCategoryRoute');
-                $category = Category::getCategory(['optionsSlug' => $this->extractSlug($controller)]);
+                $category = Category::getCategory(['optionsSlug' => $this->slug]);
             }
 
             // Tag Page
             if ($matchedPage['url'] == $tagPage['url']) {
                 Event::fire('dynamedia.posts.matchedTagRoute');
-                $tag = Tag::getTag($this->extractSlug($controller));
+                $tag = Tag::getTag($this->slug);
             }
 
             if (!empty($post)) {
@@ -80,6 +91,11 @@ class PostsRouteDetection
                 $newPage = Page::loadCached($activeThemeCode,$categoryPage['page']);
                 $category->getCmsLayout() ? $newPage->layout = $category->getCmsLayout() : null;
                 App::instance('dynamedia.posts.category', $category);
+                if ($this->suffix === "rss") {
+                    $reponse = new RssCategory($category);
+                    return $reponse->makeViewResponse();
+                }
+
                 return $newPage;
             }
 
@@ -92,13 +108,14 @@ class PostsRouteDetection
     }
 
     /**
-     * Check for a relevant url parameter
+     * Check for a relevant url slug parameter
      * @param $controller
      * @return string|null
      */
-    private function extractSlug($controller)
+    private function parseSlugParams($controller)
     {
-        $slug = null;
+
+        $slug = false;
 
         if ($controller->param('postsPostSlug')) {
             $slug = $controller->param('postsPostSlug');
@@ -112,6 +129,27 @@ class PostsRouteDetection
             $slug = $controller->param('postsTagSlug');
         }
 
-        return $slug;
+        $this->setSlug($slug);
+    }
+
+    /**
+     * Parse the slug to check for allowed suffix
+     *
+     * @param $slug
+     */
+    private function setSlug($slug)
+    {
+        // a default
+        $this->slug = $slug;
+
+        $slugArray = explode(".", $slug);
+        if (count($slugArray) > 1) {
+            $suffix = array_pop($slugArray);
+            // Only re-set the slug if it's in the allowed list
+            if (in_array($suffix, $this->allowedSuffix)) {
+                $this->suffix = $suffix;
+                $this->slug = $slugArray[0];
+            }
+        }
     }
 }

@@ -89,7 +89,6 @@ class Settings extends Model
     }
 
 
-
     public function getCategoryPageOptions()
     {
         $pages =  Page::sortBy('baseFileName')
@@ -111,6 +110,15 @@ class Settings extends Model
                 return true;
             })
             ->lists('baseFileName', 'baseFileName');
+    }
+
+    public function getRssPostCountOptions()
+    {
+        $options = [];
+        for ($i = 10; $i <= 30; $i++) {
+            $options["$i"] = "$i";
+        }
+        return $options;
     }
 
 }

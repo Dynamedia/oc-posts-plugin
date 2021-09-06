@@ -15,18 +15,19 @@ class RssTag
     {
         $this->tag = $tag;
         $this->postsList = Post::getPostsList([
-            'optionsLimit'     => 10,
-            'optionsTagIds'    => [$this->tag->id]
+            'optionsLimit'      => (int) Settings::instance()->get('rssPostCount'),
+            'optionsPerPage'    => (int) Settings::instance()->get('rssPostCount'),
+            'optionsTagIds'     => [$this->tag->id]
         ]);
     }
 
     public function makeViewResponse()
     {
         $view = View::make('dynamedia.posts::rss.tag_rss', [
-            'tag'       => $this->tag,
-            'posts'     => $this->postsList['items'],
-            'language'  => Translator::instance()->getLocale(),
-            'title_prefix' => Settings::instance()->getTranslateAttribute('rssTitle')
+            'tag'           => $this->tag,
+            'posts'         => $this->postsList['items'],
+            'language'      => Translator::instance()->getLocale(),
+            'title_prefix'  => Settings::instance()->getTranslateAttribute('rssTitle')
             ]);
 
         return Response::make($view)

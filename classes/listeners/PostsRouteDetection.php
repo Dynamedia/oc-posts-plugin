@@ -23,7 +23,7 @@ class PostsRouteDetection
 
     private $allowedSuffix = [
             'rss',
-            'sitemap'
+            'sitemap.xml'
         ];
 
     public function subscribe($event)
@@ -103,7 +103,7 @@ class PostsRouteDetection
                     $feed = new RssCategory($category);
                     return $feed->makeViewResponse();
                 }
-                if ($this->suffix === 'sitemap') {
+                if ($this->suffix === 'sitemap.xml') {
                     $feed = new SitemapCategory($category);
                     return $feed->makeViewResponse();
                 }
@@ -119,7 +119,7 @@ class PostsRouteDetection
                     $feed = new RssTag($tag);
                     return $feed->makeViewResponse();
                 }
-                if ($this->suffix === 'sitemap') {
+                if ($this->suffix === 'sitemap.xml') {
                     $feed = new SitemapTag($tag);
                     return $feed->makeViewResponse();
                 }
@@ -162,7 +162,7 @@ class PostsRouteDetection
         // a default
         $this->slug = $slug;
 
-        $slugArray = explode(".", $slug);
+        $slugArray = explode(".", $slug, 2);
         if (count($slugArray) > 1) {
             $suffix = array_pop($slugArray);
             // Only re-set the slug if it's in the allowed list

@@ -122,5 +122,10 @@ tabs:
             tab: RSS
             label: Main RSS Feed Description
             type: richeditor
+        rssPostCount:
+            tab: RSS
+            label: Posts per Feed
+            type: dropdown
+
 
 

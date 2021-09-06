@@ -3,10 +3,14 @@
 use Cms\Classes\ComponentBase;
 use BackendAuth;
 use App;
+use Cms\Classes\Page;
 use Cms\Classes\Theme;
 use Dynamedia\Posts\Classes\Acl\AccessControl;
+use Dynamedia\Posts\Models\Settings;
 use Dynamedia\Posts\Traits\PaginationTrait;
 use Input;
+use RainLab\Translate\Classes\MLCmsObject;
+use RainLab\Translate\Classes\Translator;
 
 
 class DisplayPost extends ComponentBase
@@ -54,7 +58,7 @@ class DisplayPost extends ComponentBase
         }
 
         $this->setPaginator();
-
+        //dd($this->post->translations->first()->url);
     }
 
 

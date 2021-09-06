@@ -15,7 +15,8 @@ class RssCategory
     {
         $this->category = $category;
         $this->postsList = Post::getPostsList([
-            'optionsLimit'          => 10,
+            'optionsLimit'          => (int) Settings::instance()->get('rssPostCount'),
+            'optionsPerPage'        => (int) Settings::instance()->get('rssPostCount'),
             'optionsCategoryIds'    => [$this->category->id]
         ]);
     }
@@ -23,10 +24,10 @@ class RssCategory
     public function makeViewResponse()
     {
         $view = View::make('dynamedia.posts::rss.category_rss', [
-            'category'  => $this->category,
-            'posts'     => $this->postsList['items'],
-            'language'  => Translator::instance()->getLocale(),
-            'title_prefix' => Settings::instance()->getTranslateAttribute('rssTitle')
+            'category'      => $this->category,
+            'posts'         => $this->postsList['items'],
+            'language'      => Translator::instance()->getLocale(),
+            'title_prefix'  => Settings::instance()->getTranslateAttribute('rssTitle')
             ]);
 
         return Response::make($view)

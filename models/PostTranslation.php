@@ -1,7 +1,10 @@
 <?php namespace Dynamedia\Posts\Models;
 
+use Cms\Classes\Page;
+use Cms\Classes\Theme;
 use Dynamedia\Posts\Classes\Body\Body;
 use Model;
+use RainLab\Translate\Classes\Translator;
 use RainLab\Translate\Models\Locale;
 use ValidationException;
 use Dynamedia\Posts\Traits\SeoTrait;
@@ -193,5 +196,17 @@ class PostTranslation extends Model
     {
         $body = Body::getBody($this->body_document);
         return $body;
+    }
+
+    // work in progress
+    public function getUrlAttribute()
+    {
+        $parent = $this->native;
+        $category = $this->native->primary_category;
+        dd($parent->getTranslated('title', $parent->title));
+
+        $activeThemeCode = Theme::getActiveThemeCode();
+        $test = Page::loadCached($activeThemeCode, Settings::get('postPage'));
+        dd(Translator::instance()->getPathInLocale($test->url([]), 'de'));
     }
 }

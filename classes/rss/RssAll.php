@@ -15,7 +15,8 @@ class RssAll
     public function __construct()
     {
         $this->postsList = Post::getPostsList([
-            'optionsLimit'     => 10,
+            'optionsLimit'     => (int) Settings::instance()->get('rssPostCount'),
+            'optionsPerPage'     => (int) Settings::instance()->get('rssPostCount'),
         ]);
 
     }

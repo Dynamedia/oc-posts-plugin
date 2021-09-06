@@ -203,7 +203,8 @@ class PostTranslation extends Model
     {
         $parent = $this->native;
         $category = $this->native->primary_category;
-        dd($parent->getTranslated('title', $parent->title));
+
+        dd($category->getTranslated('name', $category->attributes['name'], 'en', false));
 
         $activeThemeCode = Theme::getActiveThemeCode();
         $test = Page::loadCached($activeThemeCode, Settings::get('postPage'));

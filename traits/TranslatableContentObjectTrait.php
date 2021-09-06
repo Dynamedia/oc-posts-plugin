@@ -11,7 +11,6 @@ Trait TranslatableContentObjectTrait
 
     public function getTranslation($locale = null)
     {
-
         if (!empty($this->translations)) {
             return $this->translations->reject(function ($value, $key)use ($locale) {
                 return empty($value->locale) || $value->locale->code != $locale;
@@ -67,16 +66,24 @@ Trait TranslatableContentObjectTrait
         return $this->getTranslated('cms_layout', $value);
     }
 
-    public function getTranslated($attribute, $default, $locale = null)
+    public function getTranslated($attribute, $default, $locale = null, $fallback = false)
     {
+        if (app()->runningInBackend()) return $default;
+
         if ($locale) {
             $trans = $this->getTranslation($locale);
-            if ($trans && !app()->runningInBackend()){
-                return $trans->attributes[$attribute];
+            if ($trans) {
+                if (!empty($trans->attributes[$attribute])) {
+                    return $trans->attributes[$attribute];
+                } elseif ($fallback) {
+                    return $this->attributes[$attribute];
+                }
             }
+        } elseif ($fallback) {
+            return $this->attributes[$attribute];
         }
         // Do not attempt to translate attributes in the backend - We never want that.
-        elseif ($this->active_translation && !app()->runningInBackend()) {
+        elseif ($this->active_translation) {
             return $this->active_translation->attributes[$attribute];
         } else {
             return $default;

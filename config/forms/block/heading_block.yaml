@@ -36,4 +36,4 @@ tabs:
             tab: Preview
             type: partial
             path: $/dynamedia/posts/views/repeaterbody/preview/_heading_block_preview.htm
-            dependsOn: [content, type]
+            dependsOn: [heading_type, content]

@@ -41,6 +41,7 @@ class DisplayCategory extends ComponentBase
             }
 
         $this->setPosts();
+
     }
 
     private function setCategory()

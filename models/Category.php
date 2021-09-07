@@ -10,6 +10,7 @@ use Dynamedia\Posts\Traits\ControllerTrait;
 use October\Rain\Database\Traits\Validation;
 use Dynamedia\Posts\Traits\TranslatableContentObjectTrait;
 use Event;
+use RainLab\Translate\Classes\Translator;
 
 /**
  * category Model
@@ -295,23 +296,23 @@ class Category extends Model
         }
     }
 
-    public function getPathFromRoot()
+    public function getPathFromRoot($locale = null)
     {
         $path = [];
 
         foreach ($this->getParents() as $node) {
             $values = [];
             $values['id'] = $node->id;
-            $values['name'] = $node->name;
-            $values['slug'] = $node->slug;
+            $values['name'] = $node->getTranslated('name', $node->attributes['name'], $locale, true);
+            $values['slug'] = $node->getTranslated('slug', $node->attributes['slug'], $locale, true);
 
             $path[] = $values;
         }
 
         $self = [
             'id' => $this->id,
-            'name' => $this->name,
-            'slug' => $this->slug
+            'name' => $this->getTranslated('name', $this->attributes['name'], $locale, true),
+            'slug' => $this->getTranslated('slug', $this->attributes['slug'], $locale, true)
         ];
 
         $path[] = $self;
@@ -319,9 +320,9 @@ class Category extends Model
         return $path;
     }
 
-    public function getPathToRoot()
+    public function getPathToRoot($locale = null)
     {
-        $path = array_reverse($this->getPathFromRoot());
+        $path = array_reverse($this->getPathFromRoot($locale));
         return $path;
     }
 
@@ -331,24 +332,46 @@ class Category extends Model
     // ------------------------------------------- //
 
     /**
-     * Sets the "url" attribute with a URL to this object.
+     * Sets the "url" attribute with a URL to this object relative to the current locale
      *
      * @return string
      */
     public function getUrlAttribute()
     {
+        return $this->getUrlInLocale(Translator::instance()->getLocale());
+    }
+
+    /**
+     * Get the url of the category according to the specified locale code
+     *
+     * @param null $locale
+     * @return string
+     */
+    public function getUrlInLocale($locale = null)
+    {
+        if (!$locale) $locale = Translator::instance()->getLocale();
+        $slug = $this->getTranslated('slug', $this->attributes['slug'], $locale, true);
+
         $path = implode('/', array_map(function ($entry) {
             return $entry['slug'];
-        }, $this->getPathFromRoot()));
+        }, $this->getPathFromRoot($locale)));
 
         $params = [
             'postsCategoryPath' => $path,
             'postsFullPath' => $path,
-            'postsCategorySlug' => $this->slug
+            'postsCategorySlug' => $slug
         ];
 
-        return strtolower($this->getController()
-            ->pageUrl(Settings::get('categoryPage'), $params));
+        $defaultUrl = strtolower($this->getController()->pageUrl(Settings::get('categoryPage'), $params));
+
+        $parts = parse_url($defaultUrl);
+        $path = array_get($parts, 'path');
+
+        $translatedUrl = http_build_url($parts, [
+            'path' => '/' . Translator::instance()->getPathInLocale($path, $locale)
+        ]);
+
+        return $translatedUrl;
     }
 
     public function getPostListIdsAttribute()

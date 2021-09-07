@@ -53,7 +53,7 @@ class HeadingBlock
     {
         return [
             'block' => [
-                'type' => $type,
+                'heading_type' => $type,
                 'content' => $content,
             ],
             '_group' => 'heading_block'

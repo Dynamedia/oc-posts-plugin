@@ -68,21 +68,23 @@ Trait TranslatableContentObjectTrait
 
     public function getTranslated($attribute, $default, $locale = null, $fallback = false)
     {
+        // Do not attempt to translate attributes in the backend - We never want that.
         if (app()->runningInBackend()) return $default;
 
-        if ($locale) {
-            $trans = $this->getTranslation($locale);
-            if ($trans) {
-                if (!empty($trans->attributes[$attribute])) {
-                    return $trans->attributes[$attribute];
-                } elseif ($fallback) {
-                    return $this->attributes[$attribute];
-                }
+        $translationObject = $this->getTranslation($locale);
+
+        if ($translationObject) {
+
+            if (!empty($translationObject->attributes[$attribute])) {
+                return $translationObject->attributes[$attribute];
+            } elseif ($fallback) {
+                return $this->attributes[$attribute];
             }
+
         } elseif ($fallback) {
             return $this->attributes[$attribute];
         }
-        // Do not attempt to translate attributes in the backend - We never want that.
+
         elseif ($this->active_translation) {
             return $this->active_translation->attributes[$attribute];
         } else {

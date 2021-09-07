@@ -190,4 +190,14 @@ class CategoryTranslation extends Model
         $body = Body::getBody($this->body_document);
         return $body;
     }
+
+    /**
+     * Get the url of the translation.
+     *
+     * @return string
+     */
+    public function getUrlAttribute()
+    {
+        return $this->native->getUrlInLocale($this->locale->code);
+    }
 }

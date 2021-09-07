@@ -9,6 +9,7 @@ use Dynamedia\Posts\Traits\TranslatableContentObjectTrait;
 use October\Rain\Database\Traits\Validation;
 use BackendAuth;
 use Event;
+use RainLab\Translate\Classes\Translator;
 
 /**
  * tag Model
@@ -310,7 +311,7 @@ class Tag extends Model
     // ------------------------------------------- //
 
     /**
-     * Sets the "url" attribute with a URL to this object.
+     * Sets the "url" attribute with a URL to this object relative to thecurrent locale
      *
      * @param Controller $controller
      * @param array $params Override request URL parameters
@@ -319,11 +320,27 @@ class Tag extends Model
      */
     public function getUrlAttribute()
     {
-        $pageName = Settings::get('tagPage');
+        return $this->getUrlInLocale(Translator::instance()->getLocale());
+    }
 
-        $params = ['postsTagSlug' => $this->slug];
+    public function getUrlInLocale($locale = null)
+    {
 
-        return strtolower($this->getController()->pageUrl($pageName, $params));
+        if (!$locale) $locale = Translator::instance()->getLocale();
+        $slug = $this->getTranslated('slug', $this->attributes['slug'], $locale, true);
+
+        $params = ['postsTagSlug' => $slug];
+
+        $defaultUrl = strtolower($this->getController()->pageUrl(Settings::get('tagPage'), $params));
+
+        $parts = parse_url($defaultUrl);
+        $path = array_get($parts, 'path');
+
+        $translatedUrl = http_build_url($parts, [
+            'path' => '/' . Translator::instance()->getPathInLocale($path, $locale)
+        ]);
+
+        return $translatedUrl;
     }
 
     public function getPostListIdsAttribute()

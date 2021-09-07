@@ -3,9 +3,9 @@
 <?php
     $live = $model;
 
-    if ($live && !empty($live->type) && !empty($live->content)) {
+    if ($live && !empty($live->heading_type) && !empty($live->content)) {
         $blockData = Dynamedia\Posts\Classes\Body\Repeaterbody\Blocks\HeadingBlock::makePreviewBlock(
-            $live->type,
+            $live->heading_type,
             $live->content
         );
     } else {

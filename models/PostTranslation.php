@@ -198,16 +198,13 @@ class PostTranslation extends Model
         return $body;
     }
 
-    // work in progress
+    /**
+     * Get the url of the translation.
+     *
+     * @return string
+     */
     public function getUrlAttribute()
     {
-        $parent = $this->native;
-        $category = $this->native->primary_category;
-
-        dd($category->getTranslated('name', $category->attributes['name'], 'en', false));
-
-        $activeThemeCode = Theme::getActiveThemeCode();
-        $test = Page::loadCached($activeThemeCode, Settings::get('postPage'));
-        dd(Translator::instance()->getPathInLocale($test->url([]), 'de'));
+        return $this->native->getUrlInLocale($this->locale->code);
     }
 }

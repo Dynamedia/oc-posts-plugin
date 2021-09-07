@@ -547,7 +547,7 @@ class Post extends Model
      *
      * @return array
      */
-    private function getPostPage()
+    public function getPostPage()
     {
         $postsPage = Settings::get('postPage');
 
@@ -687,7 +687,7 @@ class Post extends Model
 
 
     /**
-     * Sets the "url" attribute with a URL to this object.
+     * Sets the "url" attribute with a URL to this object relative to the current locale
      *
      * @param Controller $controller
      * @param array $params Override request URL parameters
@@ -696,29 +696,64 @@ class Post extends Model
      */
     public function getUrlAttribute()
     {
-        $pageName = $this->getPostPage();
+        return $this->getUrlInLocale(Translator::instance()->getLocale());
+    }
+
+    /**
+     * Sets the 'native_url' attribute - The URL relative to the post's native locale
+     *
+     * @return string.
+     */
+    public function getNativeUrlAttribute()
+    {
+        return $this->getUrlInLocale($this->locale->code);
+    }
+
+    /**
+     * Get the url of the post according to the specified locale code
+     *
+     * @param null $locale
+     * @return string
+     */
+    public function getUrlInLocale($locale = null)
+    {
+        $postSlug = $this->getTranslated('slug', $this->attributes['slug'], $locale, true);
+        $primaryCategorySlug = null;
+
+        if (!$locale) $locale = Translator::instance()->getLocale();
+
         $categoryPath = null;
 
         if ($this->primary_category) {
+            $primaryCategorySlug = $this->primary_category->getTranslated('slug', $this->attributes['slug'], $locale, true);
             $categoryPath = implode('/', array_map(function ($entry) {
                 return $entry['slug'];
-            }, $this->primary_category->getPathFromRoot()));
+            }, $this->primary_category->getPathFromRoot($locale)));
         }
 
         if ($categoryPath) {
-            $fullPath = "{$categoryPath}/{$this->slug}";
+            $fullPath = "{$categoryPath}/{$postSlug}";
         } else {
-            $fullPath = $this->slug;
+            $fullPath = $postSlug;
         }
 
         $params = [
             'postsCategoryPath' => $categoryPath,
             'postsFullPath' => $fullPath,
-            'postsPostSlug'  => $this->slug,
-            'postsCategorySlug' => !empty($this->primary_category) ? $this->primary_category->slug : null
+            'postsPostSlug'  => $postSlug,
+            'postsCategorySlug' => !empty($primaryCategorySlug) ? $primaryCategorySlug : null
         ];
 
-        return strtolower($this->getController()->pageUrl($pageName, $params));
+        $defaultUrl = strtolower($this->getController()->pageUrl($this->getPostPage(), $params));
+
+        $parts = parse_url($defaultUrl);
+        $path = array_get($parts, 'path');
+
+        $translatedUrl = http_build_url($parts, [
+            'path' => '/' . Translator::instance()->getPathInLocale($path, $locale)
+        ]);
+
+        return $translatedUrl;
     }
 
     public function getComputedCmsLayoutAttribute()

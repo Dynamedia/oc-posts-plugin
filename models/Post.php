@@ -2,6 +2,7 @@
 
 use Dynamedia\Posts\Classes\Acl\AccessControl;
 use Dynamedia\Posts\Classes\Body\Repeaterbody\RepeaterBody;
+use Dynamedia\Posts\Classes\Seo\Seo;
 use Dynamedia\Posts\Models\Settings;
 use RainLab\Translate\Classes\Translator;
 use Model;
@@ -1111,6 +1112,17 @@ class Post extends Model
         if (!$this->show_contents) return [];
 
         return $this->body->getContentsList($this->url);
+    }
+
+    public function getSeoViewAttribute()
+    {
+        $seoData = new Seo($this);
+        return \View::make('dynamedia.posts::seo.head_seo', [
+            'search' => $seoData->getSearchArray(),
+            'openGraph' => $seoData->getOpenGraphArray(),
+            'twitter' => $seoData->getTwitterArray(),
+            'schema' => $seoData->getSchemaArray()
+        ]);
     }
 
 

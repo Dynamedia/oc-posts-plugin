@@ -1,0 +1,47 @@
+<title>{{ search.title }}</title>
+<meta name="description" content="{{ search.description }}">
+
+{% if openGraph.title %}
+<meta property="og:title" content="{{ openGraph.title }}" />
+{% endif %}
+
+{% if openGraph.url %}
+<meta property="og:url" content="{{ openGraph.url }}" />
+{% endif %}
+
+{% if openGraph.description %}
+<meta property="og:description" content="{{ openGraph.description }}" />
+{% endif %}
+
+{% if openGraph.image %}
+<meta property="og:image" content="{{ opengraph.image }}" />
+{% endif %}
+
+{% if twitter.site %}
+<meta name="twitter:site" content="{{ twitter.site }}">
+{% endif %}
+
+{% if twitter.creator %}
+<meta name="twitter:creator" content="{{ twitter.creator }}">
+{% endif %}
+
+{% if twitter.title %}
+<meta name="twitter:title" content="{{ twitter.title }}">
+{% endif %}
+
+{% if twitter.description %}
+<meta name="twitter:description" content="{{ twitter.description }}">
+{% endif %}
+
+{% if twitter.image %}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="{{ twitter.image }}">
+{% else %}
+<meta name="twitter:card" content="summary">
+{% endif %}
+
+{% if schema %}
+<script type="application/ld+json">
+    {{ schema | json_encode(constant('JSON_PRETTY_PRINT')) | raw }}
+</script>
+{% endif %}

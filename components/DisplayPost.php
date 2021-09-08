@@ -6,6 +6,7 @@ use App;
 use Cms\Classes\Page;
 use Cms\Classes\Theme;
 use Dynamedia\Posts\Classes\Acl\AccessControl;
+use Dynamedia\Posts\Classes\Seo\Seo;
 use Dynamedia\Posts\Models\Settings;
 use Dynamedia\Posts\Traits\PaginationTrait;
 use Input;
@@ -58,6 +59,7 @@ class DisplayPost extends ComponentBase
         }
 
         $this->setPaginator();
+
     }
 
 

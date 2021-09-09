@@ -1,6 +1,7 @@
 <?php namespace Dynamedia\Posts;
 
 use Backend;
+use Dynamedia\Posts\Classes\Extenders\ExtendStaticPages;
 use Dynamedia\Posts\Classes\Extenders\ExtendThemeFormConfig;
 use Dynamedia\Posts\Classes\Listeners\PostsRouteDetection;
 use Dynamedia\Posts\Classes\Acl\AccessControl;
@@ -14,7 +15,6 @@ use Dynamedia\Posts\Classes\Twig\TwigFilters;
 use Dynamedia\Posts\Classes\Twig\TwigFunctions;
 use System\Classes\PluginBase;
 use Event;
-use Cms\Models\ThemeData;
 
 
 /**
@@ -46,13 +46,6 @@ class Plugin extends PluginBase
     {
         $this->registerEvents();
         $this->registerExtenders();
-
-
-        // todo move this to the theme. It doesn't belong here
-        ThemeData::extend(function ($model) {
-            $model->addJsonable('images');
-        });
-
     }
 
     public function registerComponents()
@@ -152,6 +145,7 @@ class Plugin extends PluginBase
         Event::subscribe(CategoryModel::class);
         Event::subscribe(TagModel::class);
         Event::subscribe(ExtendThemeFormConfig::class);
+        Event::subscribe(ExtendStaticPages::class);
     }
 
     public function registerExtenders()

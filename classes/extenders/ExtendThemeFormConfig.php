@@ -1,12 +1,17 @@
 <?php
 
 namespace Dynamedia\Posts\Classes\Extenders;
+use Cms\Models\ThemeData;
 use Event;
 
 class ExtendThemeFormConfig
 {
     public function subscribe()
     {
+        ThemeData::extend(function ($model) {
+            $model->addJsonable('images');
+        });
+
         Event::listen('cms.theme.extendFormConfig', function ($themeCode, &$config) {
             array_set($config, 'tabs.fields.site_brand', [
                 'label'       => 'Site Brand',
@@ -49,9 +54,9 @@ class ExtendThemeFormConfig
 
 
             array_set($config, 'tabs.fields.images', [
-                'type'        => 'nestedform',
-                'tab'         => 'Images',
-                'form'        => plugins_path('/dynamedia/posts/config/forms/image/theme.yaml')
+                'type'              => 'nestedform',
+                'tab'               => 'Images',
+                'form'              => plugins_path('/dynamedia/posts/config/forms/image/theme.yaml')
             ]);
         });
     }

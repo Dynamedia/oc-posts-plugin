@@ -1,6 +1,7 @@
 <?php namespace Dynamedia\Posts;
 
 use Backend;
+use Dynamedia\Posts\Classes\Extenders\ExtendThemeFormConfig;
 use Dynamedia\Posts\Classes\Listeners\PostsRouteDetection;
 use Dynamedia\Posts\Classes\Acl\AccessControl;
 use Dynamedia\Posts\Classes\Extenders\ExtendBackendUser;
@@ -150,6 +151,7 @@ class Plugin extends PluginBase
         Event::subscribe(PostModel::class);
         Event::subscribe(CategoryModel::class);
         Event::subscribe(TagModel::class);
+        Event::subscribe(ExtendThemeFormConfig::class);
     }
 
     public function registerExtenders()

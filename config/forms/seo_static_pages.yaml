@@ -1,0 +1,29 @@
+viewBag[seo][about]:
+  tab: dynamedia.posts::lang.static_pages.tabs.seo
+  label: dynamedia.posts::lang.static_pages.labels.seo_page_about
+viewBag[seo][keywords]:
+  tab: dynamedia.posts::lang.static_pages.tabs.seo
+  label: dynamedia.posts::lang.static_pages.labels.seo_keywords
+  type: text
+viewBag[seo][search_description]:
+  tab: dynamedia.posts::lang.static_pages.tabs.seo
+  label: dynamedia.posts::lang.static_pages.labels.seo_search_description
+  type: textarea
+  size: small
+viewBag[seo][opengraph_title]:
+  tab: dynamedia.posts::lang.static_pages.tabs.seo
+  label: dynamedia.posts::lang.static_pages.labels.seo_opengraph_title
+viewBag[seo][opengraph_description]:
+  tab: dynamedia.posts::lang.static_pages.tabs.seo
+  label: dynamedia.posts::lang.static_pages.labels.seo_opengraph_description
+  type: textarea
+  size: small
+viewBag[seo][twitter_title]:
+  tab: dynamedia.posts::lang.static_pages.tabs.seo
+  label: dynamedia.posts::lang.static_pages.labels.seo_twitter_title
+viewBag[seo][twitter_description]:
+  tab: dynamedia.posts::lang.static_pages.tabs.seo
+  label: dynamedia.posts::lang.static_pages.labels.seo_twitter_description
+  type: textarea
+  size: small
+

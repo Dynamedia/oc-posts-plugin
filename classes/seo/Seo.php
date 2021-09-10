@@ -187,17 +187,17 @@ class Seo
         }
     }
 
-    private function setSchema()
+    protected function setSchema()
     {
         $this->schema = $this->model->seo_schema;
     }
 
-    private function appendSearch($key, $value)
+    protected function appendSearch($key, $value)
     {
         $this->search[$key] = $value;
     }
 
-    private function getSearch($key)
+    protected function getSearch($key)
     {
         if (!empty($this->search[$key])) {
             return $this->search[$key];
@@ -205,17 +205,17 @@ class Seo
         return "";
     }
 
-    public function getSearchArray()
+    protected function getSearchArray()
     {
         return $this->search;
     }
 
-    private function appendOpenGraph($key, $value)
+    protected function appendOpenGraph($key, $value)
     {
         $this->openGraph[$key] = $value;
     }
 
-    private function getOpenGraph($key)
+    protected function getOpenGraph($key)
     {
         if (!empty($this->openGraph[$key])) {
             return $this->openGraph[$key];
@@ -223,17 +223,17 @@ class Seo
         return "";
     }
 
-    public function getOpenGraphArray()
+    protected function getOpenGraphArray()
     {
         return $this->openGraph;
     }
 
-    private function appendTwitter($key, $value)
+    protected function appendTwitter($key, $value)
     {
         $this->twitter[$key] = $value;
     }
 
-    private function getTwitter($key)
+    protected function getTwitter($key)
     {
         if (!empty($this->twitter[$key])) {
             return $this->twitter[$key];
@@ -241,12 +241,12 @@ class Seo
         return "";
     }
 
-    public function getTwitterArray()
+    protected function getTwitterArray()
     {
         return $this->twitter;
     }
 
-    public function getSchemaArray()
+    protected function getSchemaArray()
     {
         return $this->schema;
     }

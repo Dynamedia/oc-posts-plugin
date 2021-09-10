@@ -1,0 +1,19 @@
+viewBag[facebook_image]:
+    tab: dynamedia.posts::lang.static_pages.tabs.social_images
+    label: dynamedia.posts::lang.static_pages.labels.facebook_image
+    type: mediafinder
+    mode: image
+    imageHeight: 260
+    imageWidth: 260
+
+_ruler:
+    tab: dynamedia.posts::lang.static_pages.tabs.social_images
+    type: ruler
+
+viewBag[twitter_image]:
+    tab: dynamedia.posts::lang.static_pages.tabs.social_images
+    label: dynamedia.posts::lang.static_pages.labels.twitter_image
+    type: mediafinder
+    mode: image
+    imageHeight: 260
+    imageWidth: 260

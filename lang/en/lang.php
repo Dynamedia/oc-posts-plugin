@@ -281,5 +281,25 @@ return [
             'name'          => 'Search Posts',
             'description'   => 'Show search results',
         ],
+    ],
+    'static_pages' => [
+        'tabs' => [
+            'banner_image'   => 'Banner Image',
+            'social_images'  => 'Social Images',
+            'seo'            => 'SEO'
+        ],
+        'labels' => [
+            'default'        => 'Default Image',
+            'responsive'     => 'Responsive Images',
+            'facebook_image' => 'Facebook Sharing Image',
+            'twitter_image'  => 'Twitter Sharing Image',
+            'seo_page_about' => 'Page is about',
+            'seo_keywords'   => 'Keywords',
+            'seo_search_description' => 'Description for search engines',
+            'seo_opengraph_title' => 'Title for Facebook & Open Graph sharing',
+            'seo_opengraph_description' => 'Description for Facebook & Open Graph sharing',
+            'seo_twitter_title' => 'Title for Twitter sharing',
+            'seo_twitter_description' => 'Description for Twitter sharing',
+        ]
     ]
 ];

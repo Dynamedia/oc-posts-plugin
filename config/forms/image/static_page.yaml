@@ -1,16 +1,10 @@
 tabs:
     fields:
-        list:
-            tab: dynamedia.posts::lang.images.tabs.list
-            type: nestedform
-            usePanelStyles: false
-            showPanel: false
-            form: $/dynamedia/posts/config/forms/image/list.yaml
         banner:
             tab: dynamedia.posts::lang.images.tabs.banner
             type: nestedform
-            usePanelStyles: false
-            showPanel: false
+            usePanelStyles: true
+            showPanel: true
             form: $/dynamedia/posts/config/forms/image/banner.yaml
         social:
             tab: dynamedia.posts::lang.images.tabs.social

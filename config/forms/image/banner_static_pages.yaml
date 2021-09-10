@@ -1,0 +1,39 @@
+viewBag[banner_image]:
+    tab: dynamedia.posts::lang.static_pages.tabs.banner_image
+    label: dynamedia.posts::lang.static_pages.labels.default
+    type: mediafinder
+    mode: image
+    imageHeight: 260
+    imageWidth: 260
+
+viewBag[banner_image_alt]:
+    tab: dynamedia.posts::lang.static_pages.tabs.banner_image
+    label: dynamedia.posts::lang.images.labels.alt_text
+viewBag[banner_image_class]:
+    tab: dynamedia.posts::lang.static_pages.tabs.banner_image
+    label: dynamedia.posts::lang.images.labels.css_class
+_ruler:
+    tab: dynamedia.posts::lang.static_pages.tabs.banner_image
+    type: ruler
+viewBag[banner_image_responsive]:
+    tab: dynamedia.posts::lang.static_pages.tabs.banner_image
+    label: dynamedia.posts::lang.static_pages.labels.responsive
+    type: repeater
+    form:
+        fields:
+            image:
+                type: mediafinder
+                mode: image
+                imageHeight: 260
+                imageWidth: 260
+            media_query:
+                span: left
+                label: dynamedia.posts::lang.images.labels.media_query
+                type: dropdown
+                options:
+                    max-width: dynamedia.posts::lang.images.options.max_width
+                    min-width: dynamedia.posts::lang.images.options.min_width
+            screen_width:
+                span: right
+                label: dynamedia.posts::lang.images.labels.screen_width
+                type: number

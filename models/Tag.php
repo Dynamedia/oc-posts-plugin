@@ -1,6 +1,7 @@
 <?php namespace Dynamedia\Posts\Models;
 use Dynamedia\Posts\Classes\Acl\AccessControl;
 use Dynamedia\Posts\Classes\Body\Body;
+use Dynamedia\Posts\Classes\Seo\PostsObjectSeoParser;
 use Model;
 use Dynamedia\Posts\Traits\ControllerTrait;
 use Dynamedia\Posts\Traits\ImagesTrait;
@@ -491,5 +492,17 @@ class Tag extends Model
     {
         $body = Body::getBody($this->body_document);
         return $body;
+    }
+
+    public function getHtmlHeadAttribute()
+    {
+        $seoData = new PostsObjectSeoParser($this);
+        return \View::make('dynamedia.posts::seo.head_seo', [
+            'search' => $seoData->getSearchArray(),
+            'openGraph' => $seoData->getOpenGraphArray(),
+            'twitter' => $seoData->getTwitterArray(),
+            'schema' => $seoData->getSchemaArray(),
+            'themeData' => $seoData->getThemeData()
+        ]);
     }
 }

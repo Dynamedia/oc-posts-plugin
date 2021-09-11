@@ -1,4 +1,13 @@
-<title>{{ search.title }}</title>
+{% set pageTitle = search.title %}
+{% if themeData.title_append == 'site_brand' %}
+    {% set pageTitle = pageTitle ~ ' | ' ~ themeData.site_brand %}
+{% elseif themeData.title_append == 'site_name' %}
+    {% set pageTitle = pageTitle ~ ' | ' ~ themeData.site_name %}
+{% elseif themeData.title_append == 'both' %}
+    {% set pageTitle = pageTitle ~ ' | ' ~ themeData.site_brand ~ ' > ' ~ themeData.site_name %}
+{% endif %}
+
+<title>{{ pageTitle }}</title>
 <meta name="description" content="{{ search.description }}">
 
 {% if openGraph.title %}
@@ -14,7 +23,7 @@
 {% endif %}
 
 {% if openGraph.image %}
-<meta property="og:image" content="{{ opengraph.image }}" />
+<meta property="og:image" content="{{ openGraph.image }}" />
 {% endif %}
 
 {% if twitter.site %}

@@ -12,7 +12,7 @@ use Spatie\SchemaOrg\Schema;
 
 class StaticPagesSeoParser extends Seo
 {
-    
+
 
     public function __construct($staticPage)
     {
@@ -61,7 +61,7 @@ class StaticPagesSeoParser extends Seo
             $this->appendSearch('description', '');
         }
     }
-    
+
     private function setOpenGraphTitle()
     {
         if (!empty($this->page->seo['opengraph_title'])) {
@@ -174,12 +174,12 @@ class StaticPagesSeoParser extends Seo
         //dd($this->page);
         $about = schema::thing()
             ->name($this->page->seo['about']);
-            
+
         $webPage = schema::webPage()
             ->about($about)
             ->dateModified($this->page->mtime);
-        dd($webPage->toArray());
-        $this->schema = $this->model->seo_schema;
+
+        $this->schema = $webPage->toArray();
     }
 
 }

@@ -31,6 +31,19 @@ class ExtendThemeFormConfig
                 'tab'         => 'Branding'
             ]);
 
+            array_set($config, 'tabs.fields.title_append', [
+                'label'       => 'Append to  Title',
+                'tab'         => 'Branding',
+                'type'        => 'dropdown',
+                'options'     => [
+                    'none'        => 'None',
+                    'site_name'   => 'Site Name',
+                    'site_brand'  => 'Site Brand',
+                    'both'        => 'Site Name & Brand',
+                ],
+                'default' => 'name'
+            ]);
+
             array_set($config, 'tabs.fields.facebook_url', [
                 'label'       => 'Facebook URL',
                 'type'        => 'text',

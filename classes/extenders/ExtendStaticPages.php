@@ -22,6 +22,10 @@ class ExtendStaticPages
                 'viewBag[seo][twitter_title]',
                 'viewBag[seo][twitter_description]',
             ]);
+            
+            $model->addDynamicMethod('getSeoSchemaAttribute', function() use($model) {
+                return $model->title;
+            });
         });
 
         Event::listen('cms.page.beforeDisplay', function($controller, $url, $page) {
@@ -30,9 +34,12 @@ class ExtendStaticPages
                 $staticPage = $page->apiBag['staticPage'];
             }
             if (!$staticPage) return;
+            
+            
 
             $seoParser = new StaticPagesSeoParser($staticPage);
-            //dd($seoParser);
+            //dd($staticPage->seo_schema);
+            dd($seoParser);
         });
 
         Event::listen('backend.form.extendFieldsBefore', function ($widget) {

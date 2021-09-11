@@ -7,15 +7,15 @@ use Cms\Classes\MediaLibrary;
 
 class Seo
 {
-    private $controller;
-    private $model;
-    private $page;
-    private $themeData;
+    protected $controller;
+    protected $model;
+    protected $page;
+    protected $themeData;
 
-    private $search = [];
-    private $openGraph = [];
-    private $twitter = [];
-    private $schema = [];
+    protected $search = [];
+    protected $openGraph = [];
+    protected $twitter = [];
+    protected $schema = [];
 
     public function __construct($model)
     {
@@ -187,7 +187,7 @@ class Seo
         }
     }
 
-    protected function setSchema()
+    private function setSchema()
     {
         $this->schema = $this->model->seo_schema;
     }

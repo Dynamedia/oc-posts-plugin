@@ -32,9 +32,16 @@ class TagTranslation extends Model
     /**
      * @var array rules for validation
      */
-    public $rules = [];
+    public $rules = [
+        'native' =>'required',
+        'locale' => 'required',
+        'slug'  => 'required'
+    ];
 
-    public $customMessages = [];
+    public $customMessages = [
+        'native.required' => 'Translations cannot be created without a tag.',
+        'locale.required' => 'Translations must specify their locale',
+    ];
 
     /**
      * @var array Attributes to be cast to native types

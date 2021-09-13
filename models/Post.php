@@ -677,6 +677,18 @@ class Post extends Model
                 $fields->cms_layout->readOnly = true;
             }
         }
+
+        if (!AccessControl::userCanManageTranslations($user)) {
+            if (isset($fields->translations)) {
+                $fields->translations->comment = "You do not have permission to manage translations";
+            }
+        }
+
+        if (!AccessControl::userCanManageSlugs($user)) {
+            if (isset($fields->postslugs)) {
+                $fields->postslugs->comment = "You do not have permission to manage related slugs";
+            }
+        }
     }
 
 

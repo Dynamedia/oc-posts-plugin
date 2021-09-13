@@ -24,6 +24,10 @@ class TagSlugs extends Controller
      */
     public $listConfig = 'config_list.yaml';
 
+    public $requiredPermissions = [
+        'dynamedia.posts.manage_slugs'
+    ];
+
     /**
      * __construct the controller
      */

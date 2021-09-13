@@ -30,6 +30,10 @@ class PostTranslations extends Controller
      */
     public $relationConfig = 'config_relation.yaml';
 
+    public $requiredPermissions = [
+        'dynamedia.posts.manage_translations'
+    ];
+
     /**
      * __construct the controller
      */

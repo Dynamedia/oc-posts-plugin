@@ -35,7 +35,16 @@ class CategoryTranslation extends Model
     /**
      * @var array rules for validation
      */
-    public $rules = [];
+    public $rules = [
+        'native' =>'required',
+        'locale' => 'required',
+        'slug'  => 'required'
+    ];
+
+    public $customMessages = [
+        'native.required' => 'Translations cannot be created without a category.',
+        'locale.required' => 'Translations must specify their locale',
+    ];
 
     /**
      * @var array Attributes to be cast to native types

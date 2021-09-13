@@ -1,1 +1,14 @@
-<?= $this->relationRender('postslugs') ?>
+<?php
+namespace Dynamedia\Posts\Controllers;
+
+use Dynamedia\Posts\Classes\Acl\AccessControl;
+use BackendAuth;
+
+$user = BackendAuth::getUser();
+$readOnly = false;
+
+if (!AccessControl::userCanManageSlugs($user)) {
+    $readOnly = true;
+}
+?>
+<?= $this->relationRender('postslugs', ['readOnly' => $readOnly]) ?>

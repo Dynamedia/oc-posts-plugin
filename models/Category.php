@@ -1,5 +1,6 @@
 <?php namespace Dynamedia\Posts\Models;
 
+use Dynamedia\Posts\Classes\Acl\AccessControl;
 use Dynamedia\Posts\Classes\Body\Body;
 use Dynamedia\Posts\Classes\Seo\PostsObjectSeoParser;
 use Model;
@@ -423,6 +424,8 @@ class Category extends Model
 
     public function filterFields($fields, $context = null)
     {
+        $user = BackendAuth::getUser();
+
         // Body Type
         if (isset($fields->body_type)) {
 
@@ -453,6 +456,18 @@ class Category extends Model
         }
         if (isset($fields->about)) {
             $fields->about->hidden = true;
+        }
+
+        if (!AccessControl::userCanManageTranslations($user)) {
+            if (isset($fields->translations)) {
+                $fields->translations->comment = "You do not have permission to manage translations";
+            }
+        }
+
+        if (!AccessControl::userCanManageSlugs($user)) {
+            if (isset($fields->categoryslugs)) {
+                $fields->categoryslugs->comment = "You do not have permission to manage related slugs";
+            }
         }
     }
 

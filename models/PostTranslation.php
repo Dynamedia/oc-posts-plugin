@@ -37,7 +37,8 @@ class PostTranslation extends Model
 
     public $rules = [
         'native' =>'required',
-        'locale' => 'required'
+        'locale' => 'required',
+        'slug'  => 'required'
     ];
 
     public $customMessages = [

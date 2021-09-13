@@ -141,6 +141,18 @@ class AccessControl
                 'order' => 1200,
                 'roles' => ['publisher', 'developer']
             ],
+            'dynamedia.posts.manage_translations' => [
+                'tab' => 'Posts',
+                'label' => 'Manage Translations',
+                'order' => 1200,
+                'roles' => ['publisher', 'developer']
+            ],
+            'dynamedia.posts.manage_slugs' => [
+                'tab' => 'Posts',
+                'label' => 'Manage Slugs',
+                'order' => 1200,
+                'roles' => ['publisher', 'developer']
+            ],
             'dynamedia.posts.view_settings' => [
                 'tab' => 'Posts',
                 'label' => 'View Settings',
@@ -386,6 +398,34 @@ class AccessControl
     public static function userCanManageSettings($user)
     {
         if (!$user->hasAccess('dynamedia.posts.manage_settings')) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Check if user has required permissions to manage Translations
+     * @param $user
+     * @return bool
+     */
+    public static function userCanManageTranslations($user)
+    {
+        if (!$user->hasAccess('dynamedia_posts.manage_translations')) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Check if user has required permissions to manage Translations
+     * @param $user
+     * @return bool
+     */
+    public static function userCanManageSlugs($user)
+    {
+        if (!$user->hasAccess('dynamedia_posts.manage_slugs')) {
             return false;
         } else {
             return true;

@@ -183,6 +183,8 @@ class Tag extends Model
 
     public function filterFields($fields, $context = null)
     {
+        $user = BackendAuth::getUser();
+
         // Body Type
         if (isset($fields->body_type)) {
 
@@ -221,6 +223,18 @@ class Tag extends Model
         }
         if (isset($fields->about)) {
             $fields->about->hidden = true;
+        }
+
+        if (!AccessControl::userCanManageTranslations($user)) {
+            if (isset($fields->translations)) {
+                $fields->translations->comment = "You do not have permission to manage translations";
+            }
+        }
+
+        if (!AccessControl::userCanManageSlugs($user)) {
+            if (isset($fields->tagslugs)) {
+                $fields->tagslugs->comment = "You do not have permission to manage related slugs";
+            }
         }
 
     }

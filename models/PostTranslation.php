@@ -112,6 +112,8 @@ class PostTranslation extends Model
         if (!PostSlug::isAvailable($this->native->id, $this->slug)) {
             throw new ValidationException(['slug' => "Slug is not available"]);
         }
+
+        $this->prePopulateAttributes();
     }
 
     public function beforeSave()
@@ -190,6 +192,67 @@ class PostTranslation extends Model
         }
     }
 
+    public function getPopulateFromOptions() {
+        $options = [
+            '__blank__' => 'Blank',
+        ];
+
+        $formVars = post('Post');
+        if (!empty($formVars)) {
+            $parentPost = Post::where('slug', $formVars['slug'])
+                ->with('translations')
+                ->first();
+        } else {
+            return $options;
+        }
+
+        $options['__native__'] = $parentPost->locale->name;
+
+        foreach ($parentPost->translations as $translation) {
+            $options["{$translation->id}"] = $translation->locale->name;
+        }
+
+        return $options;
+    }
+
+    /**
+     * Pre-populate the translatable fields from native, or existing translation
+     */
+    public function prePopulateAttributes()
+    {
+        // We can use this later to hook into Google translate
+        $formVars = post('PostTranslation');
+        if (empty($formVars['_populateFrom'])) {
+            return;
+        }
+
+        if ($formVars['_populateFrom'] == "__blank__") {
+            // Not truly blank as we need a slug and title
+            $this->slug = $this->native->slug;
+            $this->title = $this->native->title;
+            $this->body_document = ['body_type' => 'repeater_body'];
+            // Finish here, we're not populating anything else
+            return;
+
+        } elseif ($formVars['_populateFrom'] == "__native__") {
+            $source = $this->native;
+        }
+
+        else {
+            $source = PostTranslation::where('id', $formVars['_populateFrom'])->first();
+        }
+
+        if (empty($source)) return;
+
+        $this->attributes['slug'] = $source->attributes['slug'];
+        $this->attributes['title'] = $source->attributes['title'];
+        $this->attributes['excerpt'] = $source->attributes['excerpt'];
+        $this->attributes['body_document'] = $source->attributes['body_document'];
+        $this->attributes['images'] = $source->attributes['images'];
+        $this->attributes['seo'] = $source->attributes['seo'];
+        $this->attributes['show_contents'] = $source->show_contents;
+    }
+
     /**
      * @return mixed body object by body_document body_type
      */
@@ -208,4 +271,5 @@ class PostTranslation extends Model
     {
         return $this->native->getUrlInLocale($this->locale->code);
     }
+
 }

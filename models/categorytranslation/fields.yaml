@@ -4,48 +4,63 @@
 
 tabs:
     fields:
-        locale_id:
+        locale_id@create:
             tab: dynamedia.posts::lang.common.tabs.detail
             label: Locale
             type: dropdown
             placeholder: dynamedia.posts::lang.common.dropdown.locale_placeholder
-        name:
+
+        _populateFrom@create:
+            tab: dynamedia.posts::lang.common.tabs.detail
+            label: Populate From
+            type: dropdown
+            default: '__native__'
+            placeholder: dynamedia.posts::lang.common.dropdown.locale_placeholder
+
+        locale_id@update:
+            tab: dynamedia.posts::lang.common.tabs.detail
+            label: Locale
+            type: dropdown
+            placeholder: dynamedia.posts::lang.common.dropdown.locale_placeholder
+            readOnly: true
+
+        name@update:
             label: dynamedia.posts::lang.common.labels.name
             tab: dynamedia.posts::lang.common.tabs.detail
             span: left
 
-        slug:
+        slug@update:
             label: dynamedia.posts::lang.common.labels.slug
             tab: dynamedia.posts::lang.common.tabs.detail
             span: right
             preset: name
 
-        excerpt:
+        excerpt@update:
             tab: dynamedia.posts::lang.common.tabs.detail
             label: dynamedia.posts::lang.common.labels.excerpt
             type: richeditor
             size: huge
 
-        images:
+        images@update:
             tab: dynamedia.posts::lang.common.tabs.images
             type: nestedform
             usePanelStyles: false
             form: $/dynamedia/posts/config/forms/image/main_image.yaml
 
-        body_document:
+        body_document@update:
             tab: dynamedia.posts::lang.common.tabs.body
             type: nestedform
             usePanelStyles: false
             showPanel: false
             form: $/dynamedia/posts/config/forms/body/body_type_category_tag.yaml
 
-        seo:
+        seo@update:
             tab: dynamedia.posts::lang.common.tabs.seo
             type: nestedform
             usePanelStyles: false
             form: $/dynamedia/posts/config/forms/seo.yaml
 
-        cms_layout:
+        cms_layout@update:
             tab: dynamedia.posts::lang.common.tabs.settings
             label: dynamedia.posts::lang.common.labels.cms_layout
             type: dropdown

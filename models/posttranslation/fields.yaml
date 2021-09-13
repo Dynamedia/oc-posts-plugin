@@ -3,62 +3,76 @@
 # ===================================
 tabs:
     fields:
-        locale_id:
+        locale_id@create:
             tab: dynamedia.posts::lang.common.tabs.detail
             label: Locale
             type: dropdown
             placeholder: dynamedia.posts::lang.common.dropdown.locale_placeholder
-        title:
+        _populateFrom@create:
+            tab: dynamedia.posts::lang.common.tabs.detail
+            label: Populate From
+            type: dropdown
+            default: '__native__'
+            placeholder: dynamedia.posts::lang.common.dropdown.locale_placeholder
+
+        locale_id@update:
+            tab: dynamedia.posts::lang.common.tabs.detail
+            label: Locale
+            type: dropdown
+            placeholder: dynamedia.posts::lang.common.dropdown.locale_placeholder
+            readOnly: true
+
+        title@update:
             tab: dynamedia.posts::lang.common.tabs.detail
             span: left
             label: dynamedia.posts::lang.common.labels.title
 
-        slug:
+        slug@update:
             tab: dynamedia.posts::lang.common.tabs.detail
             span: right
             label: dynamedia.posts::lang.common.labels.slug
             preset: title
 
-        excerpt:
+        excerpt@update:
             tab: dynamedia.posts::lang.common.tabs.detail
             label: dynamedia.posts::lang.common.labels.excerpt
             type: richeditor
             size: huge
 
-        images:
+        images@update:
             tab: dynamedia.posts::lang.common.tabs.images
             type: nestedform
             usePanelStyles: false
             form: $/dynamedia/posts/config/forms/image/main_image.yaml
 
-        body_document:
+        body_document@update:
             tab: dynamedia.posts::lang.common.tabs.body
             type: nestedform
             usePanelStyles: false
             showPanel: false
             form: $/dynamedia/posts/config/forms/body/body_type_post.yaml
 
-        seo:
+        seo@update:
             tab: dynamedia.posts::lang.common.tabs.seo
             type: nestedform
             usePanelStyles: false
             form: $/dynamedia/posts/config/forms/seo.yaml
 
-        cms_layout:
+        cms_layout@update:
             tab: dynamedia.posts::lang.common.tabs.settings
             label: dynamedia.posts::lang.common.labels.cms_layout
             type: dropdown
             default: '__inherit__'
             options: \Dynamedia\Posts\Classes\Helpers\Form::getCmsLayoutOptions
 
-        is_published:
+        is_published@update:
             tab: dynamedia.posts::lang.common.tabs.settings
             span: left
             label: dynamedia.posts::lang.posts.labels.is_published
             type: switch
             default: off
 
-        show_contents:
+        show_contents@update:
             tab: dynamedia.posts::lang.common.tabs.settings
             span: right
             label: dynamedia.posts::lang.posts.labels.show_contents

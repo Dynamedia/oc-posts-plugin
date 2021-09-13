@@ -6,6 +6,7 @@ use Dynamedia\Posts\Traits\SeoTrait;
 use Dynamedia\Posts\Traits\ImagesTrait;
 use Dynamedia\Posts\Traits\ControllerTrait;
 use \October\Rain\Database\Traits\Validation;
+use phpDocumentor\Reflection\Types\Self_;
 use RainLab\Translate\Classes\Translator;
 use RainLab\Translate\Models\Locale;
 use ValidationException;
@@ -112,6 +113,7 @@ class CategoryTranslation extends Model
         if (!CategorySlug::isAvailable($this->native->id, $this->slug)) {
             throw new ValidationException(['slug' => "Slug is not available"]);
         }
+        $this->prePopulateAttributes();
     }
 
     public function beforeSave()
@@ -189,6 +191,66 @@ class CategoryTranslation extends Model
                 $fields->markdown_body->hidden = true;
             }
         }
+    }
+
+    public function getPopulateFromOptions() {
+        $options = [
+            '__blank__' => 'Blank',
+        ];
+
+        $formVars = post('Category');
+        if (!empty($formVars)) {
+            $parentCategory = Category::where('slug', $formVars['slug'])
+                ->with('translations')
+                ->first();
+        } else {
+            return $options;
+        }
+
+        $options['__native__'] = Locale::where('code', Translator::instance()->getDefaultLocale())->first()->name;
+
+        foreach ($parentCategory->translations as $translation) {
+            $options["{$translation->id}"] = $translation->locale->name;
+        }
+
+        return $options;
+    }
+
+    /**
+     * Pre-populate the translatable fields from native, or existing translation
+     */
+    public function prePopulateAttributes()
+    {
+        // We can use this later to hook into Google translate
+        $formVars = post('CategoryTranslation');
+        if (empty($formVars['_populateFrom'])) {
+            return;
+        }
+
+        if ($formVars['_populateFrom'] == "__blank__") {
+            // Not truly blank as we need a slug and title
+            $this->slug = $this->native->slug;
+            $this->name = $this->native->name;
+            $this->body_document = ['body_type' => 'repeater_body'];
+            // Finish here, we're not populating anything else
+            return;
+
+        } elseif ($formVars['_populateFrom'] == "__native__") {
+            $source = $this->native;
+        }
+
+        else {
+            $source = self::where('id', $formVars['_populateFrom'])->first();
+        }
+
+        if (empty($source)) return;
+
+        $this->attributes['slug'] = $source->attributes['slug'];
+        $this->attributes['name'] = $source->attributes['name'];
+        $this->attributes['excerpt'] = $source->attributes['excerpt'];
+        $this->attributes['body_document'] = $source->attributes['body_document'];
+        $this->attributes['images'] = $source->attributes['images'];
+        $this->attributes['seo'] = $source->attributes['seo'];
     }
 
     /**

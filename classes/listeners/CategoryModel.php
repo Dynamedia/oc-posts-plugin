@@ -31,6 +31,10 @@ class CategoryModel
             $category->categoryslugs()->firstOrCreate([
                 'slug' => $category->slug,
             ]);
+
+            foreach ($category->getCacheKeys() as $key) {
+                \Cache::forget($key);
+            }
         });
 
         // Before Delete

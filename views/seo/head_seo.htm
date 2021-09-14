@@ -1,3 +1,11 @@
+{% for locale in locales %}
+    <link rel="alternate" hreflang="{{ locale.code }}" href="{{ locale.url }}" />
+    {% if locale.default %}
+    <link rel="alternate" href="{{ locale.url }}" hreflang="x-default" />
+    {% endif %}
+{% endfor %}
+
+
 {% set pageTitle = search.title %}
 {% if themeData.title_append == 'site_brand' %}
     {% set pageTitle = pageTitle ~ ' | ' ~ themeData.site_brand %}

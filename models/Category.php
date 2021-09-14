@@ -13,6 +13,7 @@ use October\Rain\Database\Traits\Validation;
 use Dynamedia\Posts\Traits\TranslatableContentObjectTrait;
 use Event;
 use RainLab\Translate\Classes\Translator;
+use RainLab\Translate\Models\Locale;
 
 /**
  * category Model
@@ -634,13 +635,58 @@ class Category extends Model
 
     public function getHtmlHeadAttribute()
     {
+        $cacheKey = self::class . "_{$this->id}_html_head_attribute_" . Translator::instance()->getLocale();
+        if (\Cache::has($cacheKey)) return \Cache::get($cacheKey);
+
         $seoData = new PostsObjectSeoParser($this);
-        return \View::make('dynamedia.posts::seo.head_seo', [
+        $view = \View::make('dynamedia.posts::seo.head_seo', [
             'search' => $seoData->getSearchArray(),
             'openGraph' => $seoData->getOpenGraphArray(),
             'twitter' => $seoData->getTwitterArray(),
             'schema' => $seoData->getSchemaArray(),
-            'themeData' => $seoData->getThemeData()
-        ]);
+            'themeData' => $seoData->getThemeData(),
+            'locales' => $this->getAlternateLocales()
+        ])->render();
+
+        \Cache::put($cacheKey, $view);
+        return $view;
+    }
+
+    /**
+     * Get all locale variations of the post
+     *
+     * @return mixed
+     */
+    private function getAlternateLocales()
+    {
+        $locales[] = [
+            'code' => Translator::instance()->getDefaultLocale(),
+            'url'  => $this->url,
+            'default' => true
+        ];
+
+        foreach ($this->translations as $translation) {
+            $locales[] = [
+                'code' => $translation->locale->code,
+                'url' => $translation->url,
+            ];
+        }
+
+        return $locales;
+    }
+
+    /**
+     * Return all possible keys for this category
+     *
+     * @return array
+     */
+    public function getCacheKeys()
+    {
+        $keys = [];
+        foreach (Locale::all() as $locale) {
+            $keys[] = self::class . "_{$this->id}_html_head_attribute_" . $locale->code;
+        }
+
+        return $keys;
     }
 }

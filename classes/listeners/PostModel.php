@@ -50,6 +50,11 @@ class PostModel
             $post->postslugs()->firstOrCreate([
                 'slug' => $post->slug,
             ]);
+
+            foreach ($post->getCacheKeys() as $key) {
+                \Cache::forget($key);
+            }
+
         });
 
         // Before Delete

@@ -33,6 +33,10 @@ class TagModel
             $tag->tagslugs()->firstOrCreate([
                 'slug' => $tag->slug,
             ]);
+
+            foreach ($tag->getCacheKeys() as $key) {
+                \Cache::forget($key);
+            }
         });
 
         // Before Delete

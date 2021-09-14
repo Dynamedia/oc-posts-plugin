@@ -1,0 +1,37 @@
+
+<?= Form::open(['class' => 'layout']) ?>
+
+<style>
+    .about-posts {
+        max-width: 900px;
+        background-color: #e9edf3;
+        color: #444;
+        margin:15px auto; padding: 15px; border-radius: 5px;
+    }
+    .about-posts h1 {
+        text-align: center; font-size: 22px;
+        margin: 10px 0 25px 0;
+    }
+
+    .about-posts p {
+        margin-top: 15px;
+        font-size: 16px;
+    }
+    @media only screen and (max-width: 900px)  {
+        .about-posts p {
+            text-align: justify;
+        }
+    }
+</style>
+
+<div class="about-posts">
+    <h1>Thanks for using Posts</h1>
+    <?php
+        if ($this->vars['commercial_license'] === true) {
+            echo $this->makePartial('commercial');
+        } else {
+            echo $this->makePartial('noncommercial');
+        }
+    ?>
+</div>
+<?= Form::close() ?>

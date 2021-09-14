@@ -107,6 +107,12 @@ class Plugin extends PluginBase
                         'url'         => Backend::url('system/settings/update/dynamedia/posts/settings'),
                         'permissions' => ['dynamedia.posts.view_settings']
                     ],
+                    'aboutposts' => [
+                        'label'       => 'About Posts',
+                        'icon'        => 'icon-info',
+                        'url'         => Backend::url('dynamedia/posts/aboutposts'),
+                        'permissions' => ['dynamedia.posts.access_plugin']
+                    ],
                 ]
             ],
         ];
@@ -144,12 +150,12 @@ class Plugin extends PluginBase
         Event::subscribe(PostModel::class);
         Event::subscribe(CategoryModel::class);
         Event::subscribe(TagModel::class);
-        Event::subscribe(ExtendThemeFormConfig::class);
-        Event::subscribe(ExtendStaticPages::class);
     }
 
     public function registerExtenders()
     {
         Event::subscribe(ExtendBackendUser::class);
+        Event::subscribe(ExtendThemeFormConfig::class);
+        Event::subscribe(ExtendStaticPages::class);
     }
 }

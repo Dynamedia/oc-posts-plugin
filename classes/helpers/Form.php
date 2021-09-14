@@ -39,7 +39,9 @@ class Form
 
         $layout = Layout::listInTheme(Theme::getActiveTheme(), true);
         foreach ($layout as $item) {
-            $options[$item->fileName] = $item->description;
+            if ($item->postsLayout) {
+                $options[$item->fileName] = $item->description;
+            }
         }
         $options[''] = 'None';
         return $options;
@@ -103,15 +105,4 @@ class Form
         return $appended;
     }
 
-    public static function getMicroCacheDuration()
-    {
-        $min = Config::get('dynamedia.posts::microCacheMinDuration');
-        $max = Config::get('dynamedia.posts::microCacheMaxDuration');
-        $step = Config::get('dynamedia.posts::microCacheDurationStep') ? Config::get('dynamedia.posts::microCacheDurationStep') : 1;
-
-        for ($i = $min; $i <= $max; $i += $step) {
-            $perPage[$i] = $i;
-        }
-        return $perPage;
-    }
 }

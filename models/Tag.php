@@ -537,7 +537,7 @@ class Tag extends Model
     {
         $locales[] = [
             'code' => Translator::instance()->getDefaultLocale(),
-            'url'  => $this->url,
+            'url'  => $this->getUrlInLocale(Translator::instance()->getDefaultLocale()),
             'default' => true
         ];
 

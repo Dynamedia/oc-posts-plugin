@@ -1153,7 +1153,7 @@ class Post extends Model
     {
         $locales[] = [
             'code' => $this->locale->code,
-            'url'  => $this->url,
+            'url'  => $this->getUrlInLocale($this->locale->code),
             'default' => true
         ];
 

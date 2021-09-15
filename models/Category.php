@@ -301,6 +301,10 @@ class Category extends Model
 
     public function getPathFromRoot($locale = null)
     {
+        $cacheKey = self::class . "_{$this->id}_path_from_root_" . $locale;
+        if (\Cache::store('array')
+            ->has($cacheKey)) return \Cache::store('array')->get($cacheKey);
+
         $path = [];
 
         foreach ($this->getParents() as $node) {
@@ -320,6 +324,7 @@ class Category extends Model
 
         $path[] = $self;
 
+        \Cache::store('array')->put($cacheKey, $path, 5);
         return $path;
     }
 

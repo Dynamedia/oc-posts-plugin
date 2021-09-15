@@ -72,6 +72,7 @@ Trait TranslatableContentObjectTrait
         if (app()->runningInBackend()) return $default;
 
         $translationObject = $this->getTranslation($locale);
+        
 
         if ($translationObject) {
 

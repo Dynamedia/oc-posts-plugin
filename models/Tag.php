@@ -511,9 +511,6 @@ class Tag extends Model
 
     public function getHtmlHeadAttribute()
     {
-        $cacheKey = self::class . "_{$this->id}_html_head_attribute_" . Translator::instance()->getLocale();
-        if (\Cache::has($cacheKey)) return \Cache::get($cacheKey);
-
         $seoData = new PostsObjectSeoParser($this);
         $view = \View::make('dynamedia.posts::seo.head_seo', [
             'search' => $seoData->getSearchArray(),
@@ -524,7 +521,6 @@ class Tag extends Model
             'locales' => $this->getAlternateLocales()
         ])->render();
 
-        \Cache::put($cacheKey, $view);
         return $view;
     }
 

@@ -34,9 +34,7 @@ class TagModel
                 'slug' => $tag->slug,
             ]);
 
-            foreach ($tag->getCacheKeys() as $key) {
-                \Cache::forget($key);
-            }
+            $tag->invalidateTranslatedAttributesCache();
         });
 
         // Before Delete

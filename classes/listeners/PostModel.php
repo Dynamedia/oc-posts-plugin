@@ -51,9 +51,7 @@ class PostModel
                 'slug' => $post->slug,
             ]);
 
-            foreach ($post->getCacheKeys() as $key) {
-                \Cache::forget($key);
-            }
+            $post->invalidateTranslatedAttributesCache();
 
         });
 

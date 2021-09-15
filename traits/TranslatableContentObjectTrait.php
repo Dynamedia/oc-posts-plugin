@@ -1,22 +1,62 @@
 <?php namespace Dynamedia\Posts\Traits;
 
 use RainLab\Translate\Classes\Translator;
+use Cache;
+use Carbon\Carbon;
+use RainLab\Translate\Models\Locale;
 
 Trait TranslatableContentObjectTrait
 {
-    public function getActiveTranslationAttribute()
+    /**
+     * Return an array of translated attributes for the model
+     *
+     * @param string $locale
+     * @return array
+     */
+    public function getTranslatedAttributes($locale)
     {
-        return $this->getTranslation(Translator::instance()->getLocale());
-    }
+        if (empty($locale)) $locale = Translator::instance()->getLocale();
 
-    public function getTranslation($locale = null)
-    {
+        $cacheKey = $this->getTranslatedAttributesCacheKey($locale);
+        if (Cache::has($cacheKey)) return Cache::get($cacheKey);
+        
+        $attributes = [];
+
         if (!empty($this->translations)) {
-            return $this->translations->reject(function ($value, $key)use ($locale) {
+            $translation = $this->translations->reject(function ($value, $key) use ($locale) {
                 return empty($value->locale) || $value->locale->code != $locale;
             })->first();
+
+            if (!empty($translation->attributes)) {
+                $attributes = $translation->attributes;
+            }
         }
-        return null;
+
+        Cache::put($cacheKey, $attributes, Carbon::now()->addHours(1));
+        return $attributes;
+    }
+
+    /**
+     * Remove all translated attributes from the cache for this model
+     *
+     */
+    public function invalidateTranslatedAttributesCache()
+    {
+        foreach (Locale::all() as $locale) {
+            $cacheKey = $this->getTranslatedAttributesCacheKey($locale->code);
+            Cache::forget($cacheKey);
+        }
+    }
+
+    /**
+     * Return the cache key for storing translated attributes
+     *
+     * @param string $locale
+     * @return string
+     */
+    private function getTranslatedAttributesCacheKey($locale)
+    {
+        return self::class . "_{$this->id}_translated_attributes_{$locale}";
     }
 
     public function getTitleAttribute($value)
@@ -66,31 +106,42 @@ Trait TranslatableContentObjectTrait
         return $this->getTranslated('cms_layout', $value);
     }
 
+
+    /**
+     * Return the translated attribute.
+     * Specify whether to return the native attribute where no translation exists
+     *
+     * @param $attribute
+     * @param $default
+     * @param null $locale
+     * @param false $fallback
+     * @return mixed|null
+     */
     public function getTranslated($attribute, $default, $locale = null, $fallback = false)
     {
         // Do not attempt to translate attributes in the backend - We never want that.
         if (app()->runningInBackend()) return $default;
 
-        $translationObject = $this->getTranslation($locale);
-        
+        $translatedAttributes = $this->getTranslatedAttributes($locale);
 
-        if ($translationObject) {
+        $value = null;
 
-            if (!empty($translationObject->attributes[$attribute])) {
-                return $translationObject->attributes[$attribute];
+        if (!empty($translatedAttributes)) {
+            if (!empty($translatedAttributes[$attribute])) {
+                $value = $translatedAttributes[$attribute];
             } elseif ($fallback) {
-                return $this->attributes[$attribute];
+                $value = $this->attributes[$attribute];
             }
 
         } elseif ($fallback) {
-            return $this->attributes[$attribute];
+            $value = $this->attributes[$attribute];
         }
 
-        elseif ($this->active_translation) {
-            return $this->active_translation->attributes[$attribute];
-        } else {
-            return $default;
+         else {
+            $value = $default;
         }
+
+        return $value;
     }
 
 }

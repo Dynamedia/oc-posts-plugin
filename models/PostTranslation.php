@@ -127,6 +127,8 @@ class PostTranslation extends Model
             'slug' => $this->slug,
         ]);
         $this->postslugs()->sync($slug->id, false);
+
+        $this->native->invalidateTranslatedAttributesCache();
     }
 
     public function beforeDelete()

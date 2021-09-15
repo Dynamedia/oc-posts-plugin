@@ -32,9 +32,7 @@ class CategoryModel
                 'slug' => $category->slug,
             ]);
 
-            foreach ($category->getCacheKeys() as $key) {
-                \Cache::forget($key);
-            }
+            $category->invalidateTranslatedAttributesCache();
         });
 
         // Before Delete

@@ -90,7 +90,6 @@ class DisplayPost extends ComponentBase
         ];
 
         $this->paginator = $this->getPaginator($paginatorOptions, $this->currentPageUrl());
-
     }
 
 }

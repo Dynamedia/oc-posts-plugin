@@ -119,6 +119,8 @@ class TagTranslation extends Model
             'slug' => $this->slug,
         ]);
         $this->tagslugs()->sync($slug->id, false);
+
+        $this->native->invalidateTranslatedAttributesCache();
     }
 
     public function beforeDelete()

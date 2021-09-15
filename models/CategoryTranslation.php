@@ -127,6 +127,8 @@ class CategoryTranslation extends Model
             'slug' => $this->slug,
         ]);
         $this->categoryslugs()->sync($slug->id, false);
+
+        $this->native->invalidateTranslatedAttributesCache();
     }
 
     public function beforeDelete()

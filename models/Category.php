@@ -640,9 +640,6 @@ class Category extends Model
 
     public function getHtmlHeadAttribute()
     {
-        $cacheKey = self::class . "_{$this->id}_html_head_attribute_" . Translator::instance()->getLocale();
-        if (\Cache::has($cacheKey)) return \Cache::get($cacheKey);
-
         $seoData = new PostsObjectSeoParser($this);
         $view = \View::make('dynamedia.posts::seo.head_seo', [
             'search' => $seoData->getSearchArray(),
@@ -653,7 +650,6 @@ class Category extends Model
             'locales' => $this->getAlternateLocales()
         ])->render();
 
-        \Cache::put($cacheKey, $view);
         return $view;
     }
 
@@ -680,18 +676,4 @@ class Category extends Model
         return $locales;
     }
 
-    /**
-     * Return all possible keys for this category
-     *
-     * @return array
-     */
-    public function getCacheKeys()
-    {
-        $keys = [];
-        foreach (Locale::all() as $locale) {
-            $keys[] = self::class . "_{$this->id}_html_head_attribute_" . $locale->code;
-        }
-
-        return $keys;
-    }
 }

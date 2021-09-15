@@ -430,6 +430,11 @@ class Post extends Model
 
         $query = static::applyIsPublished();
 
+        $query->applyWithPrimaryCategory()
+            ->applyWithTags()
+            ->applyWithUsers();
+
+
         $query = $query->applyHasLocale($optionsLocale);
 
         if ($optionsNotPostIds) {
@@ -479,10 +484,6 @@ class Post extends Model
             }
         }
 
-        $query->applyWithPrimaryCategory()
-            ->applyWithTags()
-            ->applyWithUsers()
-            ->applyWithTranslations();
 
         // We need to do paging ourselves to support later API. Paginate in the components for now
         $totalResults = $query->count();
@@ -1114,8 +1115,8 @@ class Post extends Model
      */
     public function getBodyAttribute()
     {
-        $body = Body::getBody($this->body_document);
-        return $body;
+        return Body::getBody($this->body_document);
+
     }
 
     public function getContentsListAttribute()

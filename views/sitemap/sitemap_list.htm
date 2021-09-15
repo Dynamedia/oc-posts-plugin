@@ -3,14 +3,14 @@
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     {% for category in categories %}
     <sitemap>
-        <loc>{{ category.url }}.sitemap</loc>
+        <loc>{{ category.url }}.sitemap.xml</loc>
         <lastmod>{{ category.updated_at }}</lastmod>
     </sitemap>
     {% endfor %}
 
     {% for tag in tags %}
         <sitemap>
-            <loc>{{ tag.url }}.sitemap</loc>
+            <loc>{{ tag.url }}.sitemap.xml</loc>
             <lastmod>{{ tag.updated_at }}</lastmod>
         </sitemap>
     {% endfor %}

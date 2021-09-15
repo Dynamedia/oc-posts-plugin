@@ -59,7 +59,6 @@ class DisplayPost extends ComponentBase
         }
 
         $this->setPaginator();
-
     }
 
 
@@ -77,8 +76,9 @@ class DisplayPost extends ComponentBase
 
     private function setPaginator()
     {
-        $pages = $this->post->body->getPages();
-        $page = $this->post->body->renderPage($this->getRequestedPage());
+        $body = $this->post->body;
+        $pages = $body->getPages();
+        $page = $body->renderPage($this->getRequestedPage());
 
         if (empty($pages) || empty($page)) return $this->controller->run('404');
 

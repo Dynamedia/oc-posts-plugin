@@ -19,7 +19,7 @@ Trait TranslatableContentObjectTrait
 
         $cacheKey = $this->getTranslatedAttributesCacheKey($locale);
         if (Cache::has($cacheKey)) return Cache::get($cacheKey);
-        
+
         $attributes = [];
 
         if (!empty($this->translations)) {
@@ -56,7 +56,7 @@ Trait TranslatableContentObjectTrait
      */
     private function getTranslatedAttributesCacheKey($locale)
     {
-        return self::class . "_{$this->id}_translated_attributes_{$locale}";
+        return md5(self::class . "_{$this->id}_translated_attributes_{$locale}");
     }
 
     public function getTitleAttribute($value)

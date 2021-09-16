@@ -25,9 +25,6 @@ abstract class Body
         if (Cache::has($this->cacheKey)) {
             $this->pages = Cache::get($this->cacheKey);
         } else {
-            if (!app()->runningInBackend()) {
-                echo "miss";
-            }
             $this->setPages();
             if ($this->pages) {
                 Cache::put($this->cacheKey, $this->pages, Carbon::now()->addHours(1));

@@ -112,11 +112,10 @@ class PostModel
             }
 
             if (str_contains($widget->arrayName, "PostTranslation[body_document][template_body]")) {
-
                 $option = null;
 
-                if (!empty($model->body_document['template_body_options'])) {
-                    $option = $model->body_document['template_body_options'];
+                if (!empty($widget->model->body_document['template_body_options'])) {
+                    $option = $widget->model->body_document['template_body_options'];
                 }
 
                 $vars = post('PostTranslation');

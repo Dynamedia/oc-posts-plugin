@@ -1123,14 +1123,6 @@ class Post extends Model
         return $result;
     }
 
-    /**
-     * @return mixed body object by body_document body_type
-     */
-    public function getBodyAttribute()
-    {
-        return Body::getBody($this->body_document);
-
-    }
 
     public function getContentsListAttribute()
     {

@@ -1,5 +1,8 @@
 <?php namespace Dynamedia\Posts\Classes\Body;
 
+use Cache;
+use Carbon\Carbon;
+
 abstract class Body
 {
     const classes = [
@@ -9,8 +12,29 @@ abstract class Body
       'template_body' => \Dynamedia\Posts\Classes\Body\Templatebody\TemplateBody::class
     ];
 
+    protected $model;
+    protected $cacheKey;
+
     protected $pages = [];
     protected $contents = [];
+
+    public function __construct($model)
+    {
+        $this->model = $model;
+        $this->cacheKey = $this->model->getBodyCacheKey();
+        if (Cache::has($this->cacheKey)) {
+            $this->pages = Cache::get($this->cacheKey);
+        } else {
+            if (!app()->runningInBackend()) {
+                echo "miss";
+            }
+            $this->setPages();
+            if ($this->pages) {
+                Cache::put($this->cacheKey, $this->pages, Carbon::now()->addHours(1));
+            }
+        }
+
+    }
 
     /**
      * Render all pages as a single page
@@ -71,11 +95,13 @@ abstract class Body
         return $this->contents;
     }
 
-    public static function getBody($bodyDocument)
+    public static function getBody($model)
     {
+        $bodyDocument = $model->body_document;
+
         if (array_key_exists($bodyDocument['body_type'], self::classes)) {
             $bodyClass = self::classes[$bodyDocument['body_type']];
-            return new $bodyClass($bodyDocument);
+            return new $bodyClass($model);
         }
     }
 }

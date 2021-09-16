@@ -129,6 +129,7 @@ class PostTranslation extends Model
         $this->postslugs()->sync($slug->id, false);
 
         $this->native->invalidateTranslatedAttributesCache();
+        $this->native->invalidateBodyCache();
     }
 
     public function beforeDelete()
@@ -273,8 +274,13 @@ class PostTranslation extends Model
      */
     public function getBodyAttribute()
     {
-        $body = Body::getBody($this->body_document);
+        $body = Body::getBody($this);
         return $body;
+    }
+
+    public function getBodyCacheKey()
+    {
+        return $this->native->getBodyCacheKey();
     }
 
     /**

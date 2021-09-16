@@ -5,10 +5,15 @@ use Dynamedia\Posts\Classes\Body\Body;
 class RicheditorBody extends Body
 {
 
-    public function __construct($bodyDocument)
+    public function __construct($model)
     {
-        // For now, just explode on a horizontal rule with pagebreak class
-        $this->pages = explode('<hr class="pagebreak">', $bodyDocument['richeditor_body']);
+        parent::__construct($model);
+    }
+
+    protected function setPages()
+    {
+        // Just explode on a horizontal rule with pagebreak class
+        $this->pages = explode('<hr class="pagebreak">', $this->model->body_document['richeditor_body']);
     }
 
 }

@@ -1,11 +1,13 @@
 <?php
 namespace Dynamedia\Posts\Classes\Helpers;
 use Config;
+use Dynamedia\Posts\Classes\Body\Templatebody\TemplateBody;
 use Lang;
 use Cms\Classes\Theme;
 use Cms\Classes\Layout;
 use Cms\Classes\Partial;
 use Cms\Classes\Content;
+use Cache;
 
 class Form
 {
@@ -113,6 +115,12 @@ class Form
      */
     public static function getBodyTemplateOptions()
     {
+        $cacheKey = "dynamedia_posts_post_body_templates";
+
+        if (Cache::has($cacheKey)) {
+            return Cache::get($cacheKey);
+        }
+
         $options = [];
 
         $path = Theme::getActiveTheme()->getPath() . "/body_templates";
@@ -126,17 +134,21 @@ class Form
 
         foreach ($files as $file) {
             try {
-                $yamlArray = \Yaml::parse(\File::get($file->getPathname()));
+                $config = TemplateBody::parseConfig($file->getPathName());
             } catch (\Exception $e) {
                 continue;
             }
-            if (!empty($yamlArray['name'])) {
-                $name = $yamlArray['name'];
+            if (!empty($config['name'])) {
+                $name = $config['name'];
             } else {
                 $name = $file->getFilename();
             }
 
             $options[$file->getPathname()] = $name;
+        }
+
+        if (config('app.debug') == false) {
+            Cache::forever($cacheKey, $options);
         }
 
         return $options;

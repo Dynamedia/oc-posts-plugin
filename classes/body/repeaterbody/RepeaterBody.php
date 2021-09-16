@@ -38,10 +38,15 @@ class RepeaterBody extends Body
         ]
     ];
 
-    public function __construct($body)
+    public function __construct($model)
     {
-        if (!empty($body['repeater_body'])) {
-            $this->blocks = $body['repeater_body'];
+        parent::__construct($model);
+    }
+
+    protected function setPages()
+    {
+        if (!empty($this->model->body_document['repeater_body'])) {
+            $this->blocks = $this->model->body_document['repeater_body'];
             $this->processBlocks();
         }
     }

@@ -33,6 +33,7 @@ class CategoryModel
             ]);
 
             $category->invalidateTranslatedAttributesCache();
+            $category->invalidateBodyCache();
         });
 
         // Before Delete

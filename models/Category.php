@@ -629,14 +629,6 @@ class Category extends Model
         return $result;
     }
 
-    /**
-     * @return mixed body object by body_document body_type
-     */
-    public function getBodyAttribute()
-    {
-        $body = Body::getBody($this->body_document);
-        return $body;
-    }
 
     public function getHtmlHeadAttribute()
     {

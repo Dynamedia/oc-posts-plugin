@@ -1,5 +1,6 @@
 <?php namespace Dynamedia\Posts\Traits;
 
+use Dynamedia\Posts\Classes\Body\Body;
 use RainLab\Translate\Classes\Translator;
 use Cache;
 use Carbon\Carbon;
@@ -142,6 +143,27 @@ Trait TranslatableContentObjectTrait
         }
 
         return $value;
+    }
+
+    /**
+     * @return mixed body object by body_document body_type
+     */
+    public function getBodyAttribute()
+    {
+        $body = Body::getBody($this);
+        return $body;
+    }
+
+    public function getBodyCacheKey()
+    {
+        return md5(get_class($this) . "_{$this->id}_body" . Translator::instance()->getLocale());
+    }
+
+    public function invalidateBodyCache() {
+        foreach (Locale::all() as $locale) {
+            $cacheKey = $this->getBodyCacheKey();
+            Cache::forget($cacheKey);
+        }
     }
 
 }

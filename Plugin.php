@@ -3,6 +3,7 @@
 use Backend;
 use Dynamedia\Posts\Classes\Extenders\ExtendStaticPages;
 use Dynamedia\Posts\Classes\Extenders\ExtendThemeFormConfig;
+use Dynamedia\Posts\Classes\Listeners\PostsController;
 use Dynamedia\Posts\Classes\Listeners\PostsRouteDetection;
 use Dynamedia\Posts\Classes\Acl\AccessControl;
 use Dynamedia\Posts\Classes\Extenders\ExtendBackendUser;
@@ -148,6 +149,7 @@ class Plugin extends PluginBase
         Event::subscribe(AccessControlListener::class);
         Event::subscribe(StaticPagesMenu::class);
         Event::subscribe(PostModel::class);
+        Event::subscribe(PostsController::class);
         Event::subscribe(CategoryModel::class);
         Event::subscribe(TagModel::class);
     }

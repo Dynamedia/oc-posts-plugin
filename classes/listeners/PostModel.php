@@ -1,8 +1,4 @@
 <?php namespace Dynamedia\Posts\Classes\Listeners;
-use Dynamedia\Posts\Controllers\Posts;
-use Dynamedia\Posts\Controllers\PostTranslations;
-use Dynamedia\Posts\Models\PostTranslation;
-use Dynamedia\Posts\Models\Post;
 use Dynamedia\Posts\Models\PostSlug;
 use Str;
 use October\Rain\Argon\Argon;
@@ -56,6 +52,7 @@ class PostModel
             ]);
 
             $post->invalidateTranslatedAttributesCache();
+            $post->invalidateBodyCache();
 
         });
 
@@ -71,70 +68,6 @@ class PostModel
         $event->listen('dynamedia.posts.post.deleted', function ($post, $user) {
 
         });
-
-        // Move to a controller event
-
-        Posts::extendFormFields(function($form, $model, $context)
-        {
-            if (!$model instanceof Post) {
-                return;
-            }
-
-            if (str_contains($form->arrayName, "Post[body_document][template_body]")) {
-
-                $option = null;
-
-                if (!empty($model->body_document['template_body_options'])) {
-                    $option = $model->body_document['template_body_options'];
-                }
-
-                $vars = post('Post');
-
-                if (!empty($vars['body_document']['template_body_options'])) {
-                    $option = $vars['body_document']['template_body_options'];
-                }
-                if ($option) {
-                    $yaml = \Yaml::parse(\File::get($option));
-                    if (!empty($yaml['fields'])) {
-                        $form->addFields($yaml['fields']);
-                    } elseif (!empty($yaml['tabs']['fields'])) {
-                        $form->addTabFields($yaml['tabs']['fields']);
-                    }
-                }
-            }
-        });
-
-        $event->listen('backend.form.extendFields', function ($widget) {
-
-            // Only for the Page model
-            if (!$widget->model instanceof PostTranslation) {
-                return;
-            }
-
-            if (str_contains($widget->arrayName, "PostTranslation[body_document][template_body]")) {
-                $option = null;
-
-                if (!empty($widget->model->body_document['template_body_options'])) {
-                    $option = $widget->model->body_document['template_body_options'];
-                }
-
-                $vars = post('PostTranslation');
-
-                if (!empty($vars['body_document']['template_body_options'])) {
-                    $option = $vars['body_document']['template_body_options'];
-                }
-                if ($option) {
-                    $yaml = \Yaml::parse(\File::get($option));
-                    if (!empty($yaml['fields'])) {
-                        $widget->addFields($yaml['fields']);
-                    } elseif (!empty($yaml['tabs']['fields'])) {
-                        $widget->addTabFields($yaml['tabs']['fields']);
-                    }
-                }
-            }
-        });
-
-
 
     }
 }

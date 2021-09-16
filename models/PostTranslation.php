@@ -174,22 +174,35 @@ class PostTranslation extends Model
                 $fields->repeater_body->hidden = false;
                 $fields->richeditor_body->hidden = true;
                 $fields->markdown_body->hidden = true;
+                $fields->template_body->hidden = true;
+                $fields->template_body_options->hidden = true;
             }
             elseif ($fields->body_type->value == 'richeditor_body') {
                 $fields->repeater_body->hidden = true;
                 $fields->richeditor_body->hidden = false;
                 $fields->markdown_body->hidden = true;
-
+                $fields->template_body_options->hidden = true;
+                $fields->template_body->hidden = true;
             }
             elseif ($fields->body_type->value == 'markdown_body') {
+                $fields->markdown_body->hidden = false;
                 $fields->repeater_body->hidden = true;
                 $fields->richeditor_body->hidden = true;
-                $fields->markdown_body->hidden = false;
+                $fields->template_body_options->hidden = true;
+                $fields->template_body->hidden = true;
+            }
+            elseif ($fields->body_type->value == 'template_body') {
+                $fields->template_body->hidden = false;
+                $fields->template_body_options->hidden = false;
+                $fields->repeater_body->hidden = true;
+                $fields->richeditor_body->hidden = true;
+                $fields->markdown_body->hidden = true;
             }
             else {
                 $fields->repeater_body->hidden = false;
                 $fields->richeditor_body->hidden = true;
                 $fields->markdown_body->hidden = true;
+                $fields->template_body->hidden = true;
             }
         }
     }

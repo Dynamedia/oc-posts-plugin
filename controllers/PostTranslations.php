@@ -45,4 +45,5 @@ class PostTranslations extends Controller
         $this->addCss(ThemeHelper::getBackendCss(), "1.0.0");
         BackendMenu::setContext('Dynamedia.Posts', 'posts', 'posttranslations');
     }
+
 }

@@ -5,7 +5,8 @@ abstract class Body
     const classes = [
       'repeater_body' => \Dynamedia\Posts\Classes\Body\Repeaterbody\RepeaterBody::class,
       'richeditor_body' => \Dynamedia\Posts\Classes\Body\Richeditorbody\RicheditorBody::class,
-      'markdown_body' => \Dynamedia\Posts\Classes\Body\Markdownbody\MarkdownBody::class
+      'markdown_body' => \Dynamedia\Posts\Classes\Body\Markdownbody\MarkdownBody::class,
+      'template_body' => \Dynamedia\Posts\Classes\Body\Templatebody\TemplateBody::class
     ];
 
     protected $pages = [];

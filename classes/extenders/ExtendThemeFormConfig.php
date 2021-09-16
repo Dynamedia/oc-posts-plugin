@@ -2,6 +2,8 @@
 
 namespace Dynamedia\Posts\Classes\Extenders;
 use Cms\Models\ThemeData;
+use Dynamedia\Posts\Controllers\Posts;
+use Dynamedia\Posts\Models\Post;
 use Event;
 
 class ExtendThemeFormConfig
@@ -72,5 +74,8 @@ class ExtendThemeFormConfig
                 'form'              => plugins_path('/dynamedia/posts/config/forms/image/theme.yaml')
             ]);
         });
+
     }
+
+
 }

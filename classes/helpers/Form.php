@@ -105,4 +105,41 @@ class Form
         return $appended;
     }
 
+    /**
+     * List all .yml files in the active theme body_templates directory
+     *
+     * @return array
+     * @throws \ApplicationException
+     */
+    public static function getBodyTemplateOptions()
+    {
+        $options = [];
+
+        $path = Theme::getActiveTheme()->getPath() . "/body_templates";
+
+        $files = [];
+        if (file_exists($path)) {
+            $files = collect(\File::allfiles($path))->filter(function($value) {
+                return $value->getExtension() == 'yml';
+            });
+        }
+
+        foreach ($files as $file) {
+            try {
+                $yamlArray = \Yaml::parse(\File::get($file->getPathname()));
+            } catch (\Exception $e) {
+                continue;
+            }
+            if (!empty($yamlArray['name'])) {
+                $name = $yamlArray['name'];
+            } else {
+                $name = $file->getFilename();
+            }
+
+            $options[$file->getPathname()] = $name;
+        }
+
+        return $options;
+    }
+
 }

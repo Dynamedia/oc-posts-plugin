@@ -3,6 +3,7 @@
 use BackendMenu;
 use Backend\Classes\Controller;
 use Dynamedia\Posts\Classes\Helpers\ThemeHelper;
+use Dynamedia\Posts\Models\PostTranslation;
 use Dynamedia\Posts\Models\Profile;
 
 /**
@@ -82,7 +83,5 @@ class Posts extends Controller
         // Update some form fields on save
         //return ['#Form-field-Post-body-group' => $this->formGetWidget()->renderField('body', ['useContainer' => false])];
     }
-
-
 
 }

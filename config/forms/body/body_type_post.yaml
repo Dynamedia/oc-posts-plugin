@@ -7,6 +7,15 @@ fields:
             repeater_body: Repeater Blocks
             richeditor_body: Rich Editor
             markdown_body: Markdown Editor
+            template_body: Choose from theme templates
+
+    template_body_options:
+        tab: dynamedia.posts::lang.common.tabs.body
+        label: Template
+        type: dropdown
+        dependsOn: body_type
+        options: \Dynamedia\Posts\Classes\Helpers\Form::getBodyTemplateOptions
+
     repeater_body:
         dependsOn: body_type
         type: repeater
@@ -20,4 +29,14 @@ fields:
         type: markdown
         size: giant
         legacyMode: true
-    # Easy to add/remove body types...
+    template_body:
+        dependsOn: [body_type, template_body_options]
+        type: nestedform
+        form:
+            tabs:
+                defaultTab: "Main"
+                fields:
+
+
+
+

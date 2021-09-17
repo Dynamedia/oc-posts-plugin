@@ -38,8 +38,8 @@ class PostsObjectSeoParser extends Seo
 
     private function setSearchTitle()
     {
-        if (!empty($this->model->seo['search_title'])) {
-            $this->appendSearch('title', $this->model->seo['search_title']);
+        if (!empty($this->model->seo['title'])) {
+            $this->appendSearch('title', $this->model->seo['title']);
         } elseif ($this->model->title) {
             $this->appendSearch('title', $this->model->title);
         } elseif ($this->model->name) {

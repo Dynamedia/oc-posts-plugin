@@ -204,6 +204,7 @@ class PostTranslation extends Model
                 $fields->richeditor_body->hidden = true;
                 $fields->markdown_body->hidden = true;
                 $fields->template_body->hidden = true;
+                $fields->template_body_options->hidden = true;
             }
         }
     }

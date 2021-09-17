@@ -551,15 +551,7 @@ class Post extends Model
     public function getPostPage()
     {
         $postsPage = Settings::get('postPage');
-
-        // Plugin not configured
-        if (!$postsPage) {
-            if (BackendAuth::getUser()) {
-                return Flash::warning('Please set the Posts page in settings ');
-            }
-            return;
-        }
-
+        
         return $postsPage;
     }
 

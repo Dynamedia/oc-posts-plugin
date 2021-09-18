@@ -23,11 +23,17 @@ abstract class Body
         $this->model = $model;
         $this->cacheKey = $this->model->getBodyCacheKey();
         if (Cache::has($this->cacheKey)) {
-            $this->pages = Cache::get($this->cacheKey);
+            $arr = Cache::get($this->cacheKey);
+            $this->pages = $arr['pages'];
+            $this->contents = $arr['contents'];
         } else {
             $this->setPages();
             if ($this->pages) {
-                Cache::put($this->cacheKey, $this->pages, Carbon::now()->addHours(1));
+                $arr = [
+                    'pages'    => $this->pages,
+                    'contents' => $this->contents
+                    ];
+                Cache::put($this->cacheKey, $arr, Carbon::now()->addHours(1));
             }
         }
 

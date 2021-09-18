@@ -17,7 +17,7 @@ tabs:
             tab: dynamedia.posts::lang.common.tabs.settings
             type: switch
             label: dynamedia.posts::lang.blocks.labels.in_contents
-            default: true
+            default: false
 
         contents_title:
             tab: dynamedia.posts::lang.common.tabs.settings

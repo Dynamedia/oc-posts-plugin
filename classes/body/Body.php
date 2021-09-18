@@ -96,9 +96,11 @@ abstract class Body
     {
         $bodyDocument = $model->body_document;
 
-        if (array_key_exists($bodyDocument['body_type'], self::classes)) {
+        if (!empty($bodyDocument['body_type']) && array_key_exists($bodyDocument['body_type'], self::classes)) {
             $bodyClass = self::classes[$bodyDocument['body_type']];
             return new $bodyClass($model);
+        } else {
+            return new \Dynamedia\Posts\Classes\Body\Repeaterbody\RepeaterBody($model);
         }
     }
 }

@@ -10,6 +10,8 @@ class PostModel
     {
         // Before Validate
         $event->listen('dynamedia.posts.post.saving', function ($post, $user) {
+            $post->slug = Str::slug($post->slug);
+            
             if (!PostSlug::isAvailable($post->id, $post->slug)) {
                 throw new ValidationException(['slug' => "Slug is not available"]);
             }
@@ -22,8 +24,6 @@ class PostModel
                     $post->author = $user;
                 }
             }
-
-            $post->slug = Str::slug($post->slug);
 
             if ($post->is_published && $post->published_at == null) {
                 $post->published_at = Argon::now();

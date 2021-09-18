@@ -9,6 +9,8 @@ class CategoryModel
     {
         // Before Validate
         $event->listen('dynamedia.posts.category.saving', function ($category, $user) {
+            $category->slug = Str::slug($category->slug);
+            
             if (!CategorySlug::isAvailable($category->id, $category->slug)) {
                 throw new ValidationException(['slug' => "Slug is not available"]);
             }
@@ -19,7 +21,6 @@ class CategoryModel
             if (!$category->slug) {
                 $category->slug = Str::slug($category->name);
             }
-            $category->slug = Str::slug($category->slug);
 
             $category->body_text = $category->body->getTextContent();
         });

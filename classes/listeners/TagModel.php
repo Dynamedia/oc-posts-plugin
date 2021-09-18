@@ -9,6 +9,8 @@ class TagModel
     {
         // Before Validate
         $event->listen('dynamedia.posts.tag.saving', function ($tag, $user) {
+            $tag->slug = Str::slug($tag->slug);
+            
             if (!TagSlug::isAvailable($tag->id, $tag->slug)) {
                 throw new ValidationException(['slug' => "Slug is not available"]);
             }
@@ -19,8 +21,6 @@ class TagModel
             if (!$tag->slug) {
                 $tag->slug = Str::slug($tag->name);
             }
-
-            $tag->slug = Str::slug($tag->slug);
 
             $tag->body_text = $tag->body->getTextContent();
 

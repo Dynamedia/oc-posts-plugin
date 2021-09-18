@@ -6,6 +6,7 @@ use October\Rain\Database\Traits\Validation;
 use RainLab\Translate\Classes\Translator;
 use RainLab\Translate\Models\Locale;
 use ValidationException;
+use Str;
 
 /**
  * TagTranslation Model
@@ -99,9 +100,10 @@ class TagTranslation extends Model
     public $attachOne = [];
     public $attachMany = [];
 
-    // todo move this into a custom validation rule
     public function beforeValidate()
     {
+        $this->slug = Str::slug($this->slug);
+        
         if (!TagSlug::isAvailable($this->native->id, $this->slug)) {
             throw new ValidationException(['slug' => "Slug is not available"]);
         }
@@ -111,6 +113,7 @@ class TagTranslation extends Model
     public function beforeSave()
     {
         $this->body_text = $this->body->getTextContent();
+        $this->slug = Str::slug($this->slug);
     }
 
     public function afterSave()

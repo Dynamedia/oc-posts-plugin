@@ -11,6 +11,7 @@ use Dynamedia\Posts\Traits\SeoTrait;
 use Dynamedia\Posts\Traits\ImagesTrait;
 use Dynamedia\Posts\Traits\ControllerTrait;
 use October\Rain\Database\Traits\Validation;
+use Str;
 
 
 /**
@@ -106,9 +107,10 @@ class PostTranslation extends Model
     public $attachOne = [];
     public $attachMany = [];
 
-    // todo move this into a custom validation rule
     public function beforeValidate()
     {
+        $this->slug = Str::slug($this->slug);
+        
         if (!PostSlug::isAvailable($this->native->id, $this->slug)) {
             throw new ValidationException(['slug' => "Slug is not available"]);
         }

@@ -1,14 +1,35 @@
-Brief notes for issues found in testing
+Features to implement for version = 1
 
-Add method for themes to hint views for body rendering
+Content introduced by theme must survive theme changes
+    - Options include
+        - Store the entire rendered body in db. Easiest
+        - Backup used files (template config, content, partials)
 
-Create classes for rendering SEO more cleanly
+Make better use of Spatie Schema dependency
+ - A good implementation makes oc+posts best in class 
+   for SEO across all tested CMS
 
-Avoid processing the body multiple times per request
 
-Extend rainlab.pages with seo attributes to match posts - Might as well make everything awesome
+
+-------
+
+Features to implement for version > 1
+
+Test suite.
+
+Improve use of cache internally.
+
+Option to cache full responses and hint to httpd.
+
+Read only JSON API for SPA support.
+
+-------
+
+Integrations planned for version > 1
 
 Google translate integration
+ - Speed up translation process with first-pass auto translate
 
 Moz suite integration
+ - Seo testing and keyword recommendations
 

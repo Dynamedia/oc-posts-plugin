@@ -23,6 +23,13 @@ tabs:
       tab: dynamedia.posts::lang.seo.tabs.search
       label: dynamedia.posts::lang.seo.labels.meta_description
       type: textarea
+    schema_about:
+      tab: Schema
+      type: repeater
+      form:
+        fields:
+          test:
+          label: test
     opengraph_title:
       tab: dynamedia.posts::lang.seo.tabs.opengraph
       label: dynamedia.posts::lang.common.labels.title

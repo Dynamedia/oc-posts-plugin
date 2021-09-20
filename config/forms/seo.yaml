@@ -1,16 +1,5 @@
 tabs:
   fields:
-    type:
-      tab: dynamedia.posts::lang.seo.tabs.general
-      label: dynamedia.posts::lang.seo.labels.post_type
-      type: dropdown
-      options:
-        Article: dynamedia.posts::lang.seo.dropdown.article
-        BlogPosting: dynamedia.posts::lang.seo.dropdown.blogPosting
-        NewsArticle: dynamedia.posts::lang.seo.dropdown.newsArticle
-    about:
-      tab: dynamedia.posts::lang.seo.tabs.general
-      label: dynamedia.posts::lang.seo.labels.about
     keywords:
       tab: dynamedia.posts::lang.seo.tabs.general
       label: dynamedia.posts::lang.seo.labels.keywords
@@ -23,13 +12,24 @@ tabs:
       tab: dynamedia.posts::lang.seo.tabs.search
       label: dynamedia.posts::lang.seo.labels.meta_description
       type: textarea
-    schema_about:
-      tab: Schema
-      type: repeater
-      form:
-        fields:
-          test:
-          label: test
+
+    schema_type:
+        tab: Schema
+        label: Post Type
+        type: dropdown
+        options:
+            # option keys to exactly mach Spatie Schema-org class names
+            article: dynamedia.posts::lang.seo.dropdown.article
+            blogPosting: dynamedia.posts::lang.seo.dropdown.blogPosting
+            newsArticle: dynamedia.posts::lang.seo.dropdown.newsArticle
+
+    schema_content:
+        tab: Schema
+        type: nestedform
+        usePanelStyles: false
+        showPanel: false
+        form: $/dynamedia/posts/config/forms/schema/schema_content.yml
+
     opengraph_title:
       tab: dynamedia.posts::lang.seo.tabs.opengraph
       label: dynamedia.posts::lang.common.labels.title

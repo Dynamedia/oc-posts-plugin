@@ -4,6 +4,7 @@ use Model;
 use Backend\Models\User as BackendUser;
 use Dynamedia\Posts\Traits\ControllerTrait;
 use \October\Rain\Database\Traits\Validation;
+use Spatie\SchemaOrg\Schema;
 
 use ValidationException;
 
@@ -142,26 +143,37 @@ class Profile extends Model
         return strtolower($this->getController()->pageUrl(Settings::get('userPage'), $params));
     }
 
-    public function getSeoSchemaAttribute()
+    public function getSeoSchema()
     {
-        $schema = [
-            "@context"  => "https://schema.org",
-            "@type"     => "Person",
-            "name"      => "{$this->user->first_name} {$this->user->last_name}",
-            "url"       => $this->website_url ? $this->website_url : $this->url,
-        ];
+        $person = Schema::person()
+            ->givenName($this->user->first_name)
+            ->familyName($this->user->last_name)
+            ->url($this->website_url ? $this->website_url : $this->url);
+
         if (isset($this->user->avatar)) {
-            $schema['image'] = $this->user->avatar->path;
-        }
-        if (!empty($this->twitter_handle)  || !empty($this->facebook_handle) || !empty($this->instagram_handle)) {
-            $sameAs = [];
-            if (!empty($this->twitter_handle)) $sameAs[] = "https://twitter.com/{$this->getAsUsername($this->twitter_handle)}";
-            if (!empty($this->instagram_handle)) $sameAs[] = "https://instagram.com/{$this->getAsUsername($this->instagram_handle)}";
-            if (!empty($this->facebook_handle)) $sameAs[] = "https://facebook.com/{$this->getAsUsername($this->facebook_handle)}";
-            $schema["sameAs"] = $sameAs;
+            $avatar = Schema::imageObject()
+                ->url($this->user->avatar->path);
+            $person->image($avatar);
         }
 
-        return $schema;
+        $alts = [];
+
+        if (!empty($this->twitter_handle)  || !empty($this->facebook_handle) || !empty($this->instagram_handle)) {
+            if (!empty($this->twitter_handle)) $alts[] = "https://twitter.com/{$this->getAsUsername($this->twitter_handle)}";
+            if (!empty($this->instagram_handle)) $alts[] = "https://instagram.com/{$this->getAsUsername($this->instagram_handle)}";
+            if (!empty($this->facebook_handle)) $alts[] = "https://facebook.com/{$this->getAsUsername($this->facebook_handle)}";
+        }
+
+        if ($alts) {
+            $person->sameAs($alts);
+        }
+
+        return $person;
+    }
+
+    public function getSeoSchemaAttribute()
+    {
+        return $this->getSeoSchema()->toScript();
     }
 
     /**

@@ -14,6 +14,7 @@ use Dynamedia\Posts\Traits\TranslatableContentObjectTrait;
 use Event;
 use RainLab\Translate\Classes\Translator;
 use RainLab\Translate\Models\Locale;
+use Spatie\SchemaOrg\Schema;
 
 /**
  * category Model
@@ -666,6 +667,11 @@ class Category extends Model
         }
 
         return $locales;
+    }
+
+    public function getSeoSchema()
+    {
+        return Schema::listItem();
     }
 
 }

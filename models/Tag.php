@@ -12,6 +12,7 @@ use BackendAuth;
 use Event;
 use RainLab\Translate\Classes\Translator;
 use RainLab\Translate\Models\Locale;
+use Spatie\SchemaOrg\Schema;
 
 /**
  * tag Model
@@ -552,5 +553,10 @@ class Tag extends Model
         }
 
         return $keys;
+    }
+
+    public function getSeoSchema()
+    {
+        return Schema::listItem();
     }
 }

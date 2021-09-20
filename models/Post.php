@@ -2,6 +2,7 @@
 
 use Dynamedia\Posts\Classes\Acl\AccessControl;
 use Dynamedia\Posts\Classes\Seo\PostsObjectSeoParser;
+use Dynamedia\Posts\Classes\Seo\Schema\SchemaFactory;
 use Dynamedia\Posts\Models\Settings;
 use RainLab\Translate\Classes\Translator;
 use Model;
@@ -551,7 +552,7 @@ class Post extends Model
     public function getPostPage()
     {
         $postsPage = Settings::get('postPage');
-        
+
         return $postsPage;
     }
 
@@ -817,86 +818,20 @@ class Post extends Model
         return $ids;
     }
 
-    // todo tidy up and objectify
+    public function getSeoSchema()
+    {
+        if (!empty($this->seo['schema_type'])) {
+            $type = $this->seo['schema_type'];
+        } else {
+            $type = 'article';
+        }
+        $schema = SchemaFactory::makeNative($type, $this);
+        return $schema->getSchema();
+    }
+
     public function getSeoSchemaAttribute()
     {
-        $schema = [
-            "@context"          => "https://schema.org",
-            "@type"             => !empty($this->seo['type']) ? $this->seo['type'] : "Article",
-            "headline"          => $this->title,
-            "dateCreated"       => $this->created_at,
-            "url"               => $this->url,
-            "mainEntityOfPage"  => [
-                "@context"  => "https://schema.org",
-                "@type"     => "webPage",
-                "url"       => $this->url, // There is no differentiation of pages
-            ]
-        ];
-
-        if ($this->excerpt) {
-            $schema['abstract'] = strip_tags($this->excerpt);
-        }
-
-        if ($this->primary_category) {
-            $schema['articleSection'] = $this->primary_category->name;
-
-        }
-
-        if ($this->is_published && $this->published_at) {
-            $schema['datePublished'] = $this->published_at;
-            if ($this->updated_at > $this->published_at) {
-                $schema['dateModified'] = $this->updated_at;
-            }
-        }
-
-        if (!empty($this->seo['about'])) {
-            $schema['about'] = [
-                "@context"  => "https://schema.org/",
-                "@type"     => "Thing",
-                "name"      => $this->seo['about']
-            ];
-        }
-
-        if (!empty($this->seo['keywords']) && is_array($this->seo['keywords'])) {
-            $schema['keywords'] = implode(", ", $this->seo['keywords']);
-        }
-
-        if ($this->published_until) {
-            $schema['expires'] = $this->published_until;
-        }
-
-        if (Settings::get('publisherName')) {
-            $schema['publisher'] = [
-                "@context" => "https://schema.org",
-                "@type" => Settings::get('publisherType'),
-                "name" => Settings::get('publisherName'),
-                "logo"  => [
-                    "@context"  => "https://schema.org",
-                    "@type"     => "ImageObject",
-                    'url'       => \URL::to(\System\Classes\MediaLibrary::url(Settings::get('publisherLogo'))),
-                    'caption'   => Settings::get('publisherName'),
-                ]
-            ];
-            if (Settings::get('publisherUrl')) {
-                $schema['publisher']['url'] = Settings::get('publisherUrl');
-            } else {
-                $schema['publisher']['url'] = \URL::to('/');
-            }
-        }
-
-        if ($this->getBestImage()) {
-            $schema['image'] = \URL::to(\System\Classes\MediaLibrary::url($this->getBestImage()));
-        }
-
-        if (!empty($this->author->profile)) {
-            $schema['author'] = $this->author->profile->seo_schema;
-        }
-
-        if (!empty($this->editor->profile)) {
-            $schema['editor'] = $this->editor->profile->seo_schema;
-        }
-
-        return $schema;
+        return $this->getSeoSchema()->toScript();
     }
 
 

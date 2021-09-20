@@ -6,6 +6,9 @@ namespace Dynamedia\Posts\Classes\Seo;
 
 use Cms\Classes\Controller;
 use Cms\Classes\MediaLibrary;
+use Dynamedia\Posts\Classes\Seo\Schema\Article;
+use Spatie\SchemaOrg\Schema;
+use Dynamedia\Posts\Classes\Seo\Schema\SchemaFactory;
 
 class PostsObjectSeoParser extends Seo
 {
@@ -183,6 +186,6 @@ class PostsObjectSeoParser extends Seo
 
     private function setSchema()
     {
-        $this->schema = $this->model->seo_schema;
+        $this->schema = $this->model->getSeoSchema();
     }
 }

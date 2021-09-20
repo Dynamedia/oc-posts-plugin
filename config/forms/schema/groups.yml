@@ -1,0 +1,16 @@
+thing:
+    # https://schema.org/Thing
+    name: Thing
+    description: The most basic of schema types
+    # field keys to exacty match Spatie Schema-org properties
+    fields:
+        name:
+            label: Thing Name
+        description:
+            label: Thing description
+        image:
+            label: Thing Image
+            type: mediafinder
+        sameAs:
+            label: Thing is Same As
+            comment: A wikipedia link makes sense here

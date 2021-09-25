@@ -26,7 +26,7 @@ class MainSitemap extends ComponentBase
 
     public function onRun()
     {
-        $graph = new ExtendedGraph();
+        $graph = \App::make('dynamedia.posts.graph');
         dd($graph->toArray());
         $feed = new SitemapAll();
         return $feed->makeViewResponse();

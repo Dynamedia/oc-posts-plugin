@@ -2,6 +2,7 @@
 
 namespace Dynamedia\Posts\Classes\Seo\Schema;
 
+use Cms\Classes\Controller;
 use Cms\Classes\Theme;
 use RainLab\Translate\Classes\Translator;
 use Spatie\SchemaOrg\Graph;
@@ -11,6 +12,8 @@ use Url;
 class ExtendedGraph extends Graph
 {
     protected $baseUrl;
+    protected $pageUrl;
+    protected $controller;
     protected $translator;
 
     protected $postTypes = [
@@ -28,6 +31,7 @@ class ExtendedGraph extends Graph
         $this->baseUrl = $this->getBaseUrl();
         $this->setPublisher();
         $this->setWebsite();
+        $this->setWebpage();
     }
 
     public function getBaseUrl()
@@ -54,7 +58,12 @@ class ExtendedGraph extends Graph
 
     public function getWebpageId()
     {
-        return "{$this->baseUrl}#webpage";
+        return $this->getWebpage()->getProperty("@id");
+    }
+
+    public function getArticleId()
+    {
+        return $this->getArticle()->getProperty("@id");
     }
 
     protected function setPublisher()
@@ -93,6 +102,15 @@ class ExtendedGraph extends Graph
         $this->add($website, "website");
     }
 
+    // Stub webpage. Page cycle to modify
+    public function setWebpage()
+    {
+        $webpage = SchemaFactory::makeSpatie('webPage')
+            ->setProperty("@id", $this->getBaseUrl() . "#webpage");
+
+        $this->add($webpage, "webpage");
+    }
+
     public function getPublisher()
     {
         $publisher = null;
@@ -114,6 +132,11 @@ class ExtendedGraph extends Graph
         return $this->get('Spatie\SchemaOrg\WebSite', 'website');
     }
 
+    public function getWebpage()
+    {
+        return $this->get('Spatie\SchemaOrg\WebPage', 'webpage');
+    }
+
     public function getArticle()
     {
         foreach ($this->postTypes as $postType) {
@@ -123,7 +146,9 @@ class ExtendedGraph extends Graph
                 continue;
             }
         }
-        return SchemaFactory::makeSpatie('Article');
+
+        return SchemaFactory::makeSpatie('Article')
+            ->setProperty("@id", $this->getBaseUrl() . "#article");
     }
 
 }

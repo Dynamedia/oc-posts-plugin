@@ -1,6 +1,7 @@
 <?php namespace Dynamedia\Posts\Classes\Listeners;
 
 use App;
+use Cms\Classes\Controller;
 use Dynamedia\Posts\Classes\Rss\RssAll;
 use Dynamedia\Posts\Classes\Rss\RssCategory;
 use Dynamedia\Posts\Classes\Rss\RssTag;
@@ -41,12 +42,22 @@ class PostsRouteDetection
 
             if (!$page) return;
 
+            // todo move this - Set webpage in pge load cycle and then set post stuff if we have one
+            $graph = App::make('dynamedia.posts.graph');
+            $graph->getWebpage()
+                ->setProperty("@id", Page::url($page->fileName) . "#wepbage")
+                ->url(Page::url($page->fileName))
+                ->title($page->title)
+                ->description($page->meta_description);
+
+
             // Get info for potential clashing pages and the page the router actually matched
             $params = $controller->getRouter()->getParameters();
+
+
             $activeThemeCode = Theme::getActiveThemeCode();
 
             $this->parseSlugParams($controller);
-
 
             // Process slugs matching our cms pages
             $postPage = [

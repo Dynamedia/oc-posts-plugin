@@ -1,0 +1,17 @@
+# ===================================
+#  Grid Widget Configuration
+# ===================================
+
+dataSource: server
+keyFrom: id
+recordsPerPage: 500
+adding: false
+searching: true
+
+columns:
+    from:
+        title: From
+    to:
+        title: To
+    found:
+        title: Scan errors

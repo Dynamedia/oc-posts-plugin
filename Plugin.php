@@ -16,6 +16,8 @@ use Dynamedia\Posts\Classes\Twig\TwigFilters;
 use Dynamedia\Posts\Classes\Twig\TwigFunctions;
 use System\Classes\PluginBase;
 use Event;
+use Spatie\SchemaOrg\Graph;
+use App;
 
 
 /**
@@ -24,8 +26,7 @@ use Event;
 class Plugin extends PluginBase
 {
     public $require = [
-        'RainLab.Translate',
-        'Rainlab.Pages'
+        'RainLab.Translate'
     ];
     /**
      * Returns information about this plugin.
@@ -47,6 +48,8 @@ class Plugin extends PluginBase
     {
         $this->registerEvents();
         $this->registerExtenders();
+        // Bind an empty graph object to build on
+        App::instance('dynamedia.posts.graph', new Graph());
     }
 
     public function registerComponents()

@@ -1,0 +1,14 @@
+tabs:
+    fields:
+        banner:
+            tab: dynamedia.posts::lang.images.tabs.banner
+            type: nestedform
+            usePanelStyles: false
+            showPanel: false
+            form: $/dynamedia/posts/config/forms/image/banner.yaml
+        social:
+            tab: dynamedia.posts::lang.images.tabs.social
+            type: nestedform
+            usePanelStyles: false
+            showPanel: false
+            form: $/dynamedia/posts/config/forms/image/social.yaml

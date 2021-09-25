@@ -2,6 +2,7 @@
 
 namespace Dynamedia\Posts\Classes\Extenders;
 use Cms\Models\ThemeData;
+use Cms\Classes\Theme;
 use Dynamedia\Posts\Controllers\Posts;
 use Dynamedia\Posts\Models\Post;
 use Event;
@@ -13,6 +14,7 @@ class ExtendThemeFormConfig
         ThemeData::extend(function ($model) {
             $model->addJsonable('images');
         });
+        
 
         Event::listen('cms.theme.extendFormConfig', function ($themeCode, &$config) {
             array_set($config, 'tabs.fields.site_brand', [
@@ -71,8 +73,15 @@ class ExtendThemeFormConfig
             array_set($config, 'tabs.fields.images', [
                 'type'              => 'nestedform',
                 'tab'               => 'Images',
-                'form'              => plugins_path('/dynamedia/posts/config/forms/image/theme.yaml')
+                'form'              => plugins_path('/dynamedia/posts/config/forms/theme/image.yaml')
             ]);
+            
+            array_set($config, 'tabs.fields.operator', [
+                'type'              => 'nestedform',
+                'tab'               => 'Site Operator',
+                'form'              => plugins_path('/dynamedia/posts/config/forms/theme/operator.yaml')
+            ]);
+            
         });
 
     }

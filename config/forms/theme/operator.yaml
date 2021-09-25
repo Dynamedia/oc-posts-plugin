@@ -6,65 +6,60 @@ tabs:
             type: dropdown
             options:
                 person: Person / Individual
-                smallBusiness: Small Business
                 organization: Organization
         name:
             tab: Detail
             label: Name
-            
+
         logo:
             tab: Detail
             label: Logo
             type: mediafinder
-            
-        address_1:
+
+        address_street:
             tab: Address
-            label: Address line 1
-            
-        address_2:
-            tab: Address
-            label: Address line 2
-            
+            label: Street Address
+
         address_city:
             tab: Address
             label: City
-            
+
         address_region:
             tab: Address
             label: Region
-            
+
         address_postal_code:
             tab: Address
             label: Postal Code
-            
+
         address_country:
             tab: Address
             label: Country
-            
+
         address_latitude:
             tab: Address
             label: Latitude
-            
+
         address_longitude:
             tab: Address
             label: Longitude
-            
+
         contact_telephone:
             tab: Contact
             label: Telephone
-            
+
         contact_email:
             tab: Contact
             label: Email
-            
+
         contact_fax:
             tab: Contact
             label: Fax
-            
+
         social_facebook:
             tab: Social
             label: Facebook URL
-        
+
         social_twitter:
             tab: Social
             label: Twitter Handle

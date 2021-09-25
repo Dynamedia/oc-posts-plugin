@@ -16,7 +16,7 @@ use Dynamedia\Posts\Classes\Twig\TwigFilters;
 use Dynamedia\Posts\Classes\Twig\TwigFunctions;
 use System\Classes\PluginBase;
 use Event;
-use Spatie\SchemaOrg\Graph;
+use Dynamedia\Posts\Classes\Seo\Schema\SchemaFactory;
 use App;
 
 
@@ -48,8 +48,8 @@ class Plugin extends PluginBase
     {
         $this->registerEvents();
         $this->registerExtenders();
-        // Bind an empty graph object to build on
-        App::instance('dynamedia.posts.graph', new Graph());
+        // Bind a graph object to build on
+        App::instance('dynamedia.posts.graph', SchemaFactory::makeBase());
     }
 
     public function registerComponents()

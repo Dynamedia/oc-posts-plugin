@@ -12,6 +12,7 @@ use Dynamedia\Posts\Classes\Listeners\CategoryModel;
 use Dynamedia\Posts\Classes\Listeners\TagModel;
 use Dynamedia\Posts\Classes\Listeners\AccessControl as AccessControlListener;
 use Dynamedia\Posts\Classes\Listeners\StaticPagesMenu;
+use Dynamedia\Posts\Classes\Seo\Schema\ExtendedGraph;
 use Dynamedia\Posts\Classes\Twig\TwigFilters;
 use Dynamedia\Posts\Classes\Twig\TwigFunctions;
 use System\Classes\PluginBase;
@@ -49,7 +50,7 @@ class Plugin extends PluginBase
         $this->registerEvents();
         $this->registerExtenders();
         // Bind a graph object to build on
-        App::instance('dynamedia.posts.graph', SchemaFactory::makeBase());
+        App::instance('dynamedia.posts.graph', new ExtendedGraph());
     }
 
     public function registerComponents()

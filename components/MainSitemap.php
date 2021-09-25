@@ -1,10 +1,9 @@
 <?php namespace Dynamedia\Posts\Components;
 
 use Cms\Classes\ComponentBase;
+use Dynamedia\Posts\Classes\Seo\Schema\ExtendedGraph;
 use Dynamedia\Posts\Classes\Sitemap\SitemapAll;
-use Cms\Classes\Theme;
-use App;
-use Dynamedia\Posts\Classes\Seo\Schema\SchemaFactory;
+
 
 
 /**
@@ -27,8 +26,8 @@ class MainSitemap extends ComponentBase
 
     public function onRun()
     {
-        $graph = SchemaFactory::makeBase();
-        dd($graph);
+        $graph = new ExtendedGraph();
+        dd($graph->getArticle());
         $feed = new SitemapAll();
         return $feed->makeViewResponse();
     }

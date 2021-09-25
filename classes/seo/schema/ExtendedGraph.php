@@ -87,6 +87,7 @@ class ExtendedGraph extends Graph
     {
         $website = SchemaFactory::makeSpatie('WebSite')
             ->setProperty('@id', $this->getWebsiteId())
+            ->url($this->getBaseUrl())
             ->publisher(['@id' => $this->getPubisherId()]);
 
         $this->add($website, "website");

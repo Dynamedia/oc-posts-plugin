@@ -27,7 +27,7 @@ class MainSitemap extends ComponentBase
     public function onRun()
     {
         $graph = new ExtendedGraph();
-        dd($graph->getArticle());
+        dd($graph->toArray());
         $feed = new SitemapAll();
         return $feed->makeViewResponse();
     }

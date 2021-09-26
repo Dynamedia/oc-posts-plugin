@@ -817,8 +817,11 @@ class Post extends Model
         }
         return $ids;
     }
-    
 
+
+    /**
+     * Add article data to the global schema graph object
+     */
     public function setSchema() {
         $graph = \App::make('dynamedia.posts.graph');
 

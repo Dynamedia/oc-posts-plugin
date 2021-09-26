@@ -42,7 +42,7 @@ class PostsRouteDetection
 
             if (!$page) return;
 
-            // todo move this - Set webpage in pge load cycle and then set post stuff if we have one
+            // todo move this - Its firingtoo late and clobbering the article webpage
             $graph = App::make('dynamedia.posts.graph');
             $graph->getWebpage()
                 ->setProperty("@id", Page::url($page->fileName) . "#wepbage")

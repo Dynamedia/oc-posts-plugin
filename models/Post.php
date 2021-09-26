@@ -820,6 +820,8 @@ class Post extends Model
 
     public function getSeoSchema()
     {
+        return \App::make('dynamedia.posts.graph')
+        ->article()->headline('hello');
         if (!empty($this->seo['schema_type'])) {
             $type = $this->seo['schema_type'];
         } else {
@@ -832,6 +834,26 @@ class Post extends Model
     public function getSeoSchemaAttribute()
     {
         return $this->getSeoSchema()->toScript();
+    }
+    
+    public function setSchema() {
+        $graph = \App::make('dynamedia.posts.graph');
+        $author = $this->author ? $this->author->getSeoSchema() : null;
+        $editor = $this->editor ? $this->editor->getSeoSchema() : null;
+        
+        if ($author) {
+            $author->setProperty("@id", $this->url . "#author");
+            $graph->add($author, 'author');
+        }
+        
+        if (!empty($this->seo['schema_type'])) {
+            $type = $this->seo['schema_type'];
+        } else {
+            $type = 'article';
+        }
+        $article = SchemaFactory::makeSpatie($type);
+        
+        
     }
 
 

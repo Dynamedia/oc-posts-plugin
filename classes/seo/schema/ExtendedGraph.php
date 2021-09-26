@@ -72,7 +72,9 @@ class ExtendedGraph extends Graph
         $typeOption = !empty($themeSettings['operator_type']) ? $themeSettings['operator_type'] : 'organization';
         $publisher = SchemaFactory::makeSpatie($typeOption)
             ->setProperty('@id', $this->getPubisherId());
-
+        
+        
+        try {
         $publisherAddress = SchemaFactory::makeSpatie('postalAddress')
             ->addressCountry($themeSettings['address_country'])
             ->addressLocality($themeSettings['address_city'])
@@ -88,6 +90,10 @@ class ExtendedGraph extends Graph
             ->address($publisherAddress)
             ->geo($publisherGeo)
             ->url($this->getBaseUrl());
+        } catch (\Exception $e) {
+            // Only throws if unset
+            // nothing to do. user needs to complete some theme settings
+        }
 
         $this->add($publisher, "publisher");
     }

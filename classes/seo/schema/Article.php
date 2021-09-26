@@ -49,6 +49,7 @@ class Article extends Post
             $this->content->image($image);
         }
 
+
         parent::setSchema();
 
     }

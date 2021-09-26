@@ -50,6 +50,8 @@ class PostsRouteDetection
                 ->title($page->title)
                 ->description($page->meta_description);
 
+            $controller->vars['schema'] = $graph;
+
 
             // Get info for potential clashing pages and the page the router actually matched
             $params = $controller->getRouter()->getParameters();

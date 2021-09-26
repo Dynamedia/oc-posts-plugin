@@ -817,46 +817,76 @@ class Post extends Model
         }
         return $ids;
     }
-
-    public function getSeoSchema()
-    {
-        return \App::make('dynamedia.posts.graph')
-        ->article()->headline('hello');
-        if (!empty($this->seo['schema_type'])) {
-            $type = $this->seo['schema_type'];
-        } else {
-            $type = 'article';
-        }
-        $schema = SchemaFactory::makeNative($type, $this);
-        return $schema->getSchema();
-    }
-
-    public function getSeoSchemaAttribute()
-    {
-        return $this->getSeoSchema()->toScript();
-    }
     
+
     public function setSchema() {
         $graph = \App::make('dynamedia.posts.graph');
-        $author = $this->author ? $this->author->getSeoSchema() : null;
-        $editor = $this->editor ? $this->editor->getSeoSchema() : null;
-        
-        if ($author) {
-            $author->setProperty("@id", $this->url . "#author");
-            $graph->add($author, 'author');
-        }
-        
+
+        // Create the article
         if (!empty($this->seo['schema_type'])) {
             $type = $this->seo['schema_type'];
         } else {
             $type = 'article';
         }
-        $article = SchemaFactory::makeSpatie($type);
-        
-        
+        $article = SchemaFactory::makeSpatie($type)
+            ->setProperty("mainEntityOf", ["@id" => $graph->getWebpageId()]);
+
+        // And the people associated
+        $author = !empty($this->author->profile) ? $this->author->profile->getSeoSchema() : null;
+        $editor = !empty($this->editor->profile) ? $this->editor->profile->getSeoSchema() : null;
+
+        if ($author) {
+            $id = $this->url . "#author";
+            $author->setProperty("@id", $id);
+            $graph->add($author, 'author');
+            $article->setProperty('author', ["@id" => $id]);
+        }
+
+        if ($editor) {
+            $id = $this->url . "#editor";
+            $author->setProperty("@id", $id);
+            $graph->add($editor, 'editor');
+            $article->setProperty('editor', ["@id" => $id]);
+        }
+
+        $article->setProperty("@id", $this->url . "#article")
+            ->headline($this->title)
+            ->name($this->title)
+            ->dateCreated($this->created_at)
+            ->url($this->url)
+            ->abstract(strip_tags($this->excerpt));
+
+        if ($this->primary_category) {
+            $article->articleSection($this->primary_category->name);
+        }
+
+        if ($this->is_published && $this->published_at) {
+            $article->datePublished((string) $this->published_at);
+            if ($this->updated_at > $this->published_at) {
+                $article->dateModified((string) $this->updated_at);
+            }
+        }
+
+        if ($this->published_until) {
+            $article->expires((string) $this->published_until);
+        }
+
+        $imageUrl = $this->getBestImage();
+        if ($imageUrl) {
+            $image = SchemaFactory::makeSpatie('imageObject')
+                ->url(\URL::to(\System\Classes\MediaLibrary::url($imageUrl)));
+            $article->image($image);
+        }
+
+        $graph->add($article, "article");
+
+        // Update the WebPage
+
+        $graph->getWebPage()
+            ->setProperty("@id", $this->url . "#webpage")
+            ->title($this->title)
+            ->description(strip_tags($this->excerpt));
     }
-
-
 
 
 
@@ -1088,7 +1118,6 @@ class Post extends Model
             'search' => $seoData->getSearchArray(),
             'openGraph' => $seoData->getOpenGraphArray(),
             'twitter' => $seoData->getTwitterArray(),
-            'schema' => $seoData->getSchemaArray(),
             'themeData' => $seoData->getThemeData(),
             'locales' => $this->getAlternateLocales()
         ])->render();

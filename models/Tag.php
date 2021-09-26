@@ -509,7 +509,6 @@ class Tag extends Model
             'search' => $seoData->getSearchArray(),
             'openGraph' => $seoData->getOpenGraphArray(),
             'twitter' => $seoData->getTwitterArray(),
-            'schema' => $seoData->getSchemaArray(),
             'themeData' => $seoData->getThemeData(),
             'locales' => $this->getAlternateLocales()
         ])->render();

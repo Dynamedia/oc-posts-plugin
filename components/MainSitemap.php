@@ -3,7 +3,7 @@
 use Cms\Classes\ComponentBase;
 use Dynamedia\Posts\Classes\Seo\Schema\ExtendedGraph;
 use Dynamedia\Posts\Classes\Sitemap\SitemapAll;
-
+use Dynamedia\Posts\Models\Post;
 
 
 /**
@@ -26,8 +26,6 @@ class MainSitemap extends ComponentBase
 
     public function onRun()
     {
-        $graph = \App::make('dynamedia.posts.graph');
-        dd($graph->toArray());
         $feed = new SitemapAll();
         return $feed->makeViewResponse();
     }

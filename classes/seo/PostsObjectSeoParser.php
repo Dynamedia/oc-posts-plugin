@@ -36,7 +36,6 @@ class PostsObjectSeoParser extends Seo
         $this->setTwitterTitle();
         $this->setTwitterDescription();
         $this->setTwitterImage();
-        $this->setSchema();
     }
 
     private function setSearchTitle()
@@ -184,8 +183,4 @@ class PostsObjectSeoParser extends Seo
         }
     }
 
-    private function setSchema()
-    {
-        $this->schema = $this->model->getSeoSchema();
-    }
 }

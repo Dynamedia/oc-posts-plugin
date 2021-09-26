@@ -38,11 +38,9 @@ class PostsRouteDetection
 
         // TODO some refactoring needed here, but lets get it working
 
-        $event->listen('cms.page.beforeDisplay', function ($controller, $url, $page) {
-
+        $event->listen('cms.page.init', function ($controller, $page) {
             if (!$page) return;
 
-            // todo move this - Its firingtoo late and clobbering the article webpage
             $graph = App::make('dynamedia.posts.graph');
             $graph->getWebpage()
                 ->setProperty("@id", Page::url($page->fileName) . "#wepbage")
@@ -51,7 +49,11 @@ class PostsRouteDetection
                 ->description($page->meta_description);
 
             $controller->vars['schema'] = $graph;
+        });
 
+        $event->listen('cms.page.beforeDisplay', function ($controller, $url, $page) {
+
+            if (!$page) return;
 
             // Get info for potential clashing pages and the page the router actually matched
             $params = $controller->getRouter()->getParameters();

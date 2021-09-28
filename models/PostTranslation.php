@@ -1,6 +1,8 @@
 <?php namespace Dynamedia\Posts\Models;
 
 use Cms\Classes\Page;
+use BackendAuth;
+use Event;
 use Cms\Classes\Theme;
 use Dynamedia\Posts\Classes\Body\Body;
 use Model;
@@ -109,8 +111,9 @@ class PostTranslation extends Model
 
     public function beforeValidate()
     {
+        Event::fire('dynamedia.posts.posttranslation.validating', [$this, $user = BackendAuth::getUser()]);
         $this->slug = Str::slug($this->slug);
-        
+
         if (!PostSlug::isAvailable($this->native->id, $this->slug)) {
             throw new ValidationException(['slug' => "Slug is not available"]);
         }
@@ -120,6 +123,7 @@ class PostTranslation extends Model
 
     public function beforeSave()
     {
+        Event::fire('dynamedia.posts.posttranslation.saving', [$this, $user = BackendAuth::getUser()]);
         $this->body_text = $this->body->getTextContent();
     }
 
@@ -132,12 +136,19 @@ class PostTranslation extends Model
 
         $this->native->invalidateTranslatedAttributesCache();
         $this->native->invalidateBodyCache();
+        Event::fire('dynamedia.posts.posttranslation.saved', [$this, $user = BackendAuth::getUser()]);
     }
 
     public function beforeDelete()
     {
+        Event::fire('dynamedia.posts.posttranslation.deleting', [$this, $user = BackendAuth::getUser()]);
         // Remove the pivot record but don't attempt to delete the slug record. It can still resolve to the post
         $this->postslugs()->detach();
+    }
+
+    public function afterDelete()
+    {
+        Event::fire('dynamedia.posts.posttranslation.deleted', [$this, $user = BackendAuth::getUser()]);
     }
 
     /**

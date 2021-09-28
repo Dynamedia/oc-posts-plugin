@@ -112,38 +112,21 @@ class PostTranslation extends Model
     public function beforeValidate()
     {
         Event::fire('dynamedia.posts.posttranslation.validating', [$this, $user = BackendAuth::getUser()]);
-        $this->slug = Str::slug($this->slug);
-
-        if (!PostSlug::isAvailable($this->native->id, $this->slug)) {
-            throw new ValidationException(['slug' => "Slug is not available"]);
-        }
-
-        $this->prePopulateAttributes();
     }
 
     public function beforeSave()
     {
         Event::fire('dynamedia.posts.posttranslation.saving', [$this, $user = BackendAuth::getUser()]);
-        $this->body_text = $this->body->getTextContent();
     }
 
     public function afterSave()
     {
-        $slug = $this->native->postslugs()->firstOrCreate([
-            'slug' => $this->slug,
-        ]);
-        $this->postslugs()->sync($slug->id, false);
-
-        $this->native->invalidateTranslatedAttributesCache();
-        $this->native->invalidateBodyCache();
         Event::fire('dynamedia.posts.posttranslation.saved', [$this, $user = BackendAuth::getUser()]);
     }
 
     public function beforeDelete()
     {
         Event::fire('dynamedia.posts.posttranslation.deleting', [$this, $user = BackendAuth::getUser()]);
-        // Remove the pivot record but don't attempt to delete the slug record. It can still resolve to the post
-        $this->postslugs()->detach();
     }
 
     public function afterDelete()
@@ -295,6 +278,11 @@ class PostTranslation extends Model
     public function getBodyCacheKey()
     {
         return $this->native->getBodyCacheKey();
+    }
+
+    public function setSchema()
+    {
+        $this->native->setSchema();
     }
 
     /**

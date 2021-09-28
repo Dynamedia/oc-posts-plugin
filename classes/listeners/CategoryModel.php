@@ -8,9 +8,9 @@ class CategoryModel
     public function subscribe($event)
     {
         // Before Validate
-        $event->listen('dynamedia.posts.category.saving', function ($category, $user) {
+        $event->listen('dynamedia.posts.category.validating', function ($category, $user) {
             $category->slug = Str::slug($category->slug);
-            
+
             if (!CategorySlug::isAvailable($category->id, $category->slug)) {
                 throw new ValidationException(['slug' => "Slug is not available"]);
             }

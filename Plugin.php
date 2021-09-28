@@ -3,15 +3,18 @@
 use Backend;
 use Dynamedia\Posts\Classes\Extenders\ExtendStaticPages;
 use Dynamedia\Posts\Classes\Extenders\ExtendThemeFormConfig;
+use Dynamedia\Posts\Classes\Listeners\CategoryTranslationModel;
 use Dynamedia\Posts\Classes\Listeners\PostsController;
 use Dynamedia\Posts\Classes\Listeners\PostsRouteDetection;
 use Dynamedia\Posts\Classes\Acl\AccessControl;
 use Dynamedia\Posts\Classes\Extenders\ExtendBackendUser;
 use Dynamedia\Posts\Classes\Listeners\PostModel;
 use Dynamedia\Posts\Classes\Listeners\CategoryModel;
+use Dynamedia\Posts\Classes\Listeners\PostTranslationModel;
 use Dynamedia\Posts\Classes\Listeners\TagModel;
 use Dynamedia\Posts\Classes\Listeners\AccessControl as AccessControlListener;
 use Dynamedia\Posts\Classes\Listeners\StaticPagesMenu;
+use Dynamedia\Posts\Classes\Listeners\TagTranslationModel;
 use Dynamedia\Posts\Classes\Seo\Schema\ExtendedGraph;
 use Dynamedia\Posts\Classes\Twig\TwigFilters;
 use Dynamedia\Posts\Classes\Twig\TwigFunctions;
@@ -156,6 +159,9 @@ class Plugin extends PluginBase
         Event::subscribe(PostsController::class);
         Event::subscribe(CategoryModel::class);
         Event::subscribe(TagModel::class);
+        Event::subscribe(PostTranslationModel::class);
+        Event::subscribe(CategoryTranslationModel::class);
+        Event::subscribe(TagTranslationModel::class);
     }
 
     public function registerExtenders()

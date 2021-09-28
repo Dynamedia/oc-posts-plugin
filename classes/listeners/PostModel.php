@@ -9,9 +9,9 @@ class PostModel
     public function subscribe($event)
     {
         // Before Validate
-        $event->listen('dynamedia.posts.post.saving', function ($post, $user) {
+        $event->listen('dynamedia.posts.post.validating', function ($post, $user) {
             $post->slug = Str::slug($post->slug);
-            
+
             if (!PostSlug::isAvailable($post->id, $post->slug)) {
                 throw new ValidationException(['slug' => "Slug is not available"]);
             }

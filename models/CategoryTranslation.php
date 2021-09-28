@@ -113,38 +113,21 @@ class CategoryTranslation extends Model
     public function beforeValidate()
     {
         Event::fire('dynamedia.posts.categorytranslation.validating', [$this, $user = BackendAuth::getUser()]);
-        $this->slug = Str::slug($this->slug);
-
-        if (!CategorySlug::isAvailable($this->native->id, $this->slug)) {
-            throw new ValidationException(['slug' => "Slug is not available"]);
-        }
-        $this->prePopulateAttributes();
     }
 
     public function beforeSave()
     {
         Event::fire('dynamedia.posts.categorytranslation.saving', [$this, $user = BackendAuth::getUser()]);
-        $this->body_text = $this->body->getTextContent();
-        $this->slug = Str::slug($this->slug);
     }
 
     public function afterSave()
     {
-        $slug = $this->native->categoryslugs()->firstOrCreate([
-            'slug' => $this->slug,
-        ]);
-        $this->categoryslugs()->sync($slug->id, false);
-
-        $this->native->invalidateTranslatedAttributesCache();
-        $this->native->invalidateBodyCache();
         Event::fire('dynamedia.posts.categorytranslation.saved', [$this, $user = BackendAuth::getUser()]);
     }
 
     public function beforeDelete()
     {
         Event::fire('dynamedia.posts.categorytranslation.deleting', [$this, $user = BackendAuth::getUser()]);
-        // Remove the pivot record but don't attempt to delete the slug record. It can still resolve to the category
-        $this->categoryslugs()->detach();
     }
 
     public function afterDelete()
@@ -282,6 +265,11 @@ class CategoryTranslation extends Model
     public function getBodyCacheKey()
     {
         return $this->native->getBodyCacheKey();
+    }
+
+    public function setSchema()
+    {
+        $this->native->setSchema();
     }
 
     /**

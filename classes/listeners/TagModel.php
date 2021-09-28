@@ -8,9 +8,9 @@ class TagModel
     public function subscribe($event)
     {
         // Before Validate
-        $event->listen('dynamedia.posts.tag.saving', function ($tag, $user) {
+        $event->listen('dynamedia.posts.tag.validating', function ($tag, $user) {
             $tag->slug = Str::slug($tag->slug);
-            
+
             if (!TagSlug::isAvailable($tag->id, $tag->slug)) {
                 throw new ValidationException(['slug' => "Slug is not available"]);
             }

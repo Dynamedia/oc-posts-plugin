@@ -7,8 +7,7 @@ use Event;
 use October\Rain\Database\Traits\Validation;
 use RainLab\Translate\Classes\Translator;
 use RainLab\Translate\Models\Locale;
-use ValidationException;
-use Str;
+
 
 /**
  * TagTranslation Model
@@ -105,38 +104,21 @@ class TagTranslation extends Model
     public function beforeValidate()
     {
         Event::fire('dynamedia.posts.tagtranslation.validating', [$this, $user = BackendAuth::getUser()]);
-        $this->slug = Str::slug($this->slug);
-
-        if (!TagSlug::isAvailable($this->native->id, $this->slug)) {
-            throw new ValidationException(['slug' => "Slug is not available"]);
-        }
-        $this->prePopulateAttributes();
     }
 
     public function beforeSave()
     {
         Event::fire('dynamedia.posts.tagtranslation.saving', [$this, $user = BackendAuth::getUser()]);
-        $this->body_text = $this->body->getTextContent();
-        $this->slug = Str::slug($this->slug);
     }
 
     public function afterSave()
     {
-        $slug = $this->native->tagslugs()->firstOrCreate([
-            'slug' => $this->slug,
-        ]);
-        $this->tagslugs()->sync($slug->id, false);
-
-        $this->native->invalidateTranslatedAttributesCache();
-        $this->native->invalidateBodyCache();
         Event::fire('dynamedia.posts.tagtranslation.saved', [$this, $user = BackendAuth::getUser()]);
     }
 
     public function beforeDelete()
     {
         Event::fire('dynamedia.posts.tagtranslation.deleting', [$this, $user = BackendAuth::getUser()]);
-        // Remove the pivot record but don't attempt to delete the slug record. It can still resolve to the tag
-        $this->tagslugs()->detach();
     }
 
     public function afterDelete()
@@ -274,6 +256,11 @@ class TagTranslation extends Model
     public function getBodyCacheKey()
     {
         return $this->native->getBodyCacheKey();
+    }
+
+    public function setSchema()
+    {
+        $this->native->setSchema();
     }
 
     /**

@@ -35,7 +35,10 @@ class TemplateBody extends Body
             return;
         }
 
-        $this->pages = explode('<hr class="pagebreak">', $controller->renderPartial($partial->fileName, $this->model->body_document['template_body']));
+        $this->pages = explode('<hr class="pagebreak">', $controller->renderPartial($partial->fileName, [
+            'template' => $this->model->body_document['template_body'],
+            'post' => $this->model
+            ]));
     }
 
 

@@ -832,7 +832,8 @@ class Post extends Model
             $type = 'article';
         }
         $article = SchemaFactory::makeSpatie($type)
-            ->setProperty("mainEntityOf", ["@id" => $graph->getWebpageId()]);
+            ->setProperty("mainEntityOf", ["@id" => $graph->getWebpageId()])
+            ->setProperty("isPartOf", ["@id" => $graph->getWebpageId()]);
 
         // And the people associated
         $author = !empty($this->author->profile) ? $this->author->profile->getSeoSchema() : null;
@@ -841,14 +842,14 @@ class Post extends Model
         if ($author) {
             $id = $this->url . "#author";
             $author->setProperty("@id", $id);
-            $graph->add($author, 'author');
+            $graph->set($author, 'author');
             $article->setProperty('author', ["@id" => $id]);
         }
 
         if ($editor) {
             $id = $this->url . "#editor";
             $author->setProperty("@id", $id);
-            $graph->add($editor, 'editor');
+            $graph->set($editor, 'editor');
             $article->setProperty('editor', ["@id" => $id]);
         }
 
@@ -880,8 +881,38 @@ class Post extends Model
                 ->url(\URL::to(\System\Classes\MediaLibrary::url($imageUrl)));
             $article->image($image);
         }
+        
+        // Article is about
+        
+        $aboutItems = [];
+        $about = !empty($this->seo['schema_content']['schema_about']) ? $this->seo['schema_content']['schema_about'] : [] ;
+        foreach ($about as $item) {
+            $thing = SchemaFactory::makeSpatie($item['_group']);
+            unset($item["_group"]);
+            foreach ($item as $k => $v) {
+                $thing->setProperty($k, $v);
+            }
+            $aboutItems[] = $thing;
+        }
+        
+        $article->about($aboutItems);
+        
+        // Article mentions
+        
+        $mentionsItems = [];
+        $mentions = !empty($this->seo['schema_content']['schema_mentions']) ? $this->seo['schema_content']['schema_mentions'] : [] ;
+        foreach ($mentions as $item) {
+            $thing = SchemaFactory::makeSpatie($item['_group']);
+            unset($item["_group"]);
+            foreach ($item as $k => $v) {
+                $thing->setProperty($k, $v);
+            }
+            $mentionsItems[] = $thing;
+        }
+        
+        $article->mentions($mentionsItems);
 
-        $graph->add($article, "article");
+        $graph->set($article, "article");
 
         // Update the WebPage
 

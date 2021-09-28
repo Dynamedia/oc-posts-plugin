@@ -32,39 +32,23 @@ class ExtendedGraph extends Graph
         $this->setPublisher();
         $this->setWebsite();
         $this->setWebpage();
+        $this->setBreadcrumbs();
     }
 
     public function getBaseUrl()
     {
         if ($this->baseUrl) return $this->baseUrl;
 
-        $parts = parse_url(Url::to('/'));
+        $parts = parse_url(url(''));
+        $path = !empty($parts['path']) ? $parts['path'] : '/';
         $translatedUrl = http_build_url($parts, [
-            'path' => '/' . Translator::instance()->getPathInLocale('/', $this->translator->getLocale())
+            'path' => Translator::instance()->getPathInLocale($path, $this->translator->getLocale())
         ]);
 
         return $translatedUrl;
     }
 
-    public function getPubisherId()
-    {
-        return "{$this->baseUrl}#publisher";
-    }
-
-    public function getWebsiteId()
-    {
-        return "{$this->baseUrl}#website";
-    }
-
-    public function getWebpageId()
-    {
-        return $this->getWebpage()->getProperty("@id");
-    }
-
-    public function getArticleId()
-    {
-        return $this->getArticle()->getProperty("@id");
-    }
+    
 
     protected function setPublisher()
     {
@@ -116,6 +100,16 @@ class ExtendedGraph extends Graph
 
         $this->add($webpage, "webpage");
     }
+    
+    // Always add '/' to breadcrumbs
+    // Must update the id when loading a page
+    public function setBreadcrumbs()
+    {
+        $breadcrumbs = SchemaFactory::makeSpatie('breadcrumbList')
+            ->setProperty("@id", $this->getBaseUrl() . "#breadcrumbs");
+
+        $this->add($breadcrumbs, "breadcrumbs");
+    }
 
     public function getPublisher()
     {
@@ -132,15 +126,30 @@ class ExtendedGraph extends Graph
 
         return $publisher;
     }
+    
+    public function getPubisherId()
+    {
+        return "{$this->baseUrl}#publisher";
+    }
 
     public function getWebsite()
     {
         return $this->get('Spatie\SchemaOrg\WebSite', 'website');
     }
+    
+    public function getWebsiteId()
+    {
+        return "{$this->baseUrl}#website";
+    }
 
     public function getWebpage()
     {
         return $this->get('Spatie\SchemaOrg\WebPage', 'webpage');
+    }
+    
+    public function getWebpageId()
+    {
+        return $this->getWebpage()->getProperty("@id");
     }
 
     public function getArticle()
@@ -155,6 +164,23 @@ class ExtendedGraph extends Graph
 
         return SchemaFactory::makeSpatie('Article')
             ->setProperty("@id", $this->getBaseUrl() . "#article");
+    }
+    
+    public function getArticleId()
+    {
+        return $this->getArticle()->getProperty("@id");
+    }
+    
+    
+    public function getAuthor()
+    {
+        return $this->get('Spatie\SchemaOrg\Person', 'author');
+    }
+    
+    public function getAuthorId()
+    {
+        return $this->getAuthor()
+            ->getProperty("@id");
     }
 
 }

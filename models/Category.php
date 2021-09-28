@@ -668,9 +668,19 @@ class Category extends Model
         return $locales;
     }
 
-    public function getSeoSchema()
-    {
-        return Schema::listItem();
+    /**
+     * Add article data to the global schema graph object
+     */
+    public function setSchema() {
+        $graph = \App::make('dynamedia.posts.graph');
+        
+        // Update the WebPage
+
+        $graph->getWebPage()
+            ->setProperty("@id", $this->url . "#webpage")
+            ->title($this->name)
+            ->description(strip_tags($this->excerpt));
     }
+    
 
 }

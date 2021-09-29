@@ -154,4 +154,29 @@ class Form
         return $options;
     }
 
+    public static function getHours()
+    {
+        $result = [];
+
+        for ($i = 0; $i <= 24; $i++) {
+            $result[$i] = $i;
+        }
+        return $result;
+    }
+
+    public static function getMinutes()
+    {
+        $result = [];
+
+        for ($i = 0; $i <= 60; $i++) {
+            $result[$i] = $i;
+        }
+        return $result;
+    }
+
+    public static function getSeconds()
+    {
+        return static::getMinutes();
+    }
+
 }

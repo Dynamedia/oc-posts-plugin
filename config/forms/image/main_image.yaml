@@ -15,6 +15,6 @@ tabs:
         social:
             tab: dynamedia.posts::lang.images.tabs.social
             type: nestedform
-            usePanelStyles: true
-            showPanel: true
+            usePanelStyles: false
+            showPanel: false
             form: $/dynamedia/posts/config/forms/image/social.yaml

@@ -166,4 +166,29 @@ Trait TranslatableContentObjectTrait
         }
     }
 
+    /**
+     * Get all locale variations
+     *
+     * @return mixed
+     */
+    private function getAlternateLocales()
+    {
+        $locales[] = [
+            'code' => Translator::instance()->getDefaultLocale(),
+            'url'  => $this->getUrlInLocale(Translator::instance()->getDefaultLocale()),
+            'default' => true
+        ];
+
+        foreach ($this->translations as $translation) {
+            $locales[] = [
+                'code' => $translation->locale->code,
+                'url' => $translation->url,
+            ];
+        }
+
+        return $locales;
+    }
+
+
+
 }

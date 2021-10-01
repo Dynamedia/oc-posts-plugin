@@ -1,7 +1,5 @@
 <?php namespace Dynamedia\Posts\Models;
 use Dynamedia\Posts\Classes\Acl\AccessControl;
-use Dynamedia\Posts\Classes\Body\Body;
-use Dynamedia\Posts\Classes\Seo\PostsObjectSeoParser;
 use Model;
 use Dynamedia\Posts\Traits\ControllerTrait;
 use Dynamedia\Posts\Traits\ImagesTrait;
@@ -11,8 +9,6 @@ use October\Rain\Database\Traits\Validation;
 use BackendAuth;
 use Event;
 use RainLab\Translate\Classes\Translator;
-use RainLab\Translate\Models\Locale;
-use Spatie\SchemaOrg\Schema;
 
 /**
  * tag Model
@@ -501,70 +497,12 @@ class Tag extends Model
         return $result;
     }
 
-
-    public function getHtmlHeadAttribute()
-    {
-        $seoData = new PostsObjectSeoParser($this);
-        $view = \View::make('dynamedia.posts::seo.head_seo', [
-            'search' => $seoData->getSearchArray(),
-            'openGraph' => $seoData->getOpenGraphArray(),
-            'twitter' => $seoData->getTwitterArray(),
-            'themeData' => $seoData->getThemeData(),
-            'locales' => $this->getAlternateLocales()
-        ])->render();
-
-        return $view;
-    }
-
-    /**
-     * Get all locale variations of the post
-     *
-     * @return mixed
-     */
-    private function getAlternateLocales()
-    {
-        $locales[] = [
-            'code' => Translator::instance()->getDefaultLocale(),
-            'url'  => $this->getUrlInLocale(Translator::instance()->getDefaultLocale()),
-            'default' => true
-        ];
-
-        foreach ($this->translations as $translation) {
-            $locales[] = [
-                'code' => $translation->locale->code,
-                'url' => $translation->url,
-            ];
-        }
-
-        return $locales;
-    }
-
-    /**
-     * Return all possible keys for this category
-     *
-     * @return array
-     */
-    public function getCacheKeys()
-    {
-        $keys = [];
-        foreach (Locale::all() as $locale) {
-            $keys[] = self::class . "_{$this->id}_html_head_attribute_" . $locale->code;
-        }
-
-        return $keys;
-    }
-
-    public function getSeoSchema()
-    {
-        return Schema::listItem();
-    }
-    
     /**
      * Add article data to the global schema graph object
      */
     public function setSchema() {
         $graph = \App::make('dynamedia.posts.graph');
-        
+
         // Update the WebPage
 
         $graph->getWebPage()

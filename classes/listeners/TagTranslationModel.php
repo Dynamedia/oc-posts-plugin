@@ -32,6 +32,7 @@ class TagTranslationModel
 
             $tagTranslation->native->invalidateTranslatedAttributesCache();
             $tagTranslation->native->invalidateBodyCache();
+            $tagTranslation->native->invalidateHtmlHeadAttributeCache();
         });
 
         // Before Delete

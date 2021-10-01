@@ -53,6 +53,7 @@ class PostModel
 
             $post->invalidateTranslatedAttributesCache();
             $post->invalidateBodyCache();
+            $post->invalidateHtmlHeadAttributeCache();
 
         });
 

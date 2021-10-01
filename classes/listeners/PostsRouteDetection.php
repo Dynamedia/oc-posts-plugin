@@ -1,11 +1,8 @@
 <?php namespace Dynamedia\Posts\Classes\Listeners;
 
 use App;
-use Cms\Classes\Controller;
-use Dynamedia\Posts\Classes\Rss\RssAll;
 use Dynamedia\Posts\Classes\Rss\RssCategory;
 use Dynamedia\Posts\Classes\Rss\RssTag;
-use Dynamedia\Posts\Classes\Sitemap\SitemapAll;
 use Dynamedia\Posts\Classes\Sitemap\SitemapCategory;
 use Dynamedia\Posts\Classes\Sitemap\SitemapTag;
 use Event;
@@ -42,20 +39,20 @@ class PostsRouteDetection
             if (!$page) return;
 
             $graph = App::make('dynamedia.posts.graph');
-            
+
             $graph->getWebpage()
                 ->setProperty("@id", Page::url($page->fileName) . "#wepbage")
                 ->url(Page::url($page->fileName))
                 ->title($page->title)
                 ->description($page->meta_description);
-                
+
             $graph->getBreadcrumbs()
                 ->setProperty("@id", Page::url($page->fileName) . "#breadcrumbs");
-            
+
             $graph->addBreadcrumb('home', $graph->getBaseUrl());
 
             $controller->vars['schema'] = $graph;
-            
+
         });
 
         $event->listen('cms.page.beforeDisplay', function ($controller, $url, $page) {
@@ -110,7 +107,7 @@ class PostsRouteDetection
 
             if (!empty($post)) {
                 $newPage = Page::loadCached($activeThemeCode, $postPage['page']);
-                $post->getCmsLayout() ? $newPage->layout = $post->getCmsLayout() : null;
+                ($post->getCmsLayout() !== false) ? $newPage->layout = $post->getCmsLayout() : null;
                 App::instance('dynamedia.posts.post', $post);
                 return $newPage;
             }
@@ -118,7 +115,7 @@ class PostsRouteDetection
             // todo refactor rss/sitemap logic
             if (!empty($category)) {
                 $newPage = Page::loadCached($activeThemeCode,$categoryPage['page']);
-                $category->getCmsLayout() ? $newPage->layout = $category->getCmsLayout() : null;
+                ($category->getCmsLayout() !== false) ? $newPage->layout = $category->getCmsLayout() : null;
                 App::instance('dynamedia.posts.category', $category);
                 if ($this->suffix === "rss") {
                     $feed = new RssCategory($category);
@@ -134,7 +131,7 @@ class PostsRouteDetection
 
             // Tags can't clash with Posts and Categories so can share the same name
             if (!empty($tag)) {
-                $tag->getCmsLayout() ? $page->layout = $tag->getCmsLayout() : null;
+                ($tag->getCmsLayout() !== false) ? $page->layout = $tag->getCmsLayout() : null;
                 App::instance('dynamedia.posts.tag', $tag);
                 if ($this->suffix === "rss") {
                     $feed = new RssTag($tag);
@@ -155,7 +152,6 @@ class PostsRouteDetection
      */
     private function parseSlugParams($controller)
     {
-
         $slug = false;
 
         if ($controller->param('postsPostSlug')) {

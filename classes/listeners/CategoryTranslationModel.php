@@ -32,6 +32,7 @@ class CategoryTranslationModel
 
             $categoryTranslation->native->invalidateTranslatedAttributesCache();
             $categoryTranslation->native->invalidateBodyCache();
+            $categoryTranslation->native->invalidateHtmlHeadAttributeCache();
         });
 
         // Before Delete

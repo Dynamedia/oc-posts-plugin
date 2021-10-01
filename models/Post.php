@@ -485,7 +485,6 @@ class Post extends Model
             }
         }
 
-
         // We need to do paging ourselves to support later API. Paginate in the components for now
         $totalResults = $query->count();
 
@@ -823,6 +822,7 @@ class Post extends Model
      * Add article data to the global schema graph object
      */
     public function setSchema() {
+
         $graph = \App::make('dynamedia.posts.graph');
 
         // Create the article
@@ -878,12 +878,12 @@ class Post extends Model
         $imageUrl = $this->getBestImage();
         if ($imageUrl) {
             $image = SchemaFactory::makeSpatie('imageObject')
-                ->url(\URL::to(\System\Classes\MediaLibrary::url($imageUrl)));
+                ->url(\URL::to(\Media\Classes\MediaLibrary::url($imageUrl)));
             $article->image($image);
         }
-        
+
         // Article is about
-        
+
         $aboutItems = [];
         $about = !empty($this->seo['schema_content']['schema_about']) ? $this->seo['schema_content']['schema_about'] : [] ;
         foreach ($about as $item) {
@@ -894,11 +894,11 @@ class Post extends Model
             }
             $aboutItems[] = $thing;
         }
-        
+
         $article->about($aboutItems);
-        
+
         // Article mentions
-        
+
         $mentionsItems = [];
         $mentions = !empty($this->seo['schema_content']['schema_mentions']) ? $this->seo['schema_content']['schema_mentions'] : [] ;
         foreach ($mentions as $item) {
@@ -909,7 +909,7 @@ class Post extends Model
             }
             $mentionsItems[] = $thing;
         }
-        
+
         $article->mentions($mentionsItems);
 
         $graph->set($article, "article");
@@ -920,18 +920,18 @@ class Post extends Model
             ->setProperty("@id", $this->url . "#webpage")
             ->title($this->title)
             ->description(strip_tags($this->excerpt));
-            
+
         $graph->getBreadcrumbs()
             ->setProperty("@id", $this->url . "#breadcrumbs");
-        
-        if ($this->primary_category) {    
+
+        if ($this->primary_category) {
             foreach ($this->primary_category->getCachedPathFromRoot() as $item) {
                 $graph->addBreadcrumb($item['name'], $item['url']);
             }
         }
-        
+
         $graph->addBreadcrumb($this->title, $this->url);
-    
+
     }
 
 
@@ -1155,43 +1155,6 @@ class Post extends Model
         if (!$this->show_contents) return [];
 
         return $this->body->getContentsList($this->url);
-    }
-
-    public function getHtmlHeadAttribute()
-    {
-        $seoData = new PostsObjectSeoParser($this);
-        $view = \View::make('dynamedia.posts::seo.head_seo', [
-            'search' => $seoData->getSearchArray(),
-            'openGraph' => $seoData->getOpenGraphArray(),
-            'twitter' => $seoData->getTwitterArray(),
-            'themeData' => $seoData->getThemeData(),
-            'locales' => $this->getAlternateLocales()
-        ])->render();
-
-        return $view;
-    }
-
-    /**
-     * Get all locale variations of the post
-     *
-     * @return mixed
-     */
-    private function getAlternateLocales()
-    {
-        $locales[] = [
-            'code' => $this->locale->code,
-            'url'  => $this->getUrlInLocale($this->locale->code),
-            'default' => true
-        ];
-
-        foreach ($this->translations as $translation) {
-            $locales[] = [
-              'code' => $translation->locale->code,
-              'url' => $translation->url,
-            ];
-        }
-
-        return $locales;
     }
 
 }

@@ -1,14 +1,9 @@
 <?php
 
-
 namespace Dynamedia\Posts\Classes\Seo;
 
-
 use Cms\Classes\Controller;
-use Cms\Classes\MediaLibrary;
-use Dynamedia\Posts\Classes\Seo\Schema\Article;
-use Spatie\SchemaOrg\Schema;
-use Dynamedia\Posts\Classes\Seo\Schema\SchemaFactory;
+use Media\Classes\MediaLibrary;
 
 class PostsObjectSeoParser extends Seo
 {
@@ -182,5 +177,6 @@ class PostsObjectSeoParser extends Seo
             $this->appendTwitter('image', MediaLibrary::url($path));
         }
     }
+
 
 }

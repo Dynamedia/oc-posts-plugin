@@ -36,6 +36,7 @@ class TagModel
 
             $tag->invalidateTranslatedAttributesCache();
             $tag->invalidateBodyCache();
+            $tag->invalidateHtmlHeadAttributeCache();
         });
 
         // Before Delete

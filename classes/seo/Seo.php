@@ -3,7 +3,7 @@ namespace Dynamedia\Posts\Classes\Seo;
 
 use Cms\Classes\Theme;
 use Cms\Classes\Controller;
-use Cms\Classes\MediaLibrary;
+use Media\Classes\MediaLibrary;
 
 class Seo
 {

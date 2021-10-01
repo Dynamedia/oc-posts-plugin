@@ -32,6 +32,7 @@ class PostTranslationModel
 
             $postTranslation->native->invalidateTranslatedAttributesCache();
             $postTranslation->native->invalidateBodyCache();
+            $postTranslation->native->invalidateHtmlHeadAttributeCache();
         });
 
         // Before Delete

@@ -1,8 +1,6 @@
 <?php namespace Dynamedia\Posts\Models;
 
 use Dynamedia\Posts\Classes\Acl\AccessControl;
-use Dynamedia\Posts\Classes\Body\Body;
-use Dynamedia\Posts\Classes\Seo\PostsObjectSeoParser;
 use Model;
 use BackendAuth;
 use October\Rain\Database\Traits\NestedTree;
@@ -13,8 +11,6 @@ use October\Rain\Database\Traits\Validation;
 use Dynamedia\Posts\Traits\TranslatableContentObjectTrait;
 use Event;
 use RainLab\Translate\Classes\Translator;
-use RainLab\Translate\Models\Locale;
-use Spatie\SchemaOrg\Schema;
 
 /**
  * category Model
@@ -335,7 +331,7 @@ class Category extends Model
         $path = array_reverse($this->getPathFromRoot($locale));
         return $path;
     }
-    
+
     public function getCachedPathFromRoot($locale = null)
     {
         // Can cache this because if urls are stale we get redirects
@@ -646,49 +642,12 @@ class Category extends Model
     }
 
 
-    public function getHtmlHeadAttribute()
-    {
-        $seoData = new PostsObjectSeoParser($this);
-        $view = \View::make('dynamedia.posts::seo.head_seo', [
-            'search' => $seoData->getSearchArray(),
-            'openGraph' => $seoData->getOpenGraphArray(),
-            'twitter' => $seoData->getTwitterArray(),
-            'themeData' => $seoData->getThemeData(),
-            'locales' => $this->getAlternateLocales()
-        ])->render();
-
-        return $view;
-    }
-
-    /**
-     * Get all locale variations of the post
-     *
-     * @return mixed
-     */
-    private function getAlternateLocales()
-    {
-        $locales[] = [
-            'code' => Translator::instance()->getDefaultLocale(),
-            'url'  => $this->getUrlInLocale(Translator::instance()->getDefaultLocale()),
-            'default' => true
-        ];
-
-        foreach ($this->translations as $translation) {
-            $locales[] = [
-                'code' => $translation->locale->code,
-                'url' => $translation->url,
-            ];
-        }
-
-        return $locales;
-    }
-
     /**
      * Add article data to the global schema graph object
      */
     public function setSchema() {
         $graph = \App::make('dynamedia.posts.graph');
-        
+
         // Update the WebPage
 
         $graph->getWebPage()
@@ -696,6 +655,6 @@ class Category extends Model
             ->title($this->name)
             ->description(strip_tags($this->excerpt));
     }
-    
+
 
 }

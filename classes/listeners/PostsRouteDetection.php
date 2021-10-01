@@ -42,13 +42,20 @@ class PostsRouteDetection
             if (!$page) return;
 
             $graph = App::make('dynamedia.posts.graph');
+            
             $graph->getWebpage()
                 ->setProperty("@id", Page::url($page->fileName) . "#wepbage")
                 ->url(Page::url($page->fileName))
                 ->title($page->title)
                 ->description($page->meta_description);
+                
+            $graph->getBreadcrumbs()
+                ->setProperty("@id", Page::url($page->fileName) . "#breadcrumbs");
+            
+            $graph->addBreadcrumb('home', $graph->getBaseUrl());
 
             $controller->vars['schema'] = $graph;
+            
         });
 
         $event->listen('cms.page.beforeDisplay', function ($controller, $url, $page) {
@@ -57,7 +64,6 @@ class PostsRouteDetection
 
             // Get info for potential clashing pages and the page the router actually matched
             $params = $controller->getRouter()->getParameters();
-
 
             $activeThemeCode = Theme::getActiveThemeCode();
 

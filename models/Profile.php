@@ -146,6 +146,7 @@ class Profile extends Model
     public function getSeoSchema()
     {
         $person = Schema::person()
+            ->name("{$this->user->first_name} {$this->user->last_name}")
             ->givenName($this->user->first_name)
             ->familyName($this->user->last_name)
             ->url($this->website_url ? $this->website_url : $this->url);

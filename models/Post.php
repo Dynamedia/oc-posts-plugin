@@ -920,6 +920,18 @@ class Post extends Model
             ->setProperty("@id", $this->url . "#webpage")
             ->title($this->title)
             ->description(strip_tags($this->excerpt));
+            
+        $graph->getBreadcrumbs()
+            ->setProperty("@id", $this->url . "#breadcrumbs");
+        
+        if ($this->primary_category) {    
+            foreach ($this->primary_category->getCachedPathFromRoot() as $item) {
+                $graph->addBreadcrumb($item['name'], $item['url']);
+            }
+        }
+        
+        $graph->addBreadcrumb($this->title, $this->url);
+    
     }
 
 

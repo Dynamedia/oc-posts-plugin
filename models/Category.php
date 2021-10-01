@@ -302,6 +302,7 @@ class Category extends Model
 
     public function getPathFromRoot($locale = null)
     {
+        // Never cache longer than the request.
         $cacheKey = self::class . "_{$this->id}_path_from_root_" . $locale;
         if (\Cache::store('array')
             ->has($cacheKey)) return \Cache::store('array')->get($cacheKey);
@@ -332,6 +333,20 @@ class Category extends Model
     public function getPathToRoot($locale = null)
     {
         $path = array_reverse($this->getPathFromRoot($locale));
+        return $path;
+    }
+    
+    public function getCachedPathFromRoot($locale = null)
+    {
+        // Can cache this because if urls are stale we get redirects
+        $cacheKey = self::class . "_{$this->id}_cached_path_from_root_" . $locale;
+        if (\Cache::has($cacheKey)) return \Cache::get($cacheKey);
+
+        $path = $this->getPathFromRoot();
+        foreach ($path as &$item) {
+            $item['url'] = self::find($item['id'])->url;
+        }
+        //\Cache::put($cacheKey, $path, 3600);
         return $path;
     }
 

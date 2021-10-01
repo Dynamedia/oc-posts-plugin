@@ -37,12 +37,10 @@ class ExtendedGraph extends Graph
 
     public function getBaseUrl()
     {
-        if ($this->baseUrl) return $this->baseUrl;
-
         $parts = parse_url(url(''));
         $path = !empty($parts['path']) ? $parts['path'] : '/';
         $translatedUrl = http_build_url($parts, [
-            'path' => Translator::instance()->getPathInLocale($path, $this->translator->getLocale())
+            'path' => Translator::instance()->getPathInLocale($path, Translator::instance()->getLocale())
         ]);
 
         return $translatedUrl;
@@ -106,9 +104,28 @@ class ExtendedGraph extends Graph
     public function setBreadcrumbs()
     {
         $breadcrumbs = SchemaFactory::makeSpatie('breadcrumbList')
-            ->setProperty("@id", $this->getBaseUrl() . "#breadcrumbs");
-
+            ->setProperty("@id", $this->getBaseUrl() . "#breadcrumbs")
+            ->itemListElement([]);
         $this->add($breadcrumbs, "breadcrumbs");
+    }
+    
+    public function getBreadcrumbs()
+    {
+        return $this->get('Spatie\SchemaOrg\BreadcrumbList', 'breadcrumbs');
+    }
+    
+    public function addBreadcrumb($name, $url)
+    {
+        $currentList = $this->getBreadcrumbs()
+            ->getProperty('itemListElement');
+            
+        $item = SchemaFactory::makeSpatie('listItem')
+            ->name($name)
+            ->item($url)
+            ->position(count($currentList) + 1);
+            
+        $this->getBreadcrumbs()
+            ->setProperty('itemListElement', array_merge($currentList, [$item]));
     }
 
     public function getPublisher()

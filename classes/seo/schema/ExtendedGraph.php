@@ -5,6 +5,7 @@ namespace Dynamedia\Posts\Classes\Seo\Schema;
 use Cms\Classes\Controller;
 use Cms\Classes\Theme;
 use RainLab\Translate\Classes\Translator;
+use Spatie\SchemaOrg\Article;
 use Spatie\SchemaOrg\Graph;
 
 use Url;
@@ -46,7 +47,7 @@ class ExtendedGraph extends Graph
         return $translatedUrl;
     }
 
-    
+
 
     protected function setPublisher()
     {
@@ -54,8 +55,8 @@ class ExtendedGraph extends Graph
         $typeOption = !empty($themeSettings['operator_type']) ? $themeSettings['operator_type'] : 'organization';
         $publisher = SchemaFactory::makeSpatie($typeOption)
             ->setProperty('@id', $this->getPubisherId());
-        
-        
+
+
         try {
         $publisherAddress = SchemaFactory::makeSpatie('postalAddress')
             ->addressCountry($themeSettings['address_country'])
@@ -98,7 +99,7 @@ class ExtendedGraph extends Graph
 
         $this->add($webpage, "webpage");
     }
-    
+
     // Always add '/' to breadcrumbs
     // Must update the id when loading a page
     public function setBreadcrumbs()
@@ -108,22 +109,22 @@ class ExtendedGraph extends Graph
             ->itemListElement([]);
         $this->add($breadcrumbs, "breadcrumbs");
     }
-    
+
     public function getBreadcrumbs()
     {
         return $this->get('Spatie\SchemaOrg\BreadcrumbList', 'breadcrumbs');
     }
-    
+
     public function addBreadcrumb($name, $url)
     {
         $currentList = $this->getBreadcrumbs()
             ->getProperty('itemListElement');
-            
+
         $item = SchemaFactory::makeSpatie('listItem')
             ->name($name)
             ->item($url)
             ->position(count($currentList) + 1);
-            
+
         $this->getBreadcrumbs()
             ->setProperty('itemListElement', array_merge($currentList, [$item]));
     }
@@ -143,7 +144,7 @@ class ExtendedGraph extends Graph
 
         return $publisher;
     }
-    
+
     public function getPubisherId()
     {
         return "{$this->baseUrl}#publisher";
@@ -153,7 +154,7 @@ class ExtendedGraph extends Graph
     {
         return $this->get('Spatie\SchemaOrg\WebSite', 'website');
     }
-    
+
     public function getWebsiteId()
     {
         return "{$this->baseUrl}#website";
@@ -163,7 +164,7 @@ class ExtendedGraph extends Graph
     {
         return $this->get('Spatie\SchemaOrg\WebPage', 'webpage');
     }
-    
+
     public function getWebpageId()
     {
         return $this->getWebpage()->getProperty("@id");
@@ -179,25 +180,44 @@ class ExtendedGraph extends Graph
             }
         }
 
-        return SchemaFactory::makeSpatie('Article')
-            ->setProperty("@id", $this->getBaseUrl() . "#article");
+        return $this->getFallbackArticle();
     }
-    
+
     public function getArticleId()
     {
         return $this->getArticle()->getProperty("@id");
     }
-    
-    
+
+    /**
+     * Return an empty article object
+     * @return Article
+     */
+    public function getFallbackArticle()
+    {
+        return SchemaFactory::makeSpatie('Article')
+            ->setProperty("@id", $this->getBaseUrl() . "#article");
+    }
+
+
     public function getAuthor()
     {
-        return $this->get('Spatie\SchemaOrg\Person', 'author');
+        try {
+            return $this->get('Spatie\SchemaOrg\Person', 'author');
+        } catch (\Exception $e) {
+            return $this->getFallbackAuthor();
+        }
     }
-    
+
     public function getAuthorId()
     {
         return $this->getAuthor()
             ->getProperty("@id");
     }
 
+    private function getFallbackAuthor()
+    {
+        return SchemaFactory::makeSpatie('person')
+            ->name('Anonymous')
+            ->setProperty("@id", '#author');
+    }
 }

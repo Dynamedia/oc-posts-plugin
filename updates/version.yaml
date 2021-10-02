@@ -10,4 +10,6 @@
   - create_tag_translations_table.php
   - create_tag_slugs_table.php
   - create_profiles_table.php
-
+0.9.01:
+  - Fix category slugs fks
+  - fix_cat_slugs.php

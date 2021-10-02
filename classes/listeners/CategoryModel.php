@@ -40,9 +40,9 @@ class CategoryModel
 
         // Before Delete
         $event->listen('dynamedia.posts.category.deleting', function ($category, $user) {
+            $category->categoryslugs()->delete();
             $category->posts()->detach();
             $category->translations()->delete();
-            $category->categoryslugs()->delete();
         });
 
         // After Delete

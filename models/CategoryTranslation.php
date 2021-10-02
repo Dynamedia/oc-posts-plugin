@@ -8,7 +8,6 @@ use Dynamedia\Posts\Traits\SeoTrait;
 use Dynamedia\Posts\Traits\ImagesTrait;
 use Dynamedia\Posts\Traits\ControllerTrait;
 use \October\Rain\Database\Traits\Validation;
-use phpDocumentor\Reflection\Types\Self_;
 use RainLab\Translate\Classes\Translator;
 use RainLab\Translate\Models\Locale;
 use ValidationException;

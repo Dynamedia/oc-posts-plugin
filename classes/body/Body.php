@@ -27,7 +27,6 @@ abstract class Body
             $this->pages = $arr['pages'];
             $this->contents = $arr['contents'];
         } else {
-            $this->model->setSchema();
             $this->setPages();
             if ($this->pages) {
                 $arr = [
@@ -37,7 +36,6 @@ abstract class Body
                 Cache::put($this->cacheKey, $arr, Carbon::now()->addHours(1));
             }
         }
-
     }
 
     /**

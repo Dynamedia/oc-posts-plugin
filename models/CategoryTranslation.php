@@ -10,8 +10,6 @@ use Dynamedia\Posts\Traits\ControllerTrait;
 use \October\Rain\Database\Traits\Validation;
 use RainLab\Translate\Classes\Translator;
 use RainLab\Translate\Models\Locale;
-use ValidationException;
-use Str;
 
 /**
  * CategoryTranslation Model

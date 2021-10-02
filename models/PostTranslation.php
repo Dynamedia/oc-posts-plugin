@@ -1,14 +1,10 @@
 <?php namespace Dynamedia\Posts\Models;
 
-use Cms\Classes\Page;
 use BackendAuth;
 use Event;
-use Cms\Classes\Theme;
 use Dynamedia\Posts\Classes\Body\Body;
 use Model;
-use RainLab\Translate\Classes\Translator;
 use RainLab\Translate\Models\Locale;
-use ValidationException;
 use Dynamedia\Posts\Traits\SeoTrait;
 use Dynamedia\Posts\Traits\ImagesTrait;
 use Dynamedia\Posts\Traits\ControllerTrait;

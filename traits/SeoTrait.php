@@ -7,7 +7,7 @@ use Cache;
 use RainLab\Translate\Models\Locale;
 
 Trait SeoTrait {
-    
+
     public function getHtmlHeadAttribute()
     {
         $cacheKey = $this->getHtmlHeadAttributeCacheKey();

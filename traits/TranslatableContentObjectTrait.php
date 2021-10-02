@@ -188,7 +188,4 @@ Trait TranslatableContentObjectTrait
 
         return $locales;
     }
-
-
-
 }

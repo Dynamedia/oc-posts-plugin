@@ -1,23 +1,22 @@
 <?php namespace Dynamedia\Posts\Models;
 
 use Dynamedia\Posts\Classes\Acl\AccessControl;
-use Dynamedia\Posts\Classes\Seo\PostsObjectSeoParser;
 use Dynamedia\Posts\Classes\Seo\Schema\SchemaFactory;
 use Dynamedia\Posts\Models\Settings;
 use RainLab\Translate\Classes\Translator;
 use Model;
 use Event;
+use Cache;
 use October\Rain\Argon\Argon;
 use BackendAuth;
 use Cms\Classes\Controller;
-use Flash;
 use Dynamedia\Posts\Traits\SeoTrait;
 use Dynamedia\Posts\Traits\ImagesTrait;
 use Dynamedia\Posts\Traits\ControllerTrait;
 use October\Rain\Database\Traits\Validation;
 use Dynamedia\Posts\Traits\TranslatableContentObjectTrait;
 use RainLab\Translate\Models\Locale;
-use Dynamedia\Posts\Classes\Body\Body;
+
 
 /**
  * post Model
@@ -736,10 +735,17 @@ class Post extends Model
      */
     public function getUrlInLocale($locale = null)
     {
+        if (!$locale) $locale = Translator::instance()->getLocale();
+
+        // Per request caching - todo consider longer cache but needs clever invalidation (category structure) - also refactor w/helper
+        $cacheKey = self::class . "_{$this->id}_url_in_locale_" . $locale;
+        if (Cache::store('array')->has($cacheKey)) {
+            return Cache::store('array')
+                ->get($cacheKey);
+        }
+
         $postSlug = $this->getTranslated('slug', $this->attributes['slug'], $locale, true);
         $primaryCategorySlug = null;
-
-        if (!$locale) $locale = Translator::instance()->getLocale();
 
         $categoryPath = null;
 
@@ -771,6 +777,9 @@ class Post extends Model
         $translatedUrl = http_build_url($parts, [
             'path' => '/' . Translator::instance()->getPathInLocale($path, $locale)
         ]);
+
+        Cache::store('array')
+            ->put($cacheKey, $translatedUrl);
 
         return $translatedUrl;
     }

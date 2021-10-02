@@ -10,6 +10,7 @@ use Dynamedia\Posts\Traits\ControllerTrait;
 use October\Rain\Database\Traits\Validation;
 use Dynamedia\Posts\Traits\TranslatableContentObjectTrait;
 use Event;
+use Cache;
 use RainLab\Translate\Classes\Translator;
 
 /**
@@ -300,8 +301,8 @@ class Category extends Model
     {
         // Never cache longer than the request.
         $cacheKey = self::class . "_{$this->id}_path_from_root_" . $locale;
-        if (\Cache::store('array')
-            ->has($cacheKey)) return \Cache::store('array')->get($cacheKey);
+        if (Cache::store('array')
+            ->has($cacheKey)) return Cache::store('array')->get($cacheKey);
 
         $path = [];
 
@@ -370,6 +371,14 @@ class Category extends Model
     public function getUrlInLocale($locale = null)
     {
         if (!$locale) $locale = Translator::instance()->getLocale();
+
+        // Per request caching - todo consider longer cache but needs clever invalidation (category structure) - also refactor w/helper
+        $cacheKey = self::class . "_{$this->id}_url_in_locale_" . $locale;
+        if (Cache::store('array')->has($cacheKey)) {
+            return Cache::store('array')
+                ->get($cacheKey);
+        }
+
         $slug = $this->getTranslated('slug', $this->attributes['slug'], $locale, true);
 
         $path = implode('/', array_map(function ($entry) {
@@ -390,6 +399,9 @@ class Category extends Model
         $translatedUrl = http_build_url($parts, [
             'path' => '/' . Translator::instance()->getPathInLocale($path, $locale)
         ]);
+
+        Cache::store('array')
+            ->put($cacheKey, $translatedUrl);
 
         return $translatedUrl;
     }

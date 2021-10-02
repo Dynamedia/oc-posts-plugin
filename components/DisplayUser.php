@@ -55,8 +55,8 @@ class DisplayUser extends ComponentBase
     {
         $postListOptions = [
             'optionsPage'        => $this->getRequestedPage(),
-            'optionsSort'        => Settings::get('userPostsListSortOrder'),
-            'optionsPerPage'     => Settings::get('userPostsListPerPage'),
+            'optionsSort'        => Settings::instance()->get('userPostsListSortOrder'),
+            'optionsPerPage'     => Settings::instance()->get('userPostsListPerPage'),
             'optionsUsername'    => $this->param('postsUsername')
         ];
 

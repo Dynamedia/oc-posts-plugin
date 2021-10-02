@@ -68,15 +68,15 @@ class PostsRouteDetection
 
             // Process slugs matching our cms pages
             $postPage = [
-                'page' => $pg = Settings::get('postPage'),
+                'page' => $pg = Settings::instance()->get('postPage'),
                 'url'  => $pg ? Page::url($pg, $params) : null
             ];
             $categoryPage = [
-                'page' => $pg = Settings::get('categoryPage'),
+                'page' => $pg = Settings::instance()->get('categoryPage'),
                 'url'  => $pg ? Page::url($pg, $params) : null
             ];
             $tagPage = [
-                'page' => $pg = Settings::get('tagPage'),
+                'page' => $pg = Settings::instance()->get('tagPage'),
                 'url'  => $pg ? Page::url($pg, $params) : null
             ];
             $matchedPage = [

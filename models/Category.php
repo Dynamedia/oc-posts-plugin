@@ -203,7 +203,7 @@ class Category extends Model
         if (!empty($this->post_list_options['sort_order']) && $this->post_list_options['sort_order'] != '__inherit__' ) {
             $sort = $this->post_list_options['sort_order'];
         } else {
-            $sort = Settings::get('categoryPostsListSortOrder');
+            $sort = Settings::instance()->get('categoryPostsListSortOrder');
         }
 
         if (!$sort) {
@@ -218,7 +218,7 @@ class Category extends Model
         if (!empty($this->post_list_options['include_subcategories']) && $this->post_list_options['include_subcategories'] != '__inherit__' ) {
             $value = $this->post_list_options['include_subcategories'];
         } else {
-            $value = Settings::get('categoryPostsListIncludeSubcategories');
+            $value = Settings::instance()->get('categoryPostsListIncludeSubcategories');
         }
 
         return $value;
@@ -238,7 +238,7 @@ class Category extends Model
         if (!empty($this->post_list_options['per_page']) && $this->post_list_options['per_page'] != '__inherit__' ) {
             $value = $this->post_list_options['per_page'];
         } else {
-            $value = Settings::get('categoryPostsListPerPage');
+            $value = Settings::instance()->get('categoryPostsListPerPage');
         }
 
         return $value;
@@ -285,12 +285,12 @@ class Category extends Model
 
     public function getCmsLayout()
     {
-        if ($this->cms_layout == "__inherit__" && Settings::get('defaultCategoryLayout') == '__inherit__') {
+        if ($this->cms_layout == "__inherit__" && Settings::instance()->get('defaultCategoryLayout') == '__inherit__') {
             // No modifier
             return false;
         }
         elseif ($this->cms_layout == '__inherit__') {
-            return Settings::get('defaultCategoryLayout');
+            return Settings::instance()->get('defaultCategoryLayout');
         }
         else {
             return $this->cms_layout;
@@ -391,7 +391,7 @@ class Category extends Model
             'postsCategorySlug' => $slug
         ];
 
-        $defaultUrl = strtolower($this->getController()->pageUrl(Settings::get('categoryPage'), $params));
+        $defaultUrl = strtolower($this->getController()->pageUrl(Settings::instance()->get('categoryPage'), $params));
 
         $parts = parse_url($defaultUrl);
         $path = array_get($parts, 'path');

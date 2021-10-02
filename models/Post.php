@@ -524,7 +524,7 @@ class Post extends Model
 
     public function getCmsLayout()
     {
-        if ($this->cms_layout == "__inherit__" && Settings::get('defaultPostLayout') == '__inherit__') {
+        if ($this->cms_layout == "__inherit__" && Settings::instance()->get('defaultPostLayout') == '__inherit__') {
             // Inherit from category first.
             if ($this->primary_category) {
                 return $this->primary_category->getCmsLayout();
@@ -533,7 +533,7 @@ class Post extends Model
             }
         }
         if ($this->cms_layout == '__inherit__') {
-            return Settings::get('defaultPostLayout');
+            return Settings::instance()->get('defaultPostLayout');
         }
         else {
             return $this->cms_layout;
@@ -549,7 +549,7 @@ class Post extends Model
      */
     public function getPostPage()
     {
-        $postsPage = Settings::get('postPage');
+        $postsPage = Settings::instance()->get('postPage');
 
         return $postsPage;
     }

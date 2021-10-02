@@ -252,7 +252,7 @@ class Tag extends Model
         if (!empty($this->post_list_options['sort_order']) && $this->post_list_options['sort_order'] != '__inherit__' ) {
             $sort = $this->post_list_options['sort_order'];
         } else {
-            $sort = Settings::get('tagPostsListSortOrder');
+            $sort = Settings::instance()->get('tagPostsListSortOrder');
         }
 
         if (!$sort) {
@@ -267,7 +267,7 @@ class Tag extends Model
         if (!empty($this->post_list_options['per_page']) && $this->post_list_options['per_page'] != '__inherit__' ) {
             $value = $this->post_list_options['per_page'];
         } else {
-            $value = Settings::get('tagPostsListPerPage');
+            $value = Settings::instance()->get('tagPostsListPerPage');
         }
 
         return $value;
@@ -280,12 +280,12 @@ class Tag extends Model
 
     public function getCmsLayout()
     {
-        if ($this->cms_layout == "__inherit__" && Settings::get('defaultTagLayout') == '__inherit__') {
+        if ($this->cms_layout == "__inherit__" && Settings::instance()->get('defaultTagLayout') == '__inherit__') {
             // No modifier
             return false;
         }
         elseif ($this->cms_layout == '__inherit__') {
-            return Settings::get('defaultTagLayout');
+            return Settings::instance()->get('defaultTagLayout');
         }
         else {
             return $this->cms_layout;
@@ -352,7 +352,7 @@ class Tag extends Model
 
         $params = ['postsTagSlug' => $slug];
 
-        $defaultUrl = strtolower($this->getController()->pageUrl(Settings::get('tagPage'), $params));
+        $defaultUrl = strtolower($this->getController()->pageUrl(Settings::instance()->get('tagPage'), $params));
 
         $parts = parse_url($defaultUrl);
         $path = array_get($parts, 'path');

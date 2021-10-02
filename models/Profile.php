@@ -139,8 +139,8 @@ class Profile extends Model
         $params = [
             'postsUsername' => $this->username
         ];
-        if (!Settings::get('userPage')) return "/";
-        return strtolower($this->getController()->pageUrl(Settings::get('userPage'), $params));
+        if (!Settings::instance()->get('userPage')) return "/";
+        return strtolower($this->getController()->pageUrl(Settings::instance()->get('userPage'), $params));
     }
 
     public function getSeoSchema()

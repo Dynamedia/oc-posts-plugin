@@ -5,15 +5,11 @@ Content introduced by theme must survive theme changes
         - Store the entire rendered body in db. Easiest
         - Backup used files (template config, content, partials)
 
-Make better use of Spatie Schema dependency
- - A good implementation makes oc+posts best in class 
-   for SEO across all tested CMS
-
-
-
 -------
 
 Features to implement for version > 1
+
+Refactor - Much of this code can be better implemented - All accessors can remain compatible, so breaking changes can be avoided
 
 Test suite.
 

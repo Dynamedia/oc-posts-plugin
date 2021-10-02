@@ -58,7 +58,6 @@ class DisplayPost extends ComponentBase
         $this->post->setSchema();
 
         $this->setPaginator();
-
     }
 
 

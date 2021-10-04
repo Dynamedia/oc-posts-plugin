@@ -13,6 +13,18 @@ class ExtendThemeFormConfig
     {
         ThemeData::extend(function ($model) {
             $model->addJsonable('images');
+            $translatable = [
+                'site_brand',
+                'site_name',
+                'site_description',
+                
+                ];
+            if (!empty($model->translatable)) {
+                $model->translatable = array_merge($this->translatable, $translatable);
+            } else {
+                $model->translatable = $translatable;
+            }
+            //dd($model);
         });
         
 

@@ -2,102 +2,86 @@
 
 namespace Dynamedia\Posts\Classes\Seo;
 
-use Cms\Classes\Controller;
-use Media\Classes\MediaLibrary;
 
-class PostsObjectSeoParser extends Seo
+use Media\Classes\MediaLibrary;
+use App;
+
+class PostsObjectSeoParser
 {
+    protected $seo;
+
     public function __construct($model)
     {
         $this->model = $model;
-        $this->controller = Controller::getController();
-        if ($this->controller) {
-            $this->page = $this->controller->getPage();
-            $this->themeData = $this->controller->getTheme()->getCustomData();
-        }
-        $this->setProperties();
+        $this->seo = App::make('dynamedia.posts.seo');
     }
 
-    private function setProperties()
+    public function getSeoObject()
+    {
+        return $this->seo;
+    }
+
+    protected function setProperties()
     {
         $this->setSearchTitle();
         $this->setSearchDescription();
         $this->setOpenGraphTitle();
         $this->setOpenGraphDescription();
-        $this->setOpenGraphUrl();
+        $this->setUrl();
         $this->setOpenGraphImage();
-        $this->setTwitterSite();
         $this->setTwitterCreator();
         $this->setTwitterTitle();
         $this->setTwitterDescription();
         $this->setTwitterImage();
+        $this->setAlternativeUrls();
     }
 
-    private function setSearchTitle()
+    protected function setSearchTitle()
     {
         if (!empty($this->model->seo['title'])) {
-            $this->appendSearch('title', $this->model->seo['title']);
+            $this->seo->setSearchTitle($this->model->seo['title']);
         } elseif ($this->model->title) {
-            $this->appendSearch('title', $this->model->title);
+            $this->seo->setSearchTitle($this->model->title);
         } elseif ($this->model->name) {
-            $this->appendSearch('title', $this->model->name);
-        }
-        elseif ($this->page) {
-            if (!empty($this->page->attributes['meta_title'])) {
-                $this->appendSearch('title', $this->page->attributes['meta_title']);
-            } elseif(!empty($this->page->attributes['meta_title'])) {
-                $this->appendSearch('title', $this->page->attributes['title']);
-            }
+            $this->seo->setSearchTitle($this->model->name);
         }
     }
 
-    private function setSearchDescription()
+    protected function setSearchDescription()
     {
         if (!empty($this->model->seo['search_description'])) {
-            $this->appendSearch('description', $this->model->seo['search_description']);
+            $this->seo->setSearchDescription($this->model->seo['search_description']);
         } elseif ($this->model->excerpt) {
-            $this->appendSearch('description', strip_tags($this->model->excerpt));
-        } elseif ($this->page) {
-            if (!empty($this->page->attributes['meta_description'])) {
-                $this->appendSearch('description', $this->page->attributes['meta_description']);
-            } elseif(!empty($this->page->attributes['title'])) {
-                $this->appendSearch('description', $this->page->attributes['title']);
-            }
+            $this->seo->setSearchDescription(strip_tags($this->model->excerpt));
         }
     }
 
-    private function setOpenGraphTitle()
+    protected function setOpenGraphTitle()
     {
         if (!empty($this->model->seo['opengraph_title'])) {
-            $this->appendOpenGraph('title', $this->model->seo['opengraph_title']);
+            $this->seo->setOpenGraphTitle($this->model->seo['opengraph_title']);
         } elseif (!empty($this->model->seo['twitter_title'])) {
-            $this->appendOpenGraph('title', $this->model->seo['twitter_title']);
-        } else {
-            $this->appendOpenGraph('title', $this->getSearch('title'));
+            $this->seo->setOpenGraphTitle($this->model->seo['twitter_title']);
         }
     }
 
-    private function setOpenGraphDescription()
+    protected function setOpenGraphDescription()
     {
         if (!empty($this->model->seo['opengraph_description'])) {
-            $this->appendOpenGraph('description', $this->model->seo['opengraph_description']);
+            $this->seo->setOpenGraphDescription($this->model->seo['opengraph_description']);
         } elseif (!empty($this->model->seo['twitter_title'])) {
-            $this->appendOpenGraph('description', $this->model->seo['twitter_description']);
-        } else {
-            $this->appendOpenGraph('description', $this->getSearch('description'));
+            $this->seo->setOpenGraphDescription($this->model->seo['twitter_description']);
         }
     }
 
-    private function setOpenGraphUrl()
+    protected function setUrl()
     {
         if (!empty($this->model->url)) {
-            $this->appendOpenGraph('url', $this->model->url);
-        } elseif ($this->controller) {
-            $this->appendOpenGraph('url', $this->controller->currentPageUrl());
+            $this->seo->setUrl($this->model->url);
         }
     }
 
-    private function setOpenGraphImage()
+    protected function setOpenGraphImage()
     {
         $path = false;
         if (!empty($this->model->images['social']['facebook'])) {
@@ -106,58 +90,38 @@ class PostsObjectSeoParser extends Seo
             $path= $this->model->images['social']['twitter'];
         } elseif (!empty($this->model->images['banner']['default'])) {
             $path = $this->model->images['banner']['default'];
-        } elseif (!empty($this->themeData->images['social']['facebook'])) {
-            $path =  $this->themeData->images['social']['facebook'];
-        } elseif (!empty($this->themeData->images['social']['twitter'])) {
-            $path = $this->themeData->images['social']['twitter'];
-        } elseif (!empty($this->themeData->images['banner']['default'])) {
-            $path = $this->themeData->images['banner']['default'];
         }
         if ($path) {
-            $this->appendOpenGraph('image', MediaLibrary::url($path));
+            $this->seo->setOpenGraphImage(MediaLibrary::url($path));
         }
     }
 
-    private function setTwitterSite()
-    {
-        if (!empty($this->themeData->twitter_handle))
-        {
-            $this->appendTwitter('site', $this->themeData->twitter_handle);
-        }
-    }
-
-    private function setTwitterCreator()
+    protected function setTwitterCreator()
     {
         if (!empty($this->model->author->profile->twitter_handle)) {
-            $this->appendTwitter('creator', $this->model->author->profile->twitter_handle);
-        } else {
-            $this->appendTwitter('creator', $this->getTwitter('site'));
+            $this->seo->setTwitterCreator($this->model->author->profile->twitter_handle);
         }
     }
 
-    private function setTwitterTitle()
+    protected function setTwitterTitle()
     {
         if (!empty($this->model->seo['twitter_title'])) {
-            $this->appendTwitter('title', $this->model->seo['twitter_title']);
+            $this->seo->setTwitterTitle($this->model->seo['twitter_title']);
         } elseif (!empty($this->model->seo['opengraph_title'])) {
-            $this->appendTwitter('title', $this->model->seo['opengraph_title']);
-        } else {
-            $this->appendTwitter('title', $this->getSearch('title'));
+            $this->seo->setTwittertitle($this->model->seo['opengraph_title']);
         }
     }
 
-    private function setTwitterDescription()
+    protected function setTwitterDescription()
     {
         if (!empty($this->model->seo['twitter_description'])) {
-            $this->appendTwitter('description', $this->model->seo['twitter_description']);
+            $this->seo->setTwitterDescription($this->model->seo['twitter_description']);
         } elseif (!empty($this->model->seo['opengraph_description'])) {
-            $this->appendTwitter('description', $this->model->seo['opengraph_description']);
-        } else {
-            $this->appendTwitter('description', $this->getSearch('description'));
+            $this->seo->setTwitterDescription($this->model->seo['opengraph_description']);
         }
     }
 
-    private function setTwitterImage()
+    protected function setTwitterImage()
     {
         $path = false;
         if (!empty($this->model->images['social']['twitter'])) {
@@ -166,16 +130,16 @@ class PostsObjectSeoParser extends Seo
             $path = $this->model->images['social']['facebook'];
         } elseif (!empty($this->model->images['banner']['default'])) {
             $path = $this->model->images['banner']['default'];
-        } elseif (!empty($this->themeData->images['social']['twitter'])) {
-            $path = $this->themeData->images['social']['twitter'];
-        } elseif (!empty($this->themeData->images['social']['facebook'])) {
-            $path = $this->themeData->images['social']['facebook'];
-        } elseif (!empty($this->themeData->images['banner']['default'])) {
-            $path = $this->themeData->images['banner']['default'];
         }
+
         if ($path) {
-            $this->appendTwitter('image', MediaLibrary::url($path));
+            $this->seo->setTwitterImage(MediaLibrary::url($path));
         }
+    }
+
+    protected function setAlternativeUrls()
+    {
+        $this->seo->setAlternativeUrls($this->model->getAlternateLocales());
     }
 
 

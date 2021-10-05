@@ -5,6 +5,7 @@ use BackendAuth;
 use App;
 use Cms\Classes\Theme;
 use Dynamedia\Posts\Classes\Acl\AccessControl;
+use Dynamedia\Posts\Classes\Seo\PostsObjectSeoParser;
 use Dynamedia\Posts\Models\Settings;
 use Dynamedia\Posts\Traits\PaginationTrait;
 use Input;
@@ -55,7 +56,7 @@ class DisplayPost extends ComponentBase
             }
         }
 
-        $this->post->setSchema();
+        $this->post->setSeo();
 
         $this->setPaginator();
     }

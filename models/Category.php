@@ -1,6 +1,7 @@
 <?php namespace Dynamedia\Posts\Models;
 
 use Dynamedia\Posts\Classes\Acl\AccessControl;
+use Dynamedia\Posts\Classes\Seo\CategorySeoParser;
 use Model;
 use BackendAuth;
 use October\Rain\Database\Traits\NestedTree;
@@ -657,15 +658,9 @@ class Category extends Model
     /**
      * Add article data to the global schema graph object
      */
-    public function setSchema() {
-        $graph = \App::make('dynamedia.posts.graph');
-
-        // Update the WebPage
-
-        $graph->getWebPage()
-            ->setProperty("@id", $this->url . "#webpage")
-            ->title($this->name)
-            ->description(strip_tags($this->excerpt));
+    public function setSeo() {
+        $seoParser = (new CategorySeoParser($this))
+            ->setProperties();
     }
 
 

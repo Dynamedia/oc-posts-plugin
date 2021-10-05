@@ -21,6 +21,7 @@ use Dynamedia\Posts\Classes\Twig\TwigFunctions;
 use System\Classes\PluginBase;
 use Event;
 use Dynamedia\Posts\Classes\Seo\Schema\SchemaFactory;
+use Dynamedia\Posts\Classes\Seo\Seo;
 use App;
 
 
@@ -52,6 +53,8 @@ class Plugin extends PluginBase
     {
         $this->registerEvents();
         $this->registerExtenders();
+        // Bind the SEO class to the app so it's available everywhere, anytime
+        App::instance('dynamedia.posts.seo', new Seo());
         // Bind a graph object to build on
         App::instance('dynamedia.posts.graph', new ExtendedGraph());
     }

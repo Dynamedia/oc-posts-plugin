@@ -171,7 +171,7 @@ Trait TranslatableContentObjectTrait
      *
      * @return mixed
      */
-    private function getAlternateLocales()
+    public function getAlternateLocales()
     {
         $locales[] = [
             'code' => Translator::instance()->getDefaultLocale(),

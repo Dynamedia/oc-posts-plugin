@@ -39,9 +39,9 @@ class DisplayCategory extends ComponentBase
             if ($this->currentPageUrl() != $this->category->url) {
                 return redirect($this->category->url, 301);
             }
-            
-        $this->setSchema();
-        
+
+        $this->category->setSeo();
+
         $this->setPosts();
     }
 
@@ -51,20 +51,20 @@ class DisplayCategory extends ComponentBase
             $this->category = App::make('dynamedia.posts.category');
         }
     }
-    
+
     public function setSchema()
     {
         $graph = App::make('dynamedia.posts.graph');
-        
+
         $graph->getWebpage()
                 ->setProperty("@id", $this->category->url . "#wepbage")
                 ->url($this->category->url)
                 ->title($this->category->name)
                 ->description(strip_tags($this->category->excerpt));
-                
+
         $graph->getBreadcrumbs()
             ->setProperty("@id", $this->category->url . "#breadcrumbs");
-            
+
         foreach ($this->category->getCachedPathFromRoot() as $item) {
             $graph->addBreadcrumb($item['name'], $item['url']);
         }

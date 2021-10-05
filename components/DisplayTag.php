@@ -40,6 +40,7 @@ class DisplayTag extends ComponentBase
             return redirect($this->tag->url, 301);
         }
 
+        $this->tag->setSeo();
 
         $this->setPosts();
     }

@@ -3,6 +3,8 @@
 use App;
 use Dynamedia\Posts\Classes\Rss\RssCategory;
 use Dynamedia\Posts\Classes\Rss\RssTag;
+use Dynamedia\Posts\Classes\Seo\PageObjectSeoParser;
+use Dynamedia\Posts\Classes\Seo\Seo;
 use Dynamedia\Posts\Classes\Sitemap\SitemapCategory;
 use Dynamedia\Posts\Classes\Sitemap\SitemapTag;
 use Event;
@@ -35,23 +37,31 @@ class PostsRouteDetection
 
         // TODO some refactoring needed here, but lets get it working
 
+        // BeforeRenderPage is ideal for SEO. We've already done any necessary redirects
+        $event->listen('cms.page.beforeRenderPage', function ($controller, $page) {
+            $seo = App::make('dynamedia.posts.seo');
+            $seo->setFallbackProperties($controller);
+            $view = \View::make('dynamedia.posts::seo.head_seo', ['seo' => $seo]);
+
+        });
+
         $event->listen('cms.page.init', function ($controller, $page) {
             if (!$page) return;
 
-            $graph = App::make('dynamedia.posts.graph');
+//            $graph = App::make('dynamedia.posts.graph');
 
-            $graph->getWebpage()
-                ->setProperty("@id", Page::url($page->fileName) . "#wepbage")
-                ->url(Page::url($page->fileName))
-                ->title($page->title)
-                ->description($page->meta_description);
+//            $graph->getWebpage()
+//                ->setProperty("@id", Page::url($page->fileName) . "#wepbage")
+//                ->url(Page::url($page->fileName))
+//                ->title($page->title)
+//                ->description($page->meta_description);
+//
+//            $graph->getBreadcrumbs()
+//                ->setProperty("@id", Page::url($page->fileName) . "#breadcrumbs");
+//
+//            $graph->addBreadcrumb('home', $graph->getBaseUrl());
 
-            $graph->getBreadcrumbs()
-                ->setProperty("@id", Page::url($page->fileName) . "#breadcrumbs");
-
-            $graph->addBreadcrumb('home', $graph->getBaseUrl());
-
-            $controller->vars['schema'] = $graph;
+//            $controller->vars['schema'] = $graph;
 
         });
 
@@ -109,6 +119,7 @@ class PostsRouteDetection
                 $newPage = Page::loadCached($activeThemeCode, $postPage['page']);
                 ($post->getCmsLayout() !== false) ? $newPage->layout = $post->getCmsLayout() : null;
                 App::instance('dynamedia.posts.post', $post);
+                $controller->vars['seo_head'] = $post->html_head;
                 return $newPage;
             }
 
@@ -117,6 +128,7 @@ class PostsRouteDetection
                 $newPage = Page::loadCached($activeThemeCode,$categoryPage['page']);
                 ($category->getCmsLayout() !== false) ? $newPage->layout = $category->getCmsLayout() : null;
                 App::instance('dynamedia.posts.category', $category);
+                $controller->vars['seo_head'] = $category->html_head;
                 if ($this->suffix === "rss") {
                     $feed = new RssCategory($category);
                     return $feed->makeViewResponse();
@@ -133,6 +145,7 @@ class PostsRouteDetection
             if (!empty($tag)) {
                 ($tag->getCmsLayout() !== false) ? $page->layout = $tag->getCmsLayout() : null;
                 App::instance('dynamedia.posts.tag', $tag);
+                $controller->vars['seo_head'] = $tag->html_head;
                 if ($this->suffix === "rss") {
                     $feed = new RssTag($tag);
                     return $feed->makeViewResponse();
@@ -142,6 +155,10 @@ class PostsRouteDetection
                     return $feed->makeViewResponse();
                 }
             }
+
+            // None of our objects are matched. Do normal page SEO here
+            // todo finish this - needs an event that can be overridden
+
         });
     }
 

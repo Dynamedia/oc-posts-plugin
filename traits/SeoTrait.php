@@ -10,20 +10,20 @@ Trait SeoTrait {
 
     public function getHtmlHeadAttribute()
     {
-        $cacheKey = $this->getHtmlHeadAttributeCacheKey();
-        if (Cache::has($cacheKey)) return \Cache::get($cacheKey);
+//        $cacheKey = $this->getHtmlHeadAttributeCacheKey();
+//        if (Cache::has($cacheKey)) return \Cache::get($cacheKey);
 
         $seoData = new PostsObjectSeoParser($this);
-        $view = \View::make('dynamedia.posts::seo.head_seo', [
-            'search' => $seoData->getSearchArray(),
-            'openGraph' => $seoData->getOpenGraphArray(),
-            'twitter' => $seoData->getTwitterArray(),
-            'themeData' => $seoData->getThemeData(),
-            'locales' => $this->getAlternateLocales()
-        ])->render();
-
-        Cache::put($cacheKey, $view, Carbon::now()->addHours(1));
-        return $view;
+//        $view = \View::make('dynamedia.posts::seo.head_seo', [
+//            'search' => $seoData->getSearchArray(),
+//            'openGraph' => $seoData->getOpenGraphArray(),
+//            'twitter' => $seoData->getTwitterArray(),
+//            'themeData' => $seoData->getThemeData(),
+//            'locales' => $this->getAlternateLocales()
+//        ])->render();
+//
+//        Cache::put($cacheKey, $view, Carbon::now()->addHours(1));
+//        return $view;
     }
 
     private function getHtmlHeadAttributeCacheKey($locale = null)

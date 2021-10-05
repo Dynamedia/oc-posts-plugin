@@ -43,7 +43,6 @@ class ExtendedGraph extends Graph
         $translatedUrl = http_build_url($parts, [
             'path' => Translator::instance()->getPathInLocale($path, Translator::instance()->getLocale())
         ]);
-
         return $translatedUrl;
     }
 
@@ -55,8 +54,6 @@ class ExtendedGraph extends Graph
         $typeOption = !empty($themeSettings['operator_type']) ? $themeSettings['operator_type'] : 'organization';
         $publisher = SchemaFactory::makeSpatie($typeOption)
             ->setProperty('@id', $this->getPubisherId());
-
-
         try {
         $publisherAddress = SchemaFactory::makeSpatie('postalAddress')
             ->addressCountry($themeSettings['address_country'])
@@ -108,6 +105,8 @@ class ExtendedGraph extends Graph
             ->setProperty("@id", $this->getBaseUrl() . "#breadcrumbs")
             ->itemListElement([]);
         $this->add($breadcrumbs, "breadcrumbs");
+        // todo - We can't just call this home, need to get a proper value
+        $this->addBreadcrumb('home', $this->getBaseUrl());
     }
 
     public function getBreadcrumbs()

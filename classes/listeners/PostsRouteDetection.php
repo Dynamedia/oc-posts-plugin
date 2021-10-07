@@ -42,6 +42,9 @@ class PostsRouteDetection
             $seo = App::make('dynamedia.posts.seo');
             $seo->setFallbackProperties($controller);
             $view = \View::make('dynamedia.posts::seo.head_seo', ['seo' => $seo]);
+            $controller->vars['head_seo'] = $view->render();
+            //dd($seo->getThemeData());
+            //dd($view->render());
 
         });
 

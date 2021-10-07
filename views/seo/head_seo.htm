@@ -1,4 +1,4 @@
-{% for locale in locales %}
+{% for locale in seo.getAlternativeUrls %}
     <link rel="alternate" hreflang="{{ locale.code }}" href="{{ locale.url }}" />
     {% if locale.default %}
     <link rel="alternate" href="{{ locale.url }}" hreflang="x-default" />
@@ -6,54 +6,55 @@
 {% endfor %}
 
 
-{% set pageTitle = search.title %}
-{% if themeData.title_append == 'site_brand' %}
-    {% set pageTitle = pageTitle ~ ' | ' ~ themeData.site_brand %}
-{% elseif themeData.title_append == 'site_name' %}
-    {% set pageTitle = pageTitle ~ ' | ' ~ themeData.site_name %}
-{% elseif themeData.title_append == 'both' %}
-    {% set pageTitle = pageTitle ~ ' | ' ~ themeData.site_brand ~ ' > ' ~ themeData.site_name %}
+{% set pageTitle = seo.getSearchTitle %}
+{% if seo.getThemeData.title_append == 'site_brand' %}
+    {% set pageTitle = pageTitle ~ ' | ' ~ seo.getThemeData.site_brand %}
+{% elseif seo.getThemeData.title_append == 'site_name' %}
+    {% set pageTitle = pageTitle ~ ' | ' ~ seo.getThemeData.site_name %}
+{% elseif seo.getThemeData.title_append == 'both' %}
+    {% set pageTitle = pageTitle ~ ' | ' ~ seo.getThemeData.site_brand ~ ' > ' ~ seo.getThemeData.site_name %}
 {% endif %}
 
 <title>{{ pageTitle }}</title>
-<meta name="description" content="{{ search.description }}">
+<meta name="description" content="{{ seo.getSearchDescription }}">
 
-{% if openGraph.title %}
-<meta property="og:title" content="{{ openGraph.title }}" />
+{% if seo.getOpenGraphTitle %}
+<meta property="og:title" content="{{ seo.getOpenGraphTitle }}" />
 {% endif %}
 
-{% if openGraph.url %}
-<meta property="og:url" content="{{ openGraph.url }}" />
+{% if seo.getUrl %}
+<meta property="og:url" content="{{ seo.getUrl }}" />
 {% endif %}
 
 {% if openGraph.description %}
 <meta property="og:description" content="{{ openGraph.description }}" />
 {% endif %}
 
-{% if openGraph.image %}
-<meta property="og:image" content="{{ openGraph.image }}" />
+{% if seo.getOpenGraphImage %}
+<meta property="og:image" content="{{ seo.GetOpenGraphImage }}" />
 {% endif %}
 
-{% if twitter.site %}
-<meta name="twitter:site" content="{{ twitter.site }}">
+{% if seo.getTwitterSite %}
+<meta name="twitter:site" content="{{ seo.getTwitterSite }}">
 {% endif %}
 
-{% if twitter.creator %}
-<meta name="twitter:creator" content="{{ twitter.creator }}">
+{% if seo.getTwitterCreator %}
+<meta name="twitter:creator" content="{{ seo.getTwitterCreator }}">
 {% endif %}
 
-{% if twitter.title %}
-<meta name="twitter:title" content="{{ twitter.title }}">
+{% if seo.getTwitterTitle %}
+<meta name="twitter:title" content="{{ seo.getTwitterTitle }}">
 {% endif %}
 
-{% if twitter.description %}
-<meta name="twitter:description" content="{{ twitter.description }}">
+{% if seo.getTwitterDescription %}
+<meta name="twitter:description" content="{{ seo.getTwitterDescription }}">
 {% endif %}
 
-{% if twitter.image %}
+{% if seo.getTwitterImage %}
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="{{ twitter.image }}">
+<meta name="twitter:image" content="{{ seo.getTwitterImage }}">
 {% else %}
 <meta name="twitter:card" content="summary">
 {% endif %}
 
+{{ seo.getSchemaGraph.toScript | raw }}

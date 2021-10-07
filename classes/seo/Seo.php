@@ -64,6 +64,7 @@ class Seo
         $this->setFallbackTwitterDescription();
         $this->setFallbackTwitterImage();
         $this->setFallbackAlternativeUrls();
+        $this->loadGraph();
     }
 
     public function loadGraph()
@@ -86,7 +87,7 @@ class Seo
         if (!$this->searchTitle && $this->page) {
             if (!empty($this->page->attributes['meta_title'])) {
                 $this->searchTitle = $this->page->attributes['meta_title'];
-            } elseif(!empty($this->page->attributes['meta_title'])) {
+            } elseif(!empty($this->page->attributes['title'])) {
                 $this->searchTitle = $this->page->attributes['title'];
             }
         }
@@ -115,7 +116,7 @@ class Seo
 
     public function getSearchDescription()
     {
-        return $this->getSearchDescription();
+        return $this->searchDescription;
     }
 
     public function setOpenGraphTitle($title)

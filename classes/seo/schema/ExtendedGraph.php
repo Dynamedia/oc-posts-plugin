@@ -114,6 +114,7 @@ class ExtendedGraph extends Graph
         return $this->get('Spatie\SchemaOrg\BreadcrumbList', 'breadcrumbs');
     }
 
+
     public function addBreadcrumb($name, $url)
     {
         $currentList = $this->getBreadcrumbs()
@@ -167,6 +168,11 @@ class ExtendedGraph extends Graph
     public function getWebpageId()
     {
         return $this->getWebpage()->getProperty("@id");
+    }
+
+    public function getBreadcrumbsId()
+    {
+        return $this->getBreadcrumbs()->getProperty("@id");
     }
 
     public function getArticle()

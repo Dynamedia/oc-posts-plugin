@@ -16,7 +16,6 @@ class CategorySeoParser extends PostsObjectSeoParser
     public function setProperties()
     {
         parent::setProperties();
-        $this->setSchema();
     }
 
     public function setSchema()

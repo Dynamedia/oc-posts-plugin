@@ -40,33 +40,10 @@ class PostsRouteDetection
         // BeforeRenderPage is ideal for SEO. We've already done any necessary redirects
         $event->listen('cms.page.beforeRenderPage', function ($controller, $page) {
             $seo = App::make('dynamedia.posts.seo');
-            $seo->setFallbackProperties($controller);
-            $view = \View::make('dynamedia.posts::seo.head_seo', ['seo' => $seo]);
-            $controller->vars['head_seo'] = $view->render();
-            //dd($seo->getThemeData());
-            //dd($view->render());
-
+            $seo->loadProperties($controller);
+            $controller->vars['head_seo'] = $seo->getOutput();
         });
 
-        $event->listen('cms.page.init', function ($controller, $page) {
-            if (!$page) return;
-
-//            $graph = App::make('dynamedia.posts.graph');
-
-//            $graph->getWebpage()
-//                ->setProperty("@id", Page::url($page->fileName) . "#wepbage")
-//                ->url(Page::url($page->fileName))
-//                ->title($page->title)
-//                ->description($page->meta_description);
-//
-//            $graph->getBreadcrumbs()
-//                ->setProperty("@id", Page::url($page->fileName) . "#breadcrumbs");
-//
-//            $graph->addBreadcrumb('home', $graph->getBaseUrl());
-
-//            $controller->vars['schema'] = $graph;
-
-        });
 
         $event->listen('cms.page.beforeDisplay', function ($controller, $url, $page) {
 

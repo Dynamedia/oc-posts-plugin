@@ -16,7 +16,6 @@ class TagSeoParser extends PostsObjectSeoParser
     public function setProperties()
     {
         parent::setProperties();
-        $this->setSchema();
     }
 
     public function setSchema()

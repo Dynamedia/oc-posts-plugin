@@ -1,19 +1,21 @@
 <?php
 namespace Dynamedia\Posts\Classes\Seo;
 
-use Cms\Classes\Controller;
-use Cms\Classes\Page;
-use App;
+use Cache;
 use Dynamedia\Posts\Classes\Seo\Schema\ExtendedGraph;
 use Media\Classes\MediaLibrary;
 use RainLab\Translate\Classes\Translator;
+use RainLab\Translate\Models\Locale;
 
 class Seo
 {
     protected $controller;
     protected $page;
+    protected $pageMd5;
     protected $themeData;
     protected $translator;
+    protected $cacheKey;
+    protected $cached = false;
 
     protected $schemaGraph;
     protected $url;
@@ -28,6 +30,14 @@ class Seo
     protected $twitterTitle;
     protected $twitterDescription;
     protected $twitterImage;
+    protected $schemaWebsiteId;
+    protected $schemaWebpageId;
+    protected $schemaArticleId;
+    protected $schemaPublisherId;
+    protected $schemaBreadcrumbsId;
+    protected $schemaAuthorId;
+    protected $schemaJson;
+    protected $output;
 
 
     public function __construct()
@@ -46,34 +56,140 @@ class Seo
         return $this->translator;
     }
 
-    public function setFallbackProperties($controller)
+    public function getPropertiesArray()
     {
-        $this->controller = $controller;
-        $this->themeData = $this->controller->getTheme()->getCustomData();
-        $this->page = $this->controller->getPage();
-
-        $this->setFallbackSearchTitle();
-        $this->setFallbackSearchDescription();
-        $this->setFallbackOpenGraphTitle();
-        $this->setFallbackOpenGraphDescription();
-        $this->setFallbackUrl();
-        $this->setFallbackOpenGraphImage();
-        $this->setFallbackTwitterSite();
-        $this->setFallbackTwitterCreator();
-        $this->setFallbackTwitterTitle();
-        $this->setFallbackTwitterDescription();
-        $this->setFallbackTwitterImage();
-        $this->setFallbackAlternativeUrls();
-        $this->loadGraph();
+        $properties = [
+            'url'                   => $this->url,
+            'alternativeUrls'       => $this->alternativeUrls,
+            'searchTitle'           => $this->searchTitle,
+            'searchDescription'     => $this->searchDescription,
+            'openGraphTitle'        => $this->openGraphTitle,
+            'openGraphDescription'  => $this->openGraphDescription,
+            'openGraphImage'        => $this->openGraphImage,
+            'twitterSite'           => $this->twitterSite,
+            'twitterCreator'        => $this->twitterCreator,
+            'twitterTitle'          => $this->twitterTitle,
+            'twitterDescription'    => $this->twitterDescription,
+            'twitterImage'          => $this->twitterImage,
+            'schemaWebsiteId'       => $this->schemaWebsiteId,
+            'schemaWebpageId'       => $this->schemaWebpageId,
+            'schemaPublisherId'     => $this->schemaPublisherId,
+            'schemaBreadcrumbsId'   => $this->schemaBreadcrumbsId,
+            'schemaArticleId'       => $this->schemaArticleId,
+            'schemaJson'            => $this->schemaGraph->toScript(),
+            'output'                => $this->output
+        ];
+        return $properties;
     }
 
-    public function loadGraph()
+
+    /**
+     * Load all necessary fallback defaults, build the views and cache the result
+     *
+     * @param $controller
+     */
+    public function loadProperties($controller)
+    {
+        $this->controller = $controller;
+        $this->page = $this->controller->getPage();
+        $this->url = $controller->currentPageUrl();
+        $this->cacheKey = $this->generateCacheKey($this->url);
+        $this->pageMd5 = md5(json_encode($controller->getPage()->attributes));
+        $this->loadFromCache();
+
+        if (!$this->cached) {
+            // Only need themedata if not cached yet
+            $this->themeData = $this->controller->getTheme()->getCustomData();
+            $this->checkSearchTitle();
+            $this->checkSearchDescription();
+            $this->checkOpenGraphTitle();
+            $this->checkOpenGraphDescription();
+            $this->checkOpenGraphImage();
+            $this->checkTwitterSite();
+            $this->checkTwitterCreator();
+            $this->checkTwitterTitle();
+            $this->checkTwitterDescription();
+            $this->checkTwitterImage();
+            $this->checkAlternativeUrls();
+            $this->loadGraph();
+            $this->loadView();
+            $this->setCache();
+        }
+    }
+
+    private function setCache()
+    {
+        Cache::put($this->cacheKey, [
+            'properties'    => $this->getPropertiesArray(),
+            'md5'           => $this->pageMd5,
+        ], 3600);
+    }
+
+    private function loadFromCache()
+    {
+        self::invalidateCache('test');
+        $cached = Cache::get($this->cacheKey);
+        if (!empty($cached['md5']) && $cached['md5'] === $this->pageMd5) {
+            foreach ($cached['properties'] as $key => $val) {
+                $this->{$key} = $val;
+            }
+            $this->cached = true;
+        } else {
+            $this->cached = false;
+        }
+    }
+
+    public function hasUrlCached($url)
+    {
+        return Cache::has($this->generateCacheKey($url));
+    }
+
+    private function generateCacheKey($url)
+    {
+        return "seo_{$url}_" . $this->translator->getLocale();
+    }
+
+    /**
+     * Forget the url in all locales
+     *
+     * @param $url
+     */
+    public static function invalidateCache($url)
+    {
+        foreach (Locale::all() as $locale) {
+            $key = "seo_{$url}_" . $locale->code;
+                Cache::forget($key);
+        }
+    }
+
+    /**
+     * Ensure webpage is set correctly. Get key cacheable properties from the graph
+     */
+    private function loadGraph()
     {
         $this->schemaGraph->getWebpage()
             ->setProperty("@id", $this->url . "#wepbage")
             ->url($this->url)
             ->title($this->searchTitle)
             ->description($this->searchDescription);
+        $this->schemaWebsiteId = $this->schemaGraph->getWebsiteId();
+        $this->schemaWebpageId = $this->schemaGraph->getWebpageId();
+        $this->schemaPublisherId = $this->schemaGraph->getPubisherId();
+        $this->schemaArticleId = $this->schemaGraph->getArticleId();
+        $this->schemaAuthorId = $this->schemaGraph->getAuthorId();
+        $this->schemaBreadcrumbsId = $this->schemaGraph->getBreadcrumbsId();
+        $this->schemaJson = $this->schemaGraph->toScript();
+    }
+
+    private function loadView()
+    {
+        $this->output = \View::make('dynamedia.posts::seo.head_seo', ['seo' => $this])
+            ->render();
+    }
+
+    public function getOutput()
+    {
+        return $this->output;
     }
 
 
@@ -82,7 +198,7 @@ class Seo
         $this->searchTitle = $title;
     }
 
-    protected function setFallbackSearchTitle()
+    protected function checkSearchTitle()
     {
         if (!$this->searchTitle && $this->page) {
             if (!empty($this->page->attributes['meta_title'])) {
@@ -103,7 +219,7 @@ class Seo
         $this->searchDescription = $description;
     }
 
-    protected function setFallbackSearchDescription()
+    protected function checkSearchDescription()
     {
         if (!$this->searchDescription && $this->page) {
             if (!empty($this->page->attributes['meta_description'])) {
@@ -124,7 +240,7 @@ class Seo
         $this->openGraphTitle = $title;
     }
 
-    protected function setFallbackOpenGraphTitle()
+    protected function checkOpenGraphTitle()
     {
         if (!$this->openGraphTitle) {
             $this->openGraphTitle = $this->searchTitle;
@@ -141,7 +257,7 @@ class Seo
         $this->openGraphDescription = $description;
     }
 
-    protected function setFallbackOpenGraphDescription()
+    protected function checkOpenGraphDescription()
     {
         if (!$this->openGraphDescription) {
             $this->openGraphDescription = $this->searchDescription;
@@ -158,12 +274,6 @@ class Seo
         $this->url = $url;
     }
 
-    protected function setFallbackUrl()
-    {
-        if (!$this->url && $this->controller) {
-            $this->url = $this->controller->currentPageUrl();
-        }
-    }
 
     public function getUrl()
     {
@@ -176,7 +286,7 @@ class Seo
     }
 
     //todo - copy rainlab logic probably
-    public function setFallbackAlternativeUrls()
+    public function checkAlternativeUrls()
     {
         if (!$this->alternativeUrls){
             $this->alternativeUrls = [];
@@ -193,7 +303,7 @@ class Seo
         $this->openGraphImage = $image;
     }
 
-    protected function setFallbackOpenGraphImage()
+    protected function checkOpenGraphImage()
     {
         if (!$this->openGraphImage) {
             $path = false;
@@ -220,7 +330,7 @@ class Seo
         $this->twitterSite = $handle;
     }
 
-    protected function setFallbackTwitterSite()
+    protected function checkTwitterSite()
     {
         if (!$this->twitterSite) {
             if (!empty($this->themeData->twitter_handle)) {
@@ -239,7 +349,7 @@ class Seo
         $this->twitterCreator = $handle;
     }
 
-    protected function setFallbackTwitterCreator()
+    protected function checkTwitterCreator()
     {
         if (!$this->twitterCreator) {
             $this->twitterCreator = $this->twitterSite;
@@ -256,7 +366,7 @@ class Seo
         $this->twitterTitle = $title;
     }
 
-    protected function setFallbackTwitterTitle()
+    protected function checkTwitterTitle()
     {
         if (!$this->twitterTitle) {
             $this->twitterTitle = $this->searchTitle;
@@ -273,7 +383,7 @@ class Seo
         $this->twitterDescription = $description;
     }
 
-    protected function setFallbackTwitterDescription()
+    protected function checkTwitterDescription()
     {
         if (!$this->twitterDescription) {
             $this->twitterDescription = $this->searchDescription;
@@ -290,7 +400,7 @@ class Seo
         $this->twitterImage = $image;
     }
 
-    protected function setFallbackTwitterImage()
+    protected function checkTwitterImage()
     {
         if (!$this->twitterImage) {
             $path = false;
@@ -312,11 +422,38 @@ class Seo
         return $this->twitterImage;
     }
 
+    public function getSchemaWebsiteId()
+    {
+        return $this->schemaWebsiteId;
+    }
+
+    public function getSchemaWebpageId()
+    {
+        return $this->schemaWebpageId;
+    }
+
+    public function getSchemaArticleId()
+    {
+        return $this->schemaArticleId;
+    }
+
+    public function getSchemaAuthorId()
+    {
+        return $this->schemaAuthorId;
+    }
+
+    public function getSchemaPublisherId()
+    {
+        return $this->schemaPublisherId;
+    }
+
+    public function getSchemaBreadcrumbsId()
+    {
+        return $this->schemaBreadcrumbsId;
+    }
+
     public function getThemeData()
     {
         return $this->themeData->attributes;
     }
-
-
-
 }

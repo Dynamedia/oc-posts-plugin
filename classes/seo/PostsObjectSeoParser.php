@@ -23,17 +23,21 @@ class PostsObjectSeoParser
 
     protected function setProperties()
     {
-        $this->setSearchTitle();
-        $this->setSearchDescription();
-        $this->setOpenGraphTitle();
-        $this->setOpenGraphDescription();
-        $this->setUrl();
-        $this->setOpenGraphImage();
-        $this->setTwitterCreator();
-        $this->setTwitterTitle();
-        $this->setTwitterDescription();
-        $this->setTwitterImage();
-        $this->setAlternativeUrls();
+        // Do not try setting properties if it's cached
+        if (!$this->seo->hasUrlCached($this->model->url)) {
+            $this->setSearchTitle();
+            $this->setSearchDescription();
+            $this->setOpenGraphTitle();
+            $this->setOpenGraphDescription();
+            $this->setUrl();
+            $this->setOpenGraphImage();
+            $this->setTwitterCreator();
+            $this->setTwitterTitle();
+            $this->setTwitterDescription();
+            $this->setTwitterImage();
+            $this->setAlternativeUrls();
+            $this->setSchema();
+        }
     }
 
     protected function setSearchTitle()

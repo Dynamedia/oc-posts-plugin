@@ -55,8 +55,7 @@ class Plugin extends PluginBase
         $this->registerExtenders();
         // Bind the SEO class to the app so it's available everywhere, anytime
         App::instance('dynamedia.posts.seo', new Seo());
-        // Bind a graph object to build on
-        App::instance('dynamedia.posts.graph', new ExtendedGraph());
+
     }
 
     public function registerComponents()

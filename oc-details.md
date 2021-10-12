@@ -16,11 +16,6 @@ by category and/or by tag, and they are associated with their author & editor.
 In Posts, everything is content. Categories and tags are more than simple lists of posts.
 Each category and tag can be built up with content in just the same way as a post.
 
-## Creating a Post
-
-The following video (external link to YouTube) gives a brief overview of the interface and shows how to
-construct a post, displaying it on the frontend with the posts demo theme.
-
 
 ## User Permissions
 

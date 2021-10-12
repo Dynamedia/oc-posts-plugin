@@ -15,12 +15,10 @@ use Dynamedia\Posts\Classes\Listeners\TagModel;
 use Dynamedia\Posts\Classes\Listeners\AccessControl as AccessControlListener;
 use Dynamedia\Posts\Classes\Listeners\StaticPagesMenu;
 use Dynamedia\Posts\Classes\Listeners\TagTranslationModel;
-use Dynamedia\Posts\Classes\Seo\Schema\ExtendedGraph;
 use Dynamedia\Posts\Classes\Twig\TwigFilters;
 use Dynamedia\Posts\Classes\Twig\TwigFunctions;
 use System\Classes\PluginBase;
 use Event;
-use Dynamedia\Posts\Classes\Seo\Schema\SchemaFactory;
 use Dynamedia\Posts\Classes\Seo\Seo;
 use App;
 
@@ -170,6 +168,7 @@ class Plugin extends PluginBase
     {
         Event::subscribe(ExtendBackendUser::class);
         Event::subscribe(ExtendThemeFormConfig::class);
-        Event::subscribe(ExtendStaticPages::class);
+        // Bring this back post v1
+        //Event::subscribe(ExtendStaticPages::class);
     }
 }

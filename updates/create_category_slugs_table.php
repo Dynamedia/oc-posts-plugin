@@ -17,7 +17,8 @@ class CreateCategorySlugsTable extends Migration
             $table->integer('category_id')->unsigned()->index();
             $table->timestamps();
 
-            $table->foreign('category_id')->references('id')->on('dynamedia_posts_categories');
+            $table->foreign('category_id')->references('id')->on('dynamedia_posts_categories')
+                ->onDelete('cascade');
         });
 
         // Slug belongs to one category, but many translations of that category.
@@ -26,8 +27,10 @@ class CreateCategorySlugsTable extends Migration
             $table->integer('slug_id')->unsigned();
             $table->primary(['trans_id', 'slug_id']);
 
-            $table->foreign('trans_id')->references('id')->on('dynamedia_posts_category_translations');
-            $table->foreign('slug_id')->references('id')->on('dynamedia_posts_category_slugs');
+            $table->foreign('trans_id')->references('id')->on('dynamedia_posts_category_translations')
+                ->onDelete('cascade');
+            $table->foreign('slug_id')->references('id')->on('dynamedia_posts_category_slugs')
+                ->onDelete('cascade');
         });
     }
 

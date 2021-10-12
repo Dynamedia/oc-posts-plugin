@@ -10,8 +10,6 @@ use Yaml;
 class TemplateBody extends Body
 {
 
-    // todo IMPORTANT add caching here
-
     public function __construct($model)
     {
         parent::__construct($model);

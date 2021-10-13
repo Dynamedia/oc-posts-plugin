@@ -17,9 +17,10 @@ use Dynamedia\Posts\Classes\Listeners\StaticPagesMenu;
 use Dynamedia\Posts\Classes\Listeners\TagTranslationModel;
 use Dynamedia\Posts\Classes\Twig\TwigFilters;
 use Dynamedia\Posts\Classes\Twig\TwigFunctions;
+use Dynamedia\Posts\Classes\Seo\Seo;
+use RainLab\Translate\Classes\Translator;
 use System\Classes\PluginBase;
 use Event;
-use Dynamedia\Posts\Classes\Seo\Seo;
 use App;
 
 
@@ -49,11 +50,14 @@ class Plugin extends PluginBase
 
     public function boot()
     {
+        // Avoid potential pre-migration issues
+        if (!Translator::instance()->isConfigured()) {
+            return;
+        }
         $this->registerEvents();
         $this->registerExtenders();
         // Bind the SEO class to the app so it's available everywhere, anytime
         App::instance('dynamedia.posts.seo', new Seo());
-
     }
 
     public function registerComponents()

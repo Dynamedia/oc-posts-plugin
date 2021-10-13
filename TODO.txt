@@ -1,15 +1,4 @@
-Features to implement for version = 1
-
-Content introduced by theme must survive theme changes
-    - Options include
-        - Store the entire rendered body in db. Easiest
-        - Backup used files (template config, content, partials)
-
--------
-
-Features to implement for version > 1
-
-Refactor - Much of this code can be better implemented - All accessors can remain compatible, so breaking changes can be avoided
+Refactor where necessary.
 
 Test suite.
 

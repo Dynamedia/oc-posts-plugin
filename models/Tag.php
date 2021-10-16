@@ -353,7 +353,12 @@ class Tag extends Model
 
         $params = ['postsTagSlug' => $slug];
 
-        $defaultUrl = strtolower($this->getController()->pageUrl(Settings::instance()->get('tagPage'), $params));
+        $tagPage = Settings::instance()->get('tagPage');
+        if ($tagPage) {
+            $defaultUrl = strtolower($this->getController()->pageUrl($tagPage, $params));
+        } else {
+            $defaultUrl = "/";
+        }
 
         $parts = parse_url($defaultUrl);
         $path = array_get($parts, 'path');

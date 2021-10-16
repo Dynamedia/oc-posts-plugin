@@ -771,7 +771,14 @@ class Post extends Model
             'postsCategorySlug' => !empty($primaryCategorySlug) ? $primaryCategorySlug : null
         ];
 
-        $defaultUrl = strtolower($this->getController()->pageUrl($this->getPostPage(), $params));
+
+        // Avoid issue where post page settings have not been completed
+        $postPage = $this->getPostPage();
+        if ($postPage) {
+            $defaultUrl = strtolower($this->getController()->pageUrl($postPage, $params));
+        } else {
+            $defaultUrl = "/";
+        }
 
         $parts = parse_url($defaultUrl);
         $path = array_get($parts, 'path');

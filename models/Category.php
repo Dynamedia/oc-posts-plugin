@@ -392,7 +392,13 @@ class Category extends Model
             'postsCategorySlug' => $slug
         ];
 
-        $defaultUrl = strtolower($this->getController()->pageUrl(Settings::instance()->get('categoryPage'), $params));
+        // Avoid issue where category page settings have not been completed
+        $categoryPage = Settings::instance()->get('categoryPage');
+        if ($categoryPage) {
+            $defaultUrl = strtolower($this->getController()->pageUrl($categoryPage, $params));
+        } else {
+            $defaultUrl = "/";
+        }
 
         $parts = parse_url($defaultUrl);
         $path = array_get($parts, 'path');

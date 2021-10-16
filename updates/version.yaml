@@ -10,3 +10,5 @@
   - create_tag_translations_table.php
   - create_tag_slugs_table.php
   - create_profiles_table.php
+1.0.1:
+    - Fix issue when saving models before settings have been completed

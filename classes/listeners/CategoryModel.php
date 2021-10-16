@@ -35,7 +35,6 @@ class CategoryModel
 
             $category->invalidateTranslatedAttributesCache();
             $category->invalidateBodyCache();
-            $category->invalidateHtmlHeadAttributeCache();
             $category->invalidateSeoCache();
         });
 

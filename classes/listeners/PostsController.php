@@ -1,4 +1,5 @@
 <?php namespace Dynamedia\Posts\Classes\Listeners;
+use Cms\Classes\Theme;
 use Dynamedia\Posts\Classes\Body\Templatebody\TemplateBody;
 use Dynamedia\Posts\Models\PostTranslation;
 use Dynamedia\Posts\Models\Post;
@@ -18,13 +19,13 @@ class PostsController
                 $filePath = null;
 
                 if (!empty($widget->model->body_document['template_body_options'])) {
-                    $filePath = $widget->model->body_document['template_body_options'];
+                    $filePath = Theme::getActiveTheme()->getPath() . $widget->model->body_document['template_body_options'];
                 }
 
                 $vars = post('Post');
 
                 if (!empty($vars['body_document']['template_body_options'])) {
-                    $filePath = $vars['body_document']['template_body_options'];
+                    $filePath = Theme::getActiveTheme()->getPath() . $vars['body_document']['template_body_options'];
                 }
 
                 if ($filePath) {
@@ -57,13 +58,13 @@ class PostsController
                 $filePath = null;
 
                 if (!empty($widget->model->body_document['template_body_options'])) {
-                    $filePath = $widget->model->body_document['template_body_options'];
+                    $filePath = Theme::getActiveTheme()->getPath() . $widget->model->body_document['template_body_options'];
                 }
 
                 $vars = post('PostTranslation');
 
                 if (!empty($vars['body_document']['template_body_options'])) {
-                    $filePath = $vars['body_document']['template_body_options'];
+                    $filePath = Theme::getActiveTheme()->getPath() . $vars['body_document']['template_body_options'];
                 }
 
                 if ($filePath) {

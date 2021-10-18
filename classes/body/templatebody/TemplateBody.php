@@ -20,7 +20,7 @@ class TemplateBody extends Body
         $this->pages = [];
 
         try {
-            $yaml = Yaml::parse(File::get($this->model->body_document['template_body_options']));
+            $yaml = Yaml::parse(File::get(Theme::getActiveTheme()->getPath() . $this->model->body_document['template_body_options']));
             $partialPath = "body_templates/" . $yaml['partial'];
             $partial = Partial::load(Theme::getActiveTheme(), $partialPath);
 

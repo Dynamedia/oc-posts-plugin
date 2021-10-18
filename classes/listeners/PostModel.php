@@ -45,12 +45,13 @@ class PostModel
                     $post->primary_category = $post->categories->first();
                 }
             }
-            // Create the postsslug relationship. Required for auto redirection on change
+            // Create the postslugs relationship. Required for auto redirection on change
             // Must be validated as unique per post/category (translations can share)
             $post->postslugs()->firstOrCreate([
                 'slug' => $post->slug,
             ]);
 
+            $post->invalidateBodyCache();
             $post->invalidateTranslatedAttributesCache();
             $post->invalidateSeoCache();
 

@@ -33,8 +33,8 @@ class CategoryModel
                 'slug' => $category->slug,
             ]);
 
-            $category->invalidateTranslatedAttributesCache();
             $category->invalidateBodyCache();
+            $category->invalidateTranslatedAttributesCache();
             $category->invalidateSeoCache();
         });
 

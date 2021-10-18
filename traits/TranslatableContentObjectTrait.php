@@ -154,14 +154,20 @@ Trait TranslatableContentObjectTrait
         return $body;
     }
 
-    public function getBodyCacheKey()
+    public function getBodyCacheKey($locale = null)
     {
-        return md5(get_class($this) . "_{$this->id}_body" . Translator::instance()->getLocale());
+        $nonLocalised = get_class($this) . "_{$this->id}_body";
+        if ($locale) {
+            $localised = $nonLocalised . $locale->code;
+        } else {
+            $localised = get_class($this) . "_{$this->id}_body" . Translator::instance()->getLocale();
+        }
+        return md5($localised);
     }
 
     public function invalidateBodyCache() {
         foreach (Locale::all() as $locale) {
-            $cacheKey = $this->getBodyCacheKey();
+            $cacheKey = $this->getBodyCacheKey($locale);
             Cache::forget($cacheKey);
         }
     }

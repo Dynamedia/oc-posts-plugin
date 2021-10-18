@@ -34,8 +34,8 @@ class TagModel
                 'slug' => $tag->slug,
             ]);
 
-            $tag->invalidateTranslatedAttributesCache();
             $tag->invalidateBodyCache();
+            $tag->invalidateTranslatedAttributesCache();
             $tag->invalidateSeoCache();
         });
 

@@ -30,8 +30,8 @@ class PostTranslationModel
             ]);
             $postTranslation->postslugs()->sync($slug->id, false);
 
-            $postTranslation->native->invalidateTranslatedAttributesCache();
             $postTranslation->native->invalidateBodyCache();
+            $postTranslation->native->invalidateTranslatedAttributesCache();
             $postTranslation->native->invalidateSeoCache();
         });
 

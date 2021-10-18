@@ -30,8 +30,8 @@ class TagTranslationModel
             ]);
             $tagTranslation->tagslugs()->sync($slug->id, false);
 
-            $tagTranslation->native->invalidateTranslatedAttributesCache();
             $tagTranslation->native->invalidateBodyCache();
+            $tagTranslation->native->invalidateTranslatedAttributesCache();
             $tagTranslation->native->invalidateSeoCache();
         });
 

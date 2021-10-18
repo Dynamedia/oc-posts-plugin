@@ -116,6 +116,7 @@ class Form
     public static function getBodyTemplateOptions()
     {
         $cacheKey = "dynamedia_posts_post_body_templates";
+        $templateDir = "/body_templates/";
 
         if (Cache::has($cacheKey)) {
             return Cache::get($cacheKey);
@@ -123,7 +124,7 @@ class Form
 
         $options = [];
 
-        $path = Theme::getActiveTheme()->getPath() . "/body_templates";
+        $path = Theme::getActiveTheme()->getPath() . $templateDir;
 
         $files = [];
         if (file_exists($path)) {
@@ -144,7 +145,7 @@ class Form
                 $name = $file->getFilename();
             }
 
-            $options[$file->getPathname()] = $name;
+            $options[$templateDir . $file->getFilename()] = $name;
         }
 
         if (config('app.debug') == false) {

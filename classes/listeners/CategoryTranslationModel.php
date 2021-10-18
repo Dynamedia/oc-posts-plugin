@@ -30,8 +30,8 @@ class CategoryTranslationModel
             ]);
             $categoryTranslation->categoryslugs()->sync($slug->id, false);
 
-            $categoryTranslation->native->invalidateTranslatedAttributesCache();
             $categoryTranslation->native->invalidateBodyCache();
+            $categoryTranslation->native->invalidateTranslatedAttributesCache();
             $categoryTranslation->native->invalidateSeoCache();
         });
 

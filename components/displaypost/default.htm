@@ -9,6 +9,21 @@
     The demo theme is MIT licensed and is therefore free to modify and redistribute.
 </p>
 
+{% if post.is_published %}
+    <small>
+        By <a href="{{ post.author.profile.url }}">{{ post.author.first_name }} {{ post.author.last_name }}</a>,
+        on {{ post.published_at | date('d-m-Y') }}
+        {% if post.updated_at > post.published_at %}
+            <br>Last updated {{ post.updated_at | date('d-m-Y') }}
+        {% endif %}
+
+        {### INFO FOR MULTI-PAGE POSTS ###}
+        {% if post.pages | length > 1 %}
+            <p>Page {{ __SELF__.getRequestedPage }} of {{ post.pages | length }}</p>
+        {% endif %}
+    </small>
+{% endif %}
+
 {% if post.contents_list | length > 0 %}
     <h4 style="border:1px solid #999; margin: 15px 0; padding: 5px">
             Contents

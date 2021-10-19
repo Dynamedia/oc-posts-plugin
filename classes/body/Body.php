@@ -47,6 +47,11 @@ abstract class Body
         return implode("\n", $this->getPages());
     }
 
+    public function render()
+    {
+        return $this->renderAllPages();
+    }
+
     /**
      * Get the html for the current page
      *

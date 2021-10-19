@@ -13,6 +13,9 @@
     <small>
         By <a href="{{ post.author.profile.url }}">{{ post.author.first_name }} {{ post.author.last_name }}</a>,
         on {{ post.published_at | date('d-m-Y') }}
+        {% if post.primary_category %}
+            in <a href="{{ post.primary_category.url }}">{{ post.primary_category.name }}</a>
+        {% endif %}
         {% if post.updated_at > post.published_at %}
             <br>Last updated {{ post.updated_at | date('d-m-Y') }}
         {% endif %}

@@ -6,16 +6,26 @@
     This plugin component ({{ __SELF__.alias }}) provides default markup as a convenience to developers but should be overridden by the theme (<a href="https://octobercms.com/docs/cms/components#overriding-partials" target="_blank">October CMS Docs</a>).
     <br>
     <br>
-    To view and download a completed theme to help with implementation, please see <a href="https://oc-posts.dynamedia.uk" target="_blank">oc-posts.dynamedia.uk</a> and <a href="https://github.com/Dynamedia/oc-posts-demo" target="_blank">Github</a>.
+    To view and download a completed theme to help with implementation, please see <a href="https://posts-plugin.dynamedia.uk" target="_blank">posts-plugin.dynamedia.uk</a> and <a href="https://github.com/Dynamedia/oc-posts-demo" target="_blank">Github</a>.
     The demo theme is MIT licensed and is therefore free to modify and redistribute.
 </p>
 
-<h2>User (\Backend\Models\User Array Representation - Sensitive fields hidden)</h2>
-<p>A dump of the model as an array</p>
+<h2>About {{ user.first_name }}</h2>
+<p>A dump of the model attributes (note username is <b>not</b> the backend login)</p>
 
-{{ dump(user | modelToArray) }}
+{{ dump(user.profile.attributes) }}
 
-<h2>Post List (First Item)</h2>
-<p>Dumping the first item of the post list</p>
+<div>
+    <h3>Posted by {{ user.full_name }}</h3>
+</div>
 
-{{ dump(posts.first | modelToArray) }}
+{% for post in posts %}
+    <div style="border: 1px solid #999; margin: 15px 0;padding:5px; min-height: 75px">
+        <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
+        <p>{{ post.excerpt | raw }}</p>
+    </div>
+{% endfor %}
+
+{% if posts.links %}
+    {{ posts.links() | raw }}
+{% endif %}

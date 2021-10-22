@@ -13,7 +13,6 @@ use Dynamedia\Posts\Traits\TranslatableContentObjectTrait;
 use Event;
 use Cache;
 use RainLab\Translate\Classes\Translator;
-use RainLab\Translate\Models\Locale;
 
 /**
  * category Model
@@ -73,14 +72,6 @@ class Category extends Model
      */
     protected $appends = [
         'url',
-        'seo_search_title',
-        'seo_search_description',
-        'seo_opengraph_title',
-        'seo_opengraph_description',
-        'seo_opengraph_image',
-        'seo_twitter_title',
-        'seo_twitter_description',
-        'seo_twitter_image',
         'post_list_ids',
         'post_list_sort',
         'post_list_per_page',

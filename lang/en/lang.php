@@ -176,6 +176,7 @@ return [
             'tags'          => 'Tags',
             'users'         => 'Users',
             'cms_layouts'   => 'CMS Layouts',
+            'translation'   => 'Translation'
         ],
         'labels' => [
             'publisher_name'            => 'Publisher Name',

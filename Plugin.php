@@ -19,9 +19,11 @@ use Dynamedia\Posts\Classes\Twig\TwigFilters;
 use Dynamedia\Posts\Classes\Twig\TwigFunctions;
 use Dynamedia\Posts\Classes\Seo\Seo;
 use RainLab\Translate\Classes\Translator;
+use RainLab\Translate\Models\Locale;
 use System\Classes\PluginBase;
 use Event;
 use App;
+use Config;
 
 
 /**
@@ -54,6 +56,15 @@ class Plugin extends PluginBase
         if (!Translator::instance()->isConfigured()) {
             return;
         }
+        // We depend on Translate, but we need to know if It's being utilised.
+        // Added here to avoid calling the count on every URL generation
+        // Using posts variable prefix to avoid future clobbering
+        if (count(Locale::listEnabled())  <= 1 || Config::get('rainlab.translate::prefixDefaultLocale')) {
+            Translator::instance()->postsPrefixDefault = true;
+        } else {
+            Translator::instance()->postsPrefixDefault = false;
+        }
+
         $this->registerEvents();
         $this->registerExtenders();
         // Bind the SEO class to the app so it's available everywhere, anytime

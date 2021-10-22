@@ -136,9 +136,6 @@ class PostsRouteDetection
                 }
             }
 
-            // None of our objects are matched. Do normal page SEO here
-            // todo finish this - needs an event that can be overridden
-
         });
     }
 

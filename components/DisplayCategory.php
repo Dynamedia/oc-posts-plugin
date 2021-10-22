@@ -36,6 +36,7 @@ class DisplayCategory extends ComponentBase
             if (!$this->category) {
                 return $this->controller->run('404');
             }
+
             if ($this->currentPageUrl() != $this->category->url) {
                 return redirect($this->category->url, 301);
             }

@@ -186,6 +186,9 @@ Trait TranslatableContentObjectTrait
         ];
 
         foreach ($this->translations as $translation) {
+            // Handle case where translation still exists but language has been deleted
+            if (empty($translation->locale)) continue;
+
             $locales[] = [
                 'code' => $translation->locale->code,
                 'url' => $translation->url,

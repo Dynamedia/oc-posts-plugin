@@ -13,6 +13,7 @@ use Dynamedia\Posts\Traits\TranslatableContentObjectTrait;
 use Event;
 use Cache;
 use RainLab\Translate\Classes\Translator;
+use RainLab\Translate\Models\Locale;
 
 /**
  * category Model
@@ -404,7 +405,7 @@ class Category extends Model
         $path = array_get($parts, 'path');
 
         $translatedUrl = http_build_url($parts, [
-            'path' => '/' . Translator::instance()->getPathInLocale($path, $locale)
+            'path' => '/' . Translator::instance()->getPathInLocale($path, $locale, Translator::instance()->postsPrefixDefault)
         ]);
 
         Cache::store('array')

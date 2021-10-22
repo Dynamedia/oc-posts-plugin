@@ -8,6 +8,7 @@ tabs:
     title:
       tab: dynamedia.posts::lang.seo.tabs.search
       label: dynamedia.posts::lang.seo.labels.page_title
+      required: false
     description:
       tab: dynamedia.posts::lang.seo.tabs.search
       label: dynamedia.posts::lang.seo.labels.meta_description

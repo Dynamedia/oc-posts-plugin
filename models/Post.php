@@ -2,8 +2,6 @@
 
 use Dynamedia\Posts\Classes\Acl\AccessControl;
 use Dynamedia\Posts\Classes\Seo\PostSeoParser;
-use Dynamedia\Posts\Classes\Seo\PostsObjectSeoParser;
-use Dynamedia\Posts\Classes\Seo\Schema\SchemaFactory;
 use Dynamedia\Posts\Models\Settings;
 use RainLab\Translate\Classes\Translator;
 use Model;

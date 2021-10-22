@@ -17,16 +17,14 @@ class ExtendThemeFormConfig
                 'site_brand',
                 'site_name',
                 'site_description',
-                
                 ];
             if (!empty($model->translatable)) {
                 $model->translatable = array_merge($this->translatable, $translatable);
             } else {
                 $model->translatable = $translatable;
             }
-            //dd($model);
         });
-        
+
 
         Event::listen('cms.theme.extendFormConfig', function ($themeCode, &$config) {
             array_set($config, 'tabs.fields.site_brand', [
@@ -87,13 +85,13 @@ class ExtendThemeFormConfig
                 'tab'               => 'Images',
                 'form'              => plugins_path('/dynamedia/posts/config/forms/theme/image.yaml')
             ]);
-            
+
             array_set($config, 'tabs.fields.operator', [
                 'type'              => 'nestedform',
                 'tab'               => 'Site Operator',
                 'form'              => plugins_path('/dynamedia/posts/config/forms/theme/operator.yaml')
             ]);
-            
+
         });
 
     }

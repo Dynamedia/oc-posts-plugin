@@ -92,7 +92,7 @@ class Seo
     {
         $this->controller = $controller;
         $this->page = $this->controller->getPage();
-        $this->themeData = $this->controller->getTheme()->getCustomData();
+        $this->setThemeData();
         $this->url = $controller->currentPageUrl();
         $this->cacheKey = $this->generateCacheKey($this->url);
         // Check for changes in the page and theme
@@ -449,6 +449,20 @@ class Seo
     public function getSchemaBreadcrumbsId()
     {
         return $this->schemaBreadcrumbsId;
+    }
+
+    /**
+     * Insert translated values into the attributes array.
+     * This is not handled by MLThemeData. todo check rationale
+     */
+    private function setThemeData()
+    {
+        $this->themeData = $this->controller->getTheme()->getCustomData();
+        foreach ($this->themeData->getTranslateAttributes(Translator::instance()->getLocale()) as $k => $v) {
+            if (!empty($v)) {
+                $this->themeData->attributes[$k] = $v;
+            }
+        }
     }
 
     public function getThemeData()

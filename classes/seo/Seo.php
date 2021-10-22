@@ -11,7 +11,7 @@ class Seo
 {
     protected $controller;
     protected $page;
-    protected $pageMd5;
+    protected $attributesMd5;
     protected $themeData;
     protected $translator;
     protected $cacheKey;
@@ -92,14 +92,14 @@ class Seo
     {
         $this->controller = $controller;
         $this->page = $this->controller->getPage();
+        $this->themeData = $this->controller->getTheme()->getCustomData();
         $this->url = $controller->currentPageUrl();
         $this->cacheKey = $this->generateCacheKey($this->url);
-        $this->pageMd5 = md5(json_encode($controller->getPage()->attributes));
+        // Check for changes in the page and theme
+        $this->attributesMd5 = md5(json_encode(array_merge($controller->getPage()->attributes, $this->themeData->attributes)));
         $this->loadFromCache();
 
         if (!$this->cached) {
-            // Only need themedata if not cached yet
-            $this->themeData = $this->controller->getTheme()->getCustomData();
             $this->checkSearchTitle();
             $this->checkSearchDescription();
             $this->checkOpenGraphTitle();
@@ -121,14 +121,14 @@ class Seo
     {
         Cache::put($this->cacheKey, [
             'properties'    => $this->getPropertiesArray(),
-            'md5'           => $this->pageMd5,
+            'md5'           => $this->attributesMd5,
         ], 3600);
     }
 
     private function loadFromCache()
     {
         $cached = Cache::get($this->cacheKey);
-        if (!empty($cached['md5']) && $cached['md5'] === $this->pageMd5) {
+        if (!empty($cached['md5']) && $cached['md5'] === $this->attributesMd5) {
             foreach ($cached['properties'] as $key => $val) {
                 $this->{$key} = $val;
             }

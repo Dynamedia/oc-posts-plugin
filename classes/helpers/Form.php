@@ -51,7 +51,12 @@ class Form
 
     public static function getImageStyleOptions()
     {
-        return Config::get('dynamedia.posts::postSectionImageDropdown');
+        return [
+        'inline-left' => 'Inline Left',
+        'inline-right' => 'Inline Right',
+        'full-above' => 'Above',
+        'full-below' => 'Below',
+        ];
     }
 
     public static function getDefaultPostListSortOptions()

@@ -4,30 +4,6 @@
 tabs:
     stretch: true
     fields:
-        publisherName:
-            tab: dynamedia.posts::lang.settings.tabs.publisher
-            label: dynamedia.posts::lang.settings.labels.publisher_name
-
-        publisherType:
-            tab: dynamedia.posts::lang.settings.tabs.publisher
-            label: dynamedia.posts::lang.settings.labels.publisher_type
-            type: dropdown
-            options:
-                Organization: dynamedia.posts::lang.settings.dropdown.organization
-                Person: dynamedia.posts::lang.settings.dropdown.person
-
-        publisherUrl:
-            tab: dynamedia.posts::lang.settings.tabs.publisher
-            label: dynamedia.posts::lang.settings.labels.publisher_url
-
-        publisherLogo:
-            tab: dynamedia.posts::lang.settings.tabs.publisher
-            label: dynamedia.posts::lang.settings.labels.publisher_logo
-            type: mediafinder
-            mode: image
-            imageHeight: 250
-            imageWidth: 250
-
         postPage:
             tab: dynamedia.posts::lang.settings.tabs.posts
             label: dynamedia.posts::lang.settings.labels.post_page

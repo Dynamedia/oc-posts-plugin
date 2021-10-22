@@ -12,3 +12,5 @@
   - create_profiles_table.php
 1.0.1:
     - Fix issue when saving models before settings have been completed
+1.0.2:
+    - No locale prefix where only one language (i.e. Translate unused)

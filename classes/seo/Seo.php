@@ -127,7 +127,6 @@ class Seo
 
     private function loadFromCache()
     {
-        self::invalidateCache('test');
         $cached = Cache::get($this->cacheKey);
         if (!empty($cached['md5']) && $cached['md5'] === $this->pageMd5) {
             foreach ($cached['properties'] as $key => $val) {

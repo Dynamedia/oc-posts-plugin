@@ -59,10 +59,10 @@ class Plugin extends PluginBase
         // We depend on Translate, but we need to know if It's being utilised.
         // Added here to avoid calling the count on every URL generation
         // Using posts variable prefix to avoid future clobbering
-        if (count(Locale::listEnabled())  <= 1 || Config::get('rainlab.translate::prefixDefaultLocale')) {
-            Translator::instance()->postsPrefixDefault = true;
-        } else {
+        if (count(Locale::listEnabled()) <= 1) {
             Translator::instance()->postsPrefixDefault = false;
+        } else {
+            Translator::instance()->postsPrefixDefault = Config::get('rainlab.translate::prefixDefaultLocale');
         }
 
         $this->registerEvents();

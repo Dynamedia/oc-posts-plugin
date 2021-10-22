@@ -166,14 +166,6 @@ class Category extends Model
     // ---- Query Scopes ---- //
     // ---------------------- //
 
-    // todo delete?
-    public function scopeApplyHasPost($query, $post)
-    {
-        return $query->whereHas('posts', function ($p) use ($post) {
-
-        });
-    }
-
     public function scopeApplyWithChildren($query)
     {
         return $query->with([

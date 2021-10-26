@@ -773,7 +773,7 @@ class Post extends Model
         $path = array_get($parts, 'path');
 
         $translatedUrl = http_build_url($parts, [
-            'path' => '/' . Translator::instance()->getPathInLocale($path, $locale, Translator::instance()->postsPrefixDefault)
+            'path' => '/' . Translator::instance()->getPathInLocale($path, $locale)
         ]);
 
         Cache::store('array')

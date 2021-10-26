@@ -4,6 +4,7 @@ use Cms\Classes\ComponentBase;
 use Dynamedia\Posts\Models\Post;
 use Dynamedia\Posts\Traits\PaginationTrait;
 use App;
+use RainLab\Translate\Classes\Translator;
 
 class DisplayCategory extends ComponentBase
 {
@@ -32,7 +33,6 @@ class DisplayCategory extends ComponentBase
         $this->setCategory();
 
         // Check that we are at the right url. If not, redirect and get back here.
-        // ONLY if we're getting the category from the URL
             if (!$this->category) {
                 return $this->controller->run('404');
             }

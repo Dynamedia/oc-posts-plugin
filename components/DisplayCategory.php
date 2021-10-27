@@ -4,7 +4,6 @@ use Cms\Classes\ComponentBase;
 use Dynamedia\Posts\Models\Post;
 use Dynamedia\Posts\Traits\PaginationTrait;
 use App;
-use RainLab\Translate\Classes\Translator;
 
 class DisplayCategory extends ComponentBase
 {

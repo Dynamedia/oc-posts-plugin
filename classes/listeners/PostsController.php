@@ -19,13 +19,13 @@ class PostsController
                 $filePath = null;
 
                 if (!empty($widget->model->body_document['template_body_options'])) {
-                    $filePath = Theme::getActiveTheme()->getPath() . $widget->model->body_document['template_body_options'];
+                    $filePath = TemplateBody::getYamlFilePath($widget->model->body_document['template_body_options']);
                 }
 
                 $vars = post('Post');
 
                 if (!empty($vars['body_document']['template_body_options'])) {
-                    $filePath = Theme::getActiveTheme()->getPath() . $vars['body_document']['template_body_options'];
+                    $filePath = TemplateBody::getYamlFilePath($vars['body_document']['template_body_options']);
                 }
 
                 if ($filePath) {
@@ -58,13 +58,13 @@ class PostsController
                 $filePath = null;
 
                 if (!empty($widget->model->body_document['template_body_options'])) {
-                    $filePath = Theme::getActiveTheme()->getPath() . $widget->model->body_document['template_body_options'];
+                    $filePath = TemplateBody::getYamlFilePath($widget->model->body_document['template_body_options']);
                 }
 
                 $vars = post('PostTranslation');
 
                 if (!empty($vars['body_document']['template_body_options'])) {
-                    $filePath = Theme::getActiveTheme()->getPath() . $vars['body_document']['template_body_options'];
+                    $filePath = TemplateBody::getYamlFilePath($vars['body_document']['template_body_options']);
                 }
 
                 if ($filePath) {

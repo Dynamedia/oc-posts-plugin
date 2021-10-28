@@ -20,7 +20,7 @@ class TemplateBody extends Body
         $this->pages = [];
 
         try {
-            $yaml = Yaml::parse(File::get(Theme::getActiveTheme()->getPath() . $this->model->body_document['template_body_options']));
+            $yaml = Yaml::parse(self::getYamlFile($this->model->body_document['template_body_options']));
             $partialPath = "body_templates/" . $yaml['partial'];
             $partial = Partial::load(Theme::getActiveTheme(), $partialPath);
 
@@ -39,6 +39,33 @@ class TemplateBody extends Body
             ]));
     }
 
+    /**
+     * Attempt to load the yaml file from the theme. On failure, try the parent theme
+     * @throws \ApplicationException
+     */
+    public static function getYamlFile($relativePath)
+    {
+        // todo refactor for robustness and store backup to db
+        try {
+            $yaml = File::get(Theme::getActiveTheme()->getPath() . $relativePath);
+        } catch (\Exception $e) {
+            $yaml = File::get(Theme::getActiveTheme()->getParentTheme()->getPath() . $relativePath);
+        }
+        return $yaml;
+    }
+
+    /**
+     * Return the full path
+     */
+    public static function getYamlFilePath($relativePath)
+    {
+        if (File::exists(Theme::getActiveTheme()->getPath() . $relativePath)) {
+            return Theme::getActiveTheme()->getPath() . $relativePath;
+        } elseif (File::exists(Theme::getActiveTheme()->getParentTheme()->getPath() . $relativePath)) {
+            return Theme::getActiveTheme()->getParentTheme()->getPath() . $relativePath;
+        }
+        return false;
+    }
 
     public static function getConfigCacheKey($filePath)
     {

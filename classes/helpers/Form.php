@@ -114,14 +114,22 @@ class Form
 
     /**
      * List all .yml files in the active theme body_templates directory
+     * Fall back to the parent theme if necessary
      *
      * @return array
      * @throws \ApplicationException
      */
     public static function getBodyTemplateOptions()
     {
+        // todo Refactor properly. Quick fix for parent/child themes
         $cacheKey = "dynamedia_posts_post_body_templates";
         $templateDir = "/body_templates/";
+
+        $theme = Theme::getActiveTheme();
+        $parentTheme = $theme->getParentTheme();
+
+        $path = null;
+        $parentPath = null;
 
         if (Cache::has($cacheKey)) {
             return Cache::get($cacheKey);
@@ -129,16 +137,29 @@ class Form
 
         $options = [];
 
-        $path = Theme::getActiveTheme()->getPath() . $templateDir;
+        $path = $theme->getPath() . $templateDir;
+        if ($parentTheme) {
+            $parentPath = $parentTheme->getPath() . $templateDir;
+        }
 
         $files = [];
+        $parentFiles = [];
         if (file_exists($path)) {
             $files = collect(\File::allfiles($path))->filter(function($value) {
                 return $value->getExtension() == 'yml';
             });
         }
 
-        foreach ($files as $file) {
+        if (file_exists($parentPath)) {
+            $parentFiles = collect(\File::allfiles($parentPath))->filter(function($value) {
+                return $value->getExtension() == 'yml';
+            });
+        }
+
+        $mergedFiles = $parentFiles->merge($files);
+
+
+        foreach ($mergedFiles as $file) {
             try {
                 $config = TemplateBody::parseConfig($file->getPathName());
             } catch (\Exception $e) {
@@ -150,6 +171,7 @@ class Form
                 $name = $file->getFilename();
             }
 
+            // Do not attempt to save using absolute paths. Users must be able to copy files between themes
             $options[$templateDir . $file->getFilename()] = $name;
         }
 

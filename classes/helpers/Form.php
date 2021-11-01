@@ -142,10 +142,10 @@ class Form
             $parentPath = $parentTheme->getPath() . $templateDir;
         }
 
-        $files = [];
+        $themeFiles = [];
         $parentFiles = [];
         if (file_exists($path)) {
-            $files = collect(\File::allfiles($path))->filter(function($value) {
+            $themeFiles = collect(\File::allfiles($path))->filter(function($value) {
                 return $value->getExtension() == 'yml';
             });
         }
@@ -156,10 +156,14 @@ class Form
             });
         }
 
-        $mergedFiles = $parentFiles->merge($files);
+        if (!empty($parentFiles)) {
+            $allFiles = $parentFiles->merge($themeFiles);
+        } else {
+            $allFiles = $themeFiles;
+        }
 
 
-        foreach ($mergedFiles as $file) {
+        foreach ($allFiles as $file) {
             try {
                 $config = TemplateBody::parseConfig($file->getPathName());
             } catch (\Exception $e) {

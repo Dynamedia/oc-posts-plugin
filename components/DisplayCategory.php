@@ -1,6 +1,7 @@
 <?php namespace Dynamedia\Posts\Components;
 
 use Cms\Classes\ComponentBase;
+use Cms\Classes\Theme;
 use Dynamedia\Posts\Models\Post;
 use Dynamedia\Posts\Traits\PaginationTrait;
 use App;

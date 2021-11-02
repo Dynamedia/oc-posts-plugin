@@ -81,8 +81,6 @@ class DisplayPost extends ComponentBase
         $pages = $body->getPages();
         $page = $body->renderPage($this->getRequestedPage());
 
-        if (empty($pages) || empty($page)) return $this->controller->run('404');
-
         $paginatorOptions = [
             'items'         => $page,
             'totalResults'  => count($pages),

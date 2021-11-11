@@ -1,4 +1,4 @@
-1.0.0:
+"1.0.0":
     - First Version of Posts
     - create_posts_table.php
     - create_post_translations_table.php
@@ -10,9 +10,9 @@
     - create_tag_translations_table.php
     - create_tag_slugs_table.php
     - create_profiles_table.php
-1.0.1:
+"1.0.1":
     - Fix issue when saving models before settings have been completed
-1.0.2:
+"1.0.2":
     - No locale prefix where only one language (i.e. Translate unused)
-1.0.3:
-    - Theme templates can be inherited from parent theme
+"1.0.3":
+    - Theme templates can be inherited from parent theme. Core version constraint.

@@ -370,6 +370,35 @@ return [
             'at_handle' => '@YourUsername',
             'website'   => 'https://yourwebsite.com',
         ],
+    ],
+
+    'theme_form_config' => [
+        'tabs' => [
+            'branding'      => 'Branding',
+            'social'        => 'Social',
+            'images'        => 'Images',
+            'site_operator' => 'Site Operator',
+        ],
+        'labels' => [
+            'site_brand'        => 'Site Brand',
+            'site_name'         => 'Site Name',
+            'site_description'  => 'Site Description',
+            'append_to_title'   => 'Append to Title',
+            'facebook_url'      => 'Facebook URL',
+            'facebook_app_id'   => 'Facebook App ID',
+            'twitter_handle'    => 'Twitter Username',
+        ],
+        'placeholders' => [
+            'facebook_url'      => 'https://facebook.com/YourUsername',
+            'facebook_app_id'   => '0123456789',
+            'twitter_handle'    => '@YourUsername',
+        ],
+        'options' => [
+            'append_title_none'         => 'None',
+            'append_title_name'         => 'Site Name',
+            'append_title_brand'        => 'Site Brand',
+            'append_title_name_brand'   => 'Site Name & Brand',
+        ],
     ]
 
 

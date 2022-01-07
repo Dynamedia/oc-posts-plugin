@@ -2,6 +2,7 @@
 
 use Dynamedia\Posts\Classes\Acl\AccessControl;
 use ValidationException;
+use Lang;
 
 class SettingsAccess
 {
@@ -13,7 +14,7 @@ class SettingsAccess
         $event->listen('dynamedia.posts.settings.saving', function($category, $user)  {
             if (!$this->userCanManageSettings($user)) {
                 throw new ValidationException([
-                    'error' => "Insufficient permissions to manage settings"
+                    'error' => Lang::get('dynamedia.posts::lang.acl.error.manage_settings')
                 ]);
             }
         });

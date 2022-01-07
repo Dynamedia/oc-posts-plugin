@@ -283,6 +283,53 @@ return [
             'description'   => 'Show search results',
         ],
     ],
+
+    // Access Control
+    'acl'   => [
+        'permissions_settings' => [
+            'tabs' => [
+                'posts'     => 'Posts'
+            ],
+            'labels' => [
+                'access_plugin'                 => 'Access Posts Plugin',
+                'create_posts'                  => 'Create Posts',
+                'categorize_posts'              => 'Categorize Posts',
+                'tag_posts'                     => 'Tag Posts',
+                'set_post_layout'               => 'Set Post Layout',
+                'publish_own_posts'             => 'Publish Own Posts',
+                'unpublish_own_posts'           => 'Unpublish Own Posts',
+                'edit_own_published_posts'      => 'Edit Own Published Posts',
+                'delete_own_unpublished_posts'  => 'Delete Own Unpublished Posts',
+                'delete_own_published_posts'    => 'Delete Own Published Posts',
+                'publish_all_posts'             => 'Publish All Posts',
+                'unpublish_all_posts'           => 'Unpublish All Posts',
+                'edit_all_unpublished_posts'    => 'Edit All Unpublished Posts',
+                'edit_all_published_posts'      => 'Edit All Published Posts',
+                'delete_all_unpublished_posts'  => 'Delete All Unpublished Posts',
+                'delete_all_published_posts'    => 'Delete All Published Posts',
+                'assign_posts'                  => 'Assign Posts to User',
+                'view_categories'               => 'View Categories',
+                'manage_categories'             => 'Manage Categories',
+                'view_tags'                     => 'View Tags',
+                'manage_tags'                   => 'Manage Tags',
+                'manage_translations'           => 'Manage Translations',
+                'manage_slugs'                  => 'Manage Slugs',
+                'view_settings'                 => 'View Settings',
+                'manage_settings'               => 'Manage Setttings',
+            ],
+        ],
+        'error' => [
+            'manage_categories' => 'Insufficient permissions to manage categories',
+            'edit_post'         => 'Insufficient permissions to edit :post',
+            'publish_post'      => 'Insufficient permissions to publish :post',
+            'unpublish_post'    => 'Insufficient permissions to unpublish :post',
+            'delete_post'       => 'Insufficient permissions to delete :post',
+            'edit_tag'          => 'Insufficient permissions to edit :tag',
+            'delete_tag'        => 'Insufficient permissions to publish :tag',
+            'manage_settings'   => 'Insufficient permissions to manage settings',
+        ]
+    ],
+
     'static_pages' => [
         'tabs' => [
             'banner_image'   => 'Banner Image',

@@ -2,6 +2,7 @@
 
 use Dynamedia\Posts\Classes\Acl\AccessControl;
 use ValidationException;
+use Lang;
 
 class TagAccess
 {
@@ -14,7 +15,7 @@ class TagAccess
             // Can't edit existing tags
             if (!$this->userCanManageTags($user) && $tag->exists) {
                 throw new ValidationException([
-                    'error' => "Insufficient permissions to edit {$tag->name}"
+                    'error' => Lang::get('dynamedia.posts::lang.acl.error.edit_tag', ['tag' => $tag->name])
                 ]);
             }
 
@@ -29,7 +30,7 @@ class TagAccess
         $event->listen('dynamedia.posts.tag.deleting', function($tag, $user) {
             if (!$this->userCanManageTags($user)) {
                 throw new ValidationException([
-                    'error' => "Insufficient permissions to delete {$tag->name}"
+                    'error' => Lang::get('dynamedia.posts::lang.acl.error.delete_tag', ['tag' => $tag->name])
                 ]);
             }
         });

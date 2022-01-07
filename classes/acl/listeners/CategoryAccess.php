@@ -2,6 +2,7 @@
 
 use Dynamedia\Posts\Classes\Acl\AccessControl;
 use ValidationException;
+use Lang;
 
 class CategoryAccess
 {
@@ -13,7 +14,7 @@ class CategoryAccess
         $event->listen('dynamedia.posts.category.saving', function($category, $user)  {
             if (!$this->userCanManageCategories($user)) {
                 throw new ValidationException([
-                    'error' => "Insufficient permissions to manage categories"
+                    'error' => Lang::get('dynamedia.posts::lang.acl.error.manage_categories')
                 ]);
             }
         });

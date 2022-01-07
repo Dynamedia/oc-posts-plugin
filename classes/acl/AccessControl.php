@@ -16,152 +16,152 @@ class AccessControl
         // Publishers and developers have full access. Some restricted non-system roles are created for more control
         return [
             'dynamedia.posts.access_plugin' => [
-                'tab' => 'Posts',
-                'label' => 'Access Posts Plugin',
+                'tab' => 'dynamedia.posts::lang.acl.permissions_settings.tabs.posts',
+                'label' => 'dynamedia.posts::lang.acl.permissions_settings.labels.access_plugin',
                 'order' => 1000,
                 'roles' => ['publisher', 'developer']
             ],
             'dynamedia.posts.create_posts' => [
-                'tab' => 'Posts',
-                'label' => 'Create Posts',
+                'tab' => 'dynamedia.posts::lang.acl.permissions_settings.tabs.posts',
+                'label' => 'dynamedia.posts::lang.acl.permissions_settings.labels.create_posts',
                 'order' => 1010,
                 'roles' => ['publisher', 'developer']
             ],
             'dynamedia.posts.categorize_posts' => [
-                'tab' => 'Posts',
-                'label' => 'Categorize Posts',
+                'tab' => 'dynamedia.posts::lang.acl.permissions_settings.tabs.posts',
+                'label' => 'dynamedia.posts::lang.acl.permissions_settings.labels.categorize_posts',
                 'order' => 1020,
                 'roles' => ['publisher', 'developer']
             ],
             'dynamedia.posts.tag_posts' => [
-                'tab' => 'Posts',
-                'label' => 'Tag Posts',
+                'tab' => 'dynamedia.posts::lang.acl.permissions_settings.tabs.posts',
+                'label' => 'dynamedia.posts::lang.acl.permissions_settings.labels.tag_posts',
                 'order' => 1030,
                 'roles' => ['publisher', 'developer']
             ],
             'dynamedia.posts.set_layout' => [
-                'tab' => 'Posts',
-                'label' => 'Set Post Layout',
+                'tab' => 'dynamedia.posts::lang.acl.permissions_settings.tabs.posts',
+                'label' => 'dynamedia.posts::lang.acl.permissions_settings.labels.set_post_layout',
                 'order' => 1040,
                 'roles' => ['publisher', 'developer']
             ],
             'dynamedia.posts.publish_own_posts' => [
-                'tab' => 'Posts',
-                'label' => 'Publish Own Posts',
+                'tab' => 'dynamedia.posts::lang.acl.permissions_settings.tabs.posts',
+                'label' => 'dynamedia.posts::lang.acl.permissions_settings.labels.publish_own_posts',
                 'order' => 1050,
                 'roles' => ['publisher', 'developer']
             ],
             'dynamedia.posts.unpublish_own_posts' => [
-                'tab' => 'Posts',
-                'label' => 'Unpublish Own Posts',
+                'tab' => 'dynamedia.posts::lang.acl.permissions_settings.tabs.posts',
+                'label' => 'dynamedia.posts::lang.acl.permissions_settings.labels.unpublish_own_posts',
                 'order' => 1060,
                 'roles' => ['publisher', 'developer']
             ],
             'dynamedia.posts.edit_own_published_posts' => [
-                'tab' => 'Posts',
-                'label' => 'Edit Own Published Posts',
+                'tab' => 'dynamedia.posts::lang.acl.permissions_settings.tabs.posts',
+                'label' => 'dynamedia.posts::lang.acl.permissions_settings.labels.edit_own_published_posts',
                 'order' => 1070,
                 'roles' => ['publisher', 'developer']
             ],
             'dynamedia.posts.delete_own_unpublished_posts' => [
-                'tab' => 'Posts',
-                'label' => 'Delete Own Unpublished Posts',
+                'tab' => 'dynamedia.posts::lang.acl.permissions_settings.tabs.posts',
+                'label' => 'dynamedia.posts::lang.acl.permissions_settings.labels.delete_own_unpublished_posts',
                 'order' => 1080,
                 'roles' => ['publisher', 'developer']
             ],
             'dynamedia.posts.delete_own_published_posts' => [
-                'tab' => 'Posts',
-                'label' => 'Delete Own Published Posts',
+                'tab' => 'dynamedia.posts::lang.acl.permissions_settings.tabs.posts',
+                'label' => 'dynamedia.posts::lang.acl.permissions_settings.labels.delete_own_published_posts',
                 'order' => 1090,
                 'roles' => ['publisher', 'developer']
             ],
             'dynamedia.posts.publish_all_posts' => [
-                'tab' => 'Posts',
-                'label' => 'Publish All Posts',
+                'tab' => 'dynamedia.posts::lang.acl.permissions_settings.tabs.posts',
+                'label' => 'dynamedia.posts::lang.acl.permissions_settings.labels.publish_all_posts',
                 'order' => 1100,
                 'roles' => ['publisher', 'developer']
             ],
             'dynamedia.posts.unpublish_all_posts' => [
-                'tab' => 'Posts',
-                'label' => 'Unpublish All Posts',
+                'tab' => 'dynamedia.posts::lang.acl.permissions_settings.tabs.posts',
+                'label' => 'dynamedia.posts::lang.acl.permissions_settings.labels.unpublish_all_posts',
                 'order' => 1110,
                 'roles' => ['publisher', 'developer']
             ],
             'dynamedia.posts.edit_all_unpublished_posts' => [
-                'tab' => 'Posts',
-                'label' => 'Edit All Unpublished Posts',
+                'tab' => 'dynamedia.posts::lang.acl.permissions_settings.tabs.posts',
+                'label' => 'dynamedia.posts::lang.acl.permissions_settings.labels.edit_all_unpublished_posts',
                 'order' => 1120,
                 'roles' => ['publisher', 'developer']
             ],
             'dynamedia.posts.edit_all_published_posts' => [
-                'tab' => 'Posts',
-                'label' => 'Edit All Published Posts',
+                'tab' => 'dynamedia.posts::lang.acl.permissions_settings.tabs.posts',
+                'label' => 'dynamedia.posts::lang.acl.permissions_settings.labels.edit_all_published_posts',
                 'order' => 1130,
                 'roles' => ['publisher', 'developer']
             ],
             'dynamedia.posts.delete_all_unpublished_posts' => [
-                'tab' => 'Posts',
-                'label' => 'Delete All Unpublished Posts',
+                'tab' => 'dynamedia.posts::lang.acl.permissions_settings.tabs.posts',
+                'label' => 'dynamedia.posts::lang.acl.permissions_settings.labels.delete_all_unpublished_posts',
                 'order' => 1140,
                 'roles' => ['publisher', 'developer']
             ],
             'dynamedia.posts.delete_all_published_posts' => [
-                'tab' => 'Posts',
-                'label' => 'Delete All Published Posts',
+                'tab' => 'dynamedia.posts::lang.acl.permissions_settings.tabs.posts',
+                'label' => 'dynamedia.posts::lang.acl.permissions_settings.labels.delete_all_published_posts',
                 'order' => 1150,
                 'roles' => ['publisher', 'developer']
             ],
             'dynamedia.posts.assign_posts' => [
-                'tab' => 'Posts',
-                'label' => 'Assign Post to User',
+                'tab' => 'dynamedia.posts::lang.acl.permissions_settings.tabs.posts',
+                'label' => 'dynamedia.posts::lang.acl.permissions_settings.labels.assign_posts',
                 'order' => 1160,
                 'roles' => ['publisher', 'developer']
             ],
             'dynamedia.posts.view_categories' => [
-                'tab' => 'Posts',
-                'label' => 'View Categories',
+                'tab' => 'dynamedia.posts::lang.acl.permissions_settings.tabs.posts',
+                'label' => 'dynamedia.posts::lang.acl.permissions_settings.labels.view_categories',
                 'order' => 1170,
                 'roles' => ['publisher', 'developer']
             ],
             'dynamedia.posts.manage_categories' => [
-                'tab' => 'Posts',
-                'label' => 'Manage Categories',
+                'tab' => 'dynamedia.posts::lang.acl.permissions_settings.tabs.posts',
+                'label' => 'dynamedia.posts::lang.acl.permissions_settings.labels.manage_categories',
                 'order' => 1180,
                 'roles' => ['publisher', 'developer']
             ],
             'dynamedia.posts.view_tags' => [
-                'tab' => 'Posts',
-                'label' => 'View Tags',
+                'tab' => 'dynamedia.posts::lang.acl.permissions_settings.tabs.posts',
+                'label' => 'dynamedia.posts::lang.acl.permissions_settings.labels.view_tags',
                 'order' => 1190,
                 'roles' => ['publisher', 'developer']
             ],
             'dynamedia.posts.manage_tags' => [
-                'tab' => 'Posts',
-                'label' => 'Manage Tags',
+                'tab' => 'dynamedia.posts::lang.acl.permissions_settings.tabs.posts',
+                'label' => 'dynamedia.posts::lang.acl.permissions_settings.labels.manage_tags',
                 'order' => 1200,
                 'roles' => ['publisher', 'developer']
             ],
             'dynamedia.posts.manage_translations' => [
-                'tab' => 'Posts',
-                'label' => 'Manage Translations',
+                'tab' => 'dynamedia.posts::lang.acl.permissions_settings.tabs.posts',
+                'label' => 'dynamedia.posts::lang.acl.permissions_settings.labels.manage_translations',
                 'order' => 1200,
                 'roles' => ['publisher', 'developer']
             ],
             'dynamedia.posts.manage_slugs' => [
-                'tab' => 'Posts',
-                'label' => 'Manage Slugs',
+                'tab' => 'dynamedia.posts::lang.acl.permissions_settings.tabs.posts',
+                'label' => 'dynamedia.posts::lang.acl.permissions_settings.labels.manage_slugs',
                 'order' => 1200,
                 'roles' => ['publisher', 'developer']
             ],
             'dynamedia.posts.view_settings' => [
-                'tab' => 'Posts',
-                'label' => 'View Settings',
+                'tab' => 'dynamedia.posts::lang.acl.permissions_settings.tabs.posts',
+                'label' => 'dynamedia.posts::lang.acl.permissions_settings.labels.view_settings',
                 'order' => 1210,
                 'roles' => ['publisher', 'developer']
             ],
             'dynamedia.posts.manage_settings' => [
-                'tab' => 'Posts',
-                'label' => 'Manage Settings',
+                'tab' => 'dynamedia.posts::lang.acl.permissions_settings.tabs.posts',
+                'label' => 'dynamedia.posts::lang.acl.permissions_settings.labels.manage_settings',
                 'order' => 1220,
                 'roles' => ['publisher', 'developer']
             ],

@@ -2,6 +2,7 @@
 
 use Dynamedia\Posts\Classes\Acl\AccessControl;
 use ValidationException;
+use Lang;
 
 class PostAccess
 {
@@ -13,19 +14,19 @@ class PostAccess
         $event->listen('dynamedia.posts.post.saving', function($post, $user)  {
             if (!$this->userCanEdit($post, $user)) {
                 throw new \ValidationException([
-                    'error' => "Insufficient permissions to edit {$post->slug}"
+                    'error' => Lang::get('dynamedia.posts::lang.acl.error.edit_post', ['post' => $post->slug])
                 ]);
             }
 
             if ($post->isDirty('is_published')) {
                 if ($post->is_published && !$this->userCanPublish($post, $user)) {
                     throw new ValidationException([
-                        'error' => "Insufficient permissions to publish {$post->slug}"
+                        'error' => Lang::get('dynamedia.posts::lang.acl.error.publish_post', ['post' => $post->slug])
                     ]);
                 }
                 if (!$post->is_published && !$this->userCanUnpublish($post, $user)) {
                     throw new ValidationException([
-                        'error' => "Insufficient permissions to unpublish {$post->slug}"
+                        'error' => Lang::get('dynamedia.posts::lang.acl.error.unpublish_post', ['post' => $post->slug])
                     ]);
                 }
             }
@@ -34,7 +35,7 @@ class PostAccess
         $event->listen('dynamedia.posts.post.deleting', function($post, $user) {
             if (!$this->userCanDelete($post, $user)) {
                 throw new ValidationException([
-                    'error' => "Insufficient permissions to delete {$post->slug}"
+                    'error' => Lang::get('dynamedia.posts::lang.acl.error.delete_post', ['post' => $post->slug])
                 ]);
             }
         });

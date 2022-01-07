@@ -52,10 +52,10 @@ class Form
     public static function getImageStyleOptions()
     {
         return [
-        'inline-left' => 'Inline Left',
-        'inline-right' => 'Inline Right',
-        'full-above' => 'Above',
-        'full-below' => 'Below',
+            'inline-left' => Lang::get('dynamedia.posts::lang.images.options.inline_left'),
+            'inline-right' => Lang::get('dynamedia.posts::lang.images.options.inline_right'),
+            'full-above' => Lang::get('dynamedia.posts::lang.images.options.above'),
+            'full-below' => Lang::get('dynamedia.posts::lang.images.options.below'),
         ];
     }
 
@@ -71,7 +71,7 @@ class Form
 
     public static function getPostListSortOptions()
     {
-        $inherit = ['__inherit__' => 'Inherit'];
+        $inherit = ['__inherit__' => Lang::get('dynamedia.posts::lang.common.dropdown.inherit')];
         return array_merge($inherit, static::getDefaultPostListSortOptions());
     }
 
@@ -85,7 +85,7 @@ class Form
 
     public static function getPostListIncludeSubCategoriesOptions()
     {
-        $inherit = ['__inherit__' => 'Inherit'];
+        $inherit = ['__inherit__' => Lang::get('dynamedia.posts::lang.common.dropdown.inherit')];
         return array_merge($inherit, static::getDefaultPostListIncludeSubCategoriesOptions());
     }
 
@@ -103,7 +103,7 @@ class Form
 
     public static function getPostListPerPageOptions()
     {
-        $appended = ['__inherit__' => 'Inherit'];
+        $appended = ['__inherit__' => Lang::get('dynamedia.posts::lang.common.dropdown.inherit')];
         $default  = static::getDefaultPostListPerPageOptions();
 
         foreach ($default as $entry) {

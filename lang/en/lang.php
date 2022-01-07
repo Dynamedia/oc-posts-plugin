@@ -3,7 +3,7 @@
 return [
     'plugin' => [
         'name'          => 'Posts',
-        'description'   => 'Posts for October CMS.'
+        'description'   => 'Posts for Winter CMS.'
     ],
     'posts' => [
         'tabs'  => [
@@ -41,13 +41,13 @@ return [
 
     'blocks' => [
         'names' => [
-          'richeditor_block'       => 'Richeditor Block',
-          'markdown_block'         => 'Markdown Block',
-          'html_block'             => 'HTML Block',
-          'image_block'            => 'Image Block',
-          'cms_content_block'      => 'CMS Content',
-          'cms_partial_block'      => 'CMS Partial',
-          'page_break'             => 'Page Break',
+            'richeditor_block'       => 'Richeditor Block',
+            'markdown_block'         => 'Markdown Block',
+            'html_block'             => 'HTML Block',
+            'image_block'            => 'Image Block',
+            'cms_content_block'      => 'CMS Content',
+            'cms_partial_block'      => 'CMS Partial',
+            'page_break'             => 'Page Break',
         ],
         'descriptions' => [
             'richeditor_block'  => 'Add a content section (Richeditor)',
@@ -115,6 +115,8 @@ return [
             'random'                => 'Random',
             'yes'                   => 'Yes',
             'no'                    => 'No',
+            'none'                  => 'None',
+            'inherit'               => 'Inherit',
             'locale_placeholder'    => '--- Select from available locales ---'
         ]
     ],
@@ -143,6 +145,10 @@ return [
         'options' => [
             'min_width'     => 'Min Width',
             'max_width'     => 'Max Width',
+            'above'         => 'Above',
+            'below'         => 'Below',
+            'inline_left'   => 'Inline Left',
+            'inline_right'  => 'Inline Right',
         ]
     ],
     'seo' => [
@@ -198,8 +204,8 @@ return [
         'comments' => [
         ],
         'dropdown' => [
-          'organization'    => 'Organization',
-          'person'          => 'Person',
+            'organization'    => 'Organization',
+            'person'          => 'Person',
         ],
     ],
     'components' => [
@@ -400,6 +406,4 @@ return [
             'append_title_name_brand'   => 'Site Name & Brand',
         ],
     ]
-
-
 ];

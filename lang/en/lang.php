@@ -336,6 +336,10 @@ return [
         ]
     ],
 
+    'validation' => [
+        'slug_unavailable'  => 'The slug \':slug\' is not available'
+    ],
+
     'static_pages' => [
         'tabs' => [
             'banner_image'   => 'Banner Image',
@@ -354,6 +358,16 @@ return [
             'seo_opengraph_description' => 'Description for Facebook & Open Graph sharing',
             'seo_twitter_title' => 'Title for Twitter sharing',
             'seo_twitter_description' => 'Description for Twitter sharing',
+        ],
+        'menu_types' => [
+            'category'          => 'Posts: A Single Category',
+            'all_categories'    => 'Posts: All Categories',
+            'post'              => 'Posts: A Single Post',
+            'all_posts'         => 'Posts: All Posts',
+            'tag'               => 'Posts: A Single Tag',
+            'all_tags'          => 'Posts: All Tags',
+            'category_posts'    => 'Posts: Posts From Category',
+            'tag_posts'         => 'Posts: Posts With Tag'
         ]
     ],
 

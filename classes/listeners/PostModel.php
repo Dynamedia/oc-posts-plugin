@@ -3,6 +3,7 @@ use Dynamedia\Posts\Models\PostSlug;
 use Str;
 use October\Rain\Argon\Argon;
 use ValidationException;
+use Lang;
 
 class PostModel
 {
@@ -13,7 +14,9 @@ class PostModel
             $post->slug = Str::slug($post->slug);
 
             if (!PostSlug::isAvailable($post->id, $post->slug)) {
-                throw new ValidationException(['slug' => "Slug is not available"]);
+                throw new ValidationException(
+                    ['slug' => Lang::get('dynamedia.posts::lang.validation.slug_unavailable', ['slug' => $post->slug])]
+                );
             }
         });
 

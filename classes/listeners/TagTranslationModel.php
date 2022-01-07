@@ -2,6 +2,7 @@
 use Dynamedia\Posts\Models\TagSlug;
 use Str;
 use ValidationException;
+use Lang;
 
 class TagTranslationModel
 {
@@ -12,7 +13,9 @@ class TagTranslationModel
             $tagTranslation->slug = Str::slug($tagTranslation->slug);
 
             if (!TagSlug::isAvailable($tagTranslation->native->id, $tagTranslation->slug)) {
-                throw new ValidationException(['slug' => "Slug is not available"]);
+                throw new ValidationException(
+                    ['slug' => Lang::get('dynamedia.posts::lang.validation.slug_unavailable', ['slug' => $tagTranslation->slug])]
+                );
             }
             $tagTranslation->prePopulateAttributes();
         });

@@ -2,6 +2,7 @@
 use Dynamedia\Posts\Models\PostSlug;
 use Str;
 use ValidationException;
+use Lang;
 
 class PostTranslationModel
 {
@@ -12,7 +13,9 @@ class PostTranslationModel
             $postTranslation->slug = Str::slug($postTranslation->slug);
 
             if (!PostSlug::isAvailable($postTranslation->native->id, $postTranslation->slug)) {
-                throw new ValidationException(['slug' => "Slug is not available"]);
+                throw new ValidationException(
+                    ['slug' => Lang::get('dynamedia.posts::lang.validation.slug_unavailable', ['slug' => $postTranslation->slug])]
+                );
             }
 
             $postTranslation->prePopulateAttributes();

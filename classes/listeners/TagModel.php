@@ -2,6 +2,7 @@
 use Dynamedia\Posts\Models\TagSlug;
 use Str;
 use ValidationException;
+use Lang;
 
 class TagModel
 {
@@ -12,7 +13,9 @@ class TagModel
             $tag->slug = Str::slug($tag->slug);
 
             if (!TagSlug::isAvailable($tag->id, $tag->slug)) {
-                throw new ValidationException(['slug' => "Slug is not available"]);
+                throw new ValidationException(
+                    ['slug' => Lang::get('dynamedia.posts::lang.validation.slug_unavailable', ['slug' => $tag->slug])]
+                );
             }
         });
 

@@ -2,6 +2,7 @@
 use Dynamedia\Posts\Models\CategorySlug;
 use Str;
 use ValidationException;
+use Lang;
 
 class CategoryTranslationModel
 {
@@ -12,7 +13,9 @@ class CategoryTranslationModel
             $categoryTranslation->slug = Str::slug($categoryTranslation->slug);
 
             if (!CategorySlug::isAvailable($categoryTranslation->native->id, $categoryTranslation->slug)) {
-                throw new ValidationException(['slug' => "Slug is not available"]);
+                throw new ValidationException(
+                    ['slug' => Lang::get('dynamedia.posts::lang.validation.slug_unavailable', ['slug' => $categoryTranslation->slug])]
+                );
             }
             $categoryTranslation->prePopulateAttributes();
         });

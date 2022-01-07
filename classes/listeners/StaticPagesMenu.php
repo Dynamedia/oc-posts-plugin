@@ -1,9 +1,9 @@
 <?php namespace Dynamedia\Posts\Classes\Listeners;
 
-
 use Dynamedia\Posts\Models\Category;
 use Dynamedia\Posts\Models\Post;
 use Dynamedia\Posts\Models\Tag;
+use Lang;
 
 class StaticPagesMenu
 {
@@ -11,14 +11,14 @@ class StaticPagesMenu
     {
         $event->listen('pages.menuitem.listTypes', function() {
             return [
-                'posts-category'       => 'Posts: A Category',
-                'posts-all-categories' => 'Posts: All Categories',
-                'posts-tag'            => 'Posts: A Tag',
-                'posts-all-tags'       => 'Posts: All Tags',
-                'posts-post'           => 'Posts: A Post',
-                'posts-all-posts'      => 'Posts: All Posts',
-                'posts-category-posts' => 'Posts: All Posts From Category',
-                'posts-tag-posts'      => 'Posts: All Posts With Tag',
+                'posts-category'       => Lang::get('dynamedia.posts::lang.static_pages.menu_types.category'),
+                'posts-all-categories' => Lang::get('dynamedia.posts::lang.static_pages.menu_types.all_categories'),
+                'posts-tag'            => Lang::get('dynamedia.posts::lang.static_pages.menu_types.tag'),
+                'posts-all-tags'       => Lang::get('dynamedia.posts::lang.static_pages.menu_types.all_tags'),
+                'posts-post'           => Lang::get('dynamedia.posts::lang.static_pages.menu_types.post'),
+                'posts-all-posts'      => Lang::get('dynamedia.posts::lang.static_pages.menu_types.all_posts'),
+                'posts-category-posts' => Lang::get('dynamedia.posts::lang.static_pages.menu_types.category_posts'),
+                'posts-tag-posts'      => Lang::get('dynamedia.posts::lang.static_pages.menu_types.tag_posts'),
             ];
         });
 

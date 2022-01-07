@@ -349,5 +349,28 @@ return [
             'seo_twitter_title' => 'Title for Twitter sharing',
             'seo_twitter_description' => 'Description for Twitter sharing',
         ]
+    ],
+
+    'backend_user' => [
+        'tabs' => [
+            'profile'   => 'Profile',
+            'biography' => 'Biography',
+        ],
+        'labels' => [
+            'username'          => 'Username',
+            'twitter_handle'    => 'Twitter Username',
+            'instagram_handle'  => 'Instagram Username',
+            'facebook_handle'   => 'Facebook Username',
+            'website_url'       => 'Website URL',
+            'mini_biography'    => 'Mini Biography',
+            'full_biography'    => 'Full Biography',
+        ],
+        'placeholders' => [
+            'handle'    => 'YourUsername',
+            'at_handle' => '@YourUsername',
+            'website'   => 'https://yourwebsite.com',
+        ],
     ]
+
+
 ];

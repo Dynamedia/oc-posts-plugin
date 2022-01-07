@@ -1,9 +1,9 @@
 <?php namespace Dynamedia\Posts\Classes\Extenders;
 
-
 use Backend\Controllers\Users as BackendUserController;
 use Backend\Models\User as BackendUserModel;
 use Dynamedia\Posts\Models\Profile;
+Use Lang;
 
 class ExtendBackendUser
 {
@@ -26,7 +26,7 @@ class ExtendBackendUser
         $event->listen('backend.page.beforeDisplay', function ($backendController, $action, $params) {
             $user = \BackendAuth::getUser();
             if ($user && !$user->profile) {
-                 Profile::getFromUser($user);
+                Profile::getFromUser($user);
             }
         });
 
@@ -43,40 +43,40 @@ class ExtendBackendUser
 
             $form->addTabFields([
                 'profile[username]' => [
-                    'label' => 'Username',
-                    'tab' => 'Profile',
-                    'required' => true,
+                    'label'     => Lang::get('dynamedia.posts::lang.backend_user.labels.username'),
+                    'tab'       => Lang::get('dynamedia.posts::lang.backend_user.tabs.profile'),
+                    'required'  => true,
                 ],
                 'profile[twitter_handle]' => [
-                    'label' => 'Twitter Username',
-                    'tab' => 'Profile',
-                    'placeholder' => "@yourUsername"
+                    'label'         => Lang::get('dynamedia.posts::lang.backend_user.labels.twitter_handle'),
+                    'tab'           => Lang::get('dynamedia.posts::lang.backend_user.tabs.profile'),
+                    'placeholder'   => Lang::get('dynamedia.posts::lang.backend_user.placeholders.at_handle')
                 ],
                 'profile[instagram_handle]' => [
-                    'label' => 'Instagram Username',
-                    'tab' => 'Profile',
-                    'placeholder' => "@yourUsername"
+                    'label'         => Lang::get('dynamedia.posts::lang.backend_user.labels.instagram_handle'),
+                    'tab'           => Lang::get('dynamedia.posts::lang.backend_user.tabs.profile'),
+                    'placeholder'   => Lang::get('dynamedia.posts::lang.backend_user.placeholders.at_handle')
                 ],
                 'profile[facebook_handle]' => [
-                    'label' => 'Facebook Username',
-                    'tab' => 'Profile',
-                    'placeholder' => "yourUsername"
+                    'label'         => Lang::get('dynamedia.posts::lang.backend_user.labels.facebook_handle'),
+                    'tab'           => Lang::get('dynamedia.posts::lang.backend_user.tabs.profile'),
+                    'placeholder'   => Lang::get('dynamedia.posts::lang.backend_user.placeholders.handle')
                 ],
                 'profile[website_url]' => [
-                    'label' => 'Website URL',
-                    'tab' => 'Profile',
-                    'placeholder' => "https://yourwebsite.com"
+                    'label'         => Lang::get('dynamedia.posts::lang.backend_user.labels.website_url'),
+                    'tab'           => Lang::get('dynamedia.posts::lang.backend_user.tabs.profile'),
+                    'placeholder'   => Lang::get('dynamedia.posts::lang.backend_user.placeholders.website')
                 ],
                 'profile[mini_biography]' => [
-                    'label' => 'Mini Biography',
-                    'tab' => 'Profile',
-                    'type' => 'richeditor',
+                    'label' => Lang::get('dynamedia.posts::lang.backend_user.labels.mini_biography'),
+                    'tab'   => Lang::get('dynamedia.posts::lang.backend_user.tabs.profile'),
+                    'type'  => 'richeditor',
                 ],
                 'profile[full_biography]' => [
-                    'label' => 'Full Biography',
-                    'tab' => 'Biography',
-                    'type' => 'richeditor',
-                    'size' => 'huge',
+                    'label' => Lang::get('dynamedia.posts::lang.backend_user.labels.full_biography'),
+                    'tab'   => Lang::get('dynamedia.posts::lang.backend_user.tabs.biography'),
+                    'type'  => 'richeditor',
+                    'size'  => 'huge',
                 ]
             ]);
         });

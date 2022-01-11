@@ -1,7 +1,7 @@
 tabs:
     fields:
         heading_type:
-            label: Heading Type
+            label: dynamedia.posts::lang.blocks.labels.heading_type
             tab: dynamedia.posts::lang.common.tabs.main
             type: dropdown
             options:
@@ -12,7 +12,7 @@ tabs:
                 h6: H6
                 h7: H7
         content:
-            label: Heading Text
+            label: dynamedia.posts::lang.blocks.labels.heading_content
             tab: dynamedia.posts::lang.common.tabs.main
 
         in_contents:
@@ -33,7 +33,7 @@ tabs:
             preset: contents_title
 
         _preview:
-            tab: Preview
+            tab: dynamedia.posts::lang.common.tabs.preview
             type: partial
             path: $/dynamedia/posts/views/repeaterbody/preview/_heading_block_preview.htm
             dependsOn: [heading_type, content]

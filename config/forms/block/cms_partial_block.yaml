@@ -5,18 +5,18 @@ tabs:
             tab: dynamedia.posts::lang.common.tabs.main
             type: dropdown
             options: \Dynamedia\Posts\Classes\Helpers\Form::getCmsPartialOptions
-            emptyOption: Select the partial
+            emptyOption: dynamedia.posts::lang.blocks.empty.cms_partial_block
         data:
-            label: Pass variables to the partial
-            tab: Data
+            label: dynamedia.posts::lang.blocks.labels.partial_data
+            tab: dynamedia.posts::lang.blocks.tabs.data
             type: repeater
             form:
                 fields:
                     key:
-                        label: Key
+                        label: dynamedia.posts::lang.blocks.labels.partial_data_key
                         span: left
                     value:
-                        label: Value
+                        label: dynamedia.posts::lang.blocks.labels.partial_data_value
                         span: right
 
         in_contents:
@@ -37,14 +37,14 @@ tabs:
             preset: contents_title
 
         _preview_refresh:
-            tab: Preview
+            tab: dynamedia.posts::lang.common.tabs.preview
             type: switch
-            label: Refresh
+            label: dynamedia.posts::lang.common.labels.refresh
             span: right
             cssClass: preview_button
 
         _preview:
-            tab: Preview
+            tab: dynamedia.posts::lang.common.tabs.preview
             type: partial
             path: $/dynamedia/posts/views/repeaterbody/preview/_cms_partial_block_preview.htm
             dependsOn: [cms_partial, _preview_refresh]

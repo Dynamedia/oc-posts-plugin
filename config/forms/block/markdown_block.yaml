@@ -31,14 +31,14 @@ tabs:
             preset: contents_title
 
         _preview_refresh:
-            tab: Preview
+            tab: dynamedia.posts::lang.common.tabs.preview
             type: switch
-            label: Refresh
+            label: dynamedia.posts::lang.common.labels.refresh
             span: right
             cssClass: preview_button
 
         _preview:
-            tab: Preview
+            tab: dynamedia.posts::lang.common.tabs.preview
             type: partial
             path: $/dynamedia/posts/views/repeaterbody/preview/_markdown_block_preview.htm
             dependsOn: _preview_refresh

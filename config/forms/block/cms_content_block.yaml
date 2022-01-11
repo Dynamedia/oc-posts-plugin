@@ -1,31 +1,31 @@
 tabs:
-  fields:
-    cms_content_block:
-      label: dynamedia.posts::lang.blocks.labels.cms_content_block
-      tab: dynamedia.posts::lang.common.tabs.main
-      type: dropdown
-      options: \Dynamedia\Posts\Classes\Helpers\Form::getCmsContentOptions
-      emptyOption: Select the content
+    fields:
+        cms_content_block:
+            label: dynamedia.posts::lang.blocks.labels.cms_content_block
+            tab: dynamedia.posts::lang.common.tabs.main
+            type: dropdown
+            options: \Dynamedia\Posts\Classes\Helpers\Form::getCmsContentOptions
+            emptyOption: dynamedia.posts::lang.blocks.empty.cms_content_block
 
-    in_contents:
-        tab: dynamedia.posts::lang.common.tabs.settings
-        type: switch
-        label: dynamedia.posts::lang.blocks.labels.in_contents
-        default: false
+        in_contents:
+            tab: dynamedia.posts::lang.common.tabs.settings
+            type: switch
+            label: dynamedia.posts::lang.blocks.labels.in_contents
+            default: false
 
-    contents_title:
-         tab: dynamedia.posts::lang.common.tabs.settings
-         span: left
-         label: dynamedia.posts::lang.blocks.labels.contents_title
+        contents_title:
+            tab: dynamedia.posts::lang.common.tabs.settings
+            span: left
+            label: dynamedia.posts::lang.blocks.labels.contents_title
 
-    block_id:
-         tab: dynamedia.posts::lang.common.tabs.settings
-         span: right
-         label: dynamedia.posts::lang.blocks.labels.block_id
-         preset: contents_title
+        block_id:
+            tab: dynamedia.posts::lang.common.tabs.settings
+            span: right
+            label: dynamedia.posts::lang.blocks.labels.block_id
+            preset: contents_title
 
-    _preview:
-        tab: Preview
-        type: partial
-        path: $/dynamedia/posts/views/repeaterbody/preview/_cms_content_block_preview.htm
-        dependsOn: cms_content_block
+        _preview:
+            tab: dynamedia.posts::lang.common.tabs.preview
+            type: partial
+            path: $/dynamedia/posts/views/repeaterbody/preview/_cms_content_block_preview.htm
+            dependsOn: cms_content_block

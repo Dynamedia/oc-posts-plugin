@@ -41,13 +41,14 @@ return [
 
     'blocks' => [
         'names' => [
-            'richeditor_block'       => 'Richeditor Block',
-            'markdown_block'         => 'Markdown Block',
-            'html_block'             => 'HTML Block',
-            'image_block'            => 'Image Block',
-            'cms_content_block'      => 'CMS Content',
-            'cms_partial_block'      => 'CMS Partial',
-            'page_break'             => 'Page Break',
+            'richeditor_block'    => 'Richeditor Block',
+            'markdown_block'      => 'Markdown Block',
+            'html_block'          => 'HTML Block',
+            'image_block'         => 'Image Block',
+            'cms_content_block'   => 'CMS Content',
+            'cms_partial_block'   => 'CMS Partial',
+            'page_break'          => 'Page Break',
+            'heading_block'       => 'Heading Block'
         ],
         'descriptions' => [
             'richeditor_block'  => 'Add a content section (Richeditor)',
@@ -59,15 +60,25 @@ return [
             'page_break'        => 'Add a page break'
         ],
         'tabs'  => [
-            'main'  => 'Main',
+            'main'      => 'Main',
+            'data'      => 'Data'
         ],
         'labels' => [
-            'cms_content_block'               => 'CMS Content',
-            'cms_partial_block'               => 'CMS Partial',
-            'html_block'                      => 'HTML Block',
-            'in_contents'                     => 'Include in contents?',
-            'contents_title'                  => 'Title for Contents',
-            'block_id'                        => 'Section ID',
+            'cms_content_block'     => 'CMS Content',
+            'cms_partial_block'     => 'CMS Partial',
+            'heading_type'          => 'Heading Type',
+            'heading_content'       => 'Heading Content',
+            'html_block'            => 'HTML Block',
+            'in_contents'           => 'Include in contents?',
+            'contents_title'        => 'Title for Contents',
+            'block_id'              => 'Section ID',
+            'partial_data'          => 'Pass variables to the partial',
+            'partial_data_key'      => 'Key',
+            'partial_data_value'    => 'Value',
+        ],
+        'empty' => [
+            'cms_content_block'   => 'Select the content',
+            'cms_partial_block'   => 'Select the partial'
         ]
     ],
 
@@ -83,6 +94,7 @@ return [
             'main'          => 'Main',
             'translations'  => 'Translations',
             'slugs'         => 'Related Slugs',
+            'preview'       => 'Preview'
         ],
         'labels' => [
             'name'          => 'Name',
@@ -106,6 +118,7 @@ return [
             'empty_option'  => 'Please Select',
             'approved'      => 'Approved',
             'locale'        => 'Locale',
+            'refresh'       => 'Refresh'
         ],
         'dropdown' => [
             'empty_option'          => 'Please Select',

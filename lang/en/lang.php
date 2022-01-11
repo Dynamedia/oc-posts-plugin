@@ -154,6 +154,7 @@ return [
         'labels' => [
             'image_select'  => 'Choose an Image',
             'alt_text'      => 'Image Alt Text',
+            'caption'       => 'Caption',
             'css_class'     => 'Image CSS Class',
             'image_style'   => 'Image Style',
             'media_query'   => 'Media Query',

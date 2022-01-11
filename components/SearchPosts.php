@@ -15,8 +15,8 @@ class SearchPosts extends ComponentBase
     public function componentDetails()
     {
         return [
-            'name'        => 'Search Posts',
-            'description' => 'Display search results'
+            'name'        => 'dynamedia.posts::lang.components.search_posts.name',
+            'description' => 'dynamedia.posts::lang.components.search_posts.description'
         ];
     }
 
@@ -24,26 +24,26 @@ class SearchPosts extends ComponentBase
     {
         return [
             'postsLimit' => [
-                'title'             => 'Total posts',
-                'description'       => 'Limit the number of posts to fetch',
+                'title'         => 'dynamedia.posts::lang.components.search_posts.properties.posts_limit.title',
+                'description'   => 'dynamedia.posts::lang.components.search_posts.properties.posts_limit.description',
                 'type'              => 'string',
                 'validationPattern' => '^[1-9]\d*$',
-                'validationMessage' => 'Please enter a positive whole number or leave blank',
+                'validationMessage' => 'dynamedia.posts::lang.components.search_posts.properties.posts_limit.validation',
                 'default'           => '',
                 'showExternalParam' => false,
             ],
             'postsPerPage' => [
-                'title'             => 'Posts per page',
-                'description'       => 'Limit the number of posts per page',
+                'title'         => 'dynamedia.posts::lang.components.search_posts.properties.posts_per_page.title',
+                'description'   => 'dynamedia.posts::lang.components.search_posts.properties.posts_per_page.description',
                 'type'              => 'string',
                 'validationPattern' => '^[1-9]\d*$',
-                'validationMessage' => 'Please enter a positive whole number',
+                'validationMessage' => 'dynamedia.posts::lang.components.search_posts.properties.posts_per_page.validation',
                 'default'           => '10',
                 'showExternalParam' => false,
             ],
             'sortOrder' => [
-                'title'       => 'Sort Order',
-                'description' => 'Sort the fetched posts',
+                'title'         => 'dynamedia.posts::lang.components.search_posts.properties.sort_order.title',
+                'description'   => 'dynamedia.posts::lang.components.search_posts.properties.sort_order.description',
                 'type'        => 'dropdown',
                 'default'     => 'published_at desc',
                 'showExternalParam' => false,

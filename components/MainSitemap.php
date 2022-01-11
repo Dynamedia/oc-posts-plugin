@@ -14,8 +14,8 @@ class MainSitemap extends ComponentBase
     public function componentDetails()
     {
         return [
-            'name' => 'MainSitemap Component',
-            'description' => 'Provides a method to dictate the url for the main sitemap'
+            'name'        => 'dynamedia.posts::lang.components.main_sitemap.name',
+            'description' => 'dynamedia.posts::lang.components.main_sitemap.description'
         ];
     }
 

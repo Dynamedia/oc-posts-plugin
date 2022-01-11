@@ -11,8 +11,8 @@ class MainRss extends ComponentBase
     public function componentDetails()
     {
         return [
-            'name' => 'MainRss Component',
-            'description' => 'Provides a method to dictate the url for the main rss feed'
+            'name'        => 'dynamedia.posts::lang.components.main_rss.name',
+            'description' => 'dynamedia.posts::lang.components.main_rss.description'
         ];
     }
 

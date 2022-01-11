@@ -287,6 +287,30 @@ return [
         'search_posts'  => [
             'name'          => 'Search Posts',
             'description'   => 'Show search results',
+            'properties'    => [
+                'posts_limit' => [
+                    'title'         => 'Total Posts',
+                    'description'   => 'Limit the number of posts to fetch',
+                    'validation'    => 'Please enter a positive whole number or leave blank'
+                ],
+                'posts_per_page' => [
+                    'title'         => 'Posts per Page',
+                    'description'   => 'Limit the number of posts per page',
+                    'validation'    => 'Please enter a positive whole number'
+                ],
+                'sort_order' => [
+                    'title'         => 'Sort Order',
+                    'description'   => 'Sort the fetched posts',
+                ]
+            ],
+        ],
+        'main_rss'  => [
+            'name'          => 'MainRss Component',
+            'description'   => 'Provides a method to dictate the url for the main rss feed',
+        ],
+        'main_sitemap'  => [
+            'name'          => 'MainSitemap Component',
+            'description'   => 'Provides a method to dictate the url for the main sitemap',
         ],
     ],
 

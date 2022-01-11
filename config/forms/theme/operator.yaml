@@ -1,66 +1,67 @@
 tabs:
     fields:
         operator_type:
-            tab: Detail
-            label: Operator Type
+            tab: dynamedia.posts::lang.theme_form_config.tabs.detail
+            label: dynamedia.posts::lang.theme_form_config.labels.operator_type
             type: dropdown
             options:
-                person: Person / Individual
-                organization: Organization
+                person: dynamedia.posts::lang.theme_form_config.options.person
+                organization: dynamedia.posts::lang.theme_form_config.options.organization
         name:
-            tab: Detail
-            label: Name
+            tab: dynamedia.posts::lang.theme_form_config.tabs.detail
+            label: dynamedia.posts::lang.theme_form_config.labels.name
 
         logo:
-            tab: Detail
-            label: Logo
+            tab: dynamedia.posts::lang.theme_form_config.tabs.detail
+            label: dynamedia.posts::lang.theme_form_config.labels.logo
             type: mediafinder
 
         address_street:
-            tab: Address
-            label: Street Address
+            tab: dynamedia.posts::lang.theme_form_config.tabs.address
+            label: dynamedia.posts::lang.theme_form_config.labels.address_street
 
         address_city:
-            tab: Address
-            label: City
+            tab: dynamedia.posts::lang.theme_form_config.tabs.address
+            label: dynamedia.posts::lang.theme_form_config.labels.address_city
 
         address_region:
-            tab: Address
-            label: Region
+            tab: dynamedia.posts::lang.theme_form_config.tabs.address
+            label: dynamedia.posts::lang.theme_form_config.labels.address_region
 
         address_postal_code:
-            tab: Address
-            label: Postal Code
+            tab: dynamedia.posts::lang.theme_form_config.tabs.address
+            label: dynamedia.posts::lang.theme_form_config.labels.address_postcode
 
         address_country:
-            tab: Address
-            label: Country
+            tab: dynamedia.posts::lang.theme_form_config.tabs.address
+            label: dynamedia.posts::lang.theme_form_config.labels.address_country
 
         address_latitude:
-            tab: Address
-            label: Latitude
+            tab: dynamedia.posts::lang.theme_form_config.tabs.address
+            label: dynamedia.posts::lang.theme_form_config.labels.address_latitude
 
         address_longitude:
-            tab: Address
-            label: Longitude
+            tab: dynamedia.posts::lang.theme_form_config.tabs.address
+            label: dynamedia.posts::lang.theme_form_config.labels.address_longitude
 
         contact_telephone:
-            tab: Contact
-            label: Telephone
+            tab: dynamedia.posts::lang.theme_form_config.tabs.contact
+            label: dynamedia.posts::lang.theme_form_config.labels.contact_telephone
 
         contact_email:
-            tab: Contact
-            label: Email
+            tab: dynamedia.posts::lang.theme_form_config.tabs.contact
+            label: dynamedia.posts::lang.theme_form_config.labels.contact_email
 
         contact_fax:
-            tab: Contact
-            label: Fax
+            tab: dynamedia.posts::lang.theme_form_config.tabs.contact
+            label: dynamedia.posts::lang.theme_form_config.labels.contact_fax
 
         social_facebook:
-            tab: Social
-            label: Facebook URL
+            tab: dynamedia.posts::lang.theme_form_config.tabs.social
+            label: dynamedia.posts::lang.theme_form_config.labels.facebook_url
+            placeholder: dynamedia.posts::lang.theme_form_config.placeholders.facebook_url
 
         social_twitter:
-            tab: Social
-            label: Twitter Handle
-            placeholder: '@DynamediaUK'
+            tab: dynamedia.posts::lang.theme_form_config.tabs.social
+            label: dynamedia.posts::lang.theme_form_config.labels.twitter_handle
+            placeholder: dynamedia.posts::lang.theme_form_config.placeholders.twitter_handle

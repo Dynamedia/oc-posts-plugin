@@ -465,6 +465,9 @@ return [
             'social'        => 'Social',
             'images'        => 'Images',
             'site_operator' => 'Site Operator',
+            'detail'        => 'Detail',
+            'address'       => 'Address',
+            'contact'       => 'Contact',
         ],
         'labels' => [
             'site_brand'        => 'Site Brand',
@@ -474,6 +477,20 @@ return [
             'facebook_url'      => 'Facebook URL',
             'facebook_app_id'   => 'Facebook App ID',
             'twitter_handle'    => 'Twitter Username',
+            'operator_type'     => 'Operator Type',
+            'name'              => 'Name',
+            'logo'              => 'Logo',
+            'address_street'    => 'Street Address',
+            'address_city'      => 'City',
+            'address_region'    => 'Region',
+            'address_postcode'  => 'Postal code',
+            'address_country'   => 'Country',
+            'address_latitude'  => 'Latitude',
+            'address_longitude' => 'Longitude',
+            'contact_telephone' => 'Telephone',
+            'contact_email'     => 'Email',
+            'contact_fax'       => 'Fax',
+
         ],
         'placeholders' => [
             'facebook_url'      => 'https://facebook.com/YourUsername',
@@ -485,6 +502,8 @@ return [
             'append_title_name'         => 'Site Name',
             'append_title_brand'        => 'Site Brand',
             'append_title_name_brand'   => 'Site Name & Brand',
+            'person'                    => 'Person / Individual',
+            'organization'              => 'Organization'
         ],
     ]
 ];

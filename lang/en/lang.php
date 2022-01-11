@@ -119,7 +119,8 @@ return [
             'empty_option'  => 'Please Select',
             'approved'      => 'Approved',
             'locale'        => 'Locale',
-            'refresh'       => 'Refresh'
+            'refresh'       => 'Refresh',
+            'body_type'     => 'Body Type'
         ],
         'dropdown' => [
             'empty_option'          => 'Please Select',
@@ -131,8 +132,14 @@ return [
             'no'                    => 'No',
             'none'                  => 'None',
             'inherit'               => 'Inherit',
-            'locale_placeholder'    => '--- Select from available locales ---'
-        ]
+            'locale_placeholder'    => '--- Select from available locales ---',
+            'body_type' => [
+                'repeater'          => 'Repeater Blocks',
+                'richeditor'        => 'Rich Editor',
+                'markdown'          => 'Markdown Editor',
+                'theme_template'    => 'Choose from Theme Templates'
+            ],
+        ],
     ],
     'images' => [
         'tabs' => [

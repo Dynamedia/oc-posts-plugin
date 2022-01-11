@@ -1,16 +1,16 @@
 thing:
     # https://schema.org/Thing
-    name: Thing
-    description: The most basic of schema types
+    name: dynamedia.posts::lang.seo.schema.names.thing
+    description: dynamedia.posts::lang.seo.schema.descriptions.thing
     # field keys to exacty match Spatie Schema-org properties
     fields:
         name:
-            label: Thing Name
+            label: dynamedia.posts::lang.seo.schema.labels.thing_name
         description:
-            label: Thing description
+            label: dynamedia.posts::lang.seo.schema.labels.thing_description
         image:
-            label: Thing Image
+            label: dynamedia.posts::lang.seo.schema.labels.thing_image
             type: mediafinder
         sameAs:
-            label: Thing is Same As
-            comment: A wikipedia link makes sense here
+            label: dynamedia.posts::lang.seo.schema.labels.thing_same_as
+            comment: dynamedia.posts::lang.seo.schema.comments.thing_same_as

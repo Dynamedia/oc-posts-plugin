@@ -193,7 +193,28 @@ return [
             'article'       => 'Article',
             'blogPosting'   => 'Blog Post',
             'newsArticle'   => 'News Article',
-        ]
+        ],
+        'schema'    => [
+            'names' => [
+                'thing' => 'Thing',
+            ],
+            'descriptions' => [
+                'thing' => 'The most basic of schema types',
+            ],
+            'tabs' => [
+                'about'     => 'About',
+                'mentions'  => 'Mentions',
+            ],
+            'labels' => [
+                'thing_name'        => 'Thing Name',
+                'thing_description' => 'Thing Description',
+                'thing_image'       => 'Thing Image',
+                'thing_same_as'     => 'Thing Same As'
+            ],
+            'comments' => [
+                'thing_same_as'     => 'A wikipedia link makes sense here',
+            ],
+        ],
     ],
 
     'settings' => [

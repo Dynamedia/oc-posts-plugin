@@ -1,12 +1,12 @@
 secondaryTabs:
     fields:
         schema_about:
-            tab: About
+            tab: dynamedia.posts::lang.seo.schema.tabs.about
             type: repeater
             # group keys to exactly match Spatie Schema-org class names
             groups: $/dynamedia/posts/config/forms/schema/groups.yml
 
         schema_mentions:
-            tab: Mentions
+            tab: dynamedia.posts::lang.seo.schema.tabs.mentions
             type: repeater
             groups: $/dynamedia/posts/config/forms/schema/groups.yml

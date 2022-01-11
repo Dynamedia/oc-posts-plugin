@@ -15,8 +15,8 @@ tabs:
       type: textarea
 
     schema_type:
-        tab: Schema
-        label: Post Type
+        tab: dynamedia.posts::lang.seo.tabs.schema
+        label: dynamedia.posts::lang.seo.labels.post_type
         type: dropdown
         options:
             # option keys to exactly mach Spatie Schema-org class names
@@ -25,7 +25,7 @@ tabs:
             newsArticle: dynamedia.posts::lang.seo.dropdown.newsArticle
 
     schema_content:
-        tab: Schema
+        tab: dynamedia.posts::lang.seo.tabs.schema
         type: nestedform
         usePanelStyles: false
         showPanel: false

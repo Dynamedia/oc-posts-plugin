@@ -179,6 +179,7 @@ return [
             'search'    => 'Search',
             'opengraph' => 'Facebook/Opengraph',
             'twitter'   => 'Twitter Cards',
+            'schema'    => 'Schema'
         ],
         'labels' => [
             'post_type'         => 'Post Type',

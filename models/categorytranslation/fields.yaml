@@ -6,20 +6,20 @@ tabs:
     fields:
         locale_id@create:
             tab: dynamedia.posts::lang.common.tabs.detail
-            label: Locale
+            label: dynamedia.posts::lang.common.labels.locale
             type: dropdown
             placeholder: dynamedia.posts::lang.common.dropdown.locale_placeholder
 
         _populateFrom@create:
             tab: dynamedia.posts::lang.common.tabs.detail
-            label: Populate From
+            label: dynamedia.posts::lang.common.labels.populate_from
             type: dropdown
             default: '__native__'
             placeholder: dynamedia.posts::lang.common.dropdown.locale_placeholder
 
         locale_id@update:
             tab: dynamedia.posts::lang.common.tabs.detail
-            label: Locale
+            label: dynamedia.posts::lang.common.dropdown.locale_placeholder
             type: dropdown
             placeholder: dynamedia.posts::lang.common.dropdown.locale_placeholder
             readOnly: true

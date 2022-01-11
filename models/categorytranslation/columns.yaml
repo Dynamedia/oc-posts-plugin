@@ -4,7 +4,7 @@
 
 columns:
     id:
-        label: ID
+        label: dynamedia.posts::lang.common.labels.id
 
     locale:
         label: dynamedia.posts::lang.common.labels.locale

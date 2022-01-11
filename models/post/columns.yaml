@@ -3,14 +3,14 @@
 # ===================================
 
 columns:
-#    id:
-#        label: ID
-#        searchable: true
+    #    id:
+    #        label: dynamedia.posts::lang.common.labels.id
+    #        searchable: true
     title:
         label: dynamedia.posts::lang.common.labels.title
         searchable: true
     link:
-        label: Link
+        label: dynamedia.posts::lang.common.labels.link
         clickable: false
         type: partial
         align: center
@@ -34,7 +34,7 @@ columns:
         valueFrom: profile[full_name]
 
     is_published:
-        label: Published
+        label: dynamedia.posts::lang.posts.labels.is_published
         type: partial
         align: center
         path: ~/plugins/dynamedia/posts/models/post/_is_published_column.htm

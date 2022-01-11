@@ -3,14 +3,14 @@
 # ===================================
 
 columns:
-#    id:
-#        label: ID
-#        searchable: true
+    #    id:
+    #        label: ID
+    #        searchable: true
     name:
         label: dynamedia.posts::lang.common.labels.name
         searchable: true
     link:
-        label: Link
+        label: dynamedia.posts::lang.common.labels.link
         clickable: false
         type: partial
         align: center
@@ -26,9 +26,9 @@ columns:
         path: ~/plugins/dynamedia/posts/models/tag/_is_approved_column.htm
         sortable: false
     published_posts_count:
-        label: Published Posts
+        label: dynamedia.posts::lang.common.labels.published_posts
         sortable: false
     unpublished_posts_count:
-        label: Unpublished Posts
+        label: dynamedia.posts::lang.common.labels.unpublished_posts
         sortable: false
 

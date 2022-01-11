@@ -4,5 +4,5 @@
 
 columns:
     id:
-        label: ID
+        label: dynamedia.posts::lang.common.labels.id
         searchable: true

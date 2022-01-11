@@ -3,7 +3,7 @@
 return [
     'plugin' => [
         'name'          => 'Posts',
-        'description'   => 'Posts for Winter CMS.'
+        'description'   => 'Posts for October CMS.'
     ],
     'posts' => [
         'tabs'  => [
@@ -13,7 +13,7 @@ return [
         'labels' => [
             'author'            => 'Author',
             'editor'            => 'Editor',
-            'is_published'      => 'Published?',
+            'is_published'      => 'Published',
             'published_at'      => 'Published At',
             'publishing_time'   => 'Published Time',
             'published_until'   => 'Published Until',
@@ -98,29 +98,37 @@ return [
             'preview'       => 'Preview'
         ],
         'labels' => [
-            'name'          => 'Name',
-            'title'         => 'Title',
-            'description'   => 'Description',
-            'slug'          => 'Slug',
-            'excerpt'       => 'Excerpt',
-            'seo'           => 'SEO',
-            'post'          => 'Post',
-            'posts'         => 'Posts',
-            'category'      => 'Category',
-            'categories'    => 'Categories',
-            'tag'           => 'Tag',
-            'tags'          => 'Tags',
-            'cms_layout'    => 'CMS Layout',
-            'author'        => 'Author',
-            'editor'        => 'Editor',
-            'block_heading' => 'Section Heading',
-            'block_id'      => 'Section ID',
-            'block_content' => 'Section Content',
-            'empty_option'  => 'Please Select',
-            'approved'      => 'Approved',
-            'locale'        => 'Locale',
-            'refresh'       => 'Refresh',
-            'body_type'     => 'Body Type'
+            'id'                => 'ID',
+            'name'              => 'Name',
+            'title'             => 'Title',
+            'description'       => 'Description',
+            'slug'              => 'Slug',
+            'excerpt'           => 'Excerpt',
+            'seo'               => 'SEO',
+            'post'              => 'Post',
+            'posts'             => 'Posts',
+            'category'          => 'Category',
+            'categories'        => 'Categories',
+            'tag'               => 'Tag',
+            'tags'              => 'Tags',
+            'cms_layout'        => 'CMS Layout',
+            'author'            => 'Author',
+            'editor'            => 'Editor',
+            'block_heading'     => 'Section Heading',
+            'block_id'          => 'Section ID',
+            'block_content'     => 'Section Content',
+            'empty_option'      => 'Please Select',
+            'approved'          => 'Approved',
+            'locale'            => 'Locale',
+            'refresh'           => 'Refresh',
+            'body_type'         => 'Body Type',
+            'link'              => 'Link',
+            'published_posts'   => 'Published Posts',
+            'unpublished_posts' => 'Unpublished Posts',
+            'active'            => 'Active',
+            'locale'            => 'Locale',
+            'primary_locale'    => 'Primary Locale',
+            'populate_from'     => 'Populate From',
         ],
         'dropdown' => [
             'empty_option'          => 'Please Select',
@@ -226,7 +234,8 @@ return [
             'tags'          => 'Tags',
             'users'         => 'Users',
             'cms_layouts'   => 'CMS Layouts',
-            'translation'   => 'Translation'
+            'translation'   => 'Translation',
+            'rss'           => 'RSS',
         ],
         'labels' => [
             'publisher_name'            => 'Publisher Name',
@@ -244,6 +253,10 @@ return [
             'default_post_layout'       => 'Default Post Layout',
             'default_category_layout'   => 'Default Category Layout',
             'default_tag_layout'        => 'Default Tag Layout',
+            'rss_title'                 => 'Main RSS Feed Title',
+            'rss_description'           => 'Main RSS Feed Description',
+            'rss_posts_per_feed'        => 'Posts per Feed',
+
         ],
         'comments' => [
         ],

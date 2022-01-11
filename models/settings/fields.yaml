@@ -92,16 +92,13 @@ tabs:
             options: \Dynamedia\Posts\Classes\Helpers\Form::getCmsLayoutOptions
 
         rssTitle:
-            tab: RSS
-            label: Main RSS Feed Title
+            tab: dynamedia.posts::lang.settings.tabs.rss
+            label: dynamedia.posts::lang.settings.labels.rss_title
         rssDescription:
-            tab: RSS
-            label: Main RSS Feed Description
+            tab: dynamedia.posts::lang.settings.tabs.rss
+            label: dynamedia.posts::lang.settings.labels.rss_description
             type: richeditor
         rssPostCount:
-            tab: RSS
-            label: Posts per Feed
+            tab: dynamedia.posts::lang.settings.tabs.rss
+            label: dynamedia.posts::lang.settings.labels.rss_posts_per_feed
             type: dropdown
-
-
-

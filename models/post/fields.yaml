@@ -65,7 +65,7 @@ tabs:
 
         locale:
             tab: dynamedia.posts::lang.common.tabs.settings
-            label: Primary Locale
+            label: dynamedia.posts::lang.common.labels.primary_locale
             type: relation
 
         author:

@@ -4,12 +4,13 @@
 
 columns:
     id:
-        label: ID
+        label: dynamedia.posts::lang.common.labels.id
         searchable: true
     slug:
         label: dynamedia.posts::lang.common.labels.slug
     is_active:
-        label: Active
+        label: dynamedia.posts::lang.common.labels.active
+        sortable: false
         type: partial
         align: center
         path: ~/plugins/dynamedia/posts/models/categoryslug/_is_active_column.htm

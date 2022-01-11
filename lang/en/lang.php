@@ -57,7 +57,8 @@ return [
             'image_block'       => 'Add an image block',
             'cms_content_block' => 'Add CMS content',
             'cms_partial_block' => 'Add a CMS partial',
-            'page_break'        => 'Add a page break'
+            'page_break'        => 'Add a page break',
+            'heading_block'     => 'Add a heading',
         ],
         'tabs'  => [
             'main'      => 'Main',

@@ -1,6 +1,6 @@
 heading_block:
-    name: Heading Block
-    description: Add a heading
+    name: dynamedia.posts::lang.blocks.names.heading_block
+    description: dynamedia.posts::lang.blocks.descriptions.heading_block
     fields:
         block:
             type: nestedform

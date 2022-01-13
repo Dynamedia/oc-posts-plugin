@@ -3,7 +3,7 @@
 # ===================================
 
 # Reorder Title
-title: dynamedia.posts::lang.categories.titles.reorder_categories
+title: dynamedia.posts::lang.categories.titles.reorder
 
 # Attribute name
 nameFrom: name

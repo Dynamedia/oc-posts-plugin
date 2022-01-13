@@ -16,16 +16,16 @@ defaultRedirect: dynamedia/posts/categories
 
 # Create page
 create:
-    title: dynamedia.posts::lang.categories.titles.create_category
+    title: backend::lang.form.create_title
     redirect: dynamedia/posts/categories/update/:id
     redirectClose: dynamedia/posts/categories
 
 # Update page
 update:
-    title: dynamedia.posts::lang.categories.titles.edit_category
+    title: backend::lang.form.update_title
     redirect: dynamedia/posts/categories
     redirectClose: dynamedia/posts/categories
 
 # Preview page
 preview:
-    title: dynamedia.posts::lang.categories.titles.preview_category
+    title: backend::lang.form.preview_title

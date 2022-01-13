@@ -3,7 +3,7 @@
 return [
     'plugin' => [
         'name'          => 'Posts',
-        'description'   => 'Posts for October CMS.'
+        'description'   => 'Posts for Winter CMS.'
     ],
     'posts' => [
         'tabs'  => [
@@ -32,21 +32,14 @@ return [
     'categories' => [
         'titles' => [
             'category'              => 'Category',
-            'create_category'       => 'Create Category',
-            'edit_category'         => 'Edit Category',
-            'preview_category'      => 'Preview Category',
             'manage_categories'     => 'Manage Categories',
             'reorder_categories'    => 'Re-Order Categories',
         ],
 
         'buttons'   => [
             'new'           => 'New Category',
-            'go_back'       => 'Back to Categories',
         ],
         'messages' => [
-            'confirm_delete_one'    => 'Are you sure you want to delete this category?',
-            'confirm_delete_many'   => 'Are you sure you want to delete the selected categories?',
-            'creating'          => 'Creating category...',
         ]
     ],
 

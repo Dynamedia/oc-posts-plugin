@@ -9,7 +9,7 @@ list: $/dynamedia/posts/models/postslug/columns.yaml
 modelClass: Dynamedia\Posts\Models\PostSlug
 
 # List Title
-title: Manage Post Slugs
+title: dynamedia.posts::lang.postslugs.titles.manage
 
 # Link URL for each record
 recordUrl: dynamedia/posts/postslugs/update/:id

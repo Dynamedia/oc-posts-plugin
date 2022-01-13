@@ -3,9 +3,9 @@
         <li><a href="<?= Backend::url('dynamedia/posts/categories') ?>">
                 <?= e(trans('dynamedia.posts::lang.common.labels.categories'))?>
             </a></li>
-    <li>
-        <?= e(trans('dynamedia.posts::lang.common.titles.editing', ['name' => $this->formGetModel()->name]))?>
-    </li>
+        <li>
+            <?= e(trans('dynamedia.posts::lang.common.titles.editing', ['name' => $this->formGetModel()->name]))?>
+        </li>
     </ul>
 <?php Block::endPut() ?>
 

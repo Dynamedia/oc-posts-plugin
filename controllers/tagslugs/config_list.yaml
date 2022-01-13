@@ -9,7 +9,7 @@ list: $/dynamedia/posts/models/tagslug/columns.yaml
 modelClass: Dynamedia\Posts\Models\TagSlug
 
 # List Title
-title: Manage Tag Slugs
+title: dynamedia.posts::lang.tagslugs.titles.manage
 
 # Link URL for each record
 recordUrl: dynamedia/posts/tagslugs/update/:id

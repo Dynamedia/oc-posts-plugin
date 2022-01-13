@@ -1,6 +1,8 @@
 <?php Block::put('breadcrumb') ?>
     <ul>
-        <li><a href="<?= Backend::url('dynamedia/posts/tagtranslations') ?>">Tag Translations</a></li>
+        <li><a href="<?= Backend::url('dynamedia/posts/tagtranslations') ?>">
+                <?= e(trans('dynamedia.posts::lang.common.labels.tagtranslations'))?>
+            </a></li>
         <li><?= e($this->pageTitle) ?></li>
     </ul>
 <?php Block::endPut() ?>

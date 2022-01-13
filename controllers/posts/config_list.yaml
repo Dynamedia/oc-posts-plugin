@@ -9,7 +9,7 @@ list: $/dynamedia/posts/models/post/columns.yaml
 modelClass: Dynamedia\Posts\Models\Post
 
 # List Title
-title: Manage Posts
+title: dynamedia.posts::lang.posts.titles.manage
 
 # Custom view path
 customViewPath: $/dynamedia/posts/controllers/posts/list

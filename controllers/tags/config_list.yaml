@@ -12,7 +12,7 @@ modelClass: Dynamedia\Posts\Models\Tag
 customViewPath: $/dynamedia/posts/controllers/tags/list
 
 # List Title
-title: Manage Tags
+title: dynamedia.posts::lang.tags.titles.manage
 
 # Link URL for each record
 recordUrl: dynamedia/posts/tags/update/:id

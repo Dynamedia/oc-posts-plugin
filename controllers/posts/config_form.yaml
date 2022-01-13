@@ -3,7 +3,7 @@
 # ===================================
 
 # Record name
-name: Post
+name: dynamedia.posts::lang.posts.titles.post
 
 # Model Form Field configuration
 form: $/dynamedia/posts/models/post/fields.yaml
@@ -16,16 +16,16 @@ defaultRedirect: dynamedia/posts/posts
 
 # Create page
 create:
-    title: Create Post
+    title: backend::lang.form.create_title
     redirect: dynamedia/posts/posts/update/:id
     redirectClose: dynamedia/posts/posts
 
 # Update page
 update:
-    title: Edit Post
+    title: backend::lang.form.update_title
     redirect: dynamedia/posts/posts
     redirectClose: dynamedia/posts/posts
 
 # Preview page
 preview:
-    title: Preview Post
+    title: backend::lang.form.preview_title

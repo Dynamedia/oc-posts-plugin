@@ -3,7 +3,7 @@
 # ===================================
 
 # Record name
-name: Tag Slug
+name: dynamedia.posts::lang.tagslugs.titles.tagslug
 
 # Model Form Field configuration
 form: $/dynamedia/posts/models/tagslug/fields.yaml

@@ -1,21 +1,27 @@
 <?php Block::put('breadcrumb') ?>
     <ul>
-        <li><a href="<?= Backend::url('dynamedia/posts/tags') ?>">Tags</a></li>
-        <li>Previewing '<?= $this->formGetModel()->name ?>'</li>
+        <li><a href="<?= Backend::url('dynamedia/posts/tags') ?>">
+                <?= e(trans('dynamedia.posts::lang.common.labels.tags'))?>
+            </a></li>
+        <li>
+            <?= e(trans('dynamedia.posts::lang.common.titles.previewing', ['name' => $this->formGetModel()->name]))?>
+        </li>
     </ul>
 <?php Block::endPut() ?>
 
 <?php if (!$this->fatalError): ?>
 
     <div class="form-preview">
-        <?php if ($this->widget->form->model->userCanView($this->user)): ?>
-            <?= $this->formRenderPreview() ?>
+        <?php if (Dynamedia\Posts\Classes\Acl\AccessControl::userCanViewTags(BackendAuth::getUser())): ?>
+        <?= $this->formRenderPreview() ?>
         <?php endif ?>
     </div>
 
 <?php else: ?>
 
     <p class="flash-message static error"><?= e($this->fatalError) ?></p>
-    <p><a href="<?= Backend::url('dynamedia/posts/tags') ?>" class="btn btn-default">Return to tags list</a></p>
+    <p><a href="<?= Backend::url('dynamedia/posts/tags') ?>" class="btn btn-default">
+            <?= e(trans('backend::lang.form.return_to_list'))?>
+        </a></p>
 
 <?php endif ?>

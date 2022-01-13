@@ -2,7 +2,7 @@
 #  Relation Behavior Config
 # ===================================
 tagslugs:
-    label: Slugs
+    label: dynamedia.posts::lang.common.labels.slugs
     view:
         list: $/dynamedia/posts/models/tagslug/columns.yaml
         toolbarButtons: delete
@@ -11,7 +11,7 @@ tagslugs:
         recordsPerPage: 10
 
 translations:
-    label: Translations
+    label: dynamedia.posts::lang.common.labels.translations
     view:
         list: $/dynamedia/posts/models/tagtranslation/columns.yaml
         toolbarButtons: create|delete

@@ -3,7 +3,7 @@
 # ===================================
 
 # Record name
-name: Post Translation
+name: dynamedia.posts::lang.posttranslations.titles.posttranslation
 
 # Model Form Field configuration
 form: $/dynamedia/posts/models/posttranslation/fields.yaml

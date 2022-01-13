@@ -3,7 +3,7 @@
 # ===================================
 
 tagslugs:
-    label: Slugs
+    label: dynamedia.posts::lang.common.labels.slugs
     view:
         list: $/dynamedia/posts/models/tagslug/columns.yaml
         toolbarButtons: unlink

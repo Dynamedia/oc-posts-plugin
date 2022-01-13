@@ -9,7 +9,7 @@ list: $/dynamedia/posts/models/tagtranslation/columns.yaml
 modelClass: Dynamedia\Posts\Models\TagTranslation
 
 # List Title
-title: Manage Tag Translations
+title: dynamedia.posts::lang.tagtranslations.titles.manage
 
 # Link URL for each record
 recordUrl: dynamedia/posts/tagtranslations/update/:id

@@ -1,6 +1,8 @@
 <?php Block::put('breadcrumb') ?>
     <ul>
-        <li><a href="<?= Backend::url('dynamedia/posts/categoryslugs') ?>">Category Slugs</a></li>
+        <li><a href="<?= Backend::url('dynamedia/posts/categoryslugs') ?>">
+                <?= e(trans('dynamedia.posts::lang.common.labels.categoryslugs'))?>
+            </a></li>
         <li><?= e($this->pageTitle) ?></li>
     </ul>
 <?php Block::endPut() ?>

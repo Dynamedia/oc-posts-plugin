@@ -9,7 +9,7 @@ list: $/dynamedia/posts/models/posttranslation/columns.yaml
 modelClass: Dynamedia\Posts\Models\PostTranslation
 
 # List Title
-title: Manage Post Translations
+title: dynamedia.posts::lang.posttranslations.titles.manage
 
 # Link URL for each record
 recordUrl: dynamedia/posts/posttranslations/update/:id

@@ -3,7 +3,7 @@
 # ===================================
 
 # Record name
-name: Category Translation
+name: dynamedia.posts::lang.categorytranslations.titles.categorytranslation
 
 # Model Form Field configuration
 form: $/dynamedia/posts/models/categorytranslation/fields.yaml

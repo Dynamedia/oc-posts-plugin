@@ -1,7 +1,15 @@
 <?php Block::put('breadcrumb') ?>
     <ul>
-        <li><a href="<?= Backend::url('dynamedia/posts/posts') ?>">Posts</a></li>
-        <li>Previewing '<?= $this->formGetModel()->title ?>' <a target="_blank" style="color:blue;" href="<?= $this->formGetModel()->url ?>">(Live View)</a></li>
+        <li><a href="<?= Backend::url('dynamedia/posts/posts') ?>">
+                <?= e(trans('dynamedia.posts::lang.common.labels.posts'))?>
+            </a></li>
+
+        <li>
+            <?= e(trans('dynamedia.posts::lang.common.titles.previewing', ['name' => $this->formGetModel()->title]))?>
+            <a target="_blank" style="color:blue;" href="<?= $this->formGetModel()->url ?>">
+                (<?= e(trans('dynamedia.posts::lang.common.labels.live_view'))?>)
+            </a>
+        </li>
 
 </ul>
 <?php Block::endPut() ?>
@@ -15,6 +23,6 @@
 <?php else: ?>
 
     <p class="flash-message static error"><?= e($this->fatalError) ?></p>
-    <p><a href="<?= Backend::url('dynamedia/posts/posts') ?>" class="btn btn-default">Return to posts list</a></p>
+    <p><a href="<?= Backend::url('dynamedia/posts/posts') ?>" class="btn btn-default"><?= e(trans('backend::lang.form.return_to_list'))?></a></p>
 
 <?php endif ?>

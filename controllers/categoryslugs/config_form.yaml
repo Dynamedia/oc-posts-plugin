@@ -3,7 +3,7 @@
 # ===================================
 
 # Record name
-name: Category Slug
+name: dynamedia.posts::lang.categoryslugs.titles.categoryslug
 
 # Model Form Field configuration
 form: $/dynamedia/posts/models/categoryslug/fields.yaml

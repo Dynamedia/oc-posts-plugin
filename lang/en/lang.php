@@ -3,9 +3,13 @@
 return [
     'plugin' => [
         'name'          => 'Posts',
-        'description'   => 'Posts for Winter CMS.'
+        'description'   => 'Posts for October CMS.'
     ],
     'posts' => [
+        'titles' => [
+            'post'      => 'Post',
+            'manage'    => 'Manage Posts',
+        ],
         'tabs'  => [
             'categories'        => 'Categories',
             'tags'              => 'Tags',
@@ -26,27 +30,98 @@ return [
             'primary_category'  => 'The most relevant category',
             'published_at'      => 'Default to now if published',
             'published_until'   => 'Optional post expiry time',
-        ]
+        ],
+        'buttons'   => [
+            'new'           => 'New Post',
+        ],
+    ],
+
+    'postslugs' => [
+        'titles' => [
+            'postslug'  => 'Post Slug',
+            'manage'    => 'Manage Post Slugs',
+        ],
+        'buttons'   => [
+            'new'           => 'New Post Slug',
+        ],
+    ],
+
+    'posttranslations' => [
+        'titles' => [
+            'posttranslation'   => 'Post Translation',
+            'manage'            => 'Manage Post Translations',
+        ],
+        'buttons'   => [
+            'new'   => 'New Post Translation',
+        ],
     ],
 
     'categories' => [
         'titles' => [
-            'category'              => 'Category',
-            'manage_categories'     => 'Manage Categories',
-            'reorder_categories'    => 'Re-Order Categories',
+            'category'  => 'Category',
+            'manage'    => 'Manage Categories',
+            'reorder'   => 'Re-Order Categories',
         ],
-
         'buttons'   => [
-            'new'           => 'New Category',
+            'new'   => 'New Category',
         ],
-        'messages' => [
-        ]
+    ],
+
+    'categoryslugs' => [
+        'titles' => [
+            'categoryslug'   => 'Category Slug',
+            'manage'         => 'Manage Category Slugs',
+        ],
+        'buttons'   => [
+            'new'           => 'New Category Slug',
+        ],
+    ],
+
+    'categorytranslations' => [
+        'titles' => [
+            'categorytranslation'   => 'Category Translation',
+            'manage'                => 'Manage Category Translations',
+        ],
+        'buttons'   => [
+            'new'           => 'New Category Translation',
+        ],
     ],
 
     'tags' => [
+        'titles' => [
+            'tag'       => 'Tag',
+            'manage'        => 'Manage Tags',
+        ],
         'labels' => [
             'is_approved' => 'Approved?',
-        ]
+        ],
+        'buttons'   => [
+            'new'       => 'New Tag',
+            'approve'   => 'Approve selected'
+        ],
+        'messages'  => [
+            'approve_selected_confirm'   => 'Are you sure you want to approve the selected tags?'
+        ],
+    ],
+
+    'tagslugs' => [
+        'titles' => [
+            'tagslug'       => 'Tag Slug',
+            'manage'        => 'Manage Tag Slugs',
+        ],
+        'buttons'   => [
+            'new'           => 'New Tag Slug',
+        ],
+    ],
+
+    'tagtranslations' => [
+        'titles' => [
+            'tagtranslation'    => 'Tag Translation',
+            'manage'            => 'Manage Tag Translations',
+        ],
+        'buttons'   => [
+            'new'   => 'New Tag Translation',
+        ],
     ],
 
     'blocks' => [
@@ -113,39 +188,46 @@ return [
             'preview'       => 'Preview'
         ],
         'labels' => [
-            'id'                => 'ID',
-            'name'              => 'Name',
-            'title'             => 'Title',
-            'description'       => 'Description',
-            'slug'              => 'Slug',
-            'slugs'             => 'Slugs',
-            'excerpt'           => 'Excerpt',
-            'seo'               => 'SEO',
-            'post'              => 'Post',
-            'posts'             => 'Posts',
-            'category'          => 'Category',
-            'categories'        => 'Categories',
-            'tag'               => 'Tag',
-            'tags'              => 'Tags',
-            'cms_layout'        => 'CMS Layout',
-            'author'            => 'Author',
-            'editor'            => 'Editor',
-            'block_heading'     => 'Section Heading',
-            'block_id'          => 'Section ID',
-            'block_content'     => 'Section Content',
-            'empty_option'      => 'Please Select',
-            'approved'          => 'Approved',
-            'locale'            => 'Locale',
-            'refresh'           => 'Refresh',
-            'body_type'         => 'Body Type',
-            'link'              => 'Link',
-            'published_posts'   => 'Published Posts',
-            'unpublished_posts' => 'Unpublished Posts',
-            'active'            => 'Active',
-            'locale'            => 'Locale',
-            'translations'      => 'Translations',
-            'primary_locale'    => 'Primary Locale',
-            'populate_from'     => 'Populate From',
+            'id'                    => 'ID',
+            'name'                  => 'Name',
+            'title'                 => 'Title',
+            'description'           => 'Description',
+            'slug'                  => 'Slug',
+            'slugs'                 => 'Slugs',
+            'excerpt'               => 'Excerpt',
+            'seo'                   => 'SEO',
+            'post'                  => 'Post',
+            'posts'                 => 'Posts',
+            'postslugs'             => 'Post Slugs',
+            'posttranslations'      => 'Post Translations',
+            'category'              => 'Category',
+            'categories'            => 'Categories',
+            'categoryslugs'         => 'Category Slugs',
+            'categorytranslations'  => 'Category Translations',
+            'tag'                   => 'Tag',
+            'tags'                  => 'Tags',
+            'tagslugs'              => 'Tag Slugs',
+            'tagtranslations'       => 'Tag Translations',
+            'cms_layout'            => 'CMS Layout',
+            'author'                => 'Author',
+            'editor'                => 'Editor',
+            'block_heading'         => 'Section Heading',
+            'block_id'              => 'Section ID',
+            'block_content'         => 'Section Content',
+            'empty_option'          => 'Please Select',
+            'approved'              => 'Approved',
+            'locale'                => 'Locale',
+            'refresh'               => 'Refresh',
+            'body_type'             => 'Body Type',
+            'link'                  => 'Link',
+            'published_posts'       => 'Published Posts',
+            'unpublished_posts'     => 'Unpublished Posts',
+            'active'                => 'Active',
+            'locale'                => 'Locale',
+            'translations'          => 'Translations',
+            'primary_locale'        => 'Primary Locale',
+            'populate_from'         => 'Populate From',
+            'live_view'             => 'Live View'
         ],
         'dropdown' => [
             'empty_option'          => 'Please Select',
@@ -210,8 +292,8 @@ return [
             'schema'    => 'Schema'
         ],
         'labels' => [
-            'post_type'         => 'Post Type',
-            'about'             => 'Post is About',
+            'post_type'         => 'Content Type',
+            'about'             => 'Content is About',
             'keywords'          => 'Keywords',
             'page_title'        => 'Page Title',
             'meta_description'  => 'Meta Description',

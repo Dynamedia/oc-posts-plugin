@@ -3,7 +3,7 @@
 # ===================================
 
 # Record name
-name: Tag
+name: dynamedia.posts::lang.tags.titles.tag
 
 # Model Form Field configuration
 form: $/dynamedia/posts/models/tag/fields.yaml
@@ -16,16 +16,16 @@ defaultRedirect: dynamedia/posts/tags
 
 # Create page
 create:
-    title: Create Tag
+    title: backend::lang.form.create_title
     redirect: dynamedia/posts/tags/update/:id
     redirectClose: dynamedia/posts/tags
 
 # Update page
 update:
-    title: Edit Tag
+    title: backend::lang.form.update_title
     redirect: dynamedia/posts/tags
     redirectClose: dynamedia/posts/tags
 
 # Preview page
 preview:
-    title: Preview Tag
+    title: backend::lang.form.preview_title

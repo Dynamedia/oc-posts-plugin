@@ -9,7 +9,7 @@ list: $/dynamedia/posts/models/categoryslug/columns.yaml
 modelClass: Dynamedia\Posts\Models\CategorySlug
 
 # List Title
-title: Manage Category Slugs
+title: dynamedia.posts::lang.categoryslugs.titles.manage
 
 # Link URL for each record
 recordUrl: dynamedia/posts/categoryslugs/update/:id

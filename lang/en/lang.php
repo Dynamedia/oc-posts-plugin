@@ -30,7 +30,24 @@ return [
     ],
 
     'categories' => [
+        'titles' => [
+            'category'              => 'Category',
+            'create_category'       => 'Create Category',
+            'edit_category'         => 'Edit Category',
+            'preview_category'      => 'Preview Category',
+            'manage_categories'     => 'Manage Categories',
+            'reorder_categories'    => 'Re-Order Categories',
+        ],
 
+        'buttons'   => [
+            'new'           => 'New Category',
+            'go_back'       => 'Back to Categories',
+        ],
+        'messages' => [
+            'confirm_delete_one'    => 'Are you sure you want to delete this category?',
+            'confirm_delete_many'   => 'Are you sure you want to delete the selected categories?',
+            'creating'          => 'Creating category...',
+        ]
     ],
 
     'tags' => [
@@ -84,6 +101,11 @@ return [
     ],
 
     'common' => [
+        'titles' => [
+            'reorder' => 'Re-Order',
+            'previewing'            => 'Previewing \':name\'',
+            'editing'               => 'Editing \':name\''
+        ],
         'tabs' => [
             'detail'        => 'Detail',
             'images'        => 'Images',
@@ -103,6 +125,7 @@ return [
             'title'             => 'Title',
             'description'       => 'Description',
             'slug'              => 'Slug',
+            'slugs'             => 'Slugs',
             'excerpt'           => 'Excerpt',
             'seo'               => 'SEO',
             'post'              => 'Post',
@@ -127,6 +150,7 @@ return [
             'unpublished_posts' => 'Unpublished Posts',
             'active'            => 'Active',
             'locale'            => 'Locale',
+            'translations'      => 'Translations',
             'primary_locale'    => 'Primary Locale',
             'populate_from'     => 'Populate From',
         ],
@@ -147,6 +171,9 @@ return [
                 'markdown'          => 'Markdown Editor',
                 'theme_template'    => 'Choose from Theme Templates'
             ],
+        ],
+        'buttons' => [
+            'reorder'               => 'Re-Order',
         ],
     ],
     'images' => [
@@ -519,5 +546,8 @@ return [
             'person'                    => 'Person / Individual',
             'organization'              => 'Organization'
         ],
+    ],
+    'aboutposts' => [
+        'page_title'    => 'About Posts',
     ]
 ];

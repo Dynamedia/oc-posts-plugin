@@ -1,7 +1,11 @@
 <?php Block::put('breadcrumb') ?>
     <ul>
-        <li><a href="<?= Backend::url('dynamedia/posts/categories') ?>">Categories</a></li>
-        <li>Editing '<?= $this->formGetModel()->name ?>'</li>
+        <li><a href="<?= Backend::url('dynamedia/posts/categories') ?>">
+                <?= e(trans('dynamedia.posts::lang.common.labels.categories'))?>
+            </a></li>
+    <li>
+        <?= e(trans('dynamedia.posts::lang.common.titles.editing', ['name' => $this->formGetModel()->name]))?>
+    </li>
     </ul>
 <?php Block::endPut() ?>
 
@@ -20,28 +24,28 @@
                         data-request="onSave"
                         data-request-data="redirect:0"
                         data-hotkey="ctrl+s, cmd+s"
-                        data-load-indicator="Saving category..."
+                        data-load-indicator="<?= e(trans('backend::lang.form.saving')) ?>"
                         class="btn btn-primary">
-                        <u>S</u>ave
+                        <?= e(trans('backend::lang.form.save')) ?>
                     </button>
                     <button
                         type="button"
                         data-request="onSave"
                         data-request-data="close:1"
                         data-hotkey="ctrl+enter, cmd+enter"
-                        data-load-indicator="Saving category..."
+                        data-load-indicator="<?= e(trans('backend::lang.form.saving')) ?>"
                         class="btn btn-default">
-                        Save and Close
+                        <?= e(trans('backend::lang.form.save_and_close')) ?>
                     </button>
                     <button
                         type="button"
                         class="oc-icon-trash-o btn-icon danger pull-right"
                         data-request="onDelete"
-                        data-load-indicator="Deleting category..."
-                        data-request-confirm="Delete this category?">
+                        data-load-indicator="<?= e(trans('backend::lang.form.deleting')) ?>"
+                        data-request-confirm="<?= e(trans('dynamedia.posts::lang.categories.messages.confirm_delete_one')) ?>">
                     </button>
                     <span class="btn-text">
-                        or <a href="<?= Backend::url('dynamedia/posts/categories') ?>">Cancel</a>
+                        <?= e(trans('backend::lang.form.or')) ?> <a href="<?= Backend::url('dynamedia/posts/categories') ?>"><?= e(trans('backend::lang.form.cancel')) ?></a>
                     </span>
                 </div>
             </div>
@@ -55,7 +59,7 @@
             <div class="form-buttons">
                 <div class="loading-indicator-container">
                     <span class="btn-text">
-                        <a href="<?= Backend::url('dynamedia/posts/tags') ?>">Cancel</a>
+                        <a href="<?= Backend::url('dynamedia/posts/tags') ?>"><?= e(trans('backend::lang.form.cancel')) ?></a>
                     </span>
                 </div>
             </div>
@@ -65,6 +69,8 @@
 <?php else: ?>
 
     <p class="flash-message static error"><?= e($this->fatalError) ?></p>
-    <p><a href="<?= Backend::url('dynamedia/posts/categories') ?>" class="btn btn-default">Return to categories list</a></p>
+    <p><a href="<?= Backend::url('dynamedia/posts/categories') ?>" class="btn btn-default">
+            <?= e(trans('dynamedia.posts::lang.categories.messages.go_back')) ?>
+        </a></p>
 
 <?php endif ?>

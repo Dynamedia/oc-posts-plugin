@@ -2,6 +2,7 @@
 
 use Backend\Classes\Controller;
 use BackendMenu;
+use Lang;
 
 class AboutPosts extends Controller
 {
@@ -13,7 +14,7 @@ class AboutPosts extends Controller
     public function index()
     {
         BackendMenu::setContext('Dynamedia.Posts', 'posts', 'aboutposts');
-        $this->pageTitle = 'About Posts';
+        $this->pageTitle = Lang::get('dynamedia.posts::lang.aboutposts.page_title');
 
         /*
         *************************************************************************

@@ -3,7 +3,7 @@
 # ===================================
 
 categoryslugs:
-    label: Slugs
+    label: dynamedia.posts::lang.common.labels.slugs
     view:
         list: $/dynamedia/posts/models/categoryslug/columns.yaml
         toolbarButtons: delete
@@ -12,7 +12,7 @@ categoryslugs:
         recordsPerPage: 10
 
 translations:
-    label: Translations
+    label: dynamedia.posts::lang.common.labels.translations
     view:
         list: $/dynamedia/posts/models/categorytranslation/columns.yaml
         toolbarButtons: create|delete

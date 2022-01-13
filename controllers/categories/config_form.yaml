@@ -3,7 +3,7 @@
 # ===================================
 
 # Record name
-name: Category
+name: dynamedia.posts::lang.categories.titles.category
 
 # Model Form Field configuration
 form: $/dynamedia/posts/models/category/fields.yaml
@@ -16,16 +16,16 @@ defaultRedirect: dynamedia/posts/categories
 
 # Create page
 create:
-    title: Create Category
+    title: dynamedia.posts::lang.categories.titles.create_category
     redirect: dynamedia/posts/categories/update/:id
     redirectClose: dynamedia/posts/categories
 
 # Update page
 update:
-    title: Edit Category
+    title: dynamedia.posts::lang.categories.titles.edit_category
     redirect: dynamedia/posts/categories
     redirectClose: dynamedia/posts/categories
 
 # Preview page
 preview:
-    title: Preview Category
+    title: dynamedia.posts::lang.categories.titles.preview_category

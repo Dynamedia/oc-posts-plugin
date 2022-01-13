@@ -12,7 +12,7 @@ modelClass: Dynamedia\Posts\Models\Category
 customViewPath: $/dynamedia/posts/controllers/categories/list
 
 # List Title
-title: Manage Categories
+title: dynamedia.posts::lang.categories.titles.manage_categories
 
 # Link URL for each record
 recordUrl: dynamedia/posts/categories/update/:id

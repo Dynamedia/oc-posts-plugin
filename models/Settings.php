@@ -68,13 +68,15 @@ class Settings extends Model
 
     public function getTagPageOptions()
     {
-        return Page::sortBy('baseFileName')
+        $pages = Page::sortBy('baseFileName')
             ->filter(function ($page) {
                 if (!$page->hasComponent('displayTag')) return false;
                 if (!Str::contains($page->url, 'postsTagSlug')) return false;
                 return true;
             })
             ->lists('baseFileName', 'baseFileName');
+
+        return array_merge(['' => 'None'], $pages);
     }
     public function getPostPageOptions()
     {
@@ -103,13 +105,15 @@ class Settings extends Model
 
     public function getUserPageOptions()
     {
-        return Page::sortBy('baseFileName')
+        $pages = Page::sortBy('baseFileName')
             ->filter(function ($page) {
                 if (!$page->hasComponent('displayUser')) return false;
                 if (!Str::contains($page->url, 'postsUsername')) return false;
                 return true;
             })
             ->lists('baseFileName', 'baseFileName');
+
+        return array_merge(['' => 'None'], $pages);
     }
 
     public function getRssPostCountOptions()

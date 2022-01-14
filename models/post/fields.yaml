@@ -38,7 +38,7 @@ tabs:
             tab: dynamedia.posts::lang.posts.tabs.categories
             label: dynamedia.posts::lang.posts.labels.primary_category
             type: relation
-            emptyOption: None
+            emptyOption: dynamedia.posts::lang.common.dropdown.none
             comment: dynamedia.posts::lang.posts.comments.primary_category
 
         categories:

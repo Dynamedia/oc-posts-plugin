@@ -73,6 +73,6 @@ pagebreak:
     description: dynamedia.posts::lang.blocks.descriptions.page_break
     fields:
         title:
-            label: Page break
-            placeholder: Page Break
+            label: dynamedia.posts::lang.blocks.names.page_break
+            placeholder: dynamedia.posts::lang.blocks.names.page_break
             disabled: true

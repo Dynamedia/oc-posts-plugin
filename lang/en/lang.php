@@ -3,7 +3,7 @@
 return [
     'plugin' => [
         'name'          => 'Posts',
-        'description'   => 'Posts for October CMS v2+',
+        'description'   => 'Posts for October CMS v2+.',
     ],
     'posts' => [
         'titles' => [
@@ -20,7 +20,9 @@ return [
             'is_published'      => 'Published',
             'published_at'      => 'Published At',
             'publishing_time'   => 'Published Time',
+            'publishing_date'   => 'Publishing Date',
             'published_until'   => 'Published Until',
+            'hide_published'    => 'Hide Published',
             'show_contents'     => 'Show Contents?',
             'primary_category'  => 'Primary Category',
             'category_list'     => 'Category List',

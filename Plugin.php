@@ -86,7 +86,7 @@ class Plugin extends PluginBase
     {
         return [
             'posts' => [
-                'label'       => 'Posts',
+                'label'       => 'dynamedia.posts::lang.plugin.name',
                 'url'         => Backend::url('dynamedia/posts/posts'),
                 'icon'        => 'icon-pencil-square-o',
                 'permissions' => ['dynamedia.posts.access_plugin'],
@@ -139,7 +139,7 @@ class Plugin extends PluginBase
             'settings' => [
                 'label'       => 'dynamedia.posts::lang.settings.labels.page_label',
                 'description' => 'dynamedia.posts::lang.settings.labels.page_description',
-                'category'    => 'Posts',
+                'category'    => 'dynamedia.posts::lang.plugin.name',
                 'icon'        => 'icon-cog',
                 'class'       => 'Dynamedia\Posts\Models\Settings',
                 'order'       => 500,

@@ -9,7 +9,7 @@ tabs:
         caption:
             tab: dynamedia.posts::lang.images.tabs.default
             #label: dynamedia.posts::lang.images.labels.alt_text
-            label: Caption
+            label: dynamedia.posts::lang.images.labels.caption
         alt:
             tab: dynamedia.posts::lang.images.tabs.default
             label: dynamedia.posts::lang.images.labels.alt_text

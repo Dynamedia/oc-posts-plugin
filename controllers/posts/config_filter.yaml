@@ -1,20 +1,20 @@
 scopes:
     categories:
-        label: Categories
+        label: dynamedia.posts::lang.common.labels.categories
         modelClass: Dynamedia\Posts\Models\Category
         scope: applyWhereHasCategories
         nameFrom: name
         valueFrom: id
 
     tags:
-        label: Tags
+        label: dynamedia.posts::lang.common.labels.tags
         modelClass: Dynamedia\Posts\Models\Tag
         scope: applyWhereHasTags
         nameFrom: name
         valueFrom: id
 
     hide_published:
-        label: Hide Published
+        label: dynamedia.posts::lang.posts.labels.hide_published
         scope: applyIsNotPublished
         type: checkbox
 
@@ -23,7 +23,7 @@ scopes:
     editor_by_profile:
 
     published_at:
-        label: Publishing Date
+        label: dynamedia.posts::lang.posts.labels.publishing_date
         type: daterange
         conditions: created_at >= ':after' AND created_at <= ':before'
 

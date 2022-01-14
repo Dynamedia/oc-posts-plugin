@@ -5,6 +5,7 @@ use Backend\Classes\Controller;
 use Dynamedia\Posts\Classes\Helpers\ThemeHelper;
 use Dynamedia\Posts\Models\PostTranslation;
 use Dynamedia\Posts\Models\Profile;
+use Lang;
 
 /**
  * Posts Back-end Controller
@@ -59,7 +60,7 @@ class Posts extends Controller
     {
         $filter->addScopes([
             'author_by_profile' => [
-                'label' => 'Author',
+                'label' => Lang::get('dynamedia.posts::lang.posts.labels.author'),
                 'modelClass' => 'Dynamedia\Posts\Models\Profile',
                 'scope' => 'applyWhereAuthor',
                 //'default' => [\BackendAuth::getUser()->profile->id],
@@ -67,7 +68,7 @@ class Posts extends Controller
                 'valueFrom' => 'id'
             ],
             'editor_by_profile' => [
-                'label' => 'Editor',
+                'label' => Lang::get('dynamedia.posts::lang.posts.labels.editor'),
                 'modelClass' => 'Dynamedia\Posts\Models\Profile',
                 'scope' => 'applyWhereEditor',
                 //'default' => [\BackendAuth::getUser()->profile->id],

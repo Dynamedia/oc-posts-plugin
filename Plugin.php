@@ -93,37 +93,37 @@ class Plugin extends PluginBase
                 'order'       => 500,
                 'sideMenu' => [
                     'new_post' => [
-                        'label'       => 'New Post',
+                        'label'       => 'dynamedia.posts::lang.common.labels.new_post',
                         'icon'        => 'icon-plus',
                         'url'         => Backend::url('dynamedia/posts/posts/create'),
                         'permissions' => ['dynamedia.posts.create_posts']
                     ],
                     'posts' => [
-                        'label'       => 'Posts',
+                        'label'       => 'dynamedia.posts::lang.common.labels.posts',
                         'icon'        => 'icon-copy',
                         'url'         => Backend::url('dynamedia/posts/posts'),
                         'permissions' => ['dynamedia.posts.access_plugin']
                     ],
                     'categories' => [
-                        'label'       => 'Categories',
+                        'label'       => 'dynamedia.posts::lang.common.labels.categories',
                         'icon'        => 'icon-list-ol',
                         'url'         => Backend::url('dynamedia/posts/categories'),
                         'permissions' => ['dynamedia.posts.view_categories']
                     ],
                     'tags' => [
-                        'label'       => 'Tags',
+                        'label'       => 'dynamedia.posts::lang.common.labels.tags',
                         'icon'        => 'icon-list-ul',
                         'url'         => Backend::url('dynamedia/posts/tags'),
                         'permissions' => ['dynamedia.posts.view_tags']
                     ],
                     'settings' => [
-                        'label'       => 'Settings',
+                        'label'       => 'dynamedia.posts::lang.settings.labels.settings',
                         'icon'        => 'icon-cog',
                         'url'         => Backend::url('system/settings/update/dynamedia/posts/settings'),
                         'permissions' => ['dynamedia.posts.view_settings']
                     ],
                     'aboutposts' => [
-                        'label'       => 'About Posts',
+                        'label'       => 'dynamedia.posts::lang.aboutposts.page_title',
                         'icon'        => 'icon-info',
                         'url'         => Backend::url('dynamedia/posts/aboutposts'),
                         'permissions' => ['dynamedia.posts.access_plugin']
@@ -137,8 +137,8 @@ class Plugin extends PluginBase
     {
         return [
             'settings' => [
-                'label'       => 'Dynamedia Posts Settings',
-                'description' => 'Manage settings for the posts.',
+                'label'       => 'dynamedia.posts::lang.settings.labels.page_label',
+                'description' => 'dynamedia.posts::lang.settings.labels.page_description',
                 'category'    => 'Posts',
                 'icon'        => 'icon-cog',
                 'class'       => 'Dynamedia\Posts\Models\Settings',

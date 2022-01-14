@@ -3,7 +3,7 @@
 return [
     'plugin' => [
         'name'          => 'Posts',
-        'description'   => 'Posts for October CMS.'
+        'description'   => 'Posts for October CMS v2+',
     ],
     'posts' => [
         'titles' => [
@@ -198,6 +198,7 @@ return [
             'seo'                   => 'SEO',
             'post'                  => 'Post',
             'posts'                 => 'Posts',
+            'new_post'              => 'New Post',
             'postslugs'             => 'Post Slugs',
             'posttranslations'      => 'Post Translations',
             'category'              => 'Category',
@@ -340,6 +341,9 @@ return [
             'rss'           => 'RSS',
         ],
         'labels' => [
+            'settings'                  => 'Settings',
+            'page_label'                => 'Dynamedia Posts Settings',
+            'page_description'          => 'Manage settings for the posts.',
             'publisher_name'            => 'Publisher Name',
             'publisher_type'            => 'Publisher Type',
             'publisher_url'             => 'Publisher URL',

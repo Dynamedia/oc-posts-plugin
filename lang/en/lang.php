@@ -366,6 +366,7 @@ return [
             'rss_posts_per_feed'        => 'Posts per Feed',
 
         ],
+
         'dropdown' => [
             'organization'    => 'Organization',
             'person'          => 'Person',

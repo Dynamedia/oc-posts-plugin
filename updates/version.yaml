@@ -18,3 +18,5 @@ v1.0.3:
     - Theme templates can be inherited from parent theme. Core version constraint.
 v1.0.4:
     - All backend fields are now translatable. Fix settings defaults
+v1.0.5:
+    - Replace depreciated getTranslateAttribute() usage

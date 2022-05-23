@@ -27,7 +27,7 @@ class RssCategory
             'category'      => $this->category,
             'posts'         => $this->postsList['items'],
             'language'      => Translator::instance()->getLocale(),
-            'title_prefix'  => Settings::instance()->getTranslateAttribute('rssTitle')
+            'title_prefix'  => Settings::instance()->getAttributeTranslated('rssTitle')
             ]);
 
         return Response::make($view)

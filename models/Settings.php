@@ -70,24 +70,30 @@ class Settings extends Model
     {
         $pages = Page::sortBy('baseFileName')
             ->filter(function ($page) {
-                if (!$page->hasComponent('displayTag')) return false;
-                if (!Str::contains($page->url, 'postsTagSlug')) return false;
+                if (!$page->hasComponent('displayTag')) {
+                    return false;
+                }
+                if (!Str::contains($page->url, 'postsTagSlug')) {
+                    return false;
+                }
                 return true;
             })
             ->lists('baseFileName', 'baseFileName');
 
-        return array_merge(['' => 'None'], $pages);
+        return array_merge(['' => 'dynamedia.posts::lang.common.dropdown.none'], $pages);
     }
     public function getPostPageOptions()
     {
         $pages =  Page::sortBy('baseFileName')
             ->filter(function ($page) {
-                if (!$page->hasComponent('displayPost')) return false;
+                if (!$page->hasComponent('displayPost')) {
+                    return false;
+                }
                 return true;
             })
             ->lists('baseFileName', 'baseFileName');
 
-        return array_merge(['' => 'None'], $pages);
+        return array_merge(['' => 'dynamedia.posts::lang.common.dropdown.none'], $pages);
     }
 
 
@@ -95,25 +101,31 @@ class Settings extends Model
     {
         $pages =  Page::sortBy('baseFileName')
             ->filter(function ($page) {
-                if (!$page->hasComponent('displayCategory')) return false;
+                if (!$page->hasComponent('displayCategory')) {
+                    return false;
+                }
                 return true;
             })
             ->lists('baseFileName', 'baseFileName');
 
-        return array_merge(['' => 'None'], $pages);
+        return array_merge(['' => 'dynamedia.posts::lang.common.dropdown.none'], $pages);
     }
 
     public function getUserPageOptions()
     {
         $pages = Page::sortBy('baseFileName')
             ->filter(function ($page) {
-                if (!$page->hasComponent('displayUser')) return false;
-                if (!Str::contains($page->url, 'postsUsername')) return false;
+                if (!$page->hasComponent('displayUser')) {
+                    return false;
+                }
+                if (!Str::contains($page->url, 'postsUsername')) {
+                    return false;
+                }
                 return true;
             })
             ->lists('baseFileName', 'baseFileName');
 
-        return array_merge(['' => 'None'], $pages);
+        return array_merge(['' => 'dynamedia.posts::lang.common.dropdown.none'], $pages);
     }
 
     public function getRssPostCountOptions()
@@ -124,6 +136,4 @@ class Settings extends Model
         }
         return $options;
     }
-
 }
-

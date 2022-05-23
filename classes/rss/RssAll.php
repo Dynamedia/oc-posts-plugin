@@ -26,8 +26,8 @@ class RssAll
         $view = View::make('dynamedia.posts::rss.all_rss', [
             'posts'         => $this->postsList['items'],
             'language'      => Translator::instance()->getLocale(),
-            'title'         => Settings::instance()->getTranslateAttribute('rssTitle'),
-            'description'   => Settings::instance()->getTranslateAttribute('rssDescription'),
+            'title'         => Settings::instance()->getAttributeTranslated('rssTitle'),
+            'description'   => Settings::instance()->getAttributeTranslated('rssDescription'),
             'atom_link'     => Controller::getController()->currentPageUrl()
             ]);
 

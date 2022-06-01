@@ -22,3 +22,5 @@ v1.0.5:
     - Replace depreciated getTranslateAttribute() usage
 v1.0.6:
     - Fix template loading
+v1.0.7:
+    - Fix template loading (revert 1.0.6)

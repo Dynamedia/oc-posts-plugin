@@ -21,7 +21,7 @@ class TemplateBody extends Body
 
         try {
             $yaml = Yaml::parse(self::getYamlFile($this->model->body_document['template_body_options']));
-            $partialPath = "body_templates/" . $yaml['partial'] . ".yml";
+            $partialPath = "body_templates/" . $yaml['partial'];
             $partial = Partial::load(Theme::getActiveTheme(), $partialPath);
 
             $controller = Controller::getController();
